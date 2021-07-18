@@ -3,7 +3,7 @@
 // You should not change it manually as it will be overwritten on next build
 
 namespace app\controllers\base;
-
+use Yii;
 use app\models\Bank;
     use app\models\search\BankSearch;
 use yii\web\Controller;
@@ -12,6 +12,7 @@ use yii\helpers\Url;
 use yii\filters\AccessControl;
 use dmstr\bootstrap\Tabs;
 use app\models\Action;
+use yii\web\UploadedFile;
 
 /**
 * BankController implements the CRUD actions for Bank model.
@@ -79,8 +80,28 @@ public function actionCreate()
 $model = new Bank;
 
 try {
-if ($model->load($_POST) && $model->save()) {
-return $this->redirect(['view', 'id' => $model->id]);
+if ($model->load($_POST)) {
+    $logos = UploadedFile::getInstance($model, 'logo');
+        if($logos !=NULL){
+                    # store the source logos name
+                    $model->logo = $logos->name;
+                    $arr = explode(".", $logos->name);
+                    $extension = end($arr);
+
+                    # generate a unique logos name
+                    $model->logo = Yii::$app->security->generateRandomString() . ".{$extension}";
+
+                    # the path to save logos
+                    // unlink(Yii::getAlias("@app/web/uploads/pengajuan/") . $oldFile);
+                    if(file_exists(Yii::getAlias("@app/web/uploads/bank/logo/")) == false){
+                        mkdir(Yii::getAlias("@app/web/uploads/bank/logo/"), 0777, true);
+                    }
+                    $path = Yii::getAlias("@app/web/uploads/bank/logo/") . $model->logo;
+        $logos->saveAs($path);
+                }
+if($model->save()){
+    return $this->redirect(['view', 'id' => $model->id]);
+}
 } elseif (!\Yii::$app->request->isPost) {
 $model->load($_GET);
 }
@@ -91,6 +112,7 @@ $model->addError('_exception', $msg);
 return $this->render('create', ['model' => $model]);
 }
 
+
 /**
 * Updates an existing Bank model.
 * If update is successful, the browser will be redirected to the 'view' page.
@@ -100,9 +122,37 @@ return $this->render('create', ['model' => $model]);
 public function actionUpdate($id)
 {
 $model = $this->findModel($id);
+$oldFoto=$model->logo;
+if ($model->load($_POST)) {
+    $logos = UploadedFile::getInstance($model, 'logo');
+            if ($logos != NULL) {
+                # store the source file name
+                $model->logo = $logos->name;
+                $arr = explode(".", $logos->name);
+                $extension = end($arr);
 
-if ($model->load($_POST) && $model->save()) {
-return $this->redirect(Url::previous());
+                # generate a unique file name
+                $model->logo = Yii::$app->security->generateRandomString() . ".{$extension}";
+
+                # the path to save file
+                if(file_exists(Yii::getAlias("@app/web/uploads/bank/logo/")) == false){
+                    mkdir(Yii::getAlias("@app/web/uploads/bank/logo/"), 0777, true);
+                }
+                $path = Yii::getAlias("@app/web/uploads/bank/logo/") . $model->logo;
+                if($oldFoto != NULL){
+
+                    $logos->saveAs($path);
+                    unlink(Yii::$app->basePath . '/web/uploads/bank/logo/' . $oldFoto);
+                }else{
+                    $logos->saveAs($path);
+                }
+            }else{
+                $model->logo = $oldFoto;
+            }
+            
+if($model->save()){
+    return $this->redirect(['view', 'id' => $model->id]);
+}
 } else {
 return $this->render('update', [
 'model' => $model,

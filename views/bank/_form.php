@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use \dmstr\bootstrap\Tabs;
+use kartik\file\FileInput;
 
 /**
 * @var yii\web\View $this
@@ -22,10 +23,22 @@ use \dmstr\bootstrap\Tabs;
         ]
         );
         ?>
-        
-			<?= $form->field($model, 'id')->textInput() ?>
+
 			<?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
-			<?= $form->field($model, 'logo')->textInput(['maxlength' => true]) ?>        <hr/>
+            <?= $form->field($model, 'logo',[
+                    
+                    'options' => ['tag' => false]])->widget(FileInput::classname(), [
+                'options' => ['accept' => 'file/*'],
+                'pluginOptions' => [
+                    'allowedFileExtensions' => ['png','jpg','jpeg'],
+                    'maxFileSize' => 6500,
+                    'showRemove' => false,
+                    'showUpload' => false,
+                    'showCaption' => false,
+                    'dropZoneEnabled' => false,
+                    'browseLabel' => 'Upload File',
+                ],
+            ]);?>        <hr/>
         <?php echo $form->errorSummary($model); ?>
         <div class="row">
             <div class="col-md-offset-3 col-md-10">

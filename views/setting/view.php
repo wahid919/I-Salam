@@ -12,20 +12,14 @@ use dmstr\bootstrap\Tabs;
 * @var app\models\Setting $model
 */
 
-$this->title = 'Setting ' . $model->id;
-$this->params['breadcrumbs'][] = ['label' => 'Setting', 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => (string)$model->id, 'url' => ['view', 'id' => $model->id]];
-$this->params['breadcrumbs'][] = 'View';
+$this->title = 'Setting ' . $model->nama_web;
 ?>
 <div class="giiant-crud setting-view">
 
     <!-- menu buttons -->
     <p class='pull-left'>
         <?= Html::a('<span class="glyphicon glyphicon-pencil"></span> ' . 'Edit', ['update', 'id' => $model->id],['class' => 'btn btn-info']) ?>
-        <?= Html::a('<span class="glyphicon glyphicon-plus"></span> ' . 'Tambah Baru', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
-    <p class="pull-right">
-        <?= Html::a('<span class="glyphicon glyphicon-list"></span> ' . 'Daftar Setting', ['index'], ['class'=>'btn btn-default']) ?>
+        
     </p>
 
     <div class="clearfix"></div>
@@ -46,11 +40,28 @@ $this->params['breadcrumbs'][] = 'View';
             <?= DetailView::widget([
             'model' => $model,
             'attributes' => [
-                    'id',
         'pin',
-        'logo',
-        'bg_login',
-        'bg_pin',
+        [
+            'attribute' =>'logo',
+            'format' =>'html',
+            'value' =>function($model) {
+               return Html::img(\Yii::$app->request->BaseUrl.'/uploads/setting/'.$model->logo,['width'=>100]);
+             },
+         ],
+         [
+            'attribute' =>'bg_login',
+            'format' =>'html',
+            'value' =>function($model) {
+               return Html::img(\Yii::$app->request->BaseUrl.'/uploads/setting/'.$model->bg_login,['width'=>100]);
+             },
+         ],
+         [
+            'attribute' =>'bg_pin',
+            'format' =>'html',
+            'value' =>function($model) {
+               return Html::img(\Yii::$app->request->BaseUrl.'/uploads/setting/'.$model->bg_pin,['width'=>100]);
+             },
+         ],
         'link_download_apk',
         'nama_web',
         'alamat:ntext',
@@ -60,12 +71,12 @@ $this->params['breadcrumbs'][] = 'View';
 
             <hr/>
 
-            <?= Html::a('<span class="glyphicon glyphicon-trash"></span> ' . 'Delete', ['delete', 'id' => $model->id],
+            <!-- <?= Html::a('<span class="glyphicon glyphicon-trash"></span> ' . 'Delete', ['delete', 'id' => $model->id],
             [
             'class' => 'btn btn-danger',
             'data-confirm' => '' . 'Are you sure to delete this item?' . '',
             'data-method' => 'post',
-            ]); ?>
+            ]); ?> -->
             <?php $this->endBlock(); ?>
 
 
@@ -75,7 +86,7 @@ $this->params['breadcrumbs'][] = 'View';
                      'id' => 'relation-tabs',
                      'encodeLabels' => false,
                      'items' => [ [
-    'label'   => '<b class=""># '.$model->id.'</b>',
+    'label'   => '<b class=""># '.$model->nama_web.'</b>',
     'content' => $this->blocks['app\models\Setting'],
     'active'  => true,
 ], ]

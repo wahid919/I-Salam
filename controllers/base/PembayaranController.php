@@ -3,7 +3,7 @@
 // You should not change it manually as it will be overwritten on next build
 
 namespace app\controllers\base;
-
+use Yii;
 use app\models\Pembayaran;
     use app\models\search\PembayaranSearch;
 use yii\web\Controller;
@@ -12,6 +12,7 @@ use yii\helpers\Url;
 use yii\filters\AccessControl;
 use dmstr\bootstrap\Tabs;
 use app\models\Action;
+use yii\web\UploadedFile;
 
 /**
 * PembayaranController implements the CRUD actions for Pembayaran model.
@@ -79,8 +80,28 @@ public function actionCreate()
 $model = new Pembayaran;
 
 try {
-if ($model->load($_POST) && $model->save()) {
+if ($model->load($_POST)) {
+    $bukti_transaksis = UploadedFile::getInstance($model, 'bukti_transaksi');
+    if($bukti_transaksis !=NULL){
+                # store the source bukti_transaksis name
+                $model->bukti_transaksi = $bukti_transaksis->name;
+                $arr = explode(".", $bukti_transaksis->name);
+                $extension = end($arr);
+
+                # generate a unique bukti_transaksis name
+                $model->bukti_transaksi = Yii::$app->security->generateRandomString() . ".{$extension}";
+
+                # the path to save bukti_transaksis
+                // unlink(Yii::getAlias("@app/web/uploads/pengajuan/") . $oldFile);
+                if(file_exists(Yii::getAlias("@app/web/uploads/pembayaran/bukti_transaksi/")) == false){
+                    mkdir(Yii::getAlias("@app/web/uploads/pembayaran/bukti_transaksi/"), 0777, true);
+                }
+                $path = Yii::getAlias("@app/web/uploads/pembayaran/bukti_transaksi/") . $model->bukti_transaksi;
+    $bukti_transaksis->saveAs($path);
+            }
+if($model->save()){
 return $this->redirect(['view', 'id' => $model->id]);
+}
 } elseif (!\Yii::$app->request->isPost) {
 $model->load($_GET);
 }
@@ -100,9 +121,37 @@ return $this->render('create', ['model' => $model]);
 public function actionUpdate($id)
 {
 $model = $this->findModel($id);
+$oldBukti=$model->bukti_transaksi;
+if ($model->load($_POST)) {
+    $bukti_transaksis = UploadedFile::getInstance($model, 'bukti_transaksi');
+            if ($bukti_transaksis != NULL) {
+                # store the source file name
+                $model->bukti_transaksi = $bukti_transaksis->name;
+                $arr = explode(".", $bukti_transaksis->name);
+                $extension = end($arr);
 
-if ($model->load($_POST) && $model->save()) {
-return $this->redirect(Url::previous());
+                # generate a unique file name
+                $model->bukti_transaksi = Yii::$app->security->generateRandomString() . ".{$extension}";
+
+                # the path to save file
+                if(file_exists(Yii::getAlias("@app/web/uploads/pembayaran/bukti_transaksi/")) == false){
+                    mkdir(Yii::getAlias("@app/web/uploads/pembayaran/bukti_transaksi/"), 0777, true);
+                }
+                $path = Yii::getAlias("@app/web/uploads/pembayaran/bukti_transaksi/") . $model->bukti_transaksi;
+                if($oldBukti != NULL){
+
+                    $bukti_transaksis->saveAs($path);
+                    unlink(Yii::$app->basePath . '/web/uploads/pembayaran/bukti_transaksi/' . $oldBukti);
+                }else{
+                    $bukti_transaksis->saveAs($path);
+                }
+            }else{
+                $model->bukti_transaksi = $oldBukti;
+            }
+            
+if($model->save()){
+    return $this->redirect(['view', 'id' => $model->id]);
+}
 } else {
 return $this->render('update', [
 'model' => $model,
@@ -119,7 +168,10 @@ return $this->render('update', [
 public function actionDelete($id)
 {
 try {
-$this->findModel($id)->delete();
+    $model = $this->findModel($id);
+$oldBukti=$model->bukti_transaksi;
+$model->delete();
+unlink(Yii::$app->basePath . '/web/uploads/pembayaran/bukti_transaksi/' . $oldBukti);
 } catch (\Exception $e) {
 $msg = (isset($e->errorInfo[2]))?$e->errorInfo[2]:$e->getMessage();
 \Yii::$app->getSession()->addFlash('error', $msg);

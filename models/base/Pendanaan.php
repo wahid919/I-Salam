@@ -67,9 +67,9 @@ abstract class Pendanaan extends \yii\db\ActiveRecord
             'uraian' => 'Uraian',
             'nominal' => 'Nominal',
             'pendanaan_berakhir' => 'Pendanaan Berakhir',
-            'user_id' => 'User ID',
-            'kategori_pendanaan_id' => 'Kategori Pendanaan ID',
-            'status_id' => 'Status ID',
+            'user_id' => 'User',
+            'kategori_pendanaan_id' => 'Kategori Pendanaan',
+            'status_id' => 'Status',
         ];
     }
 

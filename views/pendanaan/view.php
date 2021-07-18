@@ -12,7 +12,7 @@ use dmstr\bootstrap\Tabs;
 * @var app\models\Pendanaan $model
 */
 
-$this->title = 'Pendanaan ' . $model->id;
+$this->title = 'Pendanaan ' . $model->nama_pendanaan;
 $this->params['breadcrumbs'][] = ['label' => 'Pendanaan', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => (string)$model->id, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = 'View';
@@ -46,9 +46,14 @@ $this->params['breadcrumbs'][] = 'View';
             <?= DetailView::widget([
             'model' => $model,
             'attributes' => [
-                    'id',
         'nama_pendanaan',
-        'foto',
+        [
+            'attribute' =>'foto',
+            'format' =>'html',
+            'value' =>function($model) {
+               return Html::img(\Yii::$app->request->BaseUrl.'/uploads/pendanaan/'.$model->foto,['width'=>100]);
+             },
+         ],
         'uraian:ntext',
         'nominal',
         'pendanaan_berakhir',

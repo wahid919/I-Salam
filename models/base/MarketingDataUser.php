@@ -59,8 +59,8 @@ abstract class MarketingDataUser extends \yii\db\ActiveRecord
             'alamat' => 'Alamat',
             'domisili' => 'Domisili',
             'no_rekening' => 'No Rekening',
-            'bank_id' => 'Bank ID',
-            'user_id' => 'User ID',
+            'bank_id' => 'Bank',
+            'user_id' => 'User',
         ];
     }
 

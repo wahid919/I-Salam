@@ -23,7 +23,6 @@ use \dmstr\bootstrap\Tabs;
         );
         ?>
         
-			<?= $form->field($model, 'id')->textInput() ?>
 			<?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>        <hr/>
         <?php echo $form->errorSummary($model); ?>
         <div class="row">

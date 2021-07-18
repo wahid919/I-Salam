@@ -3,15 +3,17 @@
 // You should not change it manually as it will be overwritten on next build
 
 namespace app\controllers\base;
-
+use Yii;
 use app\models\Pendanaan;
-    use app\models\search\PendanaanSearch;
+use app\models\Setting;
+use app\models\search\PendanaanSearch;
 use yii\web\Controller;
 use yii\web\HttpException;
 use yii\helpers\Url;
 use yii\filters\AccessControl;
 use dmstr\bootstrap\Tabs;
 use app\models\Action;
+use yii\web\UploadedFile;
 
 /**
 * PendanaanController implements the CRUD actions for Pendanaan model.
@@ -40,16 +42,27 @@ public function actionIndex()
 {
     $searchModel  = new PendanaanSearch;
     $dataProvider = $searchModel->search($_GET);
+    $setting=Setting::find()->one();
+    $bg = $setting->bg_pin;
 
+
+if (yii::$app->request->post('display') == $setting->pin) {
+    
 Tabs::clearLocalStorage();
 
 Url::remember();
 \Yii::$app->session['__crudReturnUrl'] = null;
 
 return $this->render('index', [
+    
 'dataProvider' => $dataProvider,
     'searchModel' => $searchModel,
 ]);
+}else{
+Yii::$app->session->setFlash('Pin Salah');
+}
+$this->layout = 'front';
+return $this->render('security',['bg' => $bg,]);
 }
 
 /**
@@ -79,8 +92,28 @@ public function actionCreate()
 $model = new Pendanaan;
 
 try {
-if ($model->load($_POST) && $model->save()) {
-return $this->redirect(['view', 'id' => $model->id]);
+    if ($model->load($_POST)) {
+        $fotos = UploadedFile::getInstance($model, 'foto');
+        if($fotos !=NULL){
+                    # store the source fotos name
+                    $model->foto = $fotos->name;
+                    $arr = explode(".", $fotos->name);
+                    $extension = end($arr);
+    
+                    # generate a unique fotos name
+                    $model->foto = Yii::$app->security->generateRandomString() . ".{$extension}";
+    
+                    # the path to save fotos
+                    // unlink(Yii::getAlias("@app/web/uploads/pengajuan/") . $oldFile);
+                    if(file_exists(Yii::getAlias("@app/web/uploads/pendanaaan/foto/")) == false){
+                        mkdir(Yii::getAlias("@app/web/uploads/pendanaaan/foto/"), 0777, true);
+                    }
+                    $path = Yii::getAlias("@app/web/uploads/pendanaaan/foto/") . $model->foto;
+        $fotos->saveAs($path);
+                }
+    if($model->save()){
+    return $this->redirect(['view', 'id' => $model->id]);
+    }
 } elseif (!\Yii::$app->request->isPost) {
 $model->load($_GET);
 }
@@ -100,9 +133,37 @@ return $this->render('create', ['model' => $model]);
 public function actionUpdate($id)
 {
 $model = $this->findModel($id);
+$oldBukti=$model->foto;
+if ($model->load($_POST)) {
+    $fotos = UploadedFile::getInstance($model, 'foto');
+            if ($fotos != NULL) {
+                # store the source file name
+                $model->foto = $fotos->name;
+                $arr = explode(".", $fotos->name);
+                $extension = end($arr);
 
-if ($model->load($_POST) && $model->save()) {
-return $this->redirect(Url::previous());
+                # generate a unique file name
+                $model->foto = Yii::$app->security->generateRandomString() . ".{$extension}";
+
+                # the path to save file
+                if(file_exists(Yii::getAlias("@app/web/uploads/pendanaan/foto/")) == false){
+                    mkdir(Yii::getAlias("@app/web/uploads/pendanaan/foto/"), 0777, true);
+                }
+                $path = Yii::getAlias("@app/web/uploads/pendanaan/foto/") . $model->foto;
+                if($oldBukti != NULL){
+
+                    $fotos->saveAs($path);
+                    unlink(Yii::$app->basePath . '/web/uploads/pendanaan/foto/' . $oldBukti);
+                }else{
+                    $fotos->saveAs($path);
+                }
+            }else{
+                $model->foto = $oldBukti;
+            }
+            
+if($model->save()){
+    return $this->redirect(['view', 'id' => $model->id]);
+}
 } else {
 return $this->render('update', [
 'model' => $model,
@@ -119,7 +180,10 @@ return $this->render('update', [
 public function actionDelete($id)
 {
 try {
-$this->findModel($id)->delete();
+    $model = $this->findModel($id);
+$oldBukti=$model->foto;
+$model->delete();
+unlink(Yii::$app->basePath . '/web/uploads/pendanaan/foto/' . $oldBukti);
 } catch (\Exception $e) {
 $msg = (isset($e->errorInfo[2]))?$e->errorInfo[2]:$e->getMessage();
 \Yii::$app->getSession()->addFlash('error', $msg);

@@ -1,261 +1,239 @@
 <?php
 
-namespace app\controllers;
+namespace app\controllers\api;
 
-use \Yii;
-use app\models\User;
-use app\models\search\UserSearch;
-use yii\web\Controller;
-use yii\web\HttpException;
-use yii\helpers\Url;
-use dmstr\bootstrap\Tabs;
-use yii\web\UploadedFile;
-use Endroid\QrCode\ErrorCorrectionLevel;
-use Endroid\QrCode\LabelAlignment;
-use Endroid\QrCode\QrCode;
-use Endroid\QrCode\Response\QrCodeResponse;
 /**
- * UserController implements the CRUD actions for User model.
+ * This is the class for REST controller "UserController".
  */
-class UserController extends Controller
+use yii\base\Security;
+use app\models\User;
+use app\models\Otp;
+use Dompdf\Exception;
+use Yii;
+use yii\web\UploadedFile;
+
+class UserController extends \yii\rest\ActiveController
 {
-    /**
-     * @var boolean whether to enable CSRF validation for the actions in this controller.
-     * CSRF validation is enabled only when both this property and [[Request::enableCsrfValidation]] are true.
-     */
-    public $enableCsrfValidation = false;
-
-    public function behaviors()
+    public $modelClass = 'app\models\User';
+    protected function verbs()
     {
-        //apply role_action table for privilege (doesn't apply to super admin)
-        return \app\models\Action::getAccess($this->id);
+       return [
+           'login' => ['POST'],
+           'register' => ['POST'],
+           'check-otp' => ['POST'],
+           'refresh-otp' => ['POST'],
+       ];
     }
-
-    /**
-     * Lists all User models.
-     * @return mixed
-     */
-    public function actionIndex()
+    public function actions()
     {
-        $searchModel  = new UserSearch;
-        $dataProvider = $searchModel->search($_GET);
-
-        Tabs::clearLocalStorage();
-
-        Url::remember();
-        \Yii::$app->session['__crudReturnUrl'] = null;
-
-        return $this->render('index', [
-            'dataProvider' => $dataProvider,
-            'searchModel' => $searchModel,
-        ]);
+        $actions = parent::actions();
+        unset($actions['index']);
+        unset($actions['view']);
+        unset($actions['create']);
+        unset($actions['update']);
+        unset($actions['delete']);
+        return $actions;
     }
-
-    /**
-     * Displays a single User model.
-     * @param integer $id
-     *
-     * @return mixed
-     */
-    public function actionView($id)
+    public function actionLogin()
     {
-        \Yii::$app->session['__crudReturnUrl'] = Url::previous();
-        Url::remember();
-        Tabs::rememberActiveState();
-
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-        ]);
-    }
-
-    /**
-     * Creates a new User model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
-     */
-    public function actionCreate()
-    {
-        $model = new User;
-
+        $result = [];
         try {
-            if ($model->load($_POST) ) {
-                $model->password = md5($model->password);
+            $user = User::findOne([
+                "username" => $_POST['username'],
+                "password" => md5($_POST['password']),
+            ]);
+            
+            if (isset($user)) {
 
-                $image = UploadedFile::getInstance($model, 'photo_url');
-                if ($image != NULL) {
-                    # store the source file name
-                    $model->photo_url = $image->name;
-                    $extension = end(explode(".", $image->name));
-
-                    # generate a unique file name
-                    $model->photo_url = Yii::$app->security->generateRandomString() . ".{$extension}";
-
-                    # the path to save file
-                    $path = Yii::getAlias("@app/web/uploads/") . $model->photo_url;
-                    $image->saveAs($path);
-                }else{
-                    $model->photo_url = "default.png";
-                }
-
-                $ttd = UploadedFile::getInstance($model, 'tanda_tangan');
-                if ($ttd != NULL) {
-                    # store the source file name
-                    $model->tanda_tangan = $ttd->name;
-                    $extension = end(explode(".", $ttd->name));
-
-                    # generate a unique file name
-                    $model->tanda_tangan = Yii::$app->security->generateRandomString() . ".{$extension}";
-
-                    # the path to save file
-                    $path = Yii::getAlias("@app/web/uploads/") . $model->tanda_tangan;
-                    $ttd->saveAs($path);
-                }else{
-                    $model->tanda_tangan = "default.png";
-                }
-                $model->qr_code = Yii::$app->security->generateRandomString(32);
-                if($model->save()){
-                    $qrCode = new QrCode("{$model->qr_code}");
-
-                    $qrCode->setWriterByName('png');
-                    $qrCode->setEncoding('UTF-8');
-                    $qrCode->setErrorCorrectionLevel(ErrorCorrectionLevel::HIGH());
-                    $qrCode->setForegroundColor(['r' => 0, 'g' => 0, 'b' => 0, 'a' => 0]);
-                    $qrCode->setBackgroundColor(['r' => 255, 'g' => 255, 'b' => 255, 'a' => 0]);
-                    $qrCode->setLabel('Scan the code', 16);
-                    $qrCode->setLogoWidth(80);
-                    $qrCode->setValidateResult(false);
-                    if(file_exists(Yii::getAlias("@app/web/uploads/user/qr_code/")) == false){
-                        mkdir(Yii::getAlias("@app/web/uploads/user/qr_code/"), 0777, true);
-                    }
-                    $qrCode->writeFile(Yii::getAlias("@app/web/uploads/user/qr_code/") . $model->id . ".png");
-                }
-
-                return $this->redirect(Url::previous());
-            } elseif (!\Yii::$app->request->isPost) {
-                $model->load($_GET);
+                $result['success'] = true;
+                $result['message'] = "success";
+                // unset($user->fcm_token);
+                unset($user->password); // remove password from response
+                $result["data"] = $user;
+            } else {
+                $result["success"] = 0;
+                $result["message"] = "gagal";
+                $result["data"] = "data kosong";
             }
         } catch (\Exception $e) {
-            $msg = (isset($e->errorInfo[2]))?$e->errorInfo[2]:$e->getMessage();
-            $model->addError('_exception', $msg);
+            $result["success"] = false;
+            $result["message"] = "gagal";
+            $result["data"] = "error";
         }
-        return $this->render('create', ['model' => $model]);
+        return $result;
     }
 
-    /**
-     * Updates an existing User model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id
-     * @return mixed
-     */
-    public function actionUpdate($id)
+    public function actionRegister()
     {
-        $model = $this->findModel($id);
+        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $val = \yii::$app->request->post();
+        $user = new User();
+        // $user->name = $val['name'];
+        $user->username = $val['username'];
+        $user->password =md5($val['confirm_password']);
+        $user->name = $val['name'];
+        $user->role_id = 3;
+        $user->confirm = 0;
+        $user->confirm = 0;
+        $user->photo_url = 'default.png';
+        $user->nomor_handphone = ($val['no_hp']) ?? '';
+        // $user->address = $val['address'];
 
-        $oldMd5Password = $model->password;
-        $oldPhotoUrl = $model->photo_url;
-        $oldTandaTangan=$model->tanda_tangan;
-
-        $model->password = "";
-
-        if ($model->load($_POST)){
-            //password
-            if($model->password != ""){
-                $model->password = md5($model->password);
-            }else{
-                $model->password = $oldMd5Password;
-            }
-
-            # get the uploaded file instance
-            $image = UploadedFile::getInstance($model, 'photo_url');
-            if ($image != NULL) {
-                # store the source file name
-                $model->photo_url = $image->name;
-                $arr = explode(".", $image->name);
-                $extension = end($arr);
-
-                # generate a unique file name
-                $model->photo_url = Yii::$app->security->generateRandomString() . ".{$extension}";
-
-                # the path to save file
-                $path = Yii::getAlias("@app/web/uploads/") . $model->photo_url;
-                $image->saveAs($path);
-            }else{
-                $model->photo_url = $oldPhotoUrl;
-            }
-
-            $ttd = UploadedFile::getInstance($model, 'tanda_tangan');
-            if ($ttd != NULL) {
-                # store the source file name
-                $model->tanda_tangan = $ttd->name;
-                $arr = explode(".", $ttd->name);
-                $extension = end($arr);
-
-                # generate a unique file name
-                $model->tanda_tangan = Yii::$app->security->generateRandomString() . ".{$extension}";
-
-                # the path to save file
-                $path = Yii::getAlias("@app/web/uploads/") . $model->tanda_tangan;
-                $ttd->saveAs($path);
-            }else{
-                $model->tanda_tangan = $oldTandaTangan;
-            }
-
-            if($model->save()){
-                Yii::$app->session->addFlash("success", "Profile successfully updated.");
-            }else{
-                Yii::$app->session->addFlash("danger", "Profile cannot updated.");
-            }
-            return $this->redirect(["index"]);
-        }
-        return $this->render('update', [
-            'model' => $model,
-        ]);
-    }
-
-    /**
-     * Deletes an existing User model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
-     * @return mixed
-     */
-    public function actionDelete($id)
-    {
-        try {
-            $this->findModel($id)->delete();
-        } catch (\Exception $e) {
-            $msg = (isset($e->errorInfo[2]))?$e->errorInfo[2]:$e->getMessage();
-            \Yii::$app->getSession()->setFlash('error', $msg);
-            return $this->redirect(Url::previous());
+        if ( $val['confirm_password'] != $val['password']) {
+            return ['success' => false, 'message' => 'gagal', 'result' => "Password tidak sama"];
+                        }
+        if ($user->nomor_handphone == '') {
+            return ['success' => false, 'message' => 'gagal', 'data' => 'No Telp tidak boleh kosong'];
         }
 
-        // TODO: improve detection
-        $isPivot = strstr('$id',',');
-        if ($isPivot == true) {
-            return $this->redirect(Url::previous());
-        } elseif (isset(\Yii::$app->session['__crudReturnUrl']) && \Yii::$app->session['__crudReturnUrl'] != '/') {
-            Url::remember(null);
-            $url = \Yii::$app->session['__crudReturnUrl'];
-            \Yii::$app->session['__crudReturnUrl'] = null;
+        // if ($user->username == '') {
+        //     return ['success' => false, 'message' => 'gagal', 'data' => 'Email tidak boleh kosong'];
+        // }
 
-            return $this->redirect($url);
+        if (strlen($val['password']) < 3) {
+            return ['success' => false, 'message' => 'gagal', 'data' => 'Password minimal 4 karakter'];
+        }
+
+        if (filter_var($user->username, FILTER_VALIDATE_EMAIL) == false) {
+            return ['success' => false, 'message' => 'gagal', 'data' => 'Username anda tidak valid'];
+        }
+
+        $check = User::findOne(['nomor_handphone' => $user->nomor_handphone]);
+        if ($check != null) {
+            return ['success' => false, 'message' => 'gagal', 'data' => 'No Telp telah digunakan'];
+        }
+
+        // $check = User::findOne(['email' => $user->email]);
+        // if ($check) {
+        //     return ['success' => false, 'message' => 'gagal', 'data' => 'Email telah digunakan'];
+        // }
+
+        // check username
+        if ($user->username) {
+            $cek = User::find()->where(['username' => $user->username])->asArray()->one();
+            if (isset($cek)) {
+                return ['success' => false, 'message' => 'gagal', 'data' => 'Username telah digunakan'];
+            }
+        }
+
+        if ($user->validate()) {
+            $user->save();
+            $otp = new Otp();
+
+            $otp->id_user = $user->id;
+            $otp->kode_otp = (string) random_int(1000, 9999);
+            $otp->created_at = date('Y-m-d H:i:s');
+            $otp->is_used = 0;
+            $otp->save();
+            $text = "
+            Hay,\nini adalah kode OTP untuk reset password anda.\n
+            {$otp->kode_otp}
+            \nJangan bagikan kode ini dengan siapapun.
+            \nKode akan Kadaluarsa dalam 5 Menit
+            ";
+            Yii::$app->mailer->compose()
+             ->setTo($user->username)
+                     ->setFrom(['adminIsalam@gmail.com'=>'Isalam'])
+                     ->setSubject('Kode OTP')
+                     ->setTextBody($text)
+                     ->send();
+
+
+
+            unset($user->password);
+            return ['success' => true, 'message' => 'success', 'data' => $user];
         } else {
-            return $this->redirect(['index']);
+            return ['success' => false, 'message' => 'gagal', 'data' => $user->getErrors()];
         }
     }
-
-    /**
-     * Finds the User model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param integer $id
-     * @return User the loaded model
-     * @throws HttpException if the model cannot be found
-     */
-    protected function findModel($id)
+    
+    public function actionCheckOtp()
     {
-        if (($model = User::findOne($id)) !== null) {
-            return $model;
-        } else {
-            throw new HttpException(404, 'The requested page does not exist.');
+        $kode_otp = $_POST['kode_otp'];
+        $user_id = $_POST['user_id'];
+        $otp = Otp::findOne(['kode_otp' => $kode_otp,'id_user'=>$user_id, 'is_used' => 0]);
+        if ($otp) {
+            $now = time();
+            $validasi = strtotime($otp->created_at) + (60 * 60 * 60);
+
+            if ($now < $validasi) {
+                $otp->is_used = 1;
+                $otp->save();
+                $user = User::findOne(['id'=>$otp->id_user]);
+                $user->confirm = 1;
+                $user->status = 1;
+                $user->save();
+
+                return [
+                    "success" => true,
+                    "message" => "Otp Valid",
+                    "data" => [
+                        "user" => $otp->user->name,
+                        "kode_otp" => $otp->kode_otp,
+                    ],
+                ];
+            }
+
         }
+
+        return [
+            "success" => false,
+            "message" => "OTP yang anda masukan tidak valid",
+        ];
     }
+    public function actionRefreshOtp()
+    {
+        $user_id = $_POST['user_id'];
+        $otp = Otp::findOne(['id_user'=>$user_id, 'is_used' => 0]);
+        
+
+        if ($otp) {
+            
+        $now = time();
+        $validasi = strtotime($otp->created_at) + 60;
+        if($now > $validasi){
+            $otp->kode_otp = (string) random_int(1000, 9999);
+            $otp->save();
+            $text = "
+        Hay,\nini adalah kode OTP untuk reset password anda.\n
+        {$otp->kode_otp}
+        \nJangan bagikan kode ini dengan siapapun.
+        \nKode akan Kadaluarsa dalam 5 Menit
+        ";
+        $user = User::findOne(['id'=>$user_id]);
+        Yii::$app->mailer->compose()
+         ->setTo($user->username)
+                 ->setFrom(['adminIsalam@gmail.com'=>'Isalam'])
+                 ->setSubject('Kode OTP')
+                 ->setTextBody($text)
+                 ->send();
+
+            return [
+                "success" => true,
+                "message" => "OTP Berhasil Terkirim",
+                "data" => [
+                    "user" => $otp->user->name,
+                    "kode_otp" => $otp->kode_otp,
+                ],
+            ];
+        
+        }else{
+            return [
+                "success" => false,
+                "message" => "OTP gagal terkirim",
+                "data"=>"Mohon Tunggu 1 menit",
+            ];
+        }
+                
+
+        }
+
+        return [
+            "success" => false,
+            "message" => "OTP gagal terkirim",
+            "data"=>[],
+        ];
+    }
+   
+    
 }

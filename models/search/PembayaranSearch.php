@@ -18,8 +18,8 @@ class PembayaranSearch extends Pembayaran
 public function rules()
 {
 return [
-[['id', 'nominal', 'user_id', 'marketing_id', 'bank_id', 'pendanaan_id', 'status_id'], 'integer'],
-            [['nama', 'bukti_transaksi'], 'safe'],
+[['id', 'nominal', 'user_id', 'marketing_id', 'bank', 'pendanaan', 'status_id'], 'integer'],
+            [['nama', 'bukti_transaksi','tanggal_pembayaran'], 'safe'],
 ];
 }
 
@@ -60,8 +60,8 @@ $query->andFilterWhere([
             'nominal' => $this->nominal,
             'user_id' => $this->user_id,
             'marketing_id' => $this->marketing_id,
-            'bank_id' => $this->bank_id,
-            'pendanaan_id' => $this->pendanaan_id,
+            'bank' => $this->bank,
+            'pendanaan' => $this->pendanaan,
             'status_id' => $this->status_id,
         ]);
 

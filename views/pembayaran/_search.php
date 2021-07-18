@@ -29,9 +29,15 @@ use yii\widgets\ActiveForm;
 
 		<?php // echo $form->field($model, 'marketing_id') ?>
 
-		<?php // echo $form->field($model, 'bank_id') ?>
+		<?php // echo $form->field($model, 'bank') ?>
 
-		<?php // echo $form->field($model, 'pendanaan_id') ?>
+		<?php // echo $form->field($model, 'pendanaan') ?>
+
+		<?php // echo $form->field($model, 'tanggal_pembayaran') ?>
+
+		<?php // echo $form->field($model, 'created_at') ?>
+
+		<?php // echo $form->field($model, 'updated_at') ?>
 
 		<?php // echo $form->field($model, 'status_id') ?>
 

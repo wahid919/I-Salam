@@ -34,7 +34,7 @@ use \dmstr\bootstrap\Tabs;
 
                 <p>
 
-                    <?= $form->field($model, 'username')->textInput(['maxlength' => true]) ?>
+                    <?= $form->field($model, 'username')->textInput(['maxlength' => true,'type'=>'email']) ?>
                     <?= $form->field($model, 'password')->passwordInput(['maxlength' => true]) ?>
                     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
                     <?= $form->field($model, 'nomor_handphone')->textInput(['type' => 'number','maxlength' => true]) ?>

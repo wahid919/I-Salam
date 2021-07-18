@@ -4,7 +4,7 @@ $params = require(__DIR__ . '/params.php');
 
 $config = [
     'id' => 'basic',
-    'name' => 'Keuangan',
+    'name' => 'ISALAM',
     'timeZone' => 'Asia/Jakarta',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
@@ -48,6 +48,18 @@ $config = [
              ],
          ],
 */
+            'mailer' => [
+                'class' => 'yii\swiftmailer\Mailer',
+                'useFileTransport' => false,
+                'transport' => [
+                    'class' => 'Swift_SmtpTransport',
+                    'host' => 'mail.schoolfund.my.id',
+                    'username' => 'admin@schoolfund.my.id',
+                    'password' => 'e)$@8R),v7)g',
+                    'port' => '587',
+                    'encryption' => 'tls'
+                ],
+            ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
             'targets' => [
@@ -64,32 +76,27 @@ $config = [
             // Disable r= routes
             'enablePrettyUrl' => true,
             'rules' => array(
-                // '/pelatihan/posttest/koreksi-jawaban/<id:[\d]+>/<unique_id:[\w\_\-]+>' => '/posttest/koreksi-jawaban',
-                '/detail-pelatihan/<unique_id:[\w\_\-]+>' => 'pelatihan/detail',
-                // 
-                'kuesioner-kepuasan/post-answer' => '/kuesioner-kepuasan/post-answer',
-                'kuesioner-kepuasan/request-soal/<id:[\w\_\-]+>/<unique_id:[\w\_\-]+>' => 'kuesioner-kepuasan/request-soal',
-                'kuesioner-kepuasan/finish' => 'kuesioner-kepuasan/finish',
-                // 'kuesioner-kepuasan/finish/<unique_id:[\w\_\-]+>' => 'kuesioner-kepuasan/finish',
-                'kuesioner-kepuasan/<unique_id:[\w\_\-]+>' => 'kuesioner-kepuasan/index',
-                // 
-                'kuesioner-monev/post-answer' => '/kuesioner-monev/post-answer',
-                'kuesioner-monev/request-soal/<id:[\w\_\-]+>/<unique_id:[\w\_\-]+>' => 'kuesioner-monev/request-soal',
-                'kuesioner-monev/finish' => 'kuesioner-monev/finish',
-                // 'kuesioner-monev/finish/<unique_id:[\w\_\-]+>' => 'kuesioner-monev/finish',
-                'kuesioner-monev/<unique_id:[\w\_\-]+>' => 'kuesioner-monev/index',
-                // 
-                'posttest/post-answer' => '/posttest/post-answer',
-                'posttest/request-soal/<unique_id:[\w\_\-]+>' => 'posttest/request-soal',
-                'posttest/finish' => 'posttest/finish',
-                'posttest/finish/<unique_id:[\w\_\-]+>' => 'posttest/finish',
-                'posttest/<unique_id:[\w\_\-]+>' => 'posttest/index',
-                // 
-                'pretest/post-answer' => '/pretest/post-answer',
-                'pretest/finish' => 'pretest/finish',
-                'pretest/request-soal/<unique_id:[\w\_\-]+>' => 'pretest/request-soal',
-                'pretest/finish/<unique_id:[\w\_\-]+>' => 'pretest/finish',
-                'pretest/<unique_id:[\w\_\-]+>' => 'pretest/index',
+
+                //User
+                'user/login' => '/user/login',
+                'user/register' => '/user/register',
+                'user/check-otp' => '/user/check-otp',
+                'user/refresh-otp' => '/user/refresh-otp',
+
+                //bank
+                'bank/all' => '/bank/all',
+                
+                //pendanaan
+                'pendanaan/all' => '/pendanaan/all',
+                'pendanaan/add-pendanaan' => '/pendanaan/add-pendanaan',
+
+                
+                //pembayaran
+                'pembayaran/all' => '/pembayaran/all',
+                
+                //kategori pendanaans
+                'kategori-pendanaan/all' => 'kategori-pendanaan/all',
+
                 // 
                 '<controller:[\w\_\-]+>/<id:\d+>' => '<controller>/view',
                 '<controller:[\w\_\-]+>/<action:[\w\_\-]+>/<id:\d+>' => '<controller>/<action>',

@@ -47,7 +47,7 @@ abstract class Bank extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'name' => 'Name',
+            'name' => 'Nama Bank',
             'logo' => 'Logo',
         ];
     }

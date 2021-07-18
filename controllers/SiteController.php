@@ -5,18 +5,11 @@ namespace app\controllers;
 // use Endroid\QrCode\QrCode;
 // use Endroid\QrCode\ErrorCorrectionLevel;
 //use app\components\NodeLogger;
-
-use app\components\Tanggal;
 use app\models\Action;
-use app\models\ContactForm;
+use app\components\Tanggal;
+use app\models\Pendanaan;
+use app\models\Pembayaran;
 use app\models\LoginForm;
-use app\models\Presence;
-use app\models\RegisterForm;
-use app\models\search\ArusKasSearch;
-use app\models\search\JurnalSearch;
-use app\models\search\NeracaSearch;
-use app\models\search\ProyeksiSearch;
-use app\models\search\TransaksiUangSearch;
 use app\models\User;
 use kartik\mpdf\Pdf;
 use Yii;
@@ -54,7 +47,26 @@ class SiteController extends Controller
         if ($user->role_id == 8) {
             return $this->render('index_pegawai');
         }
-        return $this->render('index');
+        $userAll = User::find()->where(['status'=>1])->count();
+        $investor = User::find()->where(['role_id' => 5])->count();
+        $operator = User::find()->where(['role_id' => 2])->all();
+        $marketing = User::find()->where(['role_id' => 3])->all();
+        $user = User::find()->where(['role_id' => 4])->all();
+        $pembayaran = Pembayaran::find()->all();
+        $pendanaanAll = Pendanaan::find()->all();
+        $countPendanaan = Pendanaan::find()->where(['status_id'=>4])->count();
+        $pendanaanAktif = Pendanaan::find()->where(['status_id' => 2])->all();
+        return $this->render('index',[
+            'userAll' => $userAll,
+            'investor' => $investor,
+            'operator' => $operator,
+            'marketing' => $marketing,
+            'user' => $user,
+            'pembayaran' => $pembayaran,
+            'pendanaanAll' => $pendanaanAll,
+            'countPendanaan' => $countPendanaan,
+            'pendanaanAktif' => $pendanaanAktif,
+        ]);
     }
 
     public function actionProfile()

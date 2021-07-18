@@ -46,9 +46,14 @@ $this->params['breadcrumbs'][] = 'View';
             <?= DetailView::widget([
             'model' => $model,
             'attributes' => [
-                    'id',
         'name',
-        'logo',
+        [
+            'attribute' =>'logo',
+            'format' =>'html',
+            'value' =>function($model) {
+               return Html::img(\Yii::$app->request->BaseUrl.'/uploads/bank/logo/'.$model->logo,['width'=>100]);
+             },
+         ],
             ],
             ]); ?>
 

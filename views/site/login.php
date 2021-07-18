@@ -5,7 +5,7 @@ use yii\bootstrap\ActiveForm;
 /* @var $this yii\web\View */
 /* @var $form yii\bootstrap\ActiveForm */
 /* @var $model \app\models\LoginForm */
-
+$set = \app\models\Setting::find()->all();
 $this->title = 'Masuk - '.Yii::$app->name;
 
 $fieldOptions1 = [
@@ -21,7 +21,8 @@ $fieldOptions2 = [
 
 <div class="login-box">
     <div class="login-logo">
-        <?= Html::img(["uploads/logo.png"],["width" => "210px"]) ?>
+    
+        <?= Html::img(["uploads/setting/".$set["0"]->logo],["width" => "210px"]) ?>
     </div>
     <!-- /.login-logo -->
     <div class="login-box-body">
@@ -32,7 +33,7 @@ $fieldOptions2 = [
         <?= $form
             ->field($model, 'username', $fieldOptions1)
             ->label(false)
-            ->textInput(['placeholder' => $model->getAttributeLabel('username')]) ?>
+            ->textInput(['placeholder' => $model->getAttributeLabel('username'),'type'=>'email']) ?>
 
         <?= $form
             ->field($model, 'password', $fieldOptions2)

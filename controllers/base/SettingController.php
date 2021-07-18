@@ -3,7 +3,7 @@
 // You should not change it manually as it will be overwritten on next build
 
 namespace app\controllers\base;
-
+use Yii;
 use app\models\Setting;
     use app\models\search\SettingSearch;
 use yii\web\Controller;
@@ -12,6 +12,7 @@ use yii\helpers\Url;
 use yii\filters\AccessControl;
 use dmstr\bootstrap\Tabs;
 use app\models\Action;
+use yii\web\UploadedFile;
 
 /**
 * SettingController implements the CRUD actions for Setting model.
@@ -38,18 +39,23 @@ return Action::getAccess($this->id);
 */
 public function actionIndex()
 {
-    $searchModel  = new SettingSearch;
-    $dataProvider = $searchModel->search($_GET);
+$model = Setting::find()->all();
+$searchModel  = new SettingSearch;
+$dataProvider = $searchModel->search($_GET);
 
 Tabs::clearLocalStorage();
 
 Url::remember();
 \Yii::$app->session['__crudReturnUrl'] = null;
 
+if($model == null){
 return $this->render('index', [
 'dataProvider' => $dataProvider,
-    'searchModel' => $searchModel,
+'searchModel' => $searchModel,
 ]);
+}else{
+return $this->redirect(['view', 'id' => $model[0]["id"]]);
+}
 }
 
 /**
@@ -79,8 +85,66 @@ public function actionCreate()
 $model = new Setting;
 
 try {
-if ($model->load($_POST) && $model->save()) {
-return $this->redirect(['view', 'id' => $model->id]);
+if ($model->load($_POST)) {
+    $logos = UploadedFile::getInstance($model, 'logo');
+        if($logos !=NULL){
+                    # store the source logos name
+                    $model->logo = $logos->name;
+                    $arr = explode(".", $logos->name);
+                    $extension = end($arr);
+    
+                    # generate a unique logos name
+                    $model->logo = Yii::$app->security->generateRandomString() . ".{$extension}";
+    
+                    # the path to save logos
+                    // unlink(Yii::getAlias("@app/web/uploads/pengajuan/") . $oldFile);
+                    if(file_exists(Yii::getAlias("@app/web/uploads/setting/")) == false){
+                        mkdir(Yii::getAlias("@app/web/uploads/setting/"), 0777, true);
+                    }
+                    $path = Yii::getAlias("@app/web/uploads/setting/") . $model->logo;
+        $logos->saveAs($path);
+                }
+                
+    $bg_logins = UploadedFile::getInstance($model, 'bg_login');
+    if($bg_logins !=NULL){
+                # store the source bg_logins name
+                $model->bg_login = $bg_logins->name;
+                $arr = explode(".", $bg_logins->name);
+                $extension = end($arr);
+
+                # generate a unique bg_logins name
+                $model->bg_login = Yii::$app->security->generateRandomString() . ".{$extension}";
+
+                # the path to save bg_logins
+                // unlink(Yii::getAlias("@app/web/uploads/pengajuan/") . $oldFile);
+                if(file_exists(Yii::getAlias("@app/web/uploads/setting/")) == false){
+                    mkdir(Yii::getAlias("@app/web/uploads/setting/"), 0777, true);
+                }
+                $path = Yii::getAlias("@app/web/uploads/setting/") . $model->bg_login;
+    $bg_logins->saveAs($path);
+            }
+            
+    $bg_pins = UploadedFile::getInstance($model, 'bg_pin');
+    if($bg_pins !=NULL){
+                # store the source bg_pins name
+                $model->bg_pin = $bg_pins->name;
+                $arr = explode(".", $bg_pins->name);
+                $extension = end($arr);
+
+                # generate a unique bg_pins name
+                $model->bg_pin = Yii::$app->security->generateRandomString() . ".{$extension}";
+
+                # the path to save bg_pins
+                // unlink(Yii::getAlias("@app/web/uploads/pengajuan/") . $oldFile);
+                if(file_exists(Yii::getAlias("@app/web/uploads/setting/")) == false){
+                    mkdir(Yii::getAlias("@app/web/uploads/setting/"), 0777, true);
+                }
+                $path = Yii::getAlias("@app/web/uploads/setting/") . $model->bg_pin;
+    $bg_pins->saveAs($path);
+            }
+    if($model->save()){
+    return $this->redirect(['view', 'id' => $model->id]);
+    }
 } elseif (!\Yii::$app->request->isPost) {
 $model->load($_GET);
 }
