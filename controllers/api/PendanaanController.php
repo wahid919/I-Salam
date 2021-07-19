@@ -25,7 +25,7 @@ public function behaviors(){
     $parent = parent::behaviors();
     $parent['authentication'] = [
         "class" => "\app\components\CustomAuth",
-        "only" => ["add-pendanaan",],
+        "only" => ["add-pendanaan","draf-pendanaan",],
     ];
 
     return $parent;
@@ -36,6 +36,7 @@ protected function verbs()
        return [
            'all' => ['GET'],
            'add-pendanaan' => ['POST'],
+           'draf-pendanaan' => ['POST'],
        ];
     }
     public function actions()
@@ -66,6 +67,54 @@ protected function verbs()
         ];
     }
 
+    public function actionDrafPendanaan()
+    {
+        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $val = \yii::$app->request->post();
+        $marketing_data = MarketingDataUser::find()->where(['user_id'=>\Yii::$app->user->identity->id])->all();
+        if($marketing_data ==  NULL){
+            return ['success' => false, 'message' => 'gagal', 'data' => "Data Anda Belum dilengkapi"];
+            // throw new HttpException(419, "Data Anda Belum dilengkapi");
+        }else{
+            $model = new Pendanaan;
+            // $model->name = $val['name'];
+            $image = UploadedFile::getInstanceByName("foto");
+            if ($image) {
+                $response = $this->uploadImage($image, "pendanaan");
+                if ($response->success == false) {
+                    throw new HttpException(419, "Gambar gagal diunggah");
+                }
+                $model->foto = $response->filename;
+            }
+                    // var_dump($image);
+                    // die;
+            $model->nama_pendanaan = $val['nama_pendanaan'];
+            // $model->foto =$fotos;
+            $model->uraian = $val['uraian'] ?? '';
+            $model->deskripsi = $val['deskripsi'] ?? '';
+            $model->nama_nasabah = $val['nama_nasabah'] ?? '';
+            $model->nama_perusahaan = $val['nama_perusahaan'] ?? '';
+            $model->bank_id = $val['bank'] ?? '';
+            $model->nominal = $val['nominal'];
+            $model->pendanaan_berakhir = $val['pendanaan_berakhir'];
+            $model->user_id = \Yii::$app->user->identity->id;
+            $model->kategori_pendanaan_id = $val['kategori_pendanaan'];
+            $model->status_id = 9;
+            
+            
+    
+            if ($model->validate()) {
+                $model->save();
+                
+                // unset($model->password);
+                return ['success' => true, 'message' => 'success', 'data' => $model];
+            } else {
+                return ['success' => false, 'message' => 'gagal', 'data' => $model->getErrors()];
+            }
+    
+        }
+            }
+
 
 public function actionAddPendanaan()
     {
@@ -91,11 +140,15 @@ public function actionAddPendanaan()
             $model->nama_pendanaan = $val['nama_pendanaan'];
             // $model->foto =$fotos;
             $model->uraian = $val['uraian'] ?? '';
+            $model->deskripsi = $val['deskripsi'] ?? '';
+            $model->nama_nasabah = $val['nama_nasabah'] ?? '';
+            $model->nama_perusahaan = $val['nama_perusahaan'] ?? '';
+            $model->bank_id = $val['bank'] ?? '';
             $model->nominal = $val['nominal'];
             $model->pendanaan_berakhir = $val['pendanaan_berakhir'];
             $model->user_id = \Yii::$app->user->identity->id;
             $model->kategori_pendanaan_id = $val['kategori_pendanaan'];
-            $model->status_id = $val['status'];
+            $model->status_id = 1;
             
             
     

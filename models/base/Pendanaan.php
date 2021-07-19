@@ -68,6 +68,18 @@ abstract class Pendanaan extends \yii\db\ActiveRecord
             $parent['status'] = function ($model) {
                 return $model->status->name;
             };
+            
+        }
+
+        if (isset($parent['bank_id'])) {
+            unset($parent['bank_id']);
+            // $parent['_bank_id'] = function ($model) {
+            //     return $model->bank_id;
+            // };
+            $parent['bank'] = function ($model) {
+                return $model->bank->name;
+            };
+            
         }
 
         return $parent;
@@ -87,14 +99,15 @@ abstract class Pendanaan extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['uraian'], 'string'],
-            [['nominal', 'user_id', 'kategori_pendanaan_id', 'status_id'], 'integer'],
+            [['uraian','deskripsi'], 'string'],
+            [['nominal', 'user_id', 'kategori_pendanaan_id', 'status_id','bank_id'], 'integer'],
             [['pendanaan_berakhir'], 'safe'],
             [['user_id', 'kategori_pendanaan_id', 'status_id'], 'required'],
-            [['nama_pendanaan', 'foto'], 'string', 'max' => 255],
+            [['nama_pendanaan', 'foto','nama_nasabah','nama_perusahaan'], 'string', 'max' => 255],
             [['kategori_pendanaan_id'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\KategoriPendanaan::className(), 'targetAttribute' => ['kategori_pendanaan_id' => 'id']],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\User::className(), 'targetAttribute' => ['user_id' => 'id']],
-            [['status_id'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\Status::className(), 'targetAttribute' => ['status_id' => 'id']]
+            [['status_id'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\Status::className(), 'targetAttribute' => ['status_id' => 'id']],
+            [['bank_id'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\Bank::className(), 'targetAttribute' => ['bank_id' => 'id']]
         ];
     }
 
@@ -110,6 +123,10 @@ abstract class Pendanaan extends \yii\db\ActiveRecord
             'uraian' => 'Uraian',
             'nominal' => 'Nominal',
             'pendanaan_berakhir' => 'Pendanaan Berakhir',
+            'bank_id' => 'Bank',
+            'nama_nasabah' => 'Nama Nasabah',
+            'nama_perusahaan' => 'Nama Perusahaan',
+            'deskripsi' => 'Deskripsi',
             'user_id' => 'User',
             'kategori_pendanaan_id' => 'Kategori Pendanaan',
             'status_id' => 'Status',
@@ -146,6 +163,14 @@ abstract class Pendanaan extends \yii\db\ActiveRecord
     public function getStatus()
     {
         return $this->hasOne(\app\models\Status::className(), ['id' => 'status_id']);
+    }
+    
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getBank()
+    {
+        return $this->hasOne(\app\models\Bank::className(), ['id' => 'bank_id']);
     }
 
 

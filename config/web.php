@@ -84,12 +84,16 @@ $config = [
                 'user/check-otp' => '/user/check-otp',
                 'user/refresh-otp' => '/user/refresh-otp',
 
+                
+                //pembayaran
+                'marketing-data-user/all' => '/marketing-data-user/all',
+                'marketing-data-user/validate-pendanaan' => '/marketing/validate-pendanaan',
+                
                 //bank
                 'bank/all' => '/bank/all',
                 
                 //pendanaan
-                'pendanaan/all' => '/pendanaan/all',
-                'pendanaan/add-pendanaan' => '/pendanaan/add-pendanaan',
+                // 'pendanaan/all' => '/pendanaan/all',
 
                 
                 //pembayaran
