@@ -128,6 +128,7 @@ $config = [
         ]
         ],
     'params' => $params,
+    'defaultRoute' => "frontend",
 ];
 
 if (YII_ENV_DEV) {
