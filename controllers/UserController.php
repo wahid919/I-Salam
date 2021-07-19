@@ -76,7 +76,8 @@ class UserController extends Controller
     public function actionCreate()
     {
         $model = new User;
-
+        $model->confirm = 1;
+        $model->status = 1;
         try {
             if ($model->load($_POST) ) {
                 $model->password = md5($model->password);
@@ -97,40 +98,14 @@ class UserController extends Controller
                     $model->photo_url = "default.png";
                 }
 
-                $ttd = UploadedFile::getInstance($model, 'tanda_tangan');
-                if ($ttd != NULL) {
-                    # store the source file name
-                    $model->tanda_tangan = $ttd->name;
-                    $extension = end(explode(".", $ttd->name));
-
-                    # generate a unique file name
-                    $model->tanda_tangan = Yii::$app->security->generateRandomString() . ".{$extension}";
-
-                    # the path to save file
-                    $path = Yii::getAlias("@app/web/uploads/") . $model->tanda_tangan;
-                    $ttd->saveAs($path);
-                }else{
-                    $model->tanda_tangan = "default.png";
-                }
-                $model->qr_code = Yii::$app->security->generateRandomString(32);
+                
+                
                 if($model->save()){
-                    $qrCode = new QrCode("{$model->qr_code}");
-
-                    $qrCode->setWriterByName('png');
-                    $qrCode->setEncoding('UTF-8');
-                    $qrCode->setErrorCorrectionLevel(ErrorCorrectionLevel::HIGH());
-                    $qrCode->setForegroundColor(['r' => 0, 'g' => 0, 'b' => 0, 'a' => 0]);
-                    $qrCode->setBackgroundColor(['r' => 255, 'g' => 255, 'b' => 255, 'a' => 0]);
-                    $qrCode->setLabel('Scan the code', 16);
-                    $qrCode->setLogoWidth(80);
-                    $qrCode->setValidateResult(false);
-                    if(file_exists(Yii::getAlias("@app/web/uploads/user/qr_code/")) == false){
-                        mkdir(Yii::getAlias("@app/web/uploads/user/qr_code/"), 0777, true);
+                    
+                 return $this->redirect(["index"]);
                     }
-                    $qrCode->writeFile(Yii::getAlias("@app/web/uploads/user/qr_code/") . $model->id . ".png");
-                }
 
-                return $this->redirect(Url::previous());
+                // return $this->redirect(Url::previous());
             } elseif (!\Yii::$app->request->isPost) {
                 $model->load($_GET);
             }
@@ -153,7 +128,6 @@ class UserController extends Controller
 
         $oldMd5Password = $model->password;
         $oldPhotoUrl = $model->photo_url;
-        $oldTandaTangan=$model->tanda_tangan;
 
         $model->password = "";
 
@@ -181,23 +155,6 @@ class UserController extends Controller
                 $image->saveAs($path);
             }else{
                 $model->photo_url = $oldPhotoUrl;
-            }
-
-            $ttd = UploadedFile::getInstance($model, 'tanda_tangan');
-            if ($ttd != NULL) {
-                # store the source file name
-                $model->tanda_tangan = $ttd->name;
-                $arr = explode(".", $ttd->name);
-                $extension = end($arr);
-
-                # generate a unique file name
-                $model->tanda_tangan = Yii::$app->security->generateRandomString() . ".{$extension}";
-
-                # the path to save file
-                $path = Yii::getAlias("@app/web/uploads/") . $model->tanda_tangan;
-                $ttd->saveAs($path);
-            }else{
-                $model->tanda_tangan = $oldTandaTangan;
             }
 
             if($model->save()){

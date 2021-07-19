@@ -29,9 +29,11 @@ class FrontendController extends Controller
         // $gambar = \Yii::$app->request->baseUrl."/uploads/slider-gambar/".$slider->gambar;
         $setting = Setting::find()->one();
         $icon = \Yii::$app->request->baseUrl."/uploads/setting/".$setting->logo;
+        $bg = \Yii::$app->request->baseUrl."/uploads/setting/".$setting->bg_pin;
     return $this->render('index',[
         'setting' => $setting,
         'icon' => $icon,
+        'bg' => $bg,
     ]);
     }
 }

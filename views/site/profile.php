@@ -58,24 +58,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             </div>
                             <?php
                         } ?>
-                        <?= $form->field($model, 'tanda_tangan')->widget(\kartik\file\FileInput::className(), [
-                            'options' => ['accept' => 'image/*'],
-                            'pluginOptions' => [
-                                'allowedFileExtensions' => ['jpg', 'png', 'jpeg', 'gif', 'bmp'],
-                                'maxFileSize' => 500,
-                            ],
-                        ]) ?>
-                        <?php
-                        if($model->tanda_tangan != null){
-                            ?>
-                            <div class="form-group">
-                                <div class="col-sm-6 col-sm-offset-3">
-                                    <?= Html::img(["uploads/".$model->tanda_tangan], ["width"=>"150px"]); ?>
-                                </div>
-                            </div>
-                            <?php
-                        }
-                        ?>
+                        
                     </p>
                     <?php $this->endBlock(); ?>
 

@@ -20,7 +20,46 @@ use Yii;
 class User extends \yii\db\ActiveRecord
 {
 
+    public function fields()
+    {
+        $parent = parent::fields();
 
+        
+
+
+        if (isset($parent['role_id'])) {
+            unset($parent['role_id']);
+            $parent['_role_id'] = function ($model) {
+                return $model->role_id;
+            };
+            $parent['role'] = function ($model) {
+                return $model->role->name;
+            };
+        }
+
+        if (isset($parent['photo_url'])) {
+            unset($parent['photo_url']);
+            $parent['photo_url'] = function ($model) {
+                return Yii::getAlias("@file/$model->photo_url");
+            };
+        }
+
+        // if (isset($parent['last_login'])) {
+        //     unset($parent['last_login']);
+        //     $parent['last_login'] = function ($model) {
+        //         return Tanggal::toReadableDate($model->last_login);
+        //     };
+        // }
+
+        // if (isset($parent['last_logout'])) {
+        //     unset($parent['last_logout']);
+        //     $parent['last_logout'] = function ($model) {
+        //         return Tanggal::toReadableDate($model->last_logout);
+        //     };
+        // }
+
+        return $parent;
+    }
 
     /**
      * @inheritdoc
@@ -60,6 +99,7 @@ class User extends \yii\db\ActiveRecord
             'name' => 'Name',
             'role_id' => 'Role',
             'photo_url' => 'Photo Url',
+            'secret_token' => 'Secret Token',
             'nomor_handphone' => 'Nomor Handphone',
             'last_login' => 'Last Login',
             'last_logout' => 'Last Logout',

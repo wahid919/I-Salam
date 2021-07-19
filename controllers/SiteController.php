@@ -74,7 +74,6 @@ class SiteController extends Controller
         $model = User::find()->where(["id" => Yii::$app->user->id])->one();
         $oldMd5Password = $model->password;
         $oldPhotoUrl = $model->photo_url;
-        $oldTandaTangan = $model->tanda_tangan;
 
         $model->password = "";
 
@@ -104,23 +103,7 @@ class SiteController extends Controller
                 $model->photo_url = $oldPhotoUrl;
             }
 
-            $ttd = UploadedFile::getInstance($model, 'tanda_tangan');
-            if ($ttd != null) {
-                # store the source file name
-                $model->tanda_tangan = $ttd->name;
-                $arr = explode(".", $ttd->name);
-                $extension = end($arr);
-
-                # generate a unique file name
-                $model->tanda_tangan = Yii::$app->security->generateRandomString() . ".{$extension}";
-
-                # the path to save file
-                $path = Yii::getAlias("@app/web/uploads/") . $model->tanda_tangan;
-                $ttd->saveAs($path);
-            } else {
-                $model->tanda_tangan = $oldTandaTangan;
-            }
-
+            
             if ($model->save()) {
                 Yii::$app->session->addFlash("success", "Profile successfully updated.");
             } else {

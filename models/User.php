@@ -10,7 +10,7 @@ class User extends \app\models\base\User implements \yii\web\IdentityInterface
      */
     public static function findIdentity($id)
     {
-        return User::find()->where(["id"=>$id])->one();
+        return User::find()->where(["id"=>$id,'status'=>1,'confirm'=>1])->one();
     }
 
     /**
@@ -29,7 +29,7 @@ class User extends \app\models\base\User implements \yii\web\IdentityInterface
      */
     public static function findByUsername($username)
     {
-        return User::find()->where(["username"=>$username])->one();
+        return User::find()->where(["username"=>$username,'status'=>1,'confirm'=>1])->one();
     }
 
     /**

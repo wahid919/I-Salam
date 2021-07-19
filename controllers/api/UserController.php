@@ -11,6 +11,8 @@ use app\models\Otp;
 use Dompdf\Exception;
 use Yii;
 use yii\web\UploadedFile;
+use app\components\Constant;
+use app\components\SSOToken;
 
 class UserController extends \yii\rest\ActiveController
 {
@@ -44,14 +46,16 @@ class UserController extends \yii\rest\ActiveController
             ]);
             
             if (isset($user)) {
-
+                $generate_random_string = SSOToken::generateToken();
+                $user->secret_token = $generate_random_string;
+                $user->save();
                 $result['success'] = true;
                 $result['message'] = "success";
                 // unset($user->fcm_token);
                 unset($user->password); // remove password from response
                 $result["data"] = $user;
             } else {
-                $result["success"] = 0;
+                $result["success"] = false;
                 $result["message"] = "gagal";
                 $result["data"] = "data kosong";
             }
@@ -154,7 +158,7 @@ class UserController extends \yii\rest\ActiveController
         $otp = Otp::findOne(['kode_otp' => $kode_otp,'id_user'=>$user_id, 'is_used' => 0]);
         if ($otp) {
             $now = time();
-            $validasi = strtotime($otp->created_at) + (60 * 60 * 60);
+            $validasi = strtotime($otp->created_at) + (60 * 5);
 
             if ($now < $validasi) {
                 $otp->is_used = 1;

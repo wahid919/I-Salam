@@ -110,7 +110,7 @@
       <section class="ln-section d-flex min-vh-100" data-anchor="home" data-tooltip="Home" data-ui="light" data-navbar="navbar-dark">
         <div class="overlay overlay-advanced">
           <div class="overlay-inner bg-image-holder bg-cover bg-bottom-center">
-            <img src="<?=$icon ?>" alt="background">
+            <img src="<?=$bg ?>" alt="background">
           </div>
           <div class="overlay-inner bg-dark opacity-70"></div>
         </div>
@@ -118,7 +118,7 @@
           <div class="row">
             <div class="col-12 col-lg-9 col-xl-6">
 
-              <h1 class="mb-4 animated" data-animation="fadeInUp">Selamat Datang di </h1>
+              <h1 class="mb-4 animated" data-animation="fadeInUp">Selamat Datang di <?=$setting->nama_web ?> </h1>
               <p class="mb-7 animated" data-animation="fadeInUp" data-animation-delay="200"> </p>
               <!-- <a href="#visi-misi " style="color:white; background-color:rgba(255,255,255,0.3);" class="btn btn-white mr-3 scrollto animated" data-animation="fadeInUp" data-animation-delay="400">Selengkapnya</a> -->
              
@@ -129,7 +129,7 @@
       </section>
 
       <!-- Section - Our mission -->
-      <section class="ln-section d-xl-flex" data-anchor="visi-misi" data-tooltip="Our mission" data-ui="dark" data-navbar="navbar-light">
+      <!-- <section class="ln-section d-xl-flex" data-anchor="visi-misi" data-tooltip="Our mission" data-ui="dark" data-navbar="navbar-light">
         <div class="container align-self-xl-center">
 
           
@@ -143,9 +143,9 @@
           </div>
 
         </div>
-      </section>
+      </section> -->
 
-      <section class="ln-section d-xl-flex bg-light" data-anchor="profile-desa" data-tooltip="What we do" data-ui="dark" data-navbar="navbar-light">
+      <!-- <section class="ln-section d-xl-flex bg-light" data-anchor="profile-desa" data-tooltip="What we do" data-ui="dark" data-navbar="navbar-light">
         <div class="container align-self-xl-center">
 
           <div class="row">
@@ -177,69 +177,12 @@
           </div>
 
         </div>
-      </section>
+      </section> -->
 
       <!-- Section - Our solutions -->
-      <section class="ln-section d-xl-flex" data-anchor="berita" data-tooltip="Our solutions" data-ui="light" data-navbar="navbar-dark">
-        <div class="overlay overlay-advanced">
-          
-          <div class="overlay-inner bg-dark opacity-50"></div>
-        </div>
-        <div class="container align-self-xl-center text-white">
-          <div class="row mb-8">
-            <div class="col-12 col-xl-6">
-              <h2 class="mb-4 animated" data-animation="fadeInUp">Berita Desa Terkini</h2>
-            </div>
-          </div>
-          <div class="row">
-
-            <div class="col-12 col-lg-6 mb-8 animated" data-animation="fadeInUp" data-animation-delay="150">
-             <img width="150" style="margin-left:120px;" src="<?=\Yii::$app->request->BaseUrl ?>/template/assets/images/koran1.svg" alt="">
-            </div>
-
-            <div class="col-12 col-lg-6 mb-8 animated" data-animation="fadeInUp" data-animation-delay="300">
-            <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
-  <ol class="carousel-indicators">
-    <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-    <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-    <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-  </ol>
-  <div class="carousel-inner">
-    <div class="carousel-item active">
-      <img class="d-block w-100" src="<?= \Yii::$app->request->baseUrl."/uploads/berita/gambar/" ?>" alt="">
-      <div class="carousel-caption d-none d-md-block" style="color:black;">
-    <h5></h5>
-    <p>xasdjaskhhhhhhhhhhhhhhhhh</p>
-  </div>
-    </div>
-  </div>
-  <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-    <span class="sr-only">Previous</span>
-  </a>
-  <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-    <span class="sr-only">Next</span>
-  </a>
-</div>
-        
-            </div>
-
-            <!-- <div class="col-12 col-lg-6 mb-8 mb-lg-0 animated" data-animation="fadeInUp" data-animation-delay="450">
-              <h4>Lokasi Desa Pandanrejo</h4>
-              <p class="mb-0">Pandanrejo, Kec. Bumiaji, Kota Batu, Jawa Timur.</p>
-            </div>
-
-            <div class="col-12 col-lg-6 animated" data-animation="fadeInUp" data-animation-delay="600">
-              <img width="280" style="margin-left:80px;" src="<?=\Yii::$app->request->BaseUrl ?>/template/assets/images/map2.svg" alt="">
-            </div> -->
-
-          </div>
-        </div>
-      </section>
-
+      
       <!-- Section - Our work -->
-      <section class="ln-section d-xl-flex" data-anchor="galeri" data-tooltip="Our work" data-ui="dark" data-navbar="navbar-light">
+      <!-- <section class="ln-section d-xl-flex" data-anchor="galeri" data-tooltip="Our work" data-ui="dark" data-navbar="navbar-light">
         <div class="container align-self-xl-center">
           <div class="row mb-8">
             <div class="col-12 col-xl-6">
@@ -272,7 +215,7 @@
                   </div>
                 </div>
               </div>
-            </div>
+            </div> -->
 
             <!-- <div>
               <div class="portfolio-item mb-8">
@@ -298,11 +241,11 @@
                 </div>
               </div>
             </div> -->
-          </div>
+          <!-- </div>
         </div>
-      </section>
+      </section> -->
 
-      <section class="ln-section d-xl-flex bg-light" data-anchor="contact" data-tooltip="Contact" data-ui="dark" data-navbar="navbar-light">
+      <!-- <section class="ln-section d-xl-flex bg-light" data-anchor="contact" data-tooltip="Contact" data-ui="dark" data-navbar="navbar-light">
         <div class="container align-self-center">
           <div class="row mb-7">
             <div class="col-12 col-xl-6">
@@ -386,7 +329,7 @@
             </div>
           </div>
         </div>
-      </section>
+      </section> -->
 
     </div>
 
@@ -395,7 +338,7 @@
       <div class="container">
         <div class="row">
           <div class="col-lg-10 col-xl-12 col-xxl-10 mx-auto text-center">
-            <ul class="list-inline mb-5">
+            <!-- <ul class="list-inline mb-5">
               <li class="list-inline-item mx-0">
                 <a class="btn btn-icon btn-text-secondary text-gray-400" href="#" tabindex="0">
                   <i class="fab fa-facebook-f btn-icon-inner"></i>
@@ -416,26 +359,26 @@
                   <i class="fab fa-dribbble btn-icon-inner"></i>
                 </a>
               </li>
-            </ul>
-            <p class="mb-0">© 2021 Web Desa - Batu Tracking 19 - <a href="#!" class="text-gray-400">Terms of Service</a></p>
+            </ul> -->
+            <p class="mb-0">© <?=date('Y') ?> <?= $setting->nama_web ?> - Batu Tracking 19 - <a href="#!" class="text-gray-400">Terms of Service</a></p>
           </div>
         </div>
       </div>
     </footer><!-- footer end -->
 
     <!-- Fullpage - Social icons -->
-    <nav class="ln-social-icons">
+    <!-- <nav class="ln-social-icons">
       <ul class="mx-auto">
         <li><a href="#!"><i class="fab fa-facebook-f"></i></a></li>
         <li><a href="#!"><i class="fab fa-twitter"></i></a></li>
         <li><a href="#!"><i class="fab fa-instagram"></i></a></li>
         <li><a href="#!"><i class="fab fa-pinterest"></i></a></li>
       </ul>
-    </nav>
+    </nav> -->
 
     <!-- Fullpage - Copyright -->
     <div class="ln-copyright text-right">
-      <p>© 2021 Web Desa - All Rights Reserved - <a href="#!">Terms of Service</a></p>
+      <p>© <?=date('Y') ?> <?= $setting->nama_web ?> - All Rights Reserved - <a href="#!">Terms of Service</a></p>
     </div>
 
    

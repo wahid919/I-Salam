@@ -28,7 +28,50 @@ use Yii;
 abstract class Pendanaan extends \yii\db\ActiveRecord
 {
 
+    public function fields()
+    {
+        $parent = parent::fields();
 
+        
+
+        if (isset($parent['foto'])) {
+            unset($parent['foto']);
+            $parent['foto'] = function ($model) {
+                return Yii::getAlias("@file/$model->foto");
+            };
+        }
+        if (isset($parent['user_id'])) {
+            unset($parent['user_id']);
+            // $parent['_user_id'] = function ($model) {
+            //     return $model->user_id;
+            // };
+            $parent['user'] = function ($model) {
+                return $model->user->name;
+            };
+        }
+
+        if (isset($parent['kategori_pendanaan_id'])) {
+            unset($parent['kategori_pendanaan_id']);
+            // $parent['_kategori_pendanaan_id'] = function ($model) {
+            //     return $model->kategori_pendanaan_id;
+            // };
+            $parent['kategori_pendanaaan'] = function ($model) {
+                return $model->kategoriPendanaan->name;
+            };
+        }
+
+        if (isset($parent['status_id'])) {
+            unset($parent['status_id']);
+            // $parent['_status_id'] = function ($model) {
+            //     return $model->status_id;
+            // };
+            $parent['status'] = function ($model) {
+                return $model->status->name;
+            };
+        }
+
+        return $parent;
+    }
 
     /**
      * @inheritdoc
