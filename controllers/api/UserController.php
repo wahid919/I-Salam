@@ -8,18 +8,30 @@ namespace app\controllers\api;
 use yii\base\Security;
 use app\models\User;
 use app\models\Otp;
+use app\models\MarketingDataUser;
 use Dompdf\Exception;
 use Yii;
 use yii\web\UploadedFile;
 use app\components\Constant;
 use app\components\SSOToken;
+use yii\web\HttpException;
 
 class UserController extends \yii\rest\ActiveController
 {
     public $modelClass = 'app\models\User';
+    public function behaviors(){
+        $parent = parent::behaviors();
+        $parent['authentication'] = [
+            "class" => "\app\components\CustomAuth",
+            "only" => ["user-view",],
+        ];
+    
+        return $parent;
+    }
     protected function verbs()
     {
        return [
+        'user-view' => ['GET'],
            'login' => ['POST'],
            'register' => ['POST'],
            'check-otp' => ['POST'],
@@ -63,6 +75,36 @@ class UserController extends \yii\rest\ActiveController
             $result["success"] = false;
             $result["message"] = "gagal";
             $result["data"] = "error";
+        }
+        return $result;
+    }
+
+    public function actionUserView()
+    {
+        $result = [];
+        try {
+            $user = User::findOne(['id' => \Yii::$app->user->identity->id
+            ]);
+            $marketing=MarketingDataUser::findOne(['user_id' => \Yii::$app->user->identity->id]);
+            
+            if (isset($user)) {
+                $result['success'] = true;
+                $result['message'] = "success";
+                // unset($user->fcm_token);
+                unset($user->password); // remove password from response
+                $result["data"] = $user;
+                $result["data-marketing"] = $marketing;
+            } else {
+                $result["success"] = false;
+                $result["message"] = "gagal";
+                $result["data"] = "data kosong";
+                $result["data-marketing"] = "NULL";
+            }
+        } catch (\Exception $e) {
+            $result["success"] = false;
+            $result["message"] = "gagal";
+            $result["data"] = "error";
+            $result["data-marketing"] = "NULL";
         }
         return $result;
     }
