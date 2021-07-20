@@ -17,7 +17,7 @@ public function behaviors(){
     $parent = parent::behaviors();
     $parent['authentication'] = [
         "class" => "\app\components\CustomAuth",
-        "only" => ["add",],
+        "only" => ["add","validate-pendanaan",],
     ];
 
     return $parent;
@@ -54,7 +54,7 @@ public function actionAll()
         return [
             "success" => true,
             "message" => "List Marketing",
-            "data" => $list_pendanaan,
+            "data" => $list_marketing,
         ];
     }
 
@@ -68,14 +68,14 @@ public function actionAll()
     
             return [
                 "success" => true,
-                "message" => "List Marketing",
+                "message" => "Marketing Anda",
                 "data" => $marketings,
             ];
         }else{
             return [
                 "success" => false,
-                "message" => "GAGAL",
-                "data" => "Mohon Lengkapi Data Anda",
+                "message" => "Mohon Lengkapi Data Anda",
+                "data" => "null",
             ];
         }
     }
