@@ -33,9 +33,9 @@ abstract class MarketingDataUser extends \yii\db\ActiveRecord
 
         if (isset($parent['bank_id'])) {
             unset($parent['bank_id']);
-            $parent['_bank_id'] = function ($model) {
-                return $model->bank_id;
-            };
+            // $parent['_bank_id'] = function ($model) {
+            //     return $model->bank_id;
+            // };
             $parent['bank'] = function ($model) {
                 return $model->bank;
             };

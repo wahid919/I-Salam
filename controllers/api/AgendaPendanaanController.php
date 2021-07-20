@@ -37,7 +37,7 @@ protected function verbs()
     public function actionAll()
     {
         Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-        $agendas = AgendaPendanaaan::find()->all();
+        $agendas = AgendaPendanaan::find()->all();
 
         $list_agenda = [];
         foreach ($agendas as $agenda) {

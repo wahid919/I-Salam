@@ -110,6 +110,10 @@ $config = [
                 'agenda-pendanaan/all' => 'agenda-pendanaan/all',
                 'agenda-pendanaan/add-agenda' => 'agenda-pendanaan/add-agenda',
                 'agenda-pendanaan/deleted' => 'agenda-pendanaan/deleted',
+                
+                //pencairan
+                'pencairan/all' => 'pencairan/all',
+                'pencairan/add-pencairan' => 'pencairan/add-pencairan',
 
                 // 
                 '<controller:[\w\_\-]+>/<id:\d+>' => '<controller>/view',
