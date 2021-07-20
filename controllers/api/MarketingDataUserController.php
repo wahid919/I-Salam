@@ -75,7 +75,7 @@ public function actionAll()
             return [
                 "success" => false,
                 "message" => "Mohon Lengkapi Data Anda",
-                "data" => "null",
+                "data" => null,
             ];
         }
     }

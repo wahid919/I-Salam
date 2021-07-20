@@ -98,13 +98,13 @@ class UserController extends \yii\rest\ActiveController
                 $result["success"] = false;
                 $result["message"] = "gagal";
                 $result["data"] = "data kosong";
-                $result["data-marketing"] = "NULL";
+                $result["data-marketing"] = null;
             }
         } catch (\Exception $e) {
             $result["success"] = false;
             $result["message"] = "gagal";
             $result["data"] = "error";
-            $result["data-marketing"] = "NULL";
+            $result["data-marketing"] = null;
         }
         return $result;
     }
