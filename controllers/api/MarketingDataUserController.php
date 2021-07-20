@@ -94,6 +94,8 @@ public function actionAll()
             $model->alamat = $val['alamat'] ?? '';
             $model->domisili = $val['domisili'] ?? '';
             $model->no_rekening = $val['no_rekening'] ?? '';
+            $model->no_identitas = $val['no_identitas'] ?? '';
+            $model->referensi_kerja = $val['referensi_kerja'] ?? '';
             $model->bank_id = $val['bank'] ?? '';
             $model->user_id = \Yii::$app->user->identity->id;
             
@@ -111,7 +113,7 @@ public function actionAll()
             
             // throw new HttpException(419, "Data Anda Belum dilengkapi");
         }else{
-            return ['success' => false, 'message' => 'gagal', 'data' => "Data Anda Telah dilengkapi"];
+            return ['success' => false, 'message' => 'Data Anda Telah dilengkapi', 'data' => $marketing_data];
         }
             }
 

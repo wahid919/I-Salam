@@ -24,6 +24,26 @@ use Yii;
 abstract class MarketingDataUser extends \yii\db\ActiveRecord
 {
 
+    public function fields()
+    {
+        $parent = parent::fields();
+
+        
+
+
+        if (isset($parent['bank_id'])) {
+            unset($parent['bank_id']);
+            $parent['_bank_id'] = function ($model) {
+                return $model->bank_id;
+            };
+            $parent['bank'] = function ($model) {
+                return $model->bank;
+            };
+        }
+
+
+        return $parent;
+    }
 
 
     /**
@@ -42,7 +62,7 @@ abstract class MarketingDataUser extends \yii\db\ActiveRecord
         return [
             [['no_rekening', 'bank_id', 'user_id'], 'integer'],
             [['bank_id', 'user_id'], 'required'],
-            [['nama', 'alamat', 'domisili'], 'string', 'max' => 255],
+            [['nama', 'alamat', 'domisili','no_identitas','referensi_kerja'], 'string', 'max' => 255],
             [['bank_id'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\Bank::className(), 'targetAttribute' => ['bank_id' => 'id']],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\User::className(), 'targetAttribute' => ['user_id' => 'id']]
         ];
@@ -57,6 +77,8 @@ abstract class MarketingDataUser extends \yii\db\ActiveRecord
             'id' => 'ID',
             'nama' => 'Nama',
             'alamat' => 'Alamat',
+            'no_identitas' => 'No Identitas',
+            'referensi_kerja' => 'Referensi Kerja',
             'domisili' => 'Domisili',
             'no_rekening' => 'No Rekening',
             'bank_id' => 'Bank',
