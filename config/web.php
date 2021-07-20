@@ -93,6 +93,10 @@ $config = [
                 'bank/all' => '/bank/all',
                 
                 //pendanaan
+                
+                // 'pendanaan/show-pendanaan/<id:[\w\_\-]+>/<id:\d+>' => 'pendanaan/show-pendanaan',
+                
+                'pendanaan/show-pendanaan/<unique_id:[\w\_\-]+>' => 'pendanaan/show-pendanaan',
                 // 'pendanaan/all' => '/pendanaan/all',
 
                 

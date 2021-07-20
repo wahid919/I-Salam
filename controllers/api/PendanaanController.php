@@ -35,6 +35,7 @@ protected function verbs()
     {
        return [
            'all' => ['GET'],
+           'show-pendanaan' => ['GET'],
            'add-pendanaan' => ['POST'],
            'draf-pendanaan' => ['POST'],
        ];
@@ -64,6 +65,19 @@ protected function verbs()
             "success" => true,
             "message" => "List Pendanaan",
             "data" => $list_pendanaan,
+        ];
+    }
+
+    public function actionShowPendanaan($id)
+    {
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $pendanaans = Pendanaan::findOne(['id'=>$id]);
+        
+
+        return [
+            "success" => true,
+            "message" => "List Pendanaan",
+            "data" => $pendanaans,
         ];
     }
 

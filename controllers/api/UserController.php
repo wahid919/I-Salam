@@ -71,12 +71,18 @@ class UserController extends \yii\rest\ActiveController
     {
         \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         $val = \yii::$app->request->post();
+        if($val['type'] == "marketing"){
+            $rolee = 2;
+        }else{
+         $rolee =  5;   
+        }
+        
         $user = new User();
         // $user->name = $val['name'];
         $user->username = $val['username'];
         $user->password =md5($val['confirm_password']);
         $user->name = $val['name'];
-        $user->role_id = 3;
+        $user->role_id = $rolee;
         $user->confirm = 0;
         $user->confirm = 0;
         $user->photo_url = 'default.png';
