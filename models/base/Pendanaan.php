@@ -28,6 +28,7 @@ use Yii;
 abstract class Pendanaan extends \yii\db\ActiveRecord
 {
 
+    public $noms;
     public function fields()
     {
         $parent = parent::fields();
@@ -100,7 +101,7 @@ abstract class Pendanaan extends \yii\db\ActiveRecord
     {
         return [
             [['uraian','deskripsi'], 'string'],
-            [['nominal', 'user_id', 'kategori_pendanaan_id', 'status_id','bank_id'], 'integer'],
+            [['nominal', 'user_id', 'kategori_pendanaan_id', 'status_id','bank_id','noms','nomor_rekening'], 'integer'],
             [['pendanaan_berakhir'], 'safe'],
             [['user_id', 'kategori_pendanaan_id', 'status_id'], 'required'],
             [['nama_pendanaan', 'foto','nama_nasabah','nama_perusahaan'], 'string', 'max' => 255],
@@ -126,8 +127,10 @@ abstract class Pendanaan extends \yii\db\ActiveRecord
             'bank_id' => 'Bank',
             'nama_nasabah' => 'Nama Nasabah',
             'nama_perusahaan' => 'Nama Perusahaan',
+            'nomor_rekening' => 'Nomor Rekening',
+            'noms' => 'Nominal Pencairan',
             'deskripsi' => 'Deskripsi',
-            'user_id' => 'User',
+            'user_id' => 'Pembuat',
             'kategori_pendanaan_id' => 'Kategori Pendanaan',
             'status_id' => 'Status',
         ];

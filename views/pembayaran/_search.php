@@ -31,7 +31,7 @@ use yii\widgets\ActiveForm;
 
 		<?php // echo $form->field($model, 'bank') ?>
 
-		<?php // echo $form->field($model, 'pendanaan') ?>
+		<?php // echo $form->field($model, 'pendanaan_id') ?>
 
 		<?php // echo $form->field($model, 'tanggal_pembayaran') ?>
 

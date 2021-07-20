@@ -81,6 +81,9 @@ $model = new Pembayaran;
 
 try {
 if ($model->load($_POST)) {
+    $model->user_id = \Yii::$app->user->identity->id;
+    $model->status_id = 5;
+    $model->tanggal_pembayaran = date('Y-m-d');
     $bukti_transaksis = UploadedFile::getInstance($model, 'bukti_transaksi');
     if($bukti_transaksis !=NULL){
                 # store the source bukti_transaksis name
@@ -110,6 +113,42 @@ $msg = (isset($e->errorInfo[2]))?$e->errorInfo[2]:$e->getMessage();
 $model->addError('_exception', $msg);
 }
 return $this->render('create', ['model' => $model]);
+}
+public function actionApprovePembayaran($id){
+    $model = $this->findModel($_GET['id']);
+      //return print_r($model);
+      if ($model) {
+         $model->status_id = 6;
+         if ($model->save()){
+            
+            \Yii::$app->getSession()->setFlash(
+               'success', 'Pembayaran Telah Disetujui!'
+            );
+         } else {
+            \Yii::$app->getSession()->setFlash(
+               'danger', 'Pembayaran Gagal Disetujui!'
+            );
+         }
+         return $this->redirect(['index']);
+      }
+}
+public function actionPembayaranTolak($id){
+    $model = $this->findModel($_GET['id']);
+      //return print_r($model);
+      if ($model) {
+         $model->status_id = 8;
+         if ($model->save()){
+            
+            \Yii::$app->getSession()->setFlash(
+               'success', 'Pembayaran Telah Ditolak!'
+            );
+         } else {
+            \Yii::$app->getSession()->setFlash(
+               'danger', 'Pembayaran Gagal Ditolak!'
+            );
+         }
+         return $this->redirect(['index']);
+      }
 }
 
 /**

@@ -109,6 +109,7 @@ protected function verbs()
             $model->nama_nasabah = $val['nama_nasabah'] ?? '';
             $model->nama_perusahaan = $val['nama_perusahaan'] ?? '';
             $model->bank_id = $val['bank'] ?? '';
+            $model->nomor_rekening = $val['nomor_rekening'] ?? '';
             $model->nominal = $val['nominal'];
             $model->pendanaan_berakhir = $val['pendanaan_berakhir'];
             $model->user_id = \Yii::$app->user->identity->id;
@@ -158,6 +159,7 @@ public function actionAddPendanaan()
             $model->nama_nasabah = $val['nama_nasabah'] ?? '';
             $model->nama_perusahaan = $val['nama_perusahaan'] ?? '';
             $model->bank_id = $val['bank'] ?? '';
+            $model->nomor_rekening = $val['nomor_rekening'] ?? '';
             $model->nominal = $val['nominal'];
             $model->pendanaan_berakhir = $val['pendanaan_berakhir'];
             $model->user_id = \Yii::$app->user->identity->id;

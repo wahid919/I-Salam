@@ -96,7 +96,7 @@ $this->title = 'Dashboard';
                   <th>Total Transaksi Wakaf</th>
                 </tr>
                 <tr>
-                  <th>Rp 784.000.000</th>
+                  <th>Rp <?= $pembayaran_diterima ?></th>
                 </tr>
                 <tr>
                   <th>Penyaluran Aktif Saat Ini</th>
@@ -108,7 +108,7 @@ $this->title = 'Dashboard';
                   <th>Total Wakaf yang telah dibagikan</th>
                 </tr>
                 <tr>
-                  <th>Rp 784.000.000</th>
+                  <th>Rp <?= $pendanaan_cair ?></th>
                 </tr>
               </table>
             </div>

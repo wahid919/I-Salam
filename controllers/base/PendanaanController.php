@@ -5,6 +5,7 @@
 namespace app\controllers\base;
 use Yii;
 use app\models\Pendanaan;
+use app\models\Pencairan;
 use app\models\Setting;
 use app\models\search\PendanaanSearch;
 use yii\web\Controller;
@@ -93,6 +94,8 @@ $model = new Pendanaan;
 
 try {
     if ($model->load($_POST)) {
+        $model->status_id = 1;
+        $model->user_id = \Yii::$app->user->identity->id;
         $fotos = UploadedFile::getInstance($model, 'foto');
         if($fotos !=NULL){
                     # store the source fotos name
@@ -122,6 +125,90 @@ $msg = (isset($e->errorInfo[2]))?$e->errorInfo[2]:$e->getMessage();
 $model->addError('_exception', $msg);
 }
 return $this->render('create', ['model' => $model]);
+}
+
+public function actionApprovePendanaan($id){
+    $model = $this->findModel($_GET['id']);
+      //return print_r($model);
+      if ($model) {
+         $model->status_id = 2;
+         if ($model->save()){
+            
+            \Yii::$app->getSession()->setFlash(
+               'success', 'Pendanaan Telah Disetujui!'
+            );
+         } else {
+            \Yii::$app->getSession()->setFlash(
+               'danger', 'Pendanaan Gagal Disetujui!'
+            );
+         }
+         return $this->redirect(['index']);
+      }
+}
+
+public function actionPendanaanCair($id)
+{
+$model = $this->findModel($id);
+$cair= new Pencairan;
+// $model->tanggal_received=date('Y-m-d H:i:s');
+if ($model->load($_POST)) {
+   $model->status_id = 3;
+   $cair->pendanaan_id = $model->id;
+   $cair->nominal = $model->noms;
+   $cair->tanggal = date('Y-m-d');
+   $cair->save();
+        if($model->save()){
+         \Yii::$app->getSession()->setFlash(
+            'success', 'Pendanaan Telah Dicairkan!'
+         );
+         
+    return $this->redirect(['view', 'id' => $model->id]);
+        }
+// return $this->redirect(Url::previous());
+} else {
+return $this->render('pendanaan-cair', [
+'model' => $model,
+'cair'=> $cair,
+]);
+}
+}
+
+public function actionPendanaanSelesai($id){
+    $model = $this->findModel($_GET['id']);
+      //return print_r($model);
+      if ($model) {
+         $model->status_id = 4;
+         if ($model->save()){
+            
+            \Yii::$app->getSession()->setFlash(
+               'success', 'Pendanaan Telah Selesai!'
+            );
+         } else {
+            \Yii::$app->getSession()->setFlash(
+               'danger', 'Pendanaan Gagal Selesai!'
+            );
+         }
+         return $this->redirect(['index']);
+      }
+}
+
+public function actionPendanaanTolak($id){
+    $model = $this->findModel($_GET['id']);
+      //return print_r($model);
+      if ($model) {
+         $model->status_id = 7;
+         if ($model->save()){
+            
+            \Yii::$app->getSession()->setFlash(
+               'success', 'Pendanaan Telah Ditolak!'
+            );
+         } else {
+            \Yii::$app->getSession()->setFlash(
+               'danger', 'Pendanaan Gagal Ditolak!'
+            );
+         }
+         return $this->redirect(['index']);
+      }
 }
 
 /**

@@ -61,7 +61,7 @@ public function actionAll()
     public function actionValidatePendanaan()
     {
         Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-        $marketings = MarketingDataUser::find()->where(['user_id'=>\Yii::$app->user->identity->id])->asArray()->all();
+        $marketings = MarketingDataUser::find()->where(['user_id'=>\Yii::$app->user->identity->id])->asArray()->one();
         if($marketings != NULL){
 
            
@@ -83,7 +83,7 @@ public function actionAll()
     {
         \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         $val = \yii::$app->request->post();
-        $marketing_data = MarketingDataUser::find()->where(['user_id'=>\Yii::$app->user->identity->id])->all();
+        $marketing_data = MarketingDataUser::find()->where(['user_id'=>\Yii::$app->user->identity->id])->one();
         if($marketing_data ==  NULL){
             $model = new MarketingDataUser;
             
@@ -107,7 +107,9 @@ public function actionAll()
                 // unset($model->password);
                 return ['success' => true, 'message' => 'success', 'data' => $model];
             } else {
-                return ['success' => false, 'message' => 'gagal', 'data' => $model->getErrors()];
+                $msg= $model->getErrors();
+
+                return ['success' => false, 'message' => "Gagal,Data harus terisi dengan lengkap" ];
             }
     
             

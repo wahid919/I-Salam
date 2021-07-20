@@ -27,7 +27,7 @@
         "wbraganca/yii2-dynamicform": "~2.0.2",
         "phpoffice/phpexcel": "*",
         "kartik-v/yii2-widget-spinner": "@dev",
-        "kartik-v/yii2-widget-datetimepicker": "*",
+        "kartik-v/yii2-widget-datetimepicker": "dev-master",
         "drsdre/yii2-wizardwidget": "^1.2",
         "kartik-v/yii2-widget-activeform": "@dev",
         "kartik-v/yii2-money": "dev-master",

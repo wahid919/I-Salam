@@ -7,6 +7,7 @@ namespace app\models\base;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\Expression;
+
 /**
  * This is the base-model class for table "pembayaran".
  *
@@ -17,7 +18,7 @@ use yii\db\Expression;
  * @property integer $user_id
  * @property integer $marketing_id
  * @property string $bank
- * @property string $pendanaan
+ * @property integer $pendanaan_id
  * @property string $tanggal_pembayaran
  * @property integer $status_id
  * @property string $created_at
@@ -26,6 +27,7 @@ use yii\db\Expression;
  * @property \app\models\Status $status
  * @property \app\models\User $user
  * @property \app\models\User $marketing
+ * @property \app\models\Pendanaan $pendanaan
  * @property string $aliasModel
  */
 abstract class Pembayaran extends \yii\db\ActiveRecord
@@ -62,13 +64,14 @@ abstract class Pembayaran extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['nama', 'nominal', 'user_id', 'bank', 'pendanaan', 'tanggal_pembayaran', 'status_id'], 'required'],
-            [['nominal', 'user_id', 'marketing_id', 'status_id'], 'integer'],
+            [['nama', 'nominal', 'user_id', 'bank', 'pendanaan_id', 'tanggal_pembayaran', 'status_id'], 'required'],
+            [['nominal', 'user_id', 'marketing_id', 'pendanaan_id', 'status_id'], 'integer'],
             [['tanggal_pembayaran'], 'safe'],
-            [['nama', 'bukti_transaksi', 'bank', 'pendanaan'], 'string', 'max' => 255],
+            [['nama', 'bukti_transaksi', 'bank'], 'string', 'max' => 255],
             [['status_id'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\Status::className(), 'targetAttribute' => ['status_id' => 'id']],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\User::className(), 'targetAttribute' => ['user_id' => 'id']],
-            [['marketing_id'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\User::className(), 'targetAttribute' => ['marketing_id' => 'id']]
+            [['marketing_id'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\User::className(), 'targetAttribute' => ['marketing_id' => 'id']],
+            [['pendanaan_id'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\Pendanaan::className(), 'targetAttribute' => ['pendanaan_id' => 'id']]
         ];
     }
 
@@ -82,10 +85,10 @@ abstract class Pembayaran extends \yii\db\ActiveRecord
             'nama' => 'Nama',
             'nominal' => 'Nominal',
             'bukti_transaksi' => 'Bukti Transaksi',
-            'user_id' => 'User',
+            'user_id' => 'Pewakaf',
             'marketing_id' => 'Marketing',
             'bank' => 'Bank',
-            'pendanaan' => 'Pendanaan',
+            'pendanaan_id' => 'Pendanaan',
             'tanggal_pembayaran' => 'Tanggal Pembayaran',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
@@ -115,6 +118,14 @@ abstract class Pembayaran extends \yii\db\ActiveRecord
     public function getMarketing()
     {
         return $this->hasOne(\app\models\User::className(), ['id' => 'marketing_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getPendanaan()
+    {
+        return $this->hasOne(\app\models\Pendanaan::className(), ['id' => 'pendanaan_id']);
     }
 
 

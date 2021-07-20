@@ -53,6 +53,8 @@ class SiteController extends Controller
         $marketing = User::find()->where(['role_id' => 3])->all();
         $user = User::find()->where(['role_id' => 4])->all();
         $pembayaran = Pembayaran::find()->all();
+        $pembayaran_diterima = Pembayaran::find()->where(['status_id'=>6])->sum("nominal");
+        $pendanaan_cair = Pembayaran::find()->where(['status_id'=>3])->sum("nominal");
         $pendanaanAll = Pendanaan::find()->all();
         $countPendanaan = Pendanaan::find()->where(['status_id'=>4])->count();
         $pendanaanAktif = Pendanaan::find()->where(['status_id' => 2])->all();
@@ -66,6 +68,8 @@ class SiteController extends Controller
             'pendanaanAll' => $pendanaanAll,
             'countPendanaan' => $countPendanaan,
             'pendanaanAktif' => $pendanaanAktif,
+            'pembayaran_diterima' => $pembayaran_diterima,
+            'pendanaan_cair' => $pendanaan_cair,
         ]);
     }
 
