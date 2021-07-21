@@ -125,7 +125,7 @@ use yii\bootstrap\Html;
               <h1 class="mb-4 animated" data-animation="fadeInUp"><?=$setting->judul_web ?> </h1>
               <h5 class="mb-7 animated font-weight-light" data-animation="fadeInUh4" data-animation-delay="200"> <?=$setting->slogan_web ?> </h5>
               <a href="<?=$setting->link_download_apk ?>" class="btn text-white" style="background-color: #e26812;"><span class="ti-android"></span> Download Aplikasi Wakaf</a>
-              <a href="<?=$setting->link_download_apk_marketing ?>" class="btn text-white" style="background-color: #e26812;"><span class="ti-android"></span> Download Aplikasi Wakaf</a>
+              <a href="<?=$setting->link_download_apk_marketing ?>" class="btn text-white" style="background-color: #e26812;"><span class="ti-android"></span> Download Aplikasi Wakaf Marketing</a>
               <!-- <a href="#visi-misi " style="color:white; background-color:rgba(255,255,255,0.3);" class="btn btn-white mr-3 scrollto animated" data-animation="fadeInUp" data-animation-delay="400">Selengkapnya</a> -->
              
 
