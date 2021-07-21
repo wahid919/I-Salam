@@ -7,34 +7,32 @@ $this->title = 'Dashboard';
 
 <html>
   <head>
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
-      google.charts.load('current', {'packages':['bar']});
+      google.charts.load('current', {'packages':['corechart']});
       google.charts.setOnLoadCallback(drawChart);
 
       function drawChart() {
         var data = google.visualization.arrayToDataTable([
-          ['Year', 'Sales', 'Expenses', 'Profit'],
-          ['2014', 1000, 400, 200],
-          ['2015', 1170, 460, 250],
-          ['2016', 660, 1120, 300],
-          ['2017', 1030, 540, 350]
+          ['Tanggal', 'Nominal'],
+          <?php 
+		 foreach($harian as $row)
+		 {
+
+			echo "['".$row['tanggal_pembayaran']."',".$row['nominal']."],";
+		 } 
+		 
+		 ?>
         ]);
-        
 
         var options = {
-          chart: {
-            title: 'Grafik Pendanaan',
-            // subtitle: 'Sales, Expenses, and Profit: 2014-2017',
-          }
+          title: 'Data Pendanaan',
+          hAxis: {title: 'Tanggal',  titleTextStyle: {color: '#333'}},
+          vAxis: {minValue: 0}
         };
-       
 
-        var chart = new google.charts.Bar(document.getElementById('columnchart_material'));
-       
-
-        chart.draw(data, google.charts.Bar.convertOptions(options));
-       
+        var chart = new google.visualization.AreaChart(document.getElementById('chart_div'));
+        chart.draw(data, options);
       }
     </script>
     <script type="text/javascript">
@@ -88,7 +86,7 @@ $this->title = 'Dashboard';
           <div class="row">
             <div class="col-md-9">
             
-    <div id="columnchart_material" style="width: 100%; height: 100%"></div>
+    <div id="chart_div" style="width: 100%; height: 100%"></div>
             </div>
             <div class="col-md-3">
               <table style="width: 100%;">
