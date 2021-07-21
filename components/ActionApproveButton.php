@@ -51,7 +51,7 @@ use yii\helpers\Html;
                     }
                   },
                   'pendanaan-cair' => function ($url, $model, $key) {
-                    if($model->status_id ==2 || $model->status_id ==3){
+                    if($model->status_id ==4){
                       return Html::a("<i class='fa fa-money'></i>", ["pendanaan-cair", "id"=>$model->id], [
                           "class"=>"btn btn-success",
                           "title"=>"Approve Pencairan Pendanaan",

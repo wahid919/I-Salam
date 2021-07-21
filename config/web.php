@@ -115,6 +115,12 @@ $config = [
                 'pencairan/all' => 'pencairan/all',
                 'pencairan/add-pencairan' => 'pencairan/add-pencairan',
 
+                
+                //agenda-pendanaan
+                'partner-pendanaan/all' => 'partner-pendanaan/all',
+                'partner-pendanaan/add-partner' => 'partner-pendanaan/add-partner',
+                'partner-pendanaan/deleted' => 'partner-pendanaan/deleted',
+
                 // 
                 '<controller:[\w\_\-]+>/<id:\d+>' => '<controller>/view',
                 '<controller:[\w\_\-]+>/<action:[\w\_\-]+>/<id:\d+>' => '<controller>/<action>',

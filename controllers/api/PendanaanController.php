@@ -138,14 +138,11 @@ public function actionAddPendanaan()
     {
         \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         $val = \yii::$app->request->post();
-        $marketing_data = MarketingDataUser::find()->where(['user_id'=>\Yii::$app->user->identity->id])->all();
-        if($marketing_data ==  NULL){
-            return ['success' => false, 'message' => 'gagal', 'data' => "Data Anda Belum dilengkapi"];
-            // throw new HttpException(419, "Data Anda Belum dilengkapi");
-        }else{
-            $model = new Pendanaan;
+        
+            $model = Pendanaan::findOne(['id'=>$val["id"],'status_id'=>9]);
             // $model->name = $val['name'];
-            $image = UploadedFile::getInstanceByName("foto");
+            if($model != null){
+                $image = UploadedFile::getInstanceByName("foto");
             if ($image) {
                 $response = $this->uploadImage($image, "pendanaan");
                 if ($response->success == false) {
@@ -167,26 +164,10 @@ public function actionAddPendanaan()
                     throw new HttpException(419, "Foto KK gagal diunggah");
                 }
                 $model->foto_kk = $response_kk->filename;
-            }
+                $model->status_id = 1;
 
 
-                    // var_dump($image);
-                    // die;
-            $model->nama_pendanaan = $val['nama_pendanaan'];
-            // $model->foto =$fotos;
-            $model->uraian = $val['uraian'] ?? '';
-            $model->deskripsi = $val['deskripsi'] ?? '';
-            $model->nama_nasabah = $val['nama_nasabah'] ?? '';
-            $model->nama_perusahaan = $val['nama_perusahaan'] ?? '';
-            $model->bank_id = $val['bank'] ?? '';
-            $model->nomor_rekening = $val['nomor_rekening'] ?? '';
-            $model->nominal = $val['nominal'];
-            $model->pendanaan_berakhir = $val['pendanaan_berakhir'];
-            $model->user_id = \Yii::$app->user->identity->id;
-            $model->kategori_pendanaan_id = $val['kategori_pendanaan'];
-            $model->status_id = 1;
-            
-            
+                   
     
             if ($model->validate()) {
                 $model->save();
@@ -198,6 +179,10 @@ public function actionAddPendanaan()
             }
     
         }
+    
+            }else{
+                return ['success' => false, 'message' => 'Data Pendanaan Tidak ditemukan'];
             }
+                    }
 
 }

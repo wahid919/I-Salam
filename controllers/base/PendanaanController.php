@@ -154,8 +154,17 @@ $cair= new Pencairan;
 if ($model->load($_POST)) {
    $model->status_id = 3;
    $cair->pendanaan_id = $model->id;
-   $cair->nominal = $model->noms;
-   $cair->tanggal = date('Y-m-d');
+   if($model->nominal < $model->noms){
+      \Yii::$app->getSession()->setFlash(
+         'danger', 'Nominal Pencairan Melebihi Nominal Pendanaan !'
+      );
+      return $this->render('pendanaan-cair', [
+         'model' => $model,
+         'cair'=> $cair,
+         ]);
+   }else{
+      $cair->nominal = $model->noms;
+      $cair->tanggal = date('Y-m-d');
    $cair->save();
         if($model->save()){
          \Yii::$app->getSession()->setFlash(
@@ -164,6 +173,8 @@ if ($model->load($_POST)) {
          
     return $this->redirect(['view', 'id' => $model->id]);
         }
+   }
+   
 // return $this->redirect(Url::previous());
 } else {
 return $this->render('pendanaan-cair', [
