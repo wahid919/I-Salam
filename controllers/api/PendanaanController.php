@@ -172,61 +172,52 @@ class PendanaanController extends \yii\rest\ActiveController
                 $model->status_id = 1;
 
             
-            
-            // $agenda_pendanaan = new AgendaPendanaan;
-            // $agenda_pendanaan->nama_agenda = $val['nama_agenda'];
-            // // $agenda_pendanaan->foto =$fotos;
-            // $agenda_pendanaan->pendanaan_id = $model->id;
-            // $agenda_pendanaan->tanggal = $val['tanggal_agenda'] ?? '';
-
-            // $modelsagendas= [new AgendaPendanaan];
-
-        //Send at least one model to the form
-        // $agenda_pendanaan = [new AgendaPendanaan()];
-
-        // //Create an array of the products submitted
-        // for($i = 1; $i < $count; $i++) {
-        //     $agenda_pendanaans[] = new AgendaPendanaan();
-        // }
-
-        // //Load and validate the multiple models
-        // if (Model::loadMultiple($agenda_pendanaans, Yii::$app->request->post()) && Model::validateMultiple($agenda_pendanaans)) {
-
-        //     foreach ($agenda_pendanaans as $product) {
-
-        //         //Try to save the models. Validation is not needed as it's already been done.
-        //         $product->save(false);
-
-        //     }
-        //     return $this->redirect('view');
-        // }
-            
-            
-            
-            
-            
             if ($model->validate()) {
-                // $model->save();
+                $model->save();
+            // gunakan ini jika ada gambar yang gagal di upload
+                $images_success_uploaded = [];
 
-            foreach ($_POST['nama_partner'] as $index=>$value) {
-                $partner = new PartnerPendanaan(); // creating new instance of partner 
-                $partner->nama_partner = $value;
-                $image_ktp_partner = UploadedFile::getInstanceByName("foto_ktp_partner");
-            // $image_ktp_partner = UploadedFile::getInstances($partner, $_POST['foto_ktp_partner'[$index]]);
-            // var_dump($image_ktp_partner);
-            // die;
-                if ($image_ktp_partner) {
-                    $response_ktp_partner = $this->uploadImage($image_ktp_partner, "foto_ktp_partner");
-                    if ($response_ktp_partner->success == false) {
-                        throw new HttpException(419, "Foto KTP Partner gagal diunggah");
+                $date = date("Y-m-d");
+                $images_title = $_POST['nama_partner'];
+
+                foreach ($images_title as $index => $title) {
+                    $file = UploadedFile::getInstanceByName("foto_ktp_partner[$index]");
+                    $response = $this->uploadImage($file, "partner-pendanaan/$date");
+                    
+                    if ($response->success == false) {
+                        foreach ($images_success_uploaded as $img) {
+                            $this->deleteOne($img);
+                        }
+
+                        return [
+                            "success" => false,
+                            "message" => "Gagal menambahkan gambar",
+                        ];
                     }
-                    $partner->foto_ktp_partner = $response_ktp_partner[$index]->filename;
+
+                    array_push($images_success_uploaded, $response->filename);
+
+                    $new_image = new PartnerPendanaan();
+                    $new_image->nama_partner = $title;
+                    $new_image->pendanaan_id = $model->id; // set default
+
+                    $new_image->foto_ktp_partner = $response->filename;
+
+                    if ($new_image->validate() == false) {
+
+                        foreach ($images_success_uploaded as $img) {
+                            $this->deleteOne($img);
+                        }
+
+                        return [
+                            "success" => false,
+                            "message" => "Validasi gagal",
+                        ];
+                    }
+
+                    $new_image->save();
                 }
 
-                // $partner->tanggal = $_POST['tanggal_agenda'][$index];
-                $partner->pendanaan_id = $model->id;
-                $partner->save();
-              }
 
 
             foreach ($_POST['nama_agenda'] as $index=>$value) {
@@ -237,55 +228,6 @@ class PendanaanController extends \yii\rest\ActiveController
                 $agendas->save();
               }
 
-
-                
-                $partners = Json::decode($_POST["partner"]);
-
-                foreach($partners as $part)
-                {
-                    $partner = new PartnerPendanaan;
-                    $partner->nama = $part->nama;
-                    $_FILES['image'] = $part->foto_ktp;
-                    $image_ktp_partner = UploadedFile::getInstance($partner, "image");
-
-                    return $image_ktp_partner;
-                    die;
-                    if ($image_ktp_partner) {
-                        $response_ktp_partner = $this->uploadImage($image_ktp_partner, "foto_ktp_partner");
-                        if ($response_ktp_partner->success == false) {
-                            throw new HttpException(419, "Foto KTP Partner gagal diunggah");
-                        }
-                        $partner->foto_ktp_partner = $response_ktp_partner->filename;
-                    }
-                }
-
-                $partner = new PartnerPendanaan;
-                $partner->nama_partner = $val['nama_partner'] ?? '';
-                $partner->pendanaan_id = $model->id;
-                $image_ktp_partner = UploadedFile::getInstanceByName("foto_ktp_partner");
-                if ($image_ktp_partner) {
-                    $response_ktp_partner = $this->uploadImage($image_ktp_partner, "foto_ktp_partner");
-                    if ($response_ktp_partner->success == false) {
-                        throw new HttpException(419, "Foto KTP Partner gagal diunggah");
-                    }
-                    $partner->foto_ktp_partner = $response_ktp_partner->filename;
-                }
-
-                $agenda_pendanaan = new AgendaPendanaan;
-                $agenda_pendanaan->nama_agenda = $val['nama_agenda'];
-                // $agenda_pendanaan->foto =$fotos;
-                $agenda_pendanaan->pendanaan_id = $model->id;
-                $agenda_pendanaan->tanggal = $val['tanggal_agenda'] ?? '';
-
-
-
-
-
-                if ($model->validate()) {
-                    $model->save();
-                    $partner->save();
-                    $agenda_pendanaan->save();
-
                     // unset($model->password);
                     return ['success' => true, 'message' => 'success', 'data' => $model];
                 } else {
@@ -295,6 +237,6 @@ class PendanaanController extends \yii\rest\ActiveController
         } else {
             return ['success' => false, 'message' => 'Data Pendanaan Tidak ditemukan'];
         }
-    }
+    
 }
 }
