@@ -75,7 +75,7 @@ $this->title = 'Dashboard';
 <div class="row">
   <div class="col-md-12">
     <div class="panel panel-default card-view">
-      <div class="panel-heading">
+      <div class="panel-heading" style="background-color:#f39c12;color:#FFFFFF">
         <div class="pull-left">
           <h6 class="panel-title txt-dark"><i class="icon-chart mr-10"></i>Update Data Pendanaan</h6>
         </div>
@@ -120,7 +120,7 @@ $this->title = 'Dashboard';
 <div class="row">
   <div class="col-md-12">
     <div class="panel panel-default card-view">
-      <div class="panel-heading">
+      <div class="panel-heading" style="background-color:#f39c12;color:#FFFFFF">
         <div class="pull-left">
           <h6 class="panel-title txt-dark"><i class="icon-chart mr-10"></i>Update Data User</h6>
         </div>
