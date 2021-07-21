@@ -7,34 +7,32 @@ $this->title = 'Dashboard';
 
 <html>
   <head>
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
-      google.charts.load('current', {'packages':['bar']});
+      google.charts.load('current', {'packages':['corechart']});
       google.charts.setOnLoadCallback(drawChart);
 
       function drawChart() {
         var data = google.visualization.arrayToDataTable([
-          ['Year', 'Sales', 'Expenses', 'Profit'],
-          ['2014', 1000, 400, 200],
-          ['2015', 1170, 460, 250],
-          ['2016', 660, 1120, 300],
-          ['2017', 1030, 540, 350]
+          ['Tanggal', 'Nominal'],
+          <?php 
+		 foreach($harian as $row)
+		 {
+
+			echo "['".$row['tanggal_pembayaran']."',".$row['nominal']."],";
+		 } 
+		 
+		 ?>
         ]);
-        
 
         var options = {
-          chart: {
-            title: 'Grafik Pendanaan',
-            // subtitle: 'Sales, Expenses, and Profit: 2014-2017',
-          }
+          title: 'Data Pendanaan',
+          hAxis: {title: 'Tanggal',  titleTextStyle: {color: '#333'}},
+          vAxis: {minValue: 0}
         };
-       
 
-        var chart = new google.charts.Bar(document.getElementById('columnchart_material'));
-       
-
-        chart.draw(data, google.charts.Bar.convertOptions(options));
-       
+        var chart = new google.visualization.AreaChart(document.getElementById('chart_div'));
+        chart.draw(data, options);
       }
     </script>
     <script type="text/javascript">
@@ -77,7 +75,7 @@ $this->title = 'Dashboard';
 <div class="row">
   <div class="col-md-12">
     <div class="panel panel-default card-view">
-      <div class="panel-heading">
+      <div class="panel-heading" style="background-color:#f39c12;color:#FFFFFF">
         <div class="pull-left">
           <h6 class="panel-title txt-dark"><i class="icon-chart mr-10"></i>Update Data Pendanaan</h6>
         </div>
@@ -88,7 +86,7 @@ $this->title = 'Dashboard';
           <div class="row">
             <div class="col-md-9">
             
-    <div id="columnchart_material" style="width: 100%; height: 100%"></div>
+    <div id="chart_div" style="width: 100%; height: 100%"></div>
             </div>
             <div class="col-md-3">
               <table style="width: 100%;">
@@ -96,19 +94,19 @@ $this->title = 'Dashboard';
                   <th>Total Transaksi Wakaf</th>
                 </tr>
                 <tr>
-                  <th>Rp <?= $pembayaran_diterima ?></th>
+                  <th><?= \app\components\Angka::toReadableHarga($pembayaran_diterima) ?></th>
                 </tr>
                 <tr>
                   <th>Penyaluran Aktif Saat Ini</th>
                 </tr>
                 <tr>
-                  <th>Rp 784.000.000</th>
+                  <th>IDR 784.000.000</th>
                 </tr>
                 <tr>
                   <th>Total Wakaf yang telah dibagikan</th>
                 </tr>
                 <tr>
-                  <th>Rp <?= $pendanaan_cair ?></th>
+                  <th><?= \app\components\Angka::toReadableHarga($pendanaan_cair) ?></th>
                 </tr>
               </table>
             </div>
@@ -122,7 +120,7 @@ $this->title = 'Dashboard';
 <div class="row">
   <div class="col-md-12">
     <div class="panel panel-default card-view">
-      <div class="panel-heading">
+      <div class="panel-heading" style="background-color:#f39c12;color:#FFFFFF">
         <div class="pull-left">
           <h6 class="panel-title txt-dark"><i class="icon-chart mr-10"></i>Update Data User</h6>
         </div>

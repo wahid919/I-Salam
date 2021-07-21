@@ -81,19 +81,19 @@ abstract class Pendanaan extends \yii\db\ActiveRecord
             $parent['bank'] = function ($model) {
                 return $model->bank;
             };
-            $agenda =[];
-            $parent['agenda'] = function($model){
-                $list_agenda = AgendaPendanaan::find()->where(['pendanaan_id'=>$model->id])->all();
-                return $agenda = $list_agenda;
-            };
-
-            $partner =[];
-            $parent['partner'] = function($model){
-                $list_partner = PartnerPendanaan::find()->where(['pendanaan_id'=>$model->id])->all();
-                return $partner = $list_partner;
-            };
             
         }
+        // $agenda =[];
+        //     $parent['agenda'] = function($model){
+        //         $list_agenda = AgendaPendanaan::find()->where(['pendanaan_id'=>$model->id])->all();
+        //         return $agenda = $list_agenda;
+        //     };
+
+        //     $partner =[];
+        //     $parent['partner'] = function($model){
+        //         $list_partner = PartnerPendanaan::find()->where(['pendanaan_id'=>$model->id])->all();
+        //         return $partner = $list_partner;
+        //     };
 
         return $parent;
     }

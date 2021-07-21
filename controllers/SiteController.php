@@ -9,6 +9,7 @@ use app\models\Action;
 use app\components\Tanggal;
 use app\models\Pendanaan;
 use app\models\Pembayaran;
+use app\models\Pencairan;
 use app\models\LoginForm;
 use app\models\User;
 use kartik\mpdf\Pdf;
@@ -54,16 +55,31 @@ class SiteController extends Controller
         $user = User::find()->where(['role_id' => 4])->all();
         $pembayaran = Pembayaran::find()->all();
         $pembayaran_diterima = Pembayaran::find()->where(['status_id'=>6])->sum("nominal");
-        $pendanaan_cair = Pembayaran::find()->where(['status_id'=>3])->sum("nominal");
+        $pendanaan_cair = Pencairan::find()->sum("nominal");
         $pendanaanAll = Pendanaan::find()->all();
-        $countPendanaan = Pendanaan::find()->where(['status_id'=>4])->count();
+        $countPendanaan = Pendanaan::find()->where(['status_id'=>3])->count();
         $pendanaanAktif = Pendanaan::find()->where(['status_id' => 2])->all();
+
+
+        
+        $month = date('m');
+        $year = date('Y');
+        $datenow = date('Y-m-d');
+        $harian = Pembayaran::find()
+        ->where(['and', ['>=', 'tanggal_pembayaran', "$year-$month-01"], ['<=', 'tanggal_pembayaran', "$datenow"]])
+        ->andWhere(['status_id' => 6])
+        ->select(['status_id','tanggal_pembayaran', 'sum(nominal) as nominal'])
+        ->groupBy(['tanggal_pembayaran'])->all();
+        // var_dump($harian);
+        // die;
+
         return $this->render('index',[
             'userAll' => $userAll,
             'investor' => $investor,
             'operator' => $operator,
             'marketing' => $marketing,
             'user' => $user,
+            'harian' => $harian,
             'pembayaran' => $pembayaran,
             'pendanaanAll' => $pendanaanAll,
             'countPendanaan' => $countPendanaan,
