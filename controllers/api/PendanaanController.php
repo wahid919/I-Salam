@@ -25,7 +25,7 @@ public function behaviors(){
     $parent = parent::behaviors();
     $parent['authentication'] = [
         "class" => "\app\components\CustomAuth",
-        "only" => ["add-pendanaan","draf-pendanaan",],
+        "only" => ["add-pendanaan","draf-pendanaan","all",],
     ];
 
     return $parent;
@@ -54,7 +54,7 @@ protected function verbs()
     public function actionAll()
     {
         Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-        $pendanaans = Pendanaan::find()->all();
+        $pendanaans = Pendanaan::find()->where(['user_id'=> \Yii::$app->user->identity->id])->all();
 
         $list_pendanaan = [];
         foreach ($pendanaans as $pendanaan) {
@@ -116,7 +116,10 @@ protected function verbs()
             $model->kategori_pendanaan_id = $val['kategori_pendanaan'];
             $model->status_id = 9;
             
-            
+            $check = Pendanaan::findOne(['nomor_rekening' => $model->nomor_rekening]);
+            if ($check != null) {
+                return ['success' => false, 'message' => 'Nomor Rekening telah digunakan'];
+            }
     
             if ($model->validate()) {
                 $model->save();
