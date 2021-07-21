@@ -165,8 +165,90 @@ class SettingController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $oldlogo = $model->logo;
+        $oldlogin = $model->bg_login;
+        $oldpin = $model->bg_pin;
 
-        if ($model->load($_POST) && $model->save()) {
+        if ($model->load($_POST)) {
+            $logo = UploadedFile::getInstance($model, 'logo');
+            if ($logo != NULL) {
+                # store the source file name
+                $model->logo = $logo->name;
+                $arr = explode(".", $logo->name);
+                $extension = end($arr);
+
+                # generate a unique file name
+                $model->logo = Yii::$app->security->generateRandomString() . ".{$extension}";
+
+                # the path to save file
+                if (file_exists(Yii::getAlias("@app/web/uploads/setting/")) == false) {
+                    mkdir(Yii::getAlias("@app/web/uploads/setting/"), 0777, true);
+                }
+                $path = Yii::getAlias("@app/web/uploads/setting/") . $model->logo;
+                if ($oldlogo != NULL) {
+
+                    $logo->saveAs($path);
+                    unlink(Yii::$app->basePath . '/web/uploads/setting/' . $oldlogo);
+                } else {
+                    $logo->saveAs($path);
+                }
+            } else {
+                $model->logo = $oldlogo;
+            }
+
+            $bg_login = UploadedFile::getInstance($model, 'bg_login');
+            if ($bg_login != NULL) {
+                # store the source file name
+                $model->bg_login = $bg_login->name;
+                $arr = explode(".", $bg_login->name);
+                $extension = end($arr);
+
+                # generate a unique file name
+                $model->bg_login = Yii::$app->security->generateRandomString() . ".{$extension}";
+
+                # the path to save file
+                if (file_exists(Yii::getAlias("@app/web/uploads/setting/")) == false) {
+                    mkdir(Yii::getAlias("@app/web/uploads/setting/"), 0777, true);
+                }
+                $path = Yii::getAlias("@app/web/uploads/setting/") . $model->bg_login;
+                if ($oldlogin != NULL) {
+
+                    $bg_login->saveAs($path);
+                    unlink(Yii::$app->basePath . '/web/uploads/setting/' . $oldlogin);
+                } else {
+                    $bg_login->saveAs($path);
+                }
+            } else {
+                $model->bg_login = $oldlogin;
+            }
+
+            $bg_pin = UploadedFile::getInstance($model, 'bg_pin');
+            if ($bg_pin != NULL) {
+                # store the source file name
+                $model->bg_pin = $bg_pin->name;
+                $arr = explode(".", $bg_pin->name);
+                $extension = end($arr);
+
+                # generate a unique file name
+                $model->bg_pin = Yii::$app->security->generateRandomString() . ".{$extension}";
+
+                # the path to save file
+                if (file_exists(Yii::getAlias("@app/web/uploads/setting/")) == false) {
+                    mkdir(Yii::getAlias("@app/web/uploads/setting/"), 0777, true);
+                }
+                $path = Yii::getAlias("@app/web/uploads/setting/") . $model->bg_pin;
+                if ($oldpin != NULL) {
+
+                    $bg_pin->saveAs($path);
+                    unlink(Yii::$app->basePath . '/web/uploads/setting/' . $oldpin);
+                } else {
+                    $bg_pin->saveAs($path);
+                }
+            } else {
+                $model->bg_pin = $oldpin;
+            }
+            
+            $model->save();
             return $this->redirect(Url::previous());
         } else {
             return $this->render('update', [
