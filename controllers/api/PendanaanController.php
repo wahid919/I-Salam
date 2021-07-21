@@ -166,6 +166,19 @@ public function actionAddPendanaan()
                 $model->foto_kk = $response_kk->filename;
                 $model->status_id = 1;
 
+            $partner = new PartnerPendanaan;
+            $partner->nama_partner = $val['nama_partner'] ?? '';
+            $partner->pendanaan_id = $model->id;
+            $image_ktp_partner = UploadedFile::getInstanceByName("foto_ktp_partner");
+            if ($image_ktp_partner) {
+                $response_ktp_partner = $this->uploadImage($image_ktp_partner, "foto_ktp_partner");
+                if ($response_ktp_partner->success == false) {
+                    throw new HttpException(419, "Foto KTP Partner gagal diunggah");
+                }
+                $partner->foto_ktp_partner = $response_ktp_partner->filename;
+            }
+            $partner->save();
+
 
                    
     

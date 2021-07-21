@@ -21,9 +21,9 @@ use yii\widgets\ActiveForm;
 
 		<?= $form->field($model, 'nama_partner') ?>
 
-		<?= $form->field($model, 'bank_partner') ?>
+		<?= $form->field($model, 'pendanaan_id') ?>
 
-		<?= $form->field($model, 'no_rekening_partner') ?>
+		<?= $form->field($model, 'foto_ktp_partner') ?>
 
     <div class="form-group">
         <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
