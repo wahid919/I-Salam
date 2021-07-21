@@ -8,6 +8,7 @@ namespace app\controllers\api;
 
 use Yii;
 use app\models\Pendanaan;
+use app\models\Pencairan;
 use app\models\PartnerPendanaan;
 use app\models\AgendaPendanaan;
 use yii\filters\AccessControl;
@@ -43,6 +44,10 @@ class PendanaanController extends \yii\rest\ActiveController
             'show-pendanaan' => ['GET'],
             'add-pendanaan' => ['POST'],
             'draf-pendanaan' => ['POST'],
+            'approve-pendanaan' => ['POST'],
+            'pendanaan-cair' => ['POST'],
+            'pendanaan-selesai' => ['POST'],
+            'pendanaan-tolak' => ['POST'],
         ];
     }
     public function actions()
@@ -239,4 +244,84 @@ class PendanaanController extends \yii\rest\ActiveController
         }
     
 }
+
+public function actionApprovePendanaan(){
+    \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+    $val = \yii::$app->request->post();
+    $model = Pendanaan::findOne(['id'=>$val['id_pendanaan'],'status_id' => 1]);
+      //return print_r($model);
+      if ($model) {
+         $model->status_id = 2;
+         if ($model->save()){
+            
+            return ['success' => true, 'message' => 'success', 'data' => $model];
+         } else {
+            
+            return ['success' => false, 'message' => 'gagal', 'data' => $model->getErrors()];
+         }
+      }
+}
+
+public function actionPendanaanCair()
+{
+    \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $val = \yii::$app->request->post();
+$model = Pendanaan::findOne(['id'=>$val["id_pendanaan"],'status_id' => 4]);
+$cair= new Pencairan;
+// $model->tanggal_received=date('Y-m-d H:i:s');
+if ($model != null) {
+   $model->status_id = 3;
+   $cair->pendanaan_id = $val['id_pendanaan'];
+   if($model->nominal < $val['nominal']){
+    return ['success' => false, 'message' => 'gagal', 'data' => $model->getErrors()];
+   }else{
+      $cair->nominal = $val['nominal'];
+      $cair->tanggal = date('Y-m-d');
+   $cair->save();
+        if($model->save()){
+            return ['success' => true, 'message' => 'success', 'data' => $model];
+        }
+   }
+   
+// return $this->redirect(Url::previous());
+} else {
+    return ['success' => false, 'message' => 'gagal', 'data' => $model->getErrors()];
+}
+}
+
+public function actionPendanaanSelesai(){
+    \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+    $val = \yii::$app->request->post();
+    $model = Pendanaan::findOne(['id'=>$val['id_pendanaan'],'status_id' => 2]);
+      //return print_r($model);
+      if ($model) {
+         $model->status_id = 4;
+         if ($model->save()){
+            
+            return ['success' => true, 'message' => 'success', 'data' => $model];
+         } else {
+            return ['success' => false, 'message' => 'gagal', 'data' => $model->getErrors()];
+         }
+      }
+}
+
+public function actionPendanaanTolak(){
+    \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+    $val = \yii::$app->request->post();
+    $model = Pendanaan::findOne(['id'=>$val['id_pendanaan'],'status_id' => 1]);
+      //return print_r($model);
+      if ($model) {
+         $model->status_id = 7;
+         if ($model->save()){
+            
+            return ['success' => true, 'message' => 'success', 'data' => $model];
+         } else {
+            return ['success' => false, 'message' => 'gagal', 'data' => $model->getErrors()];
+         }
+      }
+}
+
+
+
+
 }
