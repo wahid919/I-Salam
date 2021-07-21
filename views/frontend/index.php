@@ -120,7 +120,7 @@ use yii\bootstrap\Html;
         </div>
         <div class="container align-self-center text-white">
           <div class="row">
-            <div class="col-12 col-lg-9 col-xl-6">
+            <div class="col-12 col-lg-12 col-xl-6">
 
               <h1 class="mb-4 animated" data-animation="fadeInUp"><?=$setting->judul_web ?> </h1>
               <h5 class="mb-7 animated font-weight-light" data-animation="fadeInUh4" data-animation-delay="200"> <?=$setting->slogan_web ?> </h5>
