@@ -153,6 +153,23 @@ public function actionAddPendanaan()
                 }
                 $model->foto = $response->filename;
             }
+            $image_ktp = UploadedFile::getInstanceByName("foto_ktp_nasabah");
+            if ($image_ktp) {
+                $response_ktp = $this->uploadImage($image_ktp, "pendanaan");
+                if ($response_ktp->success == false) {
+                    throw new HttpException(419, "Foto KTP gagal diunggah");
+                }
+                $model->foto_ktp = $response_ktp->filename;
+            }$image_kk = UploadedFile::getInstanceByName("foto_kk");
+            if ($image_kk) {
+                $response_kk = $this->uploadImage($image_kk, "pendanaan");
+                if ($response_kk->success == false) {
+                    throw new HttpException(419, "Foto KK gagal diunggah");
+                }
+                $model->foto_kk = $response_kk->filename;
+            }
+
+
                     // var_dump($image);
                     // die;
             $model->nama_pendanaan = $val['nama_pendanaan'];
