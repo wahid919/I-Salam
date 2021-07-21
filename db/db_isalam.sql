@@ -12,7 +12,7 @@ CREATE TABLE `action` (
   `action_id` varchar(50) NOT NULL,
   `name` varchar(50) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=90 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=latin1;
 
 INSERT INTO `action` (`id`, `controller_id`, `action_id`, `name`) VALUES
 (12,	'site',	'index',	'Index'),
@@ -92,7 +92,17 @@ INSERT INTO `action` (`id`, `controller_id`, `action_id`, `name`) VALUES
 (86,	'pendanaan',	'pendanaan-selesai',	'Pendanaan Selesai'),
 (87,	'pendanaan',	'pendanaan-tolak',	'Pendanaan Tolak'),
 (88,	'pembayaran',	'approve-pembayaran',	'Approve Pembayaran'),
-(89,	'pembayaran',	'pembayaran-tolak',	'Pembayaran Tolak');
+(89,	'pembayaran',	'pembayaran-tolak',	'Pembayaran Tolak'),
+(90,	'agenda-pendanaan',	'index',	'Index'),
+(91,	'agenda-pendanaan',	'view',	'View'),
+(92,	'agenda-pendanaan',	'create',	'Create'),
+(93,	'agenda-pendanaan',	'update',	'Update'),
+(94,	'agenda-pendanaan',	'delete',	'Delete'),
+(95,	'partner-pendanaan',	'index',	'Index'),
+(96,	'partner-pendanaan',	'view',	'View'),
+(97,	'partner-pendanaan',	'create',	'Create'),
+(98,	'partner-pendanaan',	'update',	'Update'),
+(99,	'partner-pendanaan',	'delete',	'Delete');
 
 SET NAMES utf8mb4;
 
@@ -167,21 +177,23 @@ CREATE TABLE `menu` (
   PRIMARY KEY (`id`),
   KEY `parent_id` (`parent_id`),
   CONSTRAINT `menu_ibfk_1` FOREIGN KEY (`parent_id`) REFERENCES `menu` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
 
 INSERT INTO `menu` (`id`, `name`, `controller`, `action`, `icon`, `order`, `parent_id`) VALUES
 (1,	'Home',	'site',	'index',	'fa fa-home',	1,	NULL),
 (2,	'Master',	'',	'index',	'fa fa-database',	2,	NULL),
-(3,	'Menu',	'menu',	'index',	'fa fa-circle-o',	10,	2),
-(4,	'Role',	'role',	'index',	'fa fa-circle-o',	11,	2),
-(5,	'User',	'user',	'index',	'fa fa-circle-o',	12,	2),
-(6,	'Bank',	'bank',	'index',	'fa fa-bank',	7,	2),
-(7,	'Kategori Pendanaan',	'kategori-pendanaan',	'index',	'fa fa-align-justify',	8,	2),
-(8,	'Data Marketing ',	'marketing-data-user',	'index',	'fa fa-user-secret',	2,	NULL),
-(9,	'Pembayaran',	'pembayaran',	'index',	'fa fa-money',	3,	NULL),
-(10,	'Pendanaan',	'pendanaan',	'index',	'fa fa-bank',	4,	NULL),
-(11,	'Master Status',	'status',	'index',	'fa fa-align-justify',	9,	2),
-(12,	'Setting Website',	'setting',	'index',	'fa fa-align-justify',	5,	NULL);
+(3,	'Menu',	'menu',	'index',	'fa fa-circle-o',	7,	2),
+(4,	'Role',	'role',	'index',	'fa fa-circle-o',	8,	2),
+(5,	'User',	'user',	'index',	'fa fa-circle-o',	9,	2),
+(6,	'Bank',	'bank',	'index',	'fa fa-bank',	4,	2),
+(7,	'Kategori Pendanaan',	'kategori-pendanaan',	'index',	'fa fa-align-justify',	5,	2),
+(8,	'Data Marketing ',	'marketing-data-user',	'index',	'fa fa-user-secret',	10,	NULL),
+(9,	'Pembayaran',	'pembayaran',	'index',	'fa fa-money',	11,	NULL),
+(10,	'Pendanaan',	'pendanaan',	'index',	'fa fa-bank',	12,	NULL),
+(11,	'Master Status',	'status',	'index',	'fa fa-align-justify',	6,	2),
+(12,	'Setting Website',	'setting',	'index',	'fa fa-align-justify',	13,	NULL),
+(13,	'Agenda Pendanaan',	'agenda-pendanaan',	'index',	'fa fa-align-justify',	2,	NULL),
+(14,	'Partner Pendanaan',	'partner-pendanaan',	'index',	'fa fa-users',	1,	NULL);
 
 DROP TABLE IF EXISTS `otp`;
 CREATE TABLE `otp` (
@@ -201,6 +213,18 @@ INSERT INTO `otp` (`id`, `id_user`, `kode_otp`, `is_used`, `created_at`, `update
 (4,	11,	3025,	1,	'2021-07-18 16:08:54',	'2021-07-18 16:08:54'),
 (7,	14,	8904,	0,	'2021-07-18 19:03:08',	'2021-07-18 19:03:08'),
 (10,	17,	9943,	0,	'2021-07-18 20:24:28',	'2021-07-18 20:24:01');
+
+DROP TABLE IF EXISTS `partner_pendanaan`;
+CREATE TABLE `partner_pendanaan` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nama_partner` varchar(255) NOT NULL,
+  `pendanaan_id` int(11) NOT NULL,
+  `foto_ktp_partner` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `pendanaan_id` (`pendanaan_id`),
+  CONSTRAINT `partner_pendanaan_ibfk_2` FOREIGN KEY (`pendanaan_id`) REFERENCES `pendanaan` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 
 DROP TABLE IF EXISTS `pembayaran`;
 CREATE TABLE `pembayaran` (
@@ -243,10 +267,13 @@ CREATE TABLE `pencairan` (
   PRIMARY KEY (`id`),
   KEY `pendanaan_id` (`pendanaan_id`),
   CONSTRAINT `pencairan_ibfk_1` FOREIGN KEY (`pendanaan_id`) REFERENCES `pendanaan` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4;
 
 INSERT INTO `pencairan` (`id`, `pendanaan_id`, `nominal`, `tanggal`, `created_at`) VALUES
-(1,	3,	9000,	'2021-07-20',	'2021-07-20 16:22:52');
+(1,	3,	9000,	'2021-07-20',	'2021-07-20 16:22:52'),
+(2,	4,	79000,	'2021-07-21',	'2021-07-21 03:55:41'),
+(3,	4,	79000,	'2021-07-21',	'2021-07-21 03:58:05'),
+(4,	4,	79000,	'2021-07-21',	'2021-07-21 03:58:50');
 
 DROP TABLE IF EXISTS `pendanaan`;
 CREATE TABLE `pendanaan` (
@@ -262,6 +289,8 @@ CREATE TABLE `pendanaan` (
   `nama_nasabah` varchar(255) DEFAULT NULL,
   `nama_perusahaan` varchar(255) DEFAULT NULL,
   `deskripsi` text DEFAULT NULL,
+  `foto_ktp` varchar(255) DEFAULT NULL,
+  `foto_kk` varchar(255) DEFAULT NULL,
   `kategori_pendanaan_id` int(11) NOT NULL,
   `status_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
@@ -275,19 +304,19 @@ CREATE TABLE `pendanaan` (
   CONSTRAINT `pendanaan_ibfk_1` FOREIGN KEY (`bank_id`) REFERENCES `bank` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4;
 
-INSERT INTO `pendanaan` (`id`, `nama_pendanaan`, `foto`, `uraian`, `nominal`, `pendanaan_berakhir`, `user_id`, `bank_id`, `nomor_rekening`, `nama_nasabah`, `nama_perusahaan`, `deskripsi`, `kategori_pendanaan_id`, `status_id`) VALUES
-(2,	'Pendanaan 1',	NULL,	'Tes Uraian',	80000,	'0000-00-00 00:00:00',	1,	NULL,	NULL,	NULL,	NULL,	NULL,	1,	7),
-(3,	'Pendanaan 12',	NULL,	'Tes Uraian',	80000,	'0000-00-00 00:00:00',	1,	NULL,	NULL,	NULL,	NULL,	NULL,	1,	2),
-(4,	'Pendanaan 1',	NULL,	'Tes Uraian',	80000,	'0000-00-00 00:00:00',	1,	NULL,	NULL,	NULL,	NULL,	NULL,	1,	4),
-(5,	'Pendanaan 1',	NULL,	'Tes Uraian',	80000,	'0000-00-00 00:00:00',	1,	NULL,	NULL,	NULL,	NULL,	NULL,	1,	1),
-(6,	'Pendanaan 1',	NULL,	'Tes Uraian',	80000,	'0000-00-00 00:00:00',	1,	NULL,	NULL,	NULL,	NULL,	NULL,	1,	1),
-(7,	'Pendanaan 1',	'pendanaan/20210719_2dc0c690d3726aed41ab1c89d2ed65c9f01e4337.PNG',	'Tes Uraian',	80000,	'0000-00-00 00:00:00',	1,	NULL,	NULL,	NULL,	NULL,	NULL,	1,	1),
-(8,	'Pendanaan 1',	'pendanaan/20210719_5b1537e128fb3f98238b1aa0ebc1214d63e7e5b7.PNG',	'Tes Uraian',	80000,	'0000-00-00 00:00:00',	1,	NULL,	NULL,	NULL,	NULL,	NULL,	1,	1),
-(9,	'Pendanaan 1',	'pendanaan/20210719_23d202fb561c67ac5d22ae22f0e595ed35106b02.PNG',	'Tes Uraian',	80000,	'0000-00-00 00:00:00',	1,	NULL,	NULL,	NULL,	NULL,	NULL,	1,	1),
-(10,	'Pendanaan 1',	'pendanaan/20210720_5be92fce55bc28add0e9b38755d67690f7199977.PNG',	'Tes Uraian',	80000,	'0000-00-00 00:00:00',	1,	NULL,	NULL,	NULL,	NULL,	NULL,	1,	1),
-(11,	'Pendanaan 1',	'pendanaan/20210720_a14750179f4f06b4cbe8f1fd53d87ed980b18155.PNG',	'Tes Uraian',	80000,	'0000-00-00 00:00:00',	1,	NULL,	NULL,	NULL,	NULL,	NULL,	1,	1),
-(12,	'Pendanaan 1',	'pendanaan/20210720_7c86ae7523e8e05e8722ad2e1011878662bce335.PNG',	'Tes Uraian',	80000,	'0000-00-00 00:00:00',	1,	1,	NULL,	'Budi',	'Perusahaan Nama',	'tidak ada',	1,	1),
-(13,	'Pendanaan 1',	'',	'uraian 1',	100000,	'2021-07-20 02:50:32',	1,	NULL,	NULL,	NULL,	NULL,	NULL,	1,	1);
+INSERT INTO `pendanaan` (`id`, `nama_pendanaan`, `foto`, `uraian`, `nominal`, `pendanaan_berakhir`, `user_id`, `bank_id`, `nomor_rekening`, `nama_nasabah`, `nama_perusahaan`, `deskripsi`, `foto_ktp`, `foto_kk`, `kategori_pendanaan_id`, `status_id`) VALUES
+(2,	'Pendanaan 1',	NULL,	'Tes Uraian',	80000,	'0000-00-00 00:00:00',	1,	NULL,	NULL,	NULL,	NULL,	NULL,	NULL,	NULL,	1,	7),
+(3,	'Pendanaan 12',	NULL,	'Tes Uraian',	80000,	'0000-00-00 00:00:00',	1,	NULL,	NULL,	NULL,	NULL,	NULL,	NULL,	NULL,	1,	2),
+(4,	'Pendanaan 1',	NULL,	'Tes Uraian',	80000,	'0000-00-00 00:00:00',	1,	NULL,	NULL,	NULL,	NULL,	NULL,	NULL,	NULL,	1,	3),
+(5,	'Pendanaan 1',	NULL,	'Tes Uraian',	80000,	'0000-00-00 00:00:00',	1,	NULL,	NULL,	NULL,	NULL,	NULL,	NULL,	NULL,	1,	1),
+(6,	'Pendanaan 1',	NULL,	'Tes Uraian',	80000,	'0000-00-00 00:00:00',	1,	NULL,	NULL,	NULL,	NULL,	NULL,	NULL,	NULL,	1,	1),
+(7,	'Pendanaan 1',	'pendanaan/20210719_2dc0c690d3726aed41ab1c89d2ed65c9f01e4337.PNG',	'Tes Uraian',	80000,	'0000-00-00 00:00:00',	1,	NULL,	NULL,	NULL,	NULL,	NULL,	NULL,	NULL,	1,	1),
+(8,	'Pendanaan 1',	'pendanaan/20210719_5b1537e128fb3f98238b1aa0ebc1214d63e7e5b7.PNG',	'Tes Uraian',	80000,	'0000-00-00 00:00:00',	1,	NULL,	NULL,	NULL,	NULL,	NULL,	NULL,	NULL,	1,	1),
+(9,	'Pendanaan 1',	'pendanaan/20210719_23d202fb561c67ac5d22ae22f0e595ed35106b02.PNG',	'Tes Uraian',	80000,	'0000-00-00 00:00:00',	1,	NULL,	NULL,	NULL,	NULL,	NULL,	NULL,	NULL,	1,	1),
+(10,	'Pendanaan 1',	'pendanaan/20210720_5be92fce55bc28add0e9b38755d67690f7199977.PNG',	'Tes Uraian',	80000,	'0000-00-00 00:00:00',	1,	NULL,	NULL,	NULL,	NULL,	NULL,	NULL,	NULL,	1,	1),
+(11,	'Pendanaan 1',	'pendanaan/20210720_a14750179f4f06b4cbe8f1fd53d87ed980b18155.PNG',	'Tes Uraian',	80000,	'0000-00-00 00:00:00',	1,	NULL,	NULL,	NULL,	NULL,	NULL,	NULL,	NULL,	1,	1),
+(12,	'Pendanaan 1',	'pendanaan/20210720_7c86ae7523e8e05e8722ad2e1011878662bce335.PNG',	'Tes Uraian',	80000,	'0000-00-00 00:00:00',	1,	1,	NULL,	'Budi',	'Perusahaan Nama',	'tidak ada',	NULL,	NULL,	1,	1),
+(13,	'Pendanaan 1',	'',	'uraian 1',	100000,	'2021-07-20 02:50:32',	1,	NULL,	NULL,	NULL,	NULL,	NULL,	NULL,	NULL,	1,	1);
 
 DROP TABLE IF EXISTS `role`;
 CREATE TABLE `role` (
@@ -313,7 +342,7 @@ CREATE TABLE `role_action` (
   KEY `action_id` (`action_id`),
   CONSTRAINT `role_action_ibfk_1` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`),
   CONSTRAINT `role_action_ibfk_2` FOREIGN KEY (`action_id`) REFERENCES `action` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=298 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=437 DEFAULT CHARSET=latin1;
 
 INSERT INTO `role_action` (`id`, `role_id`, `action_id`) VALUES
 (33,	2,	12),
@@ -360,68 +389,78 @@ INSERT INTO `role_action` (`id`, `role_id`, `action_id`) VALUES
 (117,	3,	31),
 (118,	3,	32),
 (119,	3,	33),
-(236,	1,	12),
-(237,	1,	13),
-(238,	1,	14),
-(239,	1,	15),
-(240,	1,	17),
-(241,	1,	18),
-(242,	1,	19),
-(243,	1,	20),
-(244,	1,	21),
-(245,	1,	22),
-(246,	1,	23),
-(247,	1,	24),
-(248,	1,	25),
-(249,	1,	26),
-(250,	1,	27),
-(251,	1,	28),
-(252,	1,	29),
-(253,	1,	30),
-(254,	1,	31),
-(255,	1,	32),
-(256,	1,	33),
-(257,	1,	49),
-(258,	1,	50),
-(259,	1,	51),
-(260,	1,	52),
-(261,	1,	53),
-(262,	1,	54),
-(263,	1,	55),
-(264,	1,	56),
-(265,	1,	57),
-(266,	1,	58),
-(267,	1,	59),
-(268,	1,	60),
-(269,	1,	61),
-(270,	1,	62),
-(271,	1,	63),
-(272,	1,	64),
-(273,	1,	65),
-(274,	1,	66),
-(275,	1,	67),
-(276,	1,	68),
-(277,	1,	69),
-(278,	1,	70),
-(279,	1,	71),
-(280,	1,	88),
-(281,	1,	89),
-(282,	1,	72),
-(283,	1,	73),
-(284,	1,	74),
-(285,	1,	75),
-(286,	1,	76),
-(287,	1,	84),
-(288,	1,	85),
-(289,	1,	86),
-(290,	1,	87),
-(291,	1,	77),
-(292,	1,	78),
-(293,	1,	79),
-(294,	1,	80),
-(295,	1,	81),
-(296,	1,	82),
-(297,	1,	83);
+(365,	1,	12),
+(366,	1,	13),
+(367,	1,	14),
+(368,	1,	15),
+(369,	1,	17),
+(370,	1,	18),
+(371,	1,	19),
+(372,	1,	20),
+(373,	1,	21),
+(374,	1,	22),
+(375,	1,	23),
+(376,	1,	24),
+(377,	1,	25),
+(378,	1,	26),
+(379,	1,	27),
+(380,	1,	28),
+(381,	1,	29),
+(382,	1,	30),
+(383,	1,	31),
+(384,	1,	32),
+(385,	1,	33),
+(386,	1,	49),
+(387,	1,	50),
+(388,	1,	51),
+(389,	1,	52),
+(390,	1,	53),
+(391,	1,	54),
+(392,	1,	55),
+(393,	1,	56),
+(394,	1,	57),
+(395,	1,	58),
+(396,	1,	59),
+(397,	1,	60),
+(398,	1,	61),
+(399,	1,	62),
+(400,	1,	63),
+(401,	1,	64),
+(402,	1,	65),
+(403,	1,	66),
+(404,	1,	67),
+(405,	1,	68),
+(406,	1,	69),
+(407,	1,	70),
+(408,	1,	71),
+(409,	1,	88),
+(410,	1,	89),
+(411,	1,	72),
+(412,	1,	73),
+(413,	1,	74),
+(414,	1,	75),
+(415,	1,	76),
+(416,	1,	84),
+(417,	1,	85),
+(418,	1,	86),
+(419,	1,	87),
+(420,	1,	77),
+(421,	1,	78),
+(422,	1,	79),
+(423,	1,	80),
+(424,	1,	81),
+(425,	1,	82),
+(426,	1,	83),
+(427,	1,	90),
+(428,	1,	91),
+(429,	1,	92),
+(430,	1,	93),
+(431,	1,	94),
+(432,	1,	95),
+(433,	1,	96),
+(434,	1,	97),
+(435,	1,	98),
+(436,	1,	99);
 
 DROP TABLE IF EXISTS `role_menu`;
 CREATE TABLE `role_menu` (
@@ -433,7 +472,7 @@ CREATE TABLE `role_menu` (
   KEY `menu_id` (`menu_id`),
   CONSTRAINT `role_menu_ibfk_1` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`),
   CONSTRAINT `role_menu_ibfk_2` FOREIGN KEY (`menu_id`) REFERENCES `menu` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=112 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=139 DEFAULT CHARSET=latin1;
 
 INSERT INTO `role_menu` (`id`, `role_id`, `menu_id`) VALUES
 (56,	2,	1),
@@ -446,18 +485,20 @@ INSERT INTO `role_menu` (`id`, `role_id`, `menu_id`) VALUES
 (73,	3,	3),
 (74,	3,	4),
 (75,	3,	5),
-(100,	1,	1),
-(101,	1,	2),
-(102,	1,	3),
-(103,	1,	4),
-(104,	1,	5),
-(105,	1,	6),
-(106,	1,	7),
-(107,	1,	11),
-(108,	1,	8),
-(109,	1,	9),
-(110,	1,	10),
-(111,	1,	12);
+(125,	1,	1),
+(126,	1,	2),
+(127,	1,	3),
+(128,	1,	4),
+(129,	1,	5),
+(130,	1,	6),
+(131,	1,	7),
+(132,	1,	11),
+(133,	1,	8),
+(134,	1,	9),
+(135,	1,	10),
+(136,	1,	12),
+(137,	1,	13),
+(138,	1,	14);
 
 DROP TABLE IF EXISTS `setting`;
 CREATE TABLE `setting` (
@@ -525,4 +566,4 @@ INSERT INTO `user` (`id`, `username`, `password`, `name`, `role_id`, `confirm`, 
 (14,	'fachruwildan12@gmail.com',	'81dc9bdb52d04dc20036dbd8313ed055',	'fachru wildans',	3,	0,	1,	'default.png',	NULL,	'0896587981254',	NULL,	NULL),
 (17,	'hardiansah7101@gmail.com',	'f5bb0c8de146c67b44babbf4e6584cc0',	'Muh. Hardiansah',	3,	0,	1,	'default.png',	NULL,	'081911106262',	NULL,	NULL);
 
--- 2021-07-20 17:03:53
+-- 2021-07-21 04:50:12
