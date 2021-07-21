@@ -94,19 +94,19 @@ $this->title = 'Dashboard';
                   <th>Total Transaksi Wakaf</th>
                 </tr>
                 <tr>
-                  <th>Rp <?= $pembayaran_diterima ?></th>
+                  <th><?= \app\components\Angka::toReadableHarga($pembayaran_diterima) ?></th>
                 </tr>
                 <tr>
                   <th>Penyaluran Aktif Saat Ini</th>
                 </tr>
                 <tr>
-                  <th>Rp 784.000.000</th>
+                  <th>IDR 784.000.000</th>
                 </tr>
                 <tr>
                   <th>Total Wakaf yang telah dibagikan</th>
                 </tr>
                 <tr>
-                  <th>Rp <?= $pendanaan_cair ?></th>
+                  <th><?= \app\components\Angka::toReadableHarga($pendanaan_cair) ?></th>
                 </tr>
               </table>
             </div>
