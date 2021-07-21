@@ -42,7 +42,7 @@ use kartik\file\FileInput;
                 ])->textInput(['maxlength' => true]) ?>
             </div>
             <div class="col-sm-12 col-md-6 col-lg-4">
-                <?= $form->field($model, 'link_download_apk', [
+                <?= $form->field($model, 'judul_web', [
                     'template' => '
                         {label}
                         {input}
@@ -72,6 +72,40 @@ use kartik\file\FileInput;
                     ],
                     'options' => ['tag' => false]
                 ])->textInput(['type' => 'number']) ?>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12 col-md-6 col-lg-6">
+                <?= $form->field($model, 'link_download_apk', [
+                    'template' => '
+                        {label}
+                        {input}
+                        {error}
+                    ',
+                    'inputOptions' => [
+                        'class' => 'form-control'
+                    ],
+                    'labelOptions' => [
+                        'class' => 'control-label'
+                    ],
+                    'options' => ['tag' => false]
+                ])->textInput(['maxlength' => true]) ?>
+            </div>
+            <div class="col-sm-12 col-md-6 col-lg-6">
+                <?= $form->field($model, 'link_download_apk_marketing', [
+                    'template' => '
+                        {label}
+                        {input}
+                        {error}
+                    ',
+                    'inputOptions' => [
+                        'class' => 'form-control'
+                    ],
+                    'labelOptions' => [
+                        'class' => 'control-label'
+                    ],
+                    'options' => ['tag' => false]
+                ])->textInput(['maxlength' => true]) ?>
             </div>
         </div>
         <div class="row">

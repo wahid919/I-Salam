@@ -89,7 +89,7 @@ abstract class Pendanaan extends \yii\db\ActiveRecord
 
             $partner =[];
             $parent['partner'] = function($model){
-                $list_partner = PartnerAgenda::find()->where(['pendanaan_id'=>$model->id])->all();
+                $list_partner = PartnerPendanaan::find()->where(['pendanaan_id'=>$model->id])->all();
                 return $partner = $list_partner;
             };
             
