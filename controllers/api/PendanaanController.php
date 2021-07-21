@@ -7,6 +7,8 @@ namespace app\controllers\api;
 */
 use Yii;
 use app\models\Pendanaan;
+use app\models\PartnerPendanaan;
+use app\models\AgendaPendanaan;
 use yii\filters\AccessControl;
 use yii\helpers\ArrayHelper;
 use yii\web\UploadedFile;
@@ -177,13 +179,21 @@ public function actionAddPendanaan()
                 }
                 $partner->foto_ktp_partner = $response_ktp_partner->filename;
             }
-            $partner->save();
-
-
-                   
-    
+            
+            $agenda_pendanaan = new AgendaPendanaan;
+            $agenda_pendanaan->nama_agenda = $val['nama_agenda'];
+            // $agenda_pendanaan->foto =$fotos;
+            $agenda_pendanaan->pendanaan_id = $model->id;
+            $agenda_pendanaan->tanggal = $val['tanggal_agenda'] ?? '';
+            
+            
+            
+            
+            
             if ($model->validate()) {
                 $model->save();
+                $partner->save();
+                $agenda_pendanaan->save();
                 
                 // unset($model->password);
                 return ['success' => true, 'message' => 'success', 'data' => $model];
