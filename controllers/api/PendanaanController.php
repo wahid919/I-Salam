@@ -168,32 +168,73 @@ public function actionAddPendanaan()
                 $model->foto_kk = $response_kk->filename;
                 $model->status_id = 1;
 
-            $partner = new PartnerPendanaan;
-            $partner->nama_partner = $val['nama_partner'] ?? '';
-            $partner->pendanaan_id = $model->id;
-            $image_ktp_partner = UploadedFile::getInstanceByName("foto_ktp_partner");
-            if ($image_ktp_partner) {
-                $response_ktp_partner = $this->uploadImage($image_ktp_partner, "foto_ktp_partner");
-                if ($response_ktp_partner->success == false) {
-                    throw new HttpException(419, "Foto KTP Partner gagal diunggah");
-                }
-                $partner->foto_ktp_partner = $response_ktp_partner->filename;
-            }
             
-            $agenda_pendanaan = new AgendaPendanaan;
-            $agenda_pendanaan->nama_agenda = $val['nama_agenda'];
-            // $agenda_pendanaan->foto =$fotos;
-            $agenda_pendanaan->pendanaan_id = $model->id;
-            $agenda_pendanaan->tanggal = $val['tanggal_agenda'] ?? '';
+            
+            // $agenda_pendanaan = new AgendaPendanaan;
+            // $agenda_pendanaan->nama_agenda = $val['nama_agenda'];
+            // // $agenda_pendanaan->foto =$fotos;
+            // $agenda_pendanaan->pendanaan_id = $model->id;
+            // $agenda_pendanaan->tanggal = $val['tanggal_agenda'] ?? '';
+
+            // $modelsagendas= [new AgendaPendanaan];
+
+        //Send at least one model to the form
+        // $agenda_pendanaan = [new AgendaPendanaan()];
+
+        // //Create an array of the products submitted
+        // for($i = 1; $i < $count; $i++) {
+        //     $agenda_pendanaans[] = new AgendaPendanaan();
+        // }
+
+        // //Load and validate the multiple models
+        // if (Model::loadMultiple($agenda_pendanaans, Yii::$app->request->post()) && Model::validateMultiple($agenda_pendanaans)) {
+
+        //     foreach ($agenda_pendanaans as $product) {
+
+        //         //Try to save the models. Validation is not needed as it's already been done.
+        //         $product->save(false);
+
+        //     }
+        //     return $this->redirect('view');
+        // }
             
             
             
             
             
             if ($model->validate()) {
-                $model->save();
+                // $model->save();
+
+            foreach ($_POST['nama_partner'] as $index=>$value) {
+                $partner = new PartnerPendanaan(); // creating new instance of partner 
+                $partner->nama_partner = $value;
+                $image_ktp_partner = UploadedFile::getInstanceByName("foto_ktp_partner");
+            // $image_ktp_partner = UploadedFile::getInstances($partner, $_POST['foto_ktp_partner'[$index]]);
+            // var_dump($image_ktp_partner);
+            // die;
+                if ($image_ktp_partner) {
+                    $response_ktp_partner = $this->uploadImage($image_ktp_partner, "foto_ktp_partner");
+                    if ($response_ktp_partner->success == false) {
+                        throw new HttpException(419, "Foto KTP Partner gagal diunggah");
+                    }
+                    $partner->foto_ktp_partner = $response_ktp_partner[$index]->filename;
+                }
+
+                // $partner->tanggal = $_POST['tanggal_agenda'][$index];
+                $partner->pendanaan_id = $model->id;
                 $partner->save();
-                $agenda_pendanaan->save();
+              }
+
+
+            foreach ($_POST['nama_agenda'] as $index=>$value) {
+                $agendas = new AgendaPendanaan(); // creating new instance of agendas 
+                $agendas->nama_agenda = $value;
+                $agendas->tanggal = $_POST['tanggal_agenda'][$index];
+                $agendas->pendanaan_id = $model->id;
+                $agendas->save();
+              }
+
+
                 
                 // unset($model->password);
                 return ['success' => true, 'message' => 'success', 'data' => $model];
