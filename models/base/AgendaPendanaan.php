@@ -21,6 +21,27 @@ abstract class AgendaPendanaan extends \yii\db\ActiveRecord
 {
 
 
+    public function fields()
+    {
+        $parent = parent::fields();
+
+        
+
+        
+        if (isset($parent['pendanaan_id'])) {
+            unset($parent['pendanaan_id']);
+            // $parent['_user_id'] = function ($model) {
+            //     return $model->user_id;
+            // };
+            $parent['pendanaan'] = function ($model) {
+                return $model->pendanaan;
+            };
+        }
+
+        
+
+        return $parent;
+    }
 
     /**
      * @inheritdoc

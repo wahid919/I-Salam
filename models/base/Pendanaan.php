@@ -57,7 +57,7 @@ abstract class Pendanaan extends \yii\db\ActiveRecord
             //     return $model->kategori_pendanaan_id;
             // };
             $parent['kategori_pendanaaan'] = function ($model) {
-                return $model->kategoriPendanaan->name;
+                return $model->kategoriPendanaan;
             };
         }
 
@@ -67,7 +67,7 @@ abstract class Pendanaan extends \yii\db\ActiveRecord
             //     return $model->status_id;
             // };
             $parent['status'] = function ($model) {
-                return $model->status->name;
+                return $model->status;
             };
             
         }
@@ -78,7 +78,7 @@ abstract class Pendanaan extends \yii\db\ActiveRecord
             //     return $model->bank_id;
             // };
             $parent['bank'] = function ($model) {
-                return $model->bank->name;
+                return $model->bank;
             };
             
         }
