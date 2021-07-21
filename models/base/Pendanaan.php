@@ -5,7 +5,8 @@
 namespace app\models\base;
 
 use Yii;
-
+use app\models\AgendaPendanaan;
+use app\models\PartnerPendanaan;
 /**
  * This is the base-model class for table "pendanaan".
  *
@@ -79,6 +80,17 @@ abstract class Pendanaan extends \yii\db\ActiveRecord
             // };
             $parent['bank'] = function ($model) {
                 return $model->bank;
+            };
+            $agenda =[];
+            $parent['agenda'] = function($model){
+                $list_agenda = AgendaPendanaan::find()->where(['pendanaan_id'=>$model->id])->all();
+                return $agenda = $list_agenda;
+            };
+
+            $partner =[];
+            $parent['partner'] = function($model){
+                $list_partner = PartnerAgenda::find()->where(['pendanaan_id'=>$model->id])->all();
+                return $partner = $list_partner;
             };
             
         }
