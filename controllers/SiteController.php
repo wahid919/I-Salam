@@ -9,6 +9,7 @@ use app\models\Action;
 use app\components\Tanggal;
 use app\models\Pendanaan;
 use app\models\Pembayaran;
+use app\models\Pencairan;
 use app\models\LoginForm;
 use app\models\User;
 use kartik\mpdf\Pdf;
@@ -54,7 +55,7 @@ class SiteController extends Controller
         $user = User::find()->where(['role_id' => 4])->all();
         $pembayaran = Pembayaran::find()->all();
         $pembayaran_diterima = Pembayaran::find()->where(['status_id'=>6])->sum("nominal");
-        $pendanaan_cair = Pembayaran::find()->where(['status_id'=>3])->sum("nominal");
+        $pendanaan_cair = Pencairan::find()->sum("nominal");
         $pendanaanAll = Pendanaan::find()->all();
         $countPendanaan = Pendanaan::find()->where(['status_id'=>4])->count();
         $pendanaanAktif = Pendanaan::find()->where(['status_id' => 2])->all();
