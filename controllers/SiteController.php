@@ -101,7 +101,7 @@ class SiteController extends Controller
         if ($model->load($_POST)) {
             //password
             if ($model->password != "") {
-                $model->password = md5($model->password);
+                $model->password = Yii::$app->security->generatePasswordHash($model->password);
             } else {
                 $model->password = $oldMd5Password;
             }

@@ -7,6 +7,7 @@ namespace app\controllers\api;
  */
 
 use app\models\Pembayaran;
+use app\models\Pendanaan;
 use Yii;
 use yii\filters\AccessControl;
 use yii\helpers\ArrayHelper;
@@ -30,8 +31,7 @@ class PembayaranController extends \yii\rest\ActiveController
     {
         return [
             'bayar' => ['POST'],
-            'jumlah-pembayaran' => ['GET'],
-            'total-nominal' => ['GET'],
+            'informasi' => ['GET'],
         ];
     }
 
@@ -85,28 +85,24 @@ class PembayaranController extends \yii\rest\ActiveController
         }
     }
 
-    public function actionJumlahPembayaran($id)
+    public function actionInformasi($id)
     {
         Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-        $pendanaans = Pembayaran::find()->where(['pendanaan_id'=>$id])->count();
-        
+        $jumlah = Pembayaran::find()->where(['pendanaan_id'=>$id,'status_id'=>6])->count();
+        $nominal = Pembayaran::find()->where(['pendanaan_id'=>$id,'status_id'=>6])->sum('nominal');
+        $pembayar = Pendanaan::find()->where(['id'=>$id])->one();
+        $uang_pendanaan = (int)$pembayar->nominal;
+        $persen = $nominal / $uang_pendanaan  * 100;
+
 
         return [
             "success" => true,
             "message" => "Pendanaan",
-            "data" => $pendanaans,
-        ];
-    }
-
-    public function actionTotalNominal($id)
-    {
-        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-        $pendanaans = Pembayaran::find()->where(['pendanaan_id'=>$id])->sum('nominal');
-
-        return [
-            "success" => true,
-            "message" => "Pendanaan",
-            "data" => $pendanaans,
+            "data" => [
+                'jumlah' => $jumlah,
+                'nominal' => $nominal,
+                'persen' => $persen,
+            ],
         ];
     }
 }
