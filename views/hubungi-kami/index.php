@@ -47,7 +47,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         'attribute' => 'tema_hubungi_kami_id',
                         'value' => function ($model) {
                             if ($rel = $model->temaHubungiKami) {
-                                return Html::a($rel->id, ['tema-hubungi-kami/view', 'id' => $rel->id,], ['data-pjax' => 0]);
+                                return Html::a($rel->nama_tema, ['tema-hubungi-kami/view', 'id' => $rel->id,], ['data-pjax' => 0]);
                             } else {
                                 return '';
                             }
@@ -70,6 +70,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         },
                         'format' => 'raw',
                     ],
+                    \app\components\ActionHubungiButton::getButtons(),
                 ],
             ]); ?>
         </div>
