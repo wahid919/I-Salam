@@ -7,6 +7,7 @@ namespace app\controllers\api;
  */
 
 use app\models\Pembayaran;
+use app\models\Pendanaan;
 use Yii;
 use yii\filters\AccessControl;
 use yii\helpers\ArrayHelper;
@@ -89,7 +90,10 @@ class PembayaranController extends \yii\rest\ActiveController
         Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         $jumlah = Pembayaran::find()->where(['pendanaan_id'=>$id])->count();
         $nominal = Pembayaran::find()->where(['pendanaan_id'=>$id])->sum('nominal');
-        
+        $pembayar = Pendanaan::find()->where(['id'=>$id])->one();
+        $uang_pendanaan = (int)$pembayar->nominal;
+        $persen = $nominal / $uang_pendanaan  * 100;
+
 
         return [
             "success" => true,
@@ -97,6 +101,7 @@ class PembayaranController extends \yii\rest\ActiveController
             "data" => [
                 'jumlah' => $jumlah,
                 'nominal' => $nominal,
+                'persen' => $persen,
             ],
         ];
     }
