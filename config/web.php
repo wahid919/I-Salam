@@ -97,6 +97,11 @@ $config = [
                 // 'pendanaan/show-pendanaan/<id:[\w\_\-]+>/<id:\d+>' => 'pendanaan/show-pendanaan',
                 
                 'pendanaan/show-pendanaan/<unique_id:[\w\_\-]+>' => 'pendanaan/show-pendanaan',
+                
+                'pendanaan/approve-pendanaan' => 'pendanaan/approve-pendanaan',
+                'pendanaan/pendanaan-cair' => 'pendanaan/pendanaan-cair',
+                'pendanaan/pendanaan-selesai' => 'pendanaan/pendanaan-selesai',
+                'pendanaan/pendanaan-tolak' => 'pendanaan/pendanaan-tolak',
                 // 'pendanaan/all' => '/pendanaan/all',
 
                 

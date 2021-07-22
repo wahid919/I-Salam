@@ -8,6 +8,7 @@ namespace app\controllers\api;
 
 use Yii;
 use app\models\Pendanaan;
+use app\models\Pencairan;
 use app\models\PartnerPendanaan;
 use app\models\AgendaPendanaan;
 use yii\filters\AccessControl;
@@ -43,6 +44,10 @@ class PendanaanController extends \yii\rest\ActiveController
             'show-pendanaan' => ['GET'],
             'add-pendanaan' => ['POST'],
             'draf-pendanaan' => ['POST'],
+            'approve-pendanaan' => ['POST'],
+            'pendanaan-cair' => ['POST'],
+            'pendanaan-selesai' => ['POST'],
+            'pendanaan-tolak' => ['POST'],
         ];
     }
     public function actions()
@@ -171,59 +176,62 @@ class PendanaanController extends \yii\rest\ActiveController
                 $model->foto_kk = $response_kk->filename;
                 $model->status_id = 1;
 
-                $partners1 = "[
-                    [
-                        'nama_partner' => 'Partner 1',
-                        'foto_ktp_partner' => null,
-                    ]
-                ]";
-                
-                $partners = Json::decode($_POST["partner"]);
+            
+            if ($model->validate()) {
+                $model->save();
+            // gunakan ini jika ada gambar yang gagal di upload
+                $images_success_uploaded = [];
 
-                foreach($partners as $part)
-                {
-                    $partner = new PartnerPendanaan;
-                    $partner->nama = $part->nama;
-                    $_FILES['image'] = $part->foto_ktp;
-                    $image_ktp_partner = UploadedFile::getInstance($partner, "image");
+                $date = date("Y-m-d");
+                $images_title = $_POST['nama_partner'];
 
-                    return $image_ktp_partner;
-                    die;
-                    if ($image_ktp_partner) {
-                        $response_ktp_partner = $this->uploadImage($image_ktp_partner, "foto_ktp_partner");
-                        if ($response_ktp_partner->success == false) {
-                            throw new HttpException(419, "Foto KTP Partner gagal diunggah");
+                foreach ($images_title as $index => $title) {
+                    $file = UploadedFile::getInstanceByName("foto_ktp_partner[$index]");
+                    $response = $this->uploadImage($file, "partner-pendanaan/$date");
+                    
+                    if ($response->success == false) {
+                        foreach ($images_success_uploaded as $img) {
+                            $this->deleteOne($img);
                         }
-                        $partner->foto_ktp_partner = $response_ktp_partner->filename;
+
+                        return [
+                            "success" => false,
+                            "message" => "Gagal menambahkan gambar",
+                        ];
                     }
+
+                    array_push($images_success_uploaded, $response->filename);
+
+                    $new_image = new PartnerPendanaan();
+                    $new_image->nama_partner = $title;
+                    $new_image->pendanaan_id = $model->id; // set default
+
+                    $new_image->foto_ktp_partner = $response->filename;
+
+                    if ($new_image->validate() == false) {
+
+                        foreach ($images_success_uploaded as $img) {
+                            $this->deleteOne($img);
+                        }
+
+                        return [
+                            "success" => false,
+                            "message" => "Validasi gagal",
+                        ];
+                    }
+
+                    $new_image->save();
                 }
 
-                $partner = new PartnerPendanaan;
-                $partner->nama_partner = $val['nama_partner'] ?? '';
-                $partner->pendanaan_id = $model->id;
-                $image_ktp_partner = UploadedFile::getInstanceByName("foto_ktp_partner");
-                if ($image_ktp_partner) {
-                    $response_ktp_partner = $this->uploadImage($image_ktp_partner, "foto_ktp_partner");
-                    if ($response_ktp_partner->success == false) {
-                        throw new HttpException(419, "Foto KTP Partner gagal diunggah");
-                    }
-                    $partner->foto_ktp_partner = $response_ktp_partner->filename;
-                }
-
-                $agenda_pendanaan = new AgendaPendanaan;
-                $agenda_pendanaan->nama_agenda = $val['nama_agenda'];
-                // $agenda_pendanaan->foto =$fotos;
-                $agenda_pendanaan->pendanaan_id = $model->id;
-                $agenda_pendanaan->tanggal = $val['tanggal_agenda'] ?? '';
 
 
-
-
-
-                if ($model->validate()) {
-                    $model->save();
-                    $partner->save();
-                    $agenda_pendanaan->save();
+            foreach ($_POST['nama_agenda'] as $index=>$value) {
+                $agendas = new AgendaPendanaan(); // creating new instance of agendas 
+                $agendas->nama_agenda = $value;
+                $agendas->tanggal = $_POST['tanggal_agenda'][$index];
+                $agendas->pendanaan_id = $model->id;
+                $agendas->save();
+              }
 
                     // unset($model->password);
                     return ['success' => true, 'message' => 'success', 'data' => $model];
@@ -234,5 +242,86 @@ class PendanaanController extends \yii\rest\ActiveController
         } else {
             return ['success' => false, 'message' => 'Data Pendanaan Tidak ditemukan'];
         }
-    }
+    
+}
+
+public function actionApprovePendanaan(){
+    \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+    $val = \yii::$app->request->post();
+    $model = Pendanaan::findOne(['id'=>$val['id_pendanaan'],'status_id' => 1]);
+      //return print_r($model);
+      if ($model) {
+         $model->status_id = 2;
+         if ($model->save()){
+            
+            return ['success' => true, 'message' => 'success', 'data' => $model];
+         } else {
+            
+            return ['success' => false, 'message' => 'gagal', 'data' => $model->getErrors()];
+         }
+      }
+}
+
+public function actionPendanaanCair()
+{
+    \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $val = \yii::$app->request->post();
+$model = Pendanaan::findOne(['id'=>$val["id_pendanaan"],'status_id' => 4]);
+$cair= new Pencairan;
+// $model->tanggal_received=date('Y-m-d H:i:s');
+if ($model != null) {
+   $model->status_id = 3;
+   $cair->pendanaan_id = $val['id_pendanaan'];
+   if($model->nominal < $val['nominal']){
+    return ['success' => false, 'message' => 'gagal', 'data' => $model->getErrors()];
+   }else{
+      $cair->nominal = $val['nominal'];
+      $cair->tanggal = date('Y-m-d');
+   $cair->save();
+        if($model->save()){
+            return ['success' => true, 'message' => 'success', 'data' => $model];
+        }
+   }
+   
+// return $this->redirect(Url::previous());
+} else {
+    return ['success' => false, 'message' => 'gagal', 'data' => $model->getErrors()];
+}
+}
+
+public function actionPendanaanSelesai(){
+    \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+    $val = \yii::$app->request->post();
+    $model = Pendanaan::findOne(['id'=>$val['id_pendanaan'],'status_id' => 2]);
+      //return print_r($model);
+      if ($model) {
+         $model->status_id = 4;
+         if ($model->save()){
+            
+            return ['success' => true, 'message' => 'success', 'data' => $model];
+         } else {
+            return ['success' => false, 'message' => 'gagal', 'data' => $model->getErrors()];
+         }
+      }
+}
+
+public function actionPendanaanTolak(){
+    \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+    $val = \yii::$app->request->post();
+    $model = Pendanaan::findOne(['id'=>$val['id_pendanaan'],'status_id' => 1]);
+      //return print_r($model);
+      if ($model) {
+         $model->status_id = 7;
+         if ($model->save()){
+            
+            return ['success' => true, 'message' => 'success', 'data' => $model];
+         } else {
+            return ['success' => false, 'message' => 'gagal', 'data' => $model->getErrors()];
+         }
+      }
+}
+
+
+
+
 }
