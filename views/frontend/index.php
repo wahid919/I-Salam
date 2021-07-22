@@ -340,7 +340,7 @@ use yii\bootstrap\Html;
     </div>
 
     <!-- Footer -->
-    <footer class="position-relative py-10 py-lg-12 bg-dark text-gray-500">
+    <footer class="position-relative py-10 py-lg-6 bg-dark text-gray-500">
       <div class="container">
         <div class="row">
           <div class="col-lg-10 col-xl-12 col-xxl-10 mx-auto text-center">
