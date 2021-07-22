@@ -116,6 +116,7 @@ $config = [
                 'agenda-pendanaan/all' => 'agenda-pendanaan/all',
                 'agenda-pendanaan/add-agenda' => 'agenda-pendanaan/add-agenda',
                 'agenda-pendanaan/deleted' => 'agenda-pendanaan/deleted',
+                'agenda-pendanaan/by-pendanaan/<unique_id:[\w\_\-]+>' => 'agenda-pendanaan/by-pendanaan',
                 
                 //pencairan
                 'pencairan/all' => 'pencairan/all',
@@ -126,6 +127,7 @@ $config = [
                 'partner-pendanaan/all' => 'partner-pendanaan/all',
                 'partner-pendanaan/add-partner' => 'partner-pendanaan/add-partner',
                 'partner-pendanaan/deleted' => 'partner-pendanaan/deleted',
+                'partner-pendanaan/by-pendanaan/<unique_id:[\w\_\-]+>' => 'partner-pendanaan/by-pendanaan',
 
                 // 
                 '<controller:[\w\_\-]+>/<id:\d+>' => '<controller>/view',

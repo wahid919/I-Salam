@@ -17,6 +17,7 @@ protected function verbs()
     {
        return [
            'all' => ['GET'],
+           'by-pendanaan' => ['GET'],
            'add-partner' => ['POST'],
            'deleted' => ['DELETE'],
        ];
@@ -48,6 +49,20 @@ protected function verbs()
             "data" => $list_partner,
         ];
     }
+    
+    public function actionByPendanaan($id)
+    {
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $pendanaans = PartnerPendanaan::findOne(['pendanaan_id' => $id]);
+
+
+        return [
+            "success" => true,
+            "message" => "List Partner",
+            "data" => $pendanaans,
+        ];
+    }
+
     public function actionAddAgenda()
     {
         \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;

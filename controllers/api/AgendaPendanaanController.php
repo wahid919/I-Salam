@@ -19,6 +19,7 @@ protected function verbs()
     {
        return [
            'all' => ['GET'],
+           'by-pendanaan' => ['GET'],
            'add-agenda' => ['POST'],
            'deleted' => ['DELETE'],
        ];
@@ -50,6 +51,19 @@ protected function verbs()
             "data" => $list_agenda,
         ];
     }
+    public function actionByPendanaan($id)
+    {
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $pendanaans = AgendaPendanaan::findOne(['pendanaan_id' => $id]);
+
+
+        return [
+            "success" => true,
+            "message" => "List Agenda Pendanaan",
+            "data" => $pendanaans,
+        ];
+    }
+
     public function actionAddAgenda()
     {
         \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
