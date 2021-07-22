@@ -39,6 +39,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     <php>
                         <input type="tel" hidden /> <!-- disable chrome autofill -->
                         <?= $form->field($model, 'password')->passwordInput(['maxlength' => true, 'autocomplete' => "off"]) ?>
+                        <?= $form->field($model, 'pin')->passwordInput(['maxlength' => true, 'autocomplete' => "off"]) ?>
                         <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
                         <?= $form->field($model, 'nomor_handphone')->textInput(['type' => 'number','maxlength' => true]) ?>
                         <?= $form->field($model, 'photo_url')->widget(\kartik\file\FileInput::className(), [

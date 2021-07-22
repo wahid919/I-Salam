@@ -96,6 +96,7 @@ class SiteController extends Controller
         $oldPhotoUrl = $model->photo_url;
 
         $model->password = "";
+        $model->pin = "";
 
         if ($model->load($_POST)) {
             //password
