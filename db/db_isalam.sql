@@ -1,4 +1,4 @@
--- Adminer 4.7.7 MySQL dump
+-- Adminer 4.8.1 MySQL 5.5.5-10.4.17-MariaDB dump
 
 SET NAMES utf8;
 SET time_zone = '+00:00';
@@ -12,7 +12,7 @@ CREATE TABLE `action` (
   `action_id` varchar(50) NOT NULL,
   `name` varchar(50) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 INSERT INTO `action` (`id`, `controller_id`, `action_id`, `name`) VALUES
 (12,	'site',	'index',	'Index'),
@@ -102,7 +102,17 @@ INSERT INTO `action` (`id`, `controller_id`, `action_id`, `name`) VALUES
 (96,	'partner-pendanaan',	'view',	'View'),
 (97,	'partner-pendanaan',	'create',	'Create'),
 (98,	'partner-pendanaan',	'update',	'Update'),
-(99,	'partner-pendanaan',	'delete',	'Delete');
+(99,	'partner-pendanaan',	'delete',	'Delete'),
+(100,	'tema-hubungi-kami',	'index',	'Index'),
+(101,	'tema-hubungi-kami',	'view',	'View'),
+(102,	'tema-hubungi-kami',	'create',	'Create'),
+(103,	'tema-hubungi-kami',	'update',	'Update'),
+(104,	'tema-hubungi-kami',	'delete',	'Delete'),
+(105,	'hubungi-kami',	'index',	'Index'),
+(106,	'hubungi-kami',	'view',	'View'),
+(107,	'hubungi-kami',	'create',	'Create'),
+(108,	'hubungi-kami',	'update',	'Update'),
+(109,	'hubungi-kami',	'delete',	'Delete');
 
 SET NAMES utf8mb4;
 
@@ -124,7 +134,7 @@ CREATE TABLE `bank` (
   `name` varchar(255) DEFAULT NULL,
   `logo` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 INSERT INTO `bank` (`id`, `name`, `logo`) VALUES
 (1,	'BNI',	NULL),
@@ -133,12 +143,88 @@ INSERT INTO `bank` (`id`, `name`, `logo`) VALUES
 (4,	'Mandiri',	NULL),
 (5,	'Cimb Niaga',	NULL);
 
+DROP TABLE IF EXISTS `hubungi_kami`;
+CREATE TABLE `hubungi_kami` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nama` varchar(255) NOT NULL,
+  `nomor_hp` varchar(255) NOT NULL,
+  `tema_hubungi_kami_id` int(11) NOT NULL,
+  `status` tinyint(1) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `tema_hubungi_kami_id` (`tema_hubungi_kami_id`),
+  CONSTRAINT `hubungi_kami_ibfk_1` FOREIGN KEY (`tema_hubungi_kami_id`) REFERENCES `tema_hubungi_kami` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+INSERT INTO `hubungi_kami` (`id`, `nama`, `nomor_hp`, `tema_hubungi_kami_id`, `status`, `created_at`, `updated_at`) VALUES
+(1,	'namaku',	'098789787',	1,	0,	'2021-07-22 03:08:02',	'2021-07-22 03:08:02'),
+(2,	'namaku',	'098789787',	1,	0,	'2021-07-22 03:08:04',	'2021-07-22 03:08:04'),
+(3,	'namaku',	'098789787',	1,	0,	'2021-07-22 03:08:04',	'2021-07-22 03:08:04'),
+(4,	'namaku',	'098789787',	1,	0,	'2021-07-22 03:08:05',	'2021-07-22 03:08:05'),
+(5,	'namaku',	'098789787',	1,	0,	'2021-07-22 03:08:05',	'2021-07-22 03:08:05'),
+(6,	'namaku',	'098789787',	1,	0,	'2021-07-22 03:08:07',	'2021-07-22 03:08:07'),
+(7,	'namaku',	'098789787',	1,	0,	'2021-07-22 03:08:07',	'2021-07-22 03:08:07'),
+(8,	'namaku',	'098789787',	1,	0,	'2021-07-22 03:08:08',	'2021-07-22 03:08:08'),
+(9,	'namaku',	'098789787',	1,	0,	'2021-07-22 03:08:09',	'2021-07-22 03:08:09'),
+(10,	'namaku',	'098789787',	1,	0,	'2021-07-22 03:08:09',	'2021-07-22 03:08:09'),
+(11,	'namaku',	'098789787',	1,	0,	'2021-07-22 03:08:09',	'2021-07-22 03:08:09'),
+(12,	'namaku',	'098789787',	1,	0,	'2021-07-22 03:08:09',	'2021-07-22 03:08:09'),
+(13,	'namaku',	'098789787',	1,	0,	'2021-07-22 03:08:09',	'2021-07-22 03:08:09'),
+(14,	'namaku',	'098789787',	1,	0,	'2021-07-22 03:08:09',	'2021-07-22 03:08:09'),
+(15,	'namaku',	'098789787',	1,	0,	'2021-07-22 03:08:10',	'2021-07-22 03:08:10'),
+(16,	'namaku',	'098789787',	1,	0,	'2021-07-22 03:10:02',	'2021-07-22 03:10:02'),
+(17,	'namaku',	'098789787',	1,	0,	'2021-07-22 03:10:04',	'2021-07-22 03:10:04'),
+(18,	'namaku',	'098789787',	1,	0,	'2021-07-22 03:10:12',	'2021-07-22 03:10:12'),
+(19,	'namaku',	'098789787',	1,	0,	'2021-07-22 03:10:13',	'2021-07-22 03:10:13'),
+(20,	'namaku',	'098789787',	1,	0,	'2021-07-22 03:10:14',	'2021-07-22 03:10:14'),
+(21,	'namaku',	'098789787',	1,	0,	'2021-07-22 03:10:29',	'2021-07-22 03:10:29'),
+(22,	'namaku',	'098789787',	1,	0,	'2021-07-22 03:10:30',	'2021-07-22 03:10:30'),
+(23,	'namaku',	'098789787',	1,	0,	'2021-07-22 03:10:31',	'2021-07-22 03:10:31'),
+(24,	'namaku',	'098789787',	1,	0,	'2021-07-22 03:10:32',	'2021-07-22 03:10:32'),
+(25,	'namaku',	'098789787',	1,	0,	'2021-07-22 03:10:33',	'2021-07-22 03:10:33'),
+(26,	'namaku',	'098789787',	1,	0,	'2021-07-22 03:10:33',	'2021-07-22 03:10:33'),
+(27,	'namaku',	'0897736667',	1,	0,	'2021-07-22 03:11:14',	'2021-07-22 03:11:14'),
+(28,	'namaku',	'0897736667',	1,	0,	'2021-07-22 03:11:14',	'2021-07-22 03:11:14'),
+(29,	'namaku',	'0897736667',	1,	0,	'2021-07-22 03:11:15',	'2021-07-22 03:11:15'),
+(30,	'namaku',	'0897736667',	1,	0,	'2021-07-22 03:11:15',	'2021-07-22 03:11:15'),
+(31,	'namaku',	'0897736667',	1,	0,	'2021-07-22 03:11:41',	'2021-07-22 03:11:41'),
+(32,	'namaku',	'0897736667',	1,	0,	'2021-07-22 03:12:32',	'2021-07-22 03:12:32'),
+(33,	'namaku',	'0897736667',	1,	0,	'2021-07-22 03:12:33',	'2021-07-22 03:12:33'),
+(34,	'namaku',	'0897736667',	1,	0,	'2021-07-22 03:12:33',	'2021-07-22 03:12:33'),
+(35,	'namaku',	'0897736667',	1,	0,	'2021-07-22 03:12:34',	'2021-07-22 03:12:34'),
+(36,	'namaku',	'0897736667',	1,	0,	'2021-07-22 03:12:34',	'2021-07-22 03:12:34'),
+(37,	'namaku',	'0897736667',	1,	0,	'2021-07-22 03:12:34',	'2021-07-22 03:12:34'),
+(38,	'namaku',	'0897736667',	1,	0,	'2021-07-22 03:12:35',	'2021-07-22 03:12:35'),
+(39,	'namaku',	'0897736667',	1,	0,	'2021-07-22 03:12:36',	'2021-07-22 03:12:36'),
+(40,	'namaku',	'0897736667',	1,	0,	'2021-07-22 03:12:36',	'2021-07-22 03:12:36'),
+(41,	'namaku',	'0897736667',	1,	0,	'2021-07-22 03:12:36',	'2021-07-22 03:12:36'),
+(42,	'namaku',	'0897736667',	1,	0,	'2021-07-22 03:12:37',	'2021-07-22 03:12:37'),
+(43,	'namaku',	'0897736667',	1,	0,	'2021-07-22 03:12:37',	'2021-07-22 03:12:37'),
+(44,	'namaku',	'0897736667',	1,	0,	'2021-07-22 03:12:38',	'2021-07-22 03:12:38'),
+(45,	'namaku',	'0897736667',	1,	0,	'2021-07-22 03:12:38',	'2021-07-22 03:12:38'),
+(46,	'namaku',	'0897736667',	1,	0,	'2021-07-22 03:12:39',	'2021-07-22 03:12:39'),
+(47,	'namaku',	'0897736667',	1,	0,	'2021-07-22 03:12:39',	'2021-07-22 03:12:39'),
+(48,	'namaku',	'0897736667',	1,	0,	'2021-07-22 03:12:39',	'2021-07-22 03:12:39'),
+(49,	'namaku',	'0897736667',	1,	0,	'2021-07-22 03:12:39',	'2021-07-22 03:12:39'),
+(50,	'namaku',	'0897736667',	1,	0,	'2021-07-22 03:12:39',	'2021-07-22 03:12:39'),
+(51,	'namaku',	'0897736667',	1,	0,	'2021-07-22 03:12:40',	'2021-07-22 03:12:40'),
+(52,	'namaku',	'0897736667',	1,	0,	'2021-07-22 03:12:40',	'2021-07-22 03:12:40'),
+(53,	'namaku',	'0897736667',	1,	0,	'2021-07-22 03:12:40',	'2021-07-22 03:12:40'),
+(54,	'namaku',	'0897736667',	1,	0,	'2021-07-22 03:12:40',	'2021-07-22 03:12:40'),
+(55,	'namaku',	'0897736667',	1,	0,	'2021-07-22 03:12:41',	'2021-07-22 03:12:41'),
+(56,	'namaku',	'0897736667',	1,	0,	'2021-07-22 03:12:41',	'2021-07-22 03:12:41'),
+(57,	'namaku',	'0897736667',	1,	0,	'2021-07-22 03:12:41',	'2021-07-22 03:12:41'),
+(58,	'namaku',	'0897736667',	1,	0,	'2021-07-22 03:12:41',	'2021-07-22 03:12:41'),
+(59,	'namaku',	'0897736667',	1,	0,	'2021-07-22 03:12:41',	'2021-07-22 03:12:41'),
+(60,	'namaku',	'0897736667',	1,	0,	'2021-07-22 03:12:42',	'2021-07-22 03:12:42');
+
 DROP TABLE IF EXISTS `kategori_pendanaan`;
 CREATE TABLE `kategori_pendanaan` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 INSERT INTO `kategori_pendanaan` (`id`, `name`) VALUES
 (1,	'Perdagangan'),
@@ -162,8 +248,10 @@ CREATE TABLE `marketing_data_user` (
   KEY `fk-marketing-data-user-bank` (`bank_id`),
   CONSTRAINT `fk-marketing-data-user-bank` FOREIGN KEY (`bank_id`) REFERENCES `bank` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk-marketing-data-user-to-user-table` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+INSERT INTO `marketing_data_user` (`id`, `nama`, `alamat`, `domisili`, `no_rekening`, `no_identitas`, `referensi_kerja`, `bank_id`, `user_id`) VALUES
+(3,	'Ian',	'Ponorogo',	'Batu',	123321123,	'123123123',	'Ngoding',	1,	17);
 
 DROP TABLE IF EXISTS `menu`;
 CREATE TABLE `menu` (
@@ -177,7 +265,7 @@ CREATE TABLE `menu` (
   PRIMARY KEY (`id`),
   KEY `parent_id` (`parent_id`),
   CONSTRAINT `menu_ibfk_1` FOREIGN KEY (`parent_id`) REFERENCES `menu` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 INSERT INTO `menu` (`id`, `name`, `controller`, `action`, `icon`, `order`, `parent_id`) VALUES
 (1,	'Home',	'site',	'index',	'fa fa-home',	1,	NULL),
@@ -193,7 +281,9 @@ INSERT INTO `menu` (`id`, `name`, `controller`, `action`, `icon`, `order`, `pare
 (11,	'Master Status',	'status',	'index',	'fa fa-align-justify',	6,	2),
 (12,	'Setting Website',	'setting',	'index',	'fa fa-align-justify',	13,	NULL),
 (13,	'Agenda Pendanaan',	'agenda-pendanaan',	'index',	'fa fa-align-justify',	2,	NULL),
-(14,	'Partner Pendanaan',	'partner-pendanaan',	'index',	'fa fa-users',	1,	NULL);
+(14,	'Partner Pendanaan',	'partner-pendanaan',	'index',	'fa fa-users',	1,	NULL),
+(15,	'Tema Hubungi Kami',	'tema-hubungi-kami',	'index',	'fa fa-list',	1,	2),
+(16,	'Hubungi Kami',	'hubungi-kami',	'index',	'fa fa-phone',	1,	NULL);
 
 DROP TABLE IF EXISTS `otp`;
 CREATE TABLE `otp` (
@@ -206,13 +296,13 @@ CREATE TABLE `otp` (
   PRIMARY KEY (`id`),
   KEY `id_user` (`id_user`),
   CONSTRAINT `otp_ibfk_1` FOREIGN KEY (`id_user`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 INSERT INTO `otp` (`id`, `id_user`, `kode_otp`, `is_used`, `created_at`, `updated_at`) VALUES
 (3,	10,	6891,	0,	'2021-07-18 19:29:47',	'2021-07-18 19:29:47'),
 (4,	11,	3025,	1,	'2021-07-18 16:08:54',	'2021-07-18 16:08:54'),
 (7,	14,	8904,	0,	'2021-07-18 19:03:08',	'2021-07-18 19:03:08'),
-(10,	17,	9943,	0,	'2021-07-18 20:24:28',	'2021-07-18 20:24:01');
+(10,	17,	3045,	1,	'2021-07-21 07:26:33',	'2021-07-21 07:26:33');
 
 DROP TABLE IF EXISTS `partner_pendanaan`;
 CREATE TABLE `partner_pendanaan` (
@@ -250,7 +340,7 @@ CREATE TABLE `pembayaran` (
   CONSTRAINT `fk-pembayaran-user` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `pembayaran_ibfk_1` FOREIGN KEY (`marketing_id`) REFERENCES `user` (`id`),
   CONSTRAINT `pembayaran_ibfk_2` FOREIGN KEY (`pendanaan_id`) REFERENCES `pendanaan` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 INSERT INTO `pembayaran` (`id`, `nama`, `nominal`, `bukti_transaksi`, `user_id`, `marketing_id`, `bank`, `pendanaan_id`, `tanggal_pembayaran`, `created_at`, `updated_at`, `status_id`) VALUES
 (2,	'WIldan',	10000,	'4-lbEYDOMV-TypUtm8PtDf7nILy6HCy3.png',	1,	5,	'BNI',	3,	'2021-07-20',	'2021-07-20 14:56:01',	'2021-07-20 14:56:01',	5),
@@ -267,7 +357,7 @@ CREATE TABLE `pencairan` (
   PRIMARY KEY (`id`),
   KEY `pendanaan_id` (`pendanaan_id`),
   CONSTRAINT `pencairan_ibfk_1` FOREIGN KEY (`pendanaan_id`) REFERENCES `pendanaan` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 INSERT INTO `pencairan` (`id`, `pendanaan_id`, `nominal`, `tanggal`, `created_at`) VALUES
 (1,	3,	9000,	'2021-07-20',	'2021-07-20 16:22:52'),
@@ -302,7 +392,7 @@ CREATE TABLE `pendanaan` (
   CONSTRAINT `fk-pendanaan-user` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk-status-pendanaan` FOREIGN KEY (`status_id`) REFERENCES `status` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `pendanaan_ibfk_1` FOREIGN KEY (`bank_id`) REFERENCES `bank` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 INSERT INTO `pendanaan` (`id`, `nama_pendanaan`, `foto`, `uraian`, `nominal`, `pendanaan_berakhir`, `user_id`, `bank_id`, `nomor_rekening`, `nama_nasabah`, `nama_perusahaan`, `deskripsi`, `foto_ktp`, `foto_kk`, `kategori_pendanaan_id`, `status_id`) VALUES
 (2,	'Pendanaan 1',	NULL,	'Tes Uraian',	80000,	'0000-00-00 00:00:00',	1,	NULL,	NULL,	NULL,	NULL,	NULL,	NULL,	NULL,	1,	7),
@@ -316,14 +406,15 @@ INSERT INTO `pendanaan` (`id`, `nama_pendanaan`, `foto`, `uraian`, `nominal`, `p
 (10,	'Pendanaan 1',	'pendanaan/20210720_5be92fce55bc28add0e9b38755d67690f7199977.PNG',	'Tes Uraian',	80000,	'0000-00-00 00:00:00',	1,	NULL,	NULL,	NULL,	NULL,	NULL,	NULL,	NULL,	1,	1),
 (11,	'Pendanaan 1',	'pendanaan/20210720_a14750179f4f06b4cbe8f1fd53d87ed980b18155.PNG',	'Tes Uraian',	80000,	'0000-00-00 00:00:00',	1,	NULL,	NULL,	NULL,	NULL,	NULL,	NULL,	NULL,	1,	1),
 (12,	'Pendanaan 1',	'pendanaan/20210720_7c86ae7523e8e05e8722ad2e1011878662bce335.PNG',	'Tes Uraian',	80000,	'0000-00-00 00:00:00',	1,	1,	NULL,	'Budi',	'Perusahaan Nama',	'tidak ada',	NULL,	NULL,	1,	1),
-(13,	'Pendanaan 1',	'',	'uraian 1',	100000,	'2021-07-20 02:50:32',	1,	NULL,	NULL,	NULL,	NULL,	NULL,	NULL,	NULL,	1,	1);
+(13,	'Pendanaan 1',	'',	'uraian 1',	100000,	'2021-07-20 02:50:32',	1,	NULL,	NULL,	NULL,	NULL,	NULL,	NULL,	NULL,	1,	1),
+(16,	'gogogo',	'pendanaan/20210721_c65e5f685ddd3613ba2346a443527dd7aa82857f.jpg',	'',	100000,	'2021-07-31 00:00:00',	17,	1,	123123,	'Namasadsad',	'hohoho',	'popopo',	NULL,	NULL,	2,	9);
 
 DROP TABLE IF EXISTS `role`;
 CREATE TABLE `role` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(50) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 INSERT INTO `role` (`id`, `name`) VALUES
 (1,	'Super Administrator'),
@@ -342,7 +433,7 @@ CREATE TABLE `role_action` (
   KEY `action_id` (`action_id`),
   CONSTRAINT `role_action_ibfk_1` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`),
   CONSTRAINT `role_action_ibfk_2` FOREIGN KEY (`action_id`) REFERENCES `action` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=437 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 INSERT INTO `role_action` (`id`, `role_id`, `action_id`) VALUES
 (33,	2,	12),
@@ -389,78 +480,88 @@ INSERT INTO `role_action` (`id`, `role_id`, `action_id`) VALUES
 (117,	3,	31),
 (118,	3,	32),
 (119,	3,	33),
-(365,	1,	12),
-(366,	1,	13),
-(367,	1,	14),
-(368,	1,	15),
-(369,	1,	17),
-(370,	1,	18),
-(371,	1,	19),
-(372,	1,	20),
-(373,	1,	21),
-(374,	1,	22),
-(375,	1,	23),
-(376,	1,	24),
-(377,	1,	25),
-(378,	1,	26),
-(379,	1,	27),
-(380,	1,	28),
-(381,	1,	29),
-(382,	1,	30),
-(383,	1,	31),
-(384,	1,	32),
-(385,	1,	33),
-(386,	1,	49),
-(387,	1,	50),
-(388,	1,	51),
-(389,	1,	52),
-(390,	1,	53),
-(391,	1,	54),
-(392,	1,	55),
-(393,	1,	56),
-(394,	1,	57),
-(395,	1,	58),
-(396,	1,	59),
-(397,	1,	60),
-(398,	1,	61),
-(399,	1,	62),
-(400,	1,	63),
-(401,	1,	64),
-(402,	1,	65),
-(403,	1,	66),
-(404,	1,	67),
-(405,	1,	68),
-(406,	1,	69),
-(407,	1,	70),
-(408,	1,	71),
-(409,	1,	88),
-(410,	1,	89),
-(411,	1,	72),
-(412,	1,	73),
-(413,	1,	74),
-(414,	1,	75),
-(415,	1,	76),
-(416,	1,	84),
-(417,	1,	85),
-(418,	1,	86),
-(419,	1,	87),
-(420,	1,	77),
-(421,	1,	78),
-(422,	1,	79),
-(423,	1,	80),
-(424,	1,	81),
-(425,	1,	82),
-(426,	1,	83),
-(427,	1,	90),
-(428,	1,	91),
-(429,	1,	92),
-(430,	1,	93),
-(431,	1,	94),
-(432,	1,	95),
-(433,	1,	96),
-(434,	1,	97),
-(435,	1,	98),
-(436,	1,	99);
+(514,	1,	12),
+(515,	1,	13),
+(516,	1,	14),
+(517,	1,	15),
+(518,	1,	17),
+(519,	1,	18),
+(520,	1,	19),
+(521,	1,	20),
+(522,	1,	21),
+(523,	1,	22),
+(524,	1,	23),
+(525,	1,	24),
+(526,	1,	25),
+(527,	1,	26),
+(528,	1,	27),
+(529,	1,	28),
+(530,	1,	29),
+(531,	1,	30),
+(532,	1,	31),
+(533,	1,	32),
+(534,	1,	33),
+(535,	1,	49),
+(536,	1,	50),
+(537,	1,	51),
+(538,	1,	52),
+(539,	1,	53),
+(540,	1,	54),
+(541,	1,	55),
+(542,	1,	56),
+(543,	1,	57),
+(544,	1,	58),
+(545,	1,	59),
+(546,	1,	60),
+(547,	1,	61),
+(548,	1,	62),
+(549,	1,	63),
+(550,	1,	100),
+(551,	1,	101),
+(552,	1,	102),
+(553,	1,	103),
+(554,	1,	104),
+(555,	1,	64),
+(556,	1,	65),
+(557,	1,	66),
+(558,	1,	67),
+(559,	1,	68),
+(560,	1,	69),
+(561,	1,	70),
+(562,	1,	71),
+(563,	1,	88),
+(564,	1,	89),
+(565,	1,	72),
+(566,	1,	73),
+(567,	1,	74),
+(568,	1,	75),
+(569,	1,	76),
+(570,	1,	84),
+(571,	1,	85),
+(572,	1,	86),
+(573,	1,	87),
+(574,	1,	77),
+(575,	1,	78),
+(576,	1,	79),
+(577,	1,	80),
+(578,	1,	81),
+(579,	1,	82),
+(580,	1,	83),
+(581,	1,	90),
+(582,	1,	91),
+(583,	1,	92),
+(584,	1,	93),
+(585,	1,	94),
+(586,	1,	95),
+(587,	1,	96),
+(588,	1,	97),
+(589,	1,	98),
+(590,	1,	99),
+(591,	1,	105),
+(592,	1,	106),
+(593,	1,	107),
+(594,	1,	108),
+(595,	1,	109);
 
 DROP TABLE IF EXISTS `role_menu`;
 CREATE TABLE `role_menu` (
@@ -472,7 +573,7 @@ CREATE TABLE `role_menu` (
   KEY `menu_id` (`menu_id`),
   CONSTRAINT `role_menu_ibfk_1` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`),
   CONSTRAINT `role_menu_ibfk_2` FOREIGN KEY (`menu_id`) REFERENCES `menu` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=139 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 INSERT INTO `role_menu` (`id`, `role_id`, `menu_id`) VALUES
 (56,	2,	1),
@@ -485,20 +586,22 @@ INSERT INTO `role_menu` (`id`, `role_id`, `menu_id`) VALUES
 (73,	3,	3),
 (74,	3,	4),
 (75,	3,	5),
-(125,	1,	1),
-(126,	1,	2),
-(127,	1,	3),
-(128,	1,	4),
-(129,	1,	5),
-(130,	1,	6),
-(131,	1,	7),
-(132,	1,	11),
-(133,	1,	8),
-(134,	1,	9),
-(135,	1,	10),
-(136,	1,	12),
-(137,	1,	13),
-(138,	1,	14);
+(154,	1,	1),
+(155,	1,	2),
+(156,	1,	3),
+(157,	1,	4),
+(158,	1,	5),
+(159,	1,	6),
+(160,	1,	7),
+(161,	1,	11),
+(162,	1,	15),
+(163,	1,	8),
+(164,	1,	9),
+(165,	1,	10),
+(166,	1,	12),
+(167,	1,	13),
+(168,	1,	14),
+(169,	1,	16);
 
 DROP TABLE IF EXISTS `setting`;
 CREATE TABLE `setting` (
@@ -508,21 +611,23 @@ CREATE TABLE `setting` (
   `bg_login` varchar(255) DEFAULT NULL,
   `bg_pin` varchar(255) DEFAULT NULL,
   `link_download_apk` varchar(255) DEFAULT NULL,
+  `link_download_apk_marketing` varchar(255) DEFAULT NULL,
   `nama_web` varchar(255) NOT NULL,
+  `judul_web` varchar(255) NOT NULL,
   `alamat` text NOT NULL,
   `slogan_web` text NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-INSERT INTO `setting` (`id`, `pin`, `logo`, `bg_login`, `bg_pin`, `link_download_apk`, `nama_web`, `alamat`, `slogan_web`) VALUES
-(3,	1234,	'yQoJ9OmHlbYUjzgZcoJ5IjfdHEiBcm0u.png',	'ffRcyGCYL0suTs1S-ascCXf-YQ9e7inT.jpg',	'DTHT9iFuA9xm0-1_U_KsHSd84D_C6Ky1.jpg',	'playstore',	'ISALAM',	'Batu',	'-');
+INSERT INTO `setting` (`id`, `pin`, `logo`, `bg_login`, `bg_pin`, `link_download_apk`, `link_download_apk_marketing`, `nama_web`, `judul_web`, `alamat`, `slogan_web`) VALUES
+(3,	1234,	'',	'JGwAevVzsYtUjGey1-aLfpyfoe6T9bcz.jpg',	'ztK99CgCh2lj71-NST3Tj5r30D20YpsA.jpg',	'playstore',	'marketing',	'ISALAM',	'Wakaf Mudah Pahala Berlimpah',	'Batu',	'Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi fuga temporibus non cumque architecto magni cum dolorum id aperiam? Quidem.');
 
 DROP TABLE IF EXISTS `status`;
 CREATE TABLE `status` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 INSERT INTO `status` (`id`, `name`) VALUES
 (1,	'Pendanaan diajukan'),
@@ -534,6 +639,17 @@ INSERT INTO `status` (`id`, `name`) VALUES
 (7,	'Pendanaan Ditolak'),
 (8,	'Pembayaran Ditolak'),
 (9,	'Draf Pendanaan');
+
+DROP TABLE IF EXISTS `tema_hubungi_kami`;
+CREATE TABLE `tema_hubungi_kami` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nama_tema` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+INSERT INTO `tema_hubungi_kami` (`id`, `nama_tema`) VALUES
+(1,	'Saya Tertarik Menjadi Investor'),
+(2,	'Apa itu ISALAM?');
 
 DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
@@ -553,7 +669,7 @@ CREATE TABLE `user` (
   UNIQUE KEY `username` (`username`),
   KEY `role_id` (`role_id`),
   CONSTRAINT `user_ibfk_1` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 INSERT INTO `user` (`id`, `username`, `password`, `name`, `role_id`, `confirm`, `status`, `photo_url`, `secret_token`, `nomor_handphone`, `last_login`, `last_logout`) VALUES
 (1,	'admin@admin.com',	'21232f297a57a5a743894a0e4a801fc3',	'Administrator',	1,	1,	1,	'default.png',	'ISALAMMTYyNjcrQlVib3F0UGdDSDVlRGlSQ2d0ank0eE_ERv6J_hHNmRCdUM2Q3NjSitlWHNMUjVVUnJmKzkzMDg5S3CRETKEY',	NULL,	'2021-07-19 19:18:41',	'2021-07-19 19:18:03'),
@@ -564,6 +680,6 @@ INSERT INTO `user` (`id`, `username`, `password`, `name`, `role_id`, `confirm`, 
 (10,	'fachruwildan1@gmail.com',	'81dc9bdb52d04dc20036dbd8313ed055',	'fachru wildans',	5,	0,	1,	'default.png',	NULL,	'08965879812',	NULL,	NULL),
 (11,	'fachruwildan@gmail.com',	'81dc9bdb52d04dc20036dbd8313ed055',	'fachru wildans',	3,	0,	1,	'default.png',	NULL,	'089658798125',	NULL,	NULL),
 (14,	'fachruwildan12@gmail.com',	'81dc9bdb52d04dc20036dbd8313ed055',	'fachru wildans',	3,	0,	1,	'default.png',	NULL,	'0896587981254',	NULL,	NULL),
-(17,	'hardiansah7101@gmail.com',	'f5bb0c8de146c67b44babbf4e6584cc0',	'Muh. Hardiansah',	3,	0,	1,	'default.png',	NULL,	'081911106262',	NULL,	NULL);
+(17,	'hardiansah7101@gmail.com',	'f5bb0c8de146c67b44babbf4e6584cc0',	'Muh. Hardiansah',	3,	1,	1,	'default.png',	'ISALAMMTYyNjgrQkFxYkQ0UHFielp2RnlGYnIyMlRuNG_uBgXC_9XajFsdjBQbWdpcXhvWGJvZC1pcWkrNzAyNzQ=S3CRETKEY',	'081911106262',	NULL,	NULL);
 
--- 2021-07-21 04:50:12
+-- 2021-07-22 03:14:54
