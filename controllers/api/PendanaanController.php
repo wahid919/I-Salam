@@ -8,6 +8,7 @@ namespace app\controllers\api;
 
 use Yii;
 use app\models\Pendanaan;
+use app\models\Pembayaran;
 use app\models\Pencairan;
 use app\models\PartnerPendanaan;
 use app\models\AgendaPendanaan;
@@ -267,13 +268,14 @@ public function actionPendanaanCair()
     \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         $val = \yii::$app->request->post();
 $model = Pendanaan::findOne(['id'=>$val["id_pendanaan"],'status_id' => 4]);
+$bayar = Pembayaran::find()->where(['pendanaan_id'=>$val["id_pendanaan"]])->sum('nominal');
 $cair= new Pencairan;
 // $model->tanggal_received=date('Y-m-d H:i:s');
 if ($model != null) {
    $model->status_id = 3;
    $cair->pendanaan_id = $val['id_pendanaan'];
-   if($model->nominal < $val['nominal']){
-    return ['success' => false, 'message' => 'gagal', 'data' => $model->getErrors()];
+   if($bayar < $val['nominal']){
+    return ['success' => false, 'message' => 'Nominal Melebihi Jumlah yang didapat'];
    }else{
       $cair->nominal = $val['nominal'];
       $cair->tanggal = date('Y-m-d');
@@ -284,9 +286,9 @@ if ($model != null) {
    }
    
 // return $this->redirect(Url::previous());
-} else {
-    return ['success' => false, 'message' => 'gagal', 'data' => $model->getErrors()];
-}
+}else{
+    return ['success' => false, 'message' => 'Data Tidak Ditemukan'];
+  }
 }
 
 public function actionPendanaanSelesai(){
@@ -302,6 +304,8 @@ public function actionPendanaanSelesai(){
          } else {
             return ['success' => false, 'message' => 'gagal', 'data' => $model->getErrors()];
          }
+      }else{
+        return ['success' => false, 'message' => 'Data Tidak Ditemukan'];
       }
 }
 
@@ -318,6 +322,8 @@ public function actionPendanaanTolak(){
          } else {
             return ['success' => false, 'message' => 'gagal', 'data' => $model->getErrors()];
          }
+      }else{
+        return ['success' => false, 'message' => 'Data Tidak Ditemukan'];
       }
 }
 public function actionPendanaanBatal(){
@@ -332,6 +338,8 @@ public function actionPendanaanBatal(){
          } else {
             return ['success' => false, 'message' => 'gagal', 'data' => $model->getErrors()];
          }
+      }else{
+        return ['success' => false, 'message' => 'Data Tidak Ditemukan'];
       }
     }
 
