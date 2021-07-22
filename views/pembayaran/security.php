@@ -89,7 +89,7 @@ $this->title = 'CARIDANA';
 
         <?= Html::a('<<< Go Back', Yii::$app->request->referrer); ?>
 
-        <form action="<?= Url::to(['/pendanaan/create']) ?>" name="pin" style="text-align: center;" method="post">
+        <form action="<?= Url::to(['/pembayaran/create']) ?>" name="pin" style="text-align: center;" method="post">
             <p style="color: white;font-weight: bold;font-size: 40px">Security Page</p>
             <table>
                 <tr>

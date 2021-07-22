@@ -3,6 +3,7 @@
 // You should not change it manually as it will be overwritten on next build
 
 namespace app\controllers\base;
+
 use Yii;
 use app\models\Pendanaan;
 use app\models\Pencairan;
@@ -14,308 +15,325 @@ use yii\helpers\Url;
 use yii\filters\AccessControl;
 use dmstr\bootstrap\Tabs;
 use app\models\Action;
+use app\models\User;
 use yii\web\UploadedFile;
 
 /**
-* PendanaanController implements the CRUD actions for Pendanaan model.
-*/
+ * PendanaanController implements the CRUD actions for Pendanaan model.
+ */
 class PendanaanController extends Controller
 {
 
 
-/**
-* @var boolean whether to enable CSRF validation for the actions in this controller.
-* CSRF validation is enabled only when both this property and [[Request::enableCsrfValidation]] are true.
-*/
-public $enableCsrfValidation = false;
-public function behaviors()
-{
-//NodeLogger::sendLog(Action::getAccess($this->id));
-//apply role_action table for privilege (doesn't apply to super admin)
-return Action::getAccess($this->id);
-}
+   /**
+    * @var boolean whether to enable CSRF validation for the actions in this controller.
+    * CSRF validation is enabled only when both this property and [[Request::enableCsrfValidation]] are true.
+    */
+   public $enableCsrfValidation = false;
+   public function behaviors()
+   {
+      //NodeLogger::sendLog(Action::getAccess($this->id));
+      //apply role_action table for privilege (doesn't apply to super admin)
+      return Action::getAccess($this->id);
+   }
 
-/**
-* Lists all Pendanaan models.
-* @return mixed
-*/
-public function actionIndex()
-{
-    $searchModel  = new PendanaanSearch;
-    $dataProvider = $searchModel->search($_GET);
-    $setting=Setting::find()->one();
-    $bg = $setting->bg_pin;
+   /**
+    * Lists all Pendanaan models.
+    * @return mixed
+    */
+   public function actionIndex()
+   {
+      $searchModel  = new PendanaanSearch;
+      $dataProvider = $searchModel->search($_GET);
 
 
-if (yii::$app->request->post('display') == $setting->pin) {
-    
-Tabs::clearLocalStorage();
+      Tabs::clearLocalStorage();
 
-Url::remember();
-\Yii::$app->session['__crudReturnUrl'] = null;
+      Url::remember();
+      \Yii::$app->session['__crudReturnUrl'] = null;
 
-return $this->render('index', [
-    
-'dataProvider' => $dataProvider,
-    'searchModel' => $searchModel,
-]);
-}else{
-Yii::$app->session->setFlash('Pin Salah');
-}
-$this->layout = 'front';
-return $this->render('security',['bg' => $bg,]);
-}
+      return $this->render('index', [
 
-/**
-* Displays a single Pendanaan model.
-* @param integer $id
-*
-* @return mixed
-*/
-public function actionView($id)
-{
-\Yii::$app->session['__crudReturnUrl'] = Url::previous();
-Url::remember();
-Tabs::rememberActiveState();
+         'dataProvider' => $dataProvider,
+         'searchModel' => $searchModel,
+      ]);
+   }
 
-return $this->render('view', [
-'model' => $this->findModel($id),
-]);
-}
+   /**
+    * Displays a single Pendanaan model.
+    * @param integer $id
+    *
+    * @return mixed
+    */
+   public function actionView($id)
+   {
+      \Yii::$app->session['__crudReturnUrl'] = Url::previous();
+      Url::remember();
+      Tabs::rememberActiveState();
 
-/**
-* Creates a new Pendanaan model.
-* If creation is successful, the browser will be redirected to the 'view' page.
-* @return mixed
-*/
-public function actionCreate()
-{
-$model = new Pendanaan;
+      return $this->render('view', [
+         'model' => $this->findModel($id),
+      ]);
+   }
 
-try {
-    if ($model->load($_POST)) {
-        $model->status_id = 1;
-        $model->user_id = \Yii::$app->user->identity->id;
-        $fotos = UploadedFile::getInstance($model, 'foto');
-        if($fotos !=NULL){
-                    # store the source fotos name
-                    $model->foto = $fotos->name;
-                    $arr = explode(".", $fotos->name);
-                    $extension = end($arr);
-    
-                    # generate a unique fotos name
-                    $model->foto = Yii::$app->security->generateRandomString() . ".{$extension}";
-    
-                    # the path to save fotos
-                    // unlink(Yii::getAlias("@app/web/uploads/pengajuan/") . $oldFile);
-                    if(file_exists(Yii::getAlias("@app/web/uploads/pendanaaan/foto/")) == false){
-                        mkdir(Yii::getAlias("@app/web/uploads/pendanaaan/foto/"), 0777, true);
-                    }
-                    $path = Yii::getAlias("@app/web/uploads/pendanaaan/foto/") . $model->foto;
-        $fotos->saveAs($path);
-                }
-    if($model->save()){
-    return $this->redirect(['view', 'id' => $model->id]);
-    }
-} elseif (!\Yii::$app->request->isPost) {
-$model->load($_GET);
-}
-} catch (\Exception $e) {
-$msg = (isset($e->errorInfo[2]))?$e->errorInfo[2]:$e->getMessage();
-$model->addError('_exception', $msg);
-}
-return $this->render('create', ['model' => $model]);
-}
+   /**
+    * Creates a new Pendanaan model.
+    * If creation is successful, the browser will be redirected to the 'view' page.
+    * @return mixed
+    */
+   public function actionCreate()
+   {
+      $model = new Pendanaan;
 
-public function actionApprovePendanaan($id){
-    $model = $this->findModel($_GET['id']);
+      try {
+         if ($model->load($_POST)) {
+            $model->status_id = 1;
+            $model->user_id = \Yii::$app->user->identity->id;
+            $fotos = UploadedFile::getInstance($model, 'foto');
+            if ($fotos != NULL) {
+               # store the source fotos name
+               $model->foto = $fotos->name;
+               $arr = explode(".", $fotos->name);
+               $extension = end($arr);
+
+               # generate a unique fotos name
+               $model->foto = Yii::$app->security->generateRandomString() . ".{$extension}";
+
+               # the path to save fotos
+               // unlink(Yii::getAlias("@app/web/uploads/pengajuan/") . $oldFile);
+               if (file_exists(Yii::getAlias("@app/web/uploads/pendanaaan/foto/")) == false) {
+                  mkdir(Yii::getAlias("@app/web/uploads/pendanaaan/foto/"), 0777, true);
+               }
+               $path = Yii::getAlias("@app/web/uploads/pendanaaan/foto/") . $model->foto;
+               $fotos->saveAs($path);
+            }
+            if ($model->save()) {
+               return $this->redirect(['view', 'id' => $model->id]);
+            }
+         } elseif (!\Yii::$app->request->isPost) {
+            $model->load($_GET);
+         }
+      } catch (\Exception $e) {
+         $msg = (isset($e->errorInfo[2])) ? $e->errorInfo[2] : $e->getMessage();
+         $model->addError('_exception', $msg);
+      }
+
+      $setting = Setting::find()->one();
+      $bg = $setting->bg_pin;
+      $user = Yii::$app->user->id;
+      $pin = User::find()->where(['id' => $user])->one();
+      $bg = $setting->bg_pin;
+
+
+      if (yii::$app->request->post('display') == $pin->pin) {
+         return $this->render('create', ['model' => $model]);
+      } else {
+         Yii::$app->session->setFlash('Pin Salah');
+      }
+      $this->layout = 'front';
+      return $this->render('security', ['bg' => $bg,]);
+   }
+
+   public function actionApprovePendanaan($id)
+   {
+      $model = $this->findModel($_GET['id']);
       //return print_r($model);
       if ($model) {
          $model->status_id = 2;
-         if ($model->save()){
-            
+         if ($model->save()) {
+
             \Yii::$app->getSession()->setFlash(
-               'success', 'Pendanaan Telah Disetujui!'
+               'success',
+               'Pendanaan Telah Disetujui!'
             );
          } else {
             \Yii::$app->getSession()->setFlash(
-               'danger', 'Pendanaan Gagal Disetujui!'
+               'danger',
+               'Pendanaan Gagal Disetujui!'
             );
          }
          return $this->redirect(['index']);
       }
-}
-
-public function actionPendanaanCair($id)
-{
-$model = $this->findModel($id);
-$cair= new Pencairan;
-// $model->tanggal_received=date('Y-m-d H:i:s');
-if ($model->load($_POST)) {
-   $model->status_id = 3;
-   $cair->pendanaan_id = $model->id;
-   if($model->nominal < $model->noms){
-      \Yii::$app->getSession()->setFlash(
-         'danger', 'Nominal Pencairan Melebihi Nominal Pendanaan !'
-      );
-      return $this->render('pendanaan-cair', [
-         'model' => $model,
-         'cair'=> $cair,
-         ]);
-   }else{
-      $cair->nominal = $model->noms;
-      $cair->tanggal = date('Y-m-d');
-   $cair->save();
-        if($model->save()){
-         \Yii::$app->getSession()->setFlash(
-            'success', 'Pendanaan Telah Dicairkan!'
-         );
-         
-    return $this->redirect(['view', 'id' => $model->id]);
-        }
    }
-   
-// return $this->redirect(Url::previous());
-} else {
-return $this->render('pendanaan-cair', [
-'model' => $model,
-'cair'=> $cair,
-]);
-}
-}
 
-public function actionPendanaanSelesai($id){
-    $model = $this->findModel($_GET['id']);
+   public function actionPendanaanCair($id)
+   {
+      $model = $this->findModel($id);
+      $cair = new Pencairan;
+      // $model->tanggal_received=date('Y-m-d H:i:s');
+      if ($model->load($_POST)) {
+         $model->status_id = 3;
+         $cair->pendanaan_id = $model->id;
+         if ($model->nominal < $model->noms) {
+            \Yii::$app->getSession()->setFlash(
+               'danger',
+               'Nominal Pencairan Melebihi Nominal Pendanaan !'
+            );
+            return $this->render('pendanaan-cair', [
+               'model' => $model,
+               'cair' => $cair,
+            ]);
+         } else {
+            $cair->nominal = $model->noms;
+            $cair->tanggal = date('Y-m-d');
+            $cair->save();
+            if ($model->save()) {
+               \Yii::$app->getSession()->setFlash(
+                  'success',
+                  'Pendanaan Telah Dicairkan!'
+               );
+
+               return $this->redirect(['view', 'id' => $model->id]);
+            }
+         }
+
+         // return $this->redirect(Url::previous());
+      } else {
+         return $this->render('pendanaan-cair', [
+            'model' => $model,
+            'cair' => $cair,
+         ]);
+      }
+   }
+
+   public function actionPendanaanSelesai($id)
+   {
+      $model = $this->findModel($_GET['id']);
       //return print_r($model);
       if ($model) {
          $model->status_id = 4;
-         if ($model->save()){
-            
+         if ($model->save()) {
+
             \Yii::$app->getSession()->setFlash(
-               'success', 'Pendanaan Telah Selesai!'
+               'success',
+               'Pendanaan Telah Selesai!'
             );
          } else {
             \Yii::$app->getSession()->setFlash(
-               'danger', 'Pendanaan Gagal Selesai!'
+               'danger',
+               'Pendanaan Gagal Selesai!'
             );
          }
          return $this->redirect(['index']);
       }
-}
+   }
 
-public function actionPendanaanTolak($id){
-    $model = $this->findModel($_GET['id']);
+   public function actionPendanaanTolak($id)
+   {
+      $model = $this->findModel($_GET['id']);
       //return print_r($model);
       if ($model) {
          $model->status_id = 7;
-         if ($model->save()){
-            
+         if ($model->save()) {
+
             \Yii::$app->getSession()->setFlash(
-               'success', 'Pendanaan Telah Ditolak!'
+               'success',
+               'Pendanaan Telah Ditolak!'
             );
          } else {
             \Yii::$app->getSession()->setFlash(
-               'danger', 'Pendanaan Gagal Ditolak!'
+               'danger',
+               'Pendanaan Gagal Ditolak!'
             );
          }
          return $this->redirect(['index']);
       }
-}
+   }
 
-/**
-* Updates an existing Pendanaan model.
-* If update is successful, the browser will be redirected to the 'view' page.
-* @param integer $id
-* @return mixed
-*/
-public function actionUpdate($id)
-{
-$model = $this->findModel($id);
-$oldBukti=$model->foto;
-if ($model->load($_POST)) {
-    $fotos = UploadedFile::getInstance($model, 'foto');
-            if ($fotos != NULL) {
-                # store the source file name
-                $model->foto = $fotos->name;
-                $arr = explode(".", $fotos->name);
-                $extension = end($arr);
+   /**
+    * Updates an existing Pendanaan model.
+    * If update is successful, the browser will be redirected to the 'view' page.
+    * @param integer $id
+    * @return mixed
+    */
+   public function actionUpdate($id)
+   {
+      $model = $this->findModel($id);
+      $oldBukti = $model->foto;
+      if ($model->load($_POST)) {
+         $fotos = UploadedFile::getInstance($model, 'foto');
+         if ($fotos != NULL) {
+            # store the source file name
+            $model->foto = $fotos->name;
+            $arr = explode(".", $fotos->name);
+            $extension = end($arr);
 
-                # generate a unique file name
-                $model->foto = Yii::$app->security->generateRandomString() . ".{$extension}";
+            # generate a unique file name
+            $model->foto = Yii::$app->security->generateRandomString() . ".{$extension}";
 
-                # the path to save file
-                if(file_exists(Yii::getAlias("@app/web/uploads/pendanaan/foto/")) == false){
-                    mkdir(Yii::getAlias("@app/web/uploads/pendanaan/foto/"), 0777, true);
-                }
-                $path = Yii::getAlias("@app/web/uploads/pendanaan/foto/") . $model->foto;
-                if($oldBukti != NULL){
-
-                    $fotos->saveAs($path);
-                    unlink(Yii::$app->basePath . '/web/uploads/pendanaan/foto/' . $oldBukti);
-                }else{
-                    $fotos->saveAs($path);
-                }
-            }else{
-                $model->foto = $oldBukti;
+            # the path to save file
+            if (file_exists(Yii::getAlias("@app/web/uploads/pendanaan/foto/")) == false) {
+               mkdir(Yii::getAlias("@app/web/uploads/pendanaan/foto/"), 0777, true);
             }
-            
-if($model->save()){
-    return $this->redirect(['view', 'id' => $model->id]);
-}
-} else {
-return $this->render('update', [
-'model' => $model,
-]);
-}
-}
+            $path = Yii::getAlias("@app/web/uploads/pendanaan/foto/") . $model->foto;
+            if ($oldBukti != NULL) {
 
-/**
-* Deletes an existing Pendanaan model.
-* If deletion is successful, the browser will be redirected to the 'index' page.
-* @param integer $id
-* @return mixed
-*/
-public function actionDelete($id)
-{
-try {
-    $model = $this->findModel($id);
-$oldBukti=$model->foto;
-$model->delete();
-unlink(Yii::$app->basePath . '/web/uploads/pendanaan/foto/' . $oldBukti);
-} catch (\Exception $e) {
-$msg = (isset($e->errorInfo[2]))?$e->errorInfo[2]:$e->getMessage();
-\Yii::$app->getSession()->addFlash('error', $msg);
-return $this->redirect(Url::previous());
-}
+               $fotos->saveAs($path);
+               unlink(Yii::$app->basePath . '/web/uploads/pendanaan/foto/' . $oldBukti);
+            } else {
+               $fotos->saveAs($path);
+            }
+         } else {
+            $model->foto = $oldBukti;
+         }
 
-// TODO: improve detection
-$isPivot = strstr('$id',',');
-if ($isPivot == true) {
-return $this->redirect(Url::previous());
-} elseif (isset(\Yii::$app->session['__crudReturnUrl']) && \Yii::$app->session['__crudReturnUrl'] != '/') {
-Url::remember(null);
-$url = \Yii::$app->session['__crudReturnUrl'];
-\Yii::$app->session['__crudReturnUrl'] = null;
+         if ($model->save()) {
+            return $this->redirect(['view', 'id' => $model->id]);
+         }
+      } else {
+         return $this->render('update', [
+            'model' => $model,
+         ]);
+      }
+   }
 
-return $this->redirect($url);
-} else {
-return $this->redirect(['index']);
-}
-}
+   /**
+    * Deletes an existing Pendanaan model.
+    * If deletion is successful, the browser will be redirected to the 'index' page.
+    * @param integer $id
+    * @return mixed
+    */
+   public function actionDelete($id)
+   {
+      try {
+         $model = $this->findModel($id);
+         $oldBukti = $model->foto;
+         $model->delete();
+         unlink(Yii::$app->basePath . '/web/uploads/pendanaan/foto/' . $oldBukti);
+      } catch (\Exception $e) {
+         $msg = (isset($e->errorInfo[2])) ? $e->errorInfo[2] : $e->getMessage();
+         \Yii::$app->getSession()->addFlash('error', $msg);
+         return $this->redirect(Url::previous());
+      }
 
-/**
-* Finds the Pendanaan model based on its primary key value.
-* If the model is not found, a 404 HTTP exception will be thrown.
-* @param integer $id
-* @return Pendanaan the loaded model
-* @throws HttpException if the model cannot be found
-*/
-protected function findModel($id)
-{
-if (($model = Pendanaan::findOne($id)) !== null) {
-return $model;
-} else {
-throw new HttpException(404, 'The requested page does not exist.');
-}
-}
+      // TODO: improve detection
+      $isPivot = strstr('$id', ',');
+      if ($isPivot == true) {
+         return $this->redirect(Url::previous());
+      } elseif (isset(\Yii::$app->session['__crudReturnUrl']) && \Yii::$app->session['__crudReturnUrl'] != '/') {
+         Url::remember(null);
+         $url = \Yii::$app->session['__crudReturnUrl'];
+         \Yii::$app->session['__crudReturnUrl'] = null;
+
+         return $this->redirect($url);
+      } else {
+         return $this->redirect(['index']);
+      }
+   }
+
+   /**
+    * Finds the Pendanaan model based on its primary key value.
+    * If the model is not found, a 404 HTTP exception will be thrown.
+    * @param integer $id
+    * @return Pendanaan the loaded model
+    * @throws HttpException if the model cannot be found
+    */
+   protected function findModel($id)
+   {
+      if (($model = Pendanaan::findOne($id)) !== null) {
+         return $model;
+      } else {
+         throw new HttpException(404, 'The requested page does not exist.');
+      }
+   }
 }
