@@ -72,7 +72,7 @@ abstract class AgendaPendanaan extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'pendanaan_id' => 'Pendanaan ID',
+            'pendanaan_id' => 'Pendanaan',
             'nama_agenda' => 'Nama Agenda',
             'tanggal' => 'Tanggal',
         ];

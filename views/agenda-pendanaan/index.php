@@ -47,7 +47,14 @@ $this->params['breadcrumbs'][] = $this->title;
     }
 ],
 			'nama_agenda',
-			'tanggal',
+            [
+                'attribute' => 'tanggal',
+                'format' => 'raw',
+                'filter' => false,
+                'value' => function($model){
+                    return \app\components\Tanggal::toReadableDate($model->tanggal);
+                }
+            ],
                 ],
                 ]); ?>
             </div>

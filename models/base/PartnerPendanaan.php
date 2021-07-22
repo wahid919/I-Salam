@@ -51,7 +51,7 @@ abstract class PartnerPendanaan extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'nama_partner' => 'Nama Partner',
-            'pendanaan_id' => 'Pendanaan ID',
+            'pendanaan_id' => 'Pendanaan',
             'foto_ktp_partner' => 'Foto Ktp Partner',
         ];
     }
