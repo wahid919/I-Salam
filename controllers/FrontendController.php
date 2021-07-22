@@ -46,7 +46,7 @@ class FrontendController extends Controller
             } else {
                 Yii::$app->session->setFlash('error', "Data not saved.");
             }
-            return $this->redirect('index');
+            return $this->redirect('frontend/index');
         }
 
         return $this->render('index', [
