@@ -320,6 +320,20 @@ public function actionPendanaanTolak(){
          }
       }
 }
+public function actionPendanaanBatal(){
+    \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+    $val = \yii::$app->request->post();
+    $model = Pendanaan::findOne(['id'=>$val['id_pendanaan'],'status_id' => 1]);
+      //return print_r($model);
+      if ($model) {
+         if ($model->delete()){
+            
+            return ['success' => true, 'message' => 'success membatalkan pendanaan', 'data' => $model];
+         } else {
+            return ['success' => false, 'message' => 'gagal', 'data' => $model->getErrors()];
+         }
+      }
+    }
 
 
 

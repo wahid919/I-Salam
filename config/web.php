@@ -102,6 +102,7 @@ $config = [
                 'pendanaan/pendanaan-cair' => 'pendanaan/pendanaan-cair',
                 'pendanaan/pendanaan-selesai' => 'pendanaan/pendanaan-selesai',
                 'pendanaan/pendanaan-tolak' => 'pendanaan/pendanaan-tolak',
+                'pendanaan/pendanaan-batal' => 'pendanaan/pendanaan-batal',
                 // 'pendanaan/all' => '/pendanaan/all',
 
                 
