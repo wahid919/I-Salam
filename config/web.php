@@ -103,6 +103,7 @@ $config = [
                 'pendanaan/pendanaan-selesai' => 'pendanaan/pendanaan-selesai',
                 'pendanaan/pendanaan-tolak' => 'pendanaan/pendanaan-tolak',
                 'pendanaan/pendanaan-batal' => 'pendanaan/pendanaan-batal',
+                'pendanaan/pendanaan-diterima' => 'pendanaan/pendanaan-diterima',
                 // 'pendanaan/all' => '/pendanaan/all',
 
                 
@@ -112,7 +113,7 @@ $config = [
                 'pembayaran/informasi/<unique_id:[\w\_\-]+>' => 'pembayaran/informasi',
                 
                 //kategori pendanaans
-                'kategori-pendanaan/all' => 'kategori-pendanaan/all',
+                // 'kategori-pendanaan/all' => 'kategori-pendanaan/all',
 
                 //agenda-pendanaan
                 'agenda-pendanaan/all' => 'agenda-pendanaan/all',

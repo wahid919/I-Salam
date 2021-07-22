@@ -32,7 +32,7 @@ class PendanaanController extends \yii\rest\ActiveController
         $parent = parent::behaviors();
         $parent['authentication'] = [
             "class" => "\app\components\CustomAuth",
-            "only" => ["add-pendanaan", "draf-pendanaan", "all",],
+            "only" => ["add-pendanaan", "draf-pendanaan", "all","pendanaan-diterima",],
         ];
 
         return $parent;
@@ -43,6 +43,7 @@ class PendanaanController extends \yii\rest\ActiveController
         return [
             'all' => ['GET'],
             'show-pendanaan' => ['GET'],
+            'pendanaan-diterima' => ['GET'],
             'add-pendanaan' => ['POST'],
             'draf-pendanaan' => ['POST'],
             'approve-pendanaan' => ['POST'],
@@ -83,6 +84,19 @@ class PendanaanController extends \yii\rest\ActiveController
     {
         Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         $pendanaans = Pendanaan::findOne(['id' => $id]);
+
+
+        return [
+            "success" => true,
+            "message" => "List Pendanaan",
+            "data" => $pendanaans,
+        ];
+    }
+
+    public function actionPendanaanDiterima()
+    {
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $pendanaans = Pendanaan::find(['status_id' => 1])->all();
 
 
         return [
