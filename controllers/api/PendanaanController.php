@@ -68,6 +68,11 @@ class PendanaanController extends \yii\rest\ActiveController
         Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         if(\Yii::$app->user->identity->role_id ==2 ){
             $pendanaans = Pendanaan::find()->where(['user_id' => \Yii::$app->user->identity->id])->all();
+        //     $not = Pendanaaan::find()
+        //    ->where(['movie_id'=>$id])
+        //    ->andWhere(['location_id'=>$loc_id])
+        //    ->andWhere(['<>','cancel_date', $date])
+        //    ->all();
             return [
                 "success" => true,
                 "message" => "List Pendanaan",
@@ -81,6 +86,7 @@ class PendanaanController extends \yii\rest\ActiveController
                 "data" => $pendanaans,
             ];
         }
+        
         return [
             "success" => true,
             "message" => "Data Tidak ditemukan",
