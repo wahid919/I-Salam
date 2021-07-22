@@ -263,12 +263,23 @@ use yii\bootstrap\Html;
           </div>
         </div>
         <div class="col-12 col-lg-12 animated" data-animation="fadeInUp" data-animation-delay="150">
-          <?php if (Yii::$app->session->hasFlash('success')) { ?>
-            <div class="alert alert-success">
-              <!-- flash message -->
-              <?php Yii::$app->session->getFlash('success'); ?>
+          <!-- display success message -->
+          <?php if (Yii::$app->session->hasFlash('success')) : ?>
+            <div class="alert alert-success alert-dismissable">
+              <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+              <p><i class="icon fa fa-check"></i>Saved!</p>
+              <?= Yii::$app->session->getFlash('success') ?>
             </div>
-          <?php } ?>
+          <?php endif; ?>
+
+          <!-- display error message -->
+          <?php if (Yii::$app->session->hasFlash('error')) : ?>
+            <div class="alert alert-danger alert-dismissable">
+              <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+              <h4><i class="icon fa fa-check"></i>Saved!</h4>
+              <?= Yii::$app->session->getFlash('error') ?>
+            </div>
+          <?php endif; ?>
           <div class="contact-form">
 
             <?php $form = ActiveForm::begin(
@@ -457,8 +468,8 @@ use yii\bootstrap\Html;
   <script src="<?= \Yii::$app->request->BaseUrl ?>/template/assets/vendor/fullPage.js/dist/jquery.fullpage.min.js"></script>
   <script src="<?= \Yii::$app->request->BaseUrl ?>/template/assets/vendor/waypoints/lib/jquery.waypoints.min.js"></script>
   <script src="<?= \Yii::$app->request->BaseUrl ?>/template/assets/vendor/jquery-smooth-scroll/jquery.smooth-scroll.min.js"></script>
-  <script src="<?= \Yii::$app->request->BaseUrl ?>/template/assets/vendor/jquery-validation/dist/jquery.validate.min.js"></script>
-  <script src="<?= \Yii::$app->request->BaseUrl ?>/template/assets/vendor/jquery-form/dist/jquery.form.min.js"></script>
+  <!-- <script src="<?= \Yii::$app->request->BaseUrl ?>/template/assets/vendor/jquery-validation/dist/jquery.validate.min.js"></script> -->
+  <!-- <script src="<?= \Yii::$app->request->BaseUrl ?>/template/assets/vendor/jquery-form/dist/jquery.form.min.js"></script> -->
   <script src="<?= \Yii::$app->request->BaseUrl ?>/template/assets/vendor/magnific-popup/dist/jquery.magnific-popup.min.js"></script>
   <script src="<?= \Yii::$app->request->BaseUrl ?>/template/assets/vendor/jQuery.countdown/dist/jquery.countdown.min.js"></script>
   <script src="<?= \Yii::$app->request->BaseUrl ?>/template/assets/vendor/granim.js/dist/granim.min.js"></script>

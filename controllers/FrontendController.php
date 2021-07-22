@@ -30,24 +30,25 @@ class FrontendController extends Controller
         // $desa = \Yii::$app->request->baseUrl."/uploads/profil_desa/logo/".$profile_desas->logo;
         // $gambar = \Yii::$app->request->baseUrl."/uploads/slider-gambar/".$slider->gambar;
 
-        
+
 
         $setting = Setting::find()->one();
         $icon = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->logo;
         $bg = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->bg_pin;
         $model = new HubungiKami;
 
-        
+
+        if ($model->load($_POST)) {
             $model->status = 0;
-            if ($model->load($_POST) && $model->save()) {
-                Yii::$app->session->setFlash('success', 'User added');
-            
-                return $this->redirect(['index']);
-              }
-              else {
-                Yii::$app->session->setFlash('error', 'Error adding user');
-              }
-              
+
+            if ($model->save()) {
+                Yii::$app->session->setFlash('success', "Data created successfully."); 
+            } else {
+                Yii::$app->session->setFlash('error', "Data not saved.");
+            }
+            return $this->redirect('frontend/index');
+        }
+
         return $this->render('index', [
             'setting' => $setting,
             'icon' => $icon,
