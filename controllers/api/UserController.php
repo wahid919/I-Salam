@@ -48,34 +48,51 @@ class UserController extends \yii\rest\ActiveController
         unset($actions['delete']);
         return $actions;
     }
+    
     public function actionLogin()
     {
+        $username = !empty($_POST['username'])?$_POST['username']:'';
+        $password = !empty($_POST['password'])?$_POST['password']:'';
         $result = [];
-        try {
-            $user = User::findOne([
-                "username" => $_POST['username'],
-                "password" => md5($_POST['password']),
-            ]);
-            
-            if (isset($user)) {
-                $generate_random_string = SSOToken::generateToken();
-                $user->secret_token = $generate_random_string;
-                $user->save();
-                $result['success'] = true;
-                $result['message'] = "success";
-                // unset($user->fcm_token);
-                unset($user->password); // remove password from response
-                $result["data"] = $user;
-            } else {
+        // validasi jika kosong
+        if(empty($username) || empty($password)){
+          $result = [
+            'status' => 'error',
+            'message' => 'username & password tidak boleh kosong!',
+            'data' => '',
+          ];
+        }else{
+            try {
+                $user= User::findByUsername([
+                    "username" => $username,
+                    // "password" => $this->validatePassword($user->password,$_POST['password']),
+                ]);
+                if (isset($user)) {
+                    if($user->validatePassword($password)){
+                        $generate_random_string = SSOToken::generateToken();
+                        $user->secret_token = $generate_random_string;
+                        $user->save();
+                    $result['success'] = true;
+                    $result['message'] = "success";
+                    unset($user->password); // remove password from response
+                    $result["result"] = [$user];
+                    }else{
+                        $result["success"] = false;
+                        $result["message"] = "gagal";
+                        $result["result"] = "password salah";
+                    }
+                } else {
+                    $result["success"] = false;
+                    $result["message"] = "gagal";
+                    $result["result"] = "username tidak ada";
+                }
+            } catch (\Exception $e) {
                 $result["success"] = false;
                 $result["message"] = "gagal";
-                $result["data"] = "data kosong";
+                $result["result"] = "username atau password salah";
             }
-        } catch (\Exception $e) {
-            $result["success"] = false;
-            $result["message"] = "gagal";
-            $result["data"] = "error";
         }
+    
         return $result;
     }
 
@@ -113,7 +130,7 @@ class UserController extends \yii\rest\ActiveController
     {
         \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         $val = \yii::$app->request->post();
-        if($val['type'] == "marketing"){
+        if($val['role'] == "admin_pendanaan"){
             $rolee = 2;
         }else{
          $rolee =  5;   
@@ -122,7 +139,7 @@ class UserController extends \yii\rest\ActiveController
         $user = new User();
         // $user->name = $val['name'];
         $user->username = $val['username'];
-        $user->password =md5($val['confirm_password']);
+        $user->password =Yii::$app->security->generatePasswordHash($val['confirm_password']);
         $user->name = $val['name'];
         $user->role_id = $rolee;
         $user->confirm = 0;

@@ -1,7 +1,7 @@
 <?php
 
 namespace app\models;
-
+use Yii;
 class User extends \app\models\base\User implements \yii\web\IdentityInterface
 {
 
@@ -64,7 +64,8 @@ class User extends \app\models\base\User implements \yii\web\IdentityInterface
      */
     public function validatePassword($password)
     {
-        return $this->password === md5($password);
+        // return $this->password === md5($password);
+        return Yii::$app->security->validatePassword($password, $this->password);
     }
 
     public function getPelatihanPesertas(){

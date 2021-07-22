@@ -78,11 +78,11 @@ class User extends \yii\db\ActiveRecord
             [['username', 'password', 'name', 'role_id'], 'required'],
             [['role_id','confirm'], 'integer'],
             [['last_login', 'last_logout'], 'safe'],
-            [['password', 'name'], 'string', 'max' => 50],
+            [[ 'name'], 'string', 'max' => 50],
             ['username', 'email'],
             [['nomor_handphone'], 'string', 'max' => 15],
             // [[], 'string', 'max' => 32],
-            [['photo_url'], 'string', 'max' => 255],
+            [['password','photo_url'], 'string', 'max' => 255],
             [['username' ], 'unique']
         ];
     }
