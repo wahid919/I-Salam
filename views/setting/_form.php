@@ -71,7 +71,7 @@ use kartik\file\FileInput;
                         'class' => 'control-label'
                     ],
                     'options' => ['tag' => false]
-                ])->textInput(['type' => 'number']) ?>
+                ])->textInput(['type' => 'password']) ?>
             </div>
         </div>
         <div class="row">

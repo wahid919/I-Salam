@@ -40,7 +40,6 @@ $this->title = 'Setting ' . $model->nama_web;
             <?= DetailView::widget([
             'model' => $model,
             'attributes' => [
-        'pin',
         [
             'attribute' =>'logo',
             'format' =>'html',

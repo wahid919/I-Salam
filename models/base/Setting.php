@@ -53,7 +53,7 @@ abstract class Setting extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'pin' => 'Pin',
+            'pin' => 'Pin (nomor)',
             'logo' => 'Logo',
             'bg_login' => 'Background Login',
             'bg_pin' => 'Background  Pin',
