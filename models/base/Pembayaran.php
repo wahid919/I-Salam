@@ -33,6 +33,40 @@ use yii\db\Expression;
 abstract class Pembayaran extends \yii\db\ActiveRecord
 {
 
+    public function fields()
+    {
+        $parent = parent::fields();
+
+        
+
+
+        if (isset($parent['marketing_id'])) {
+            unset($parent['marketing_id']);
+            
+            $parent['marketing'] = function ($model) {
+                return $model->marketing;
+            };
+        }
+
+        if (isset($parent['pendanaan_id'])) {
+            unset($parent['pendanaan_id']);
+            
+            $parent['pendanaan'] = function ($model) {
+                return $model->pendanaan;
+            };
+        }
+
+        if (isset($parent['status_id'])) {
+            unset($parent['status_id']);
+            
+            $parent['status'] = function ($model) {
+                return $model->status;
+            };
+        }
+
+        
+        return $parent;
+    }
 
 
     /**

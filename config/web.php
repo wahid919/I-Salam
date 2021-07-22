@@ -104,12 +104,14 @@ $config = [
                 'pendanaan/pendanaan-tolak' => 'pendanaan/pendanaan-tolak',
                 'pendanaan/pendanaan-batal' => 'pendanaan/pendanaan-batal',
                 'pendanaan/pendanaan-diterima' => 'pendanaan/pendanaan-diterima',
+                'pendanaan/pendanan-wakaf/<unique_id:[\w\_\-]+>' => 'pendanaan/pendanan-wakaf',
                 // 'pendanaan/all' => '/pendanaan/all',
 
                 
                 //pembayaran
                 'pembayaran/all' => '/pembayaran/all',
                 'pembayaran/bayar' => 'pembayaran/bayar',
+                'pembayaran/wakaf' => 'pembayaran/wakaf',
                 'pembayaran/informasi/<unique_id:[\w\_\-]+>' => 'pembayaran/informasi',
                 
                 //kategori pendanaans

@@ -21,7 +21,7 @@ class PembayaranController extends \yii\rest\ActiveController
         $parent = parent::behaviors();
         $parent['authentication'] = [
             "class" => "\app\components\CustomAuth",
-            "only" => ["bayar"],
+            "only" => ["bayar","wakaf"],
         ];
 
         return $parent;
@@ -32,11 +32,43 @@ class PembayaranController extends \yii\rest\ActiveController
         return [
             'bayar' => ['POST'],
             'informasi' => ['GET'],
+            'wakaf' => ['GET'],
         ];
     }
 
     public $modelClass = 'app\models\Pembayaran';
 
+    public function actionWakaf()
+    {
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $wf = Pembayaran::find()->where(['user_id'=>\Yii::$app->user->identity->id])->all();
+       if($wf != null){
+           if(\Yii::$app->user->identity->role_id == 2){
+
+            $wa = Pembayaran::find()->all();
+            return [
+                "success" => true,
+                "message" => "Data Wakaf All ",
+                "data" =>$wa,
+            ];
+           }else{
+
+            return [
+                "success" => true,
+                "message" => "Wakaf ",
+                "data" =>$wf,
+            ];
+           }
+       }else{
+        return [
+            "success" => false,
+            "message" => "Anda Belum Pernah melakukan Wakaf",
+            "data" =>null,
+        ];
+       }
+
+    }
+    
     public function actionBayar()
     {
         Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;

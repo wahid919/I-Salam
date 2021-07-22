@@ -50,6 +50,7 @@ class PendanaanController extends \yii\rest\ActiveController
             'pendanaan-cair' => ['POST'],
             'pendanaan-selesai' => ['POST'],
             'pendanaan-tolak' => ['POST'],
+            'pendanaan-wakaf' => ['GET'],
         ];
     }
     public function actions()
@@ -374,7 +375,37 @@ public function actionPendanaanBatal(){
         return ['success' => false, 'message' => 'Data Tidak Ditemukan'];
       }
     }
+    public function actionPendanaanWakaf($id)
+    {
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $wf = Pendanaan::find()->where(['id'=>$id])->one();
+       if($wf != null){
+           $wa = Pembayaran::find()->where(['pendanaan_id'=>$wf->id,'status_id'=>6])->all();
+           
+           if($wa != null){
 
+            return [
+                "success" => true,
+                "message" => "Data Wakaf All ",
+                "data" =>$wa,
+            ];
+           }else{
+
+            return [
+                "success" => false,
+                "message" => "Belum Ada yang Wakaf ",
+                "data" =>null,
+            ];
+           }
+       }else{
+        return [
+            "success" => false,
+            "message" => "Data Pendanaan Tidak Ditemukan",
+            "data" =>null,
+        ];
+       }
+
+    }
 
 
 
