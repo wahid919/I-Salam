@@ -156,4 +156,26 @@ class HubungiKamiController extends Controller
             throw new HttpException(404, 'The requested page does not exist.');
         }
     }
+
+    public function actionSudahDihubungi($id)
+    {
+        $model = $this->findModel($_GET['id']);
+        //return print_r($model);
+        if ($model) {
+            $model->status = 1;
+            if ($model->save()) {
+
+                \Yii::$app->getSession()->setFlash(
+                    'success',
+                    'Telah Dihubungi!'
+                );
+            } else {
+                \Yii::$app->getSession()->setFlash(
+                    'danger',
+                    'Gagal!'
+                );
+            }
+            return $this->redirect(['index']);
+        }
+    }
 }
