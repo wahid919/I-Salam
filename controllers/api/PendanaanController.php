@@ -66,18 +66,30 @@ class PendanaanController extends \yii\rest\ActiveController
     public function actionAll()
     {
         Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-        $pendanaans = Pendanaan::find()->where(['user_id' => \Yii::$app->user->identity->id])->all();
-
-        $list_pendanaan = [];
-        foreach ($pendanaans as $pendanaan) {
-            $list_pendanaan[] = $pendanaan;
+        if(\Yii::$app->user->identity->role_id ==2 ){
+            $pendanaans = Pendanaan::find()->where(['user_id' => \Yii::$app->user->identity->id])->all();
+            return [
+                "success" => true,
+                "message" => "List Pendanaan",
+                "data" => $pendanaans,
+            ];
+        }else{
+            $pendanaans = Pendanaan::find()->where(['status_id' => 2])->all();
+            return [
+                "success" => true,
+                "message" => "List Pendanaan All",
+                "data" => $pendanaans,
+            ];
         }
-
         return [
             "success" => true,
-            "message" => "List Pendanaan",
-            "data" => $list_pendanaan,
+            "message" => "Data Tidak ditemukan",
+            
         ];
+
+       
+
+       
     }
 
     public function actionShowPendanaan($id)
