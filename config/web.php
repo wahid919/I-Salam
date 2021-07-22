@@ -109,8 +109,7 @@ $config = [
                 //pembayaran
                 'pembayaran/all' => '/pembayaran/all',
                 'pembayaran/bayar' => 'pembayaran/bayar',
-                'pembayaran/jumlah-pembayaran/<unique_id:[\w\_\-]+>' => 'pembayaran/jumlah-pembayaran',
-                'pembayaran/total-nominal/<unique_id:[\w\_\-]+>' => 'pembayaran/total-nominal',
+                'pembayaran/informasi/<unique_id:[\w\_\-]+>' => 'pembayaran/informasi',
                 
                 //kategori pendanaans
                 'kategori-pendanaan/all' => 'kategori-pendanaan/all',

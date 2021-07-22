@@ -30,8 +30,7 @@ class PembayaranController extends \yii\rest\ActiveController
     {
         return [
             'bayar' => ['POST'],
-            'jumlah-pembayaran' => ['GET'],
-            'total-nominal' => ['GET'],
+            'informasi' => ['GET'],
         ];
     }
 
@@ -85,28 +84,20 @@ class PembayaranController extends \yii\rest\ActiveController
         }
     }
 
-    public function actionJumlahPembayaran($id)
+    public function actionInformasi($id)
     {
         Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-        $pendanaans = Pembayaran::find()->where(['pendanaan_id'=>$id])->count();
+        $jumlah = Pembayaran::find()->where(['pendanaan_id'=>$id])->count();
+        $nominal = Pembayaran::find()->where(['pendanaan_id'=>$id])->sum('nominal');
         
 
         return [
             "success" => true,
             "message" => "Pendanaan",
-            "data" => $pendanaans,
-        ];
-    }
-
-    public function actionTotalNominal($id)
-    {
-        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-        $pendanaans = Pembayaran::find()->where(['pendanaan_id'=>$id])->sum('nominal');
-
-        return [
-            "success" => true,
-            "message" => "Pendanaan",
-            "data" => $pendanaans,
+            "data" => [
+                'jumlah' => $jumlah,
+                'nominal' => $nominal,
+            ],
         ];
     }
 }
