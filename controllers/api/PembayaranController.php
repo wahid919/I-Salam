@@ -20,10 +20,19 @@ class PembayaranController extends \yii\rest\ActiveController
         $parent = parent::behaviors();
         $parent['authentication'] = [
             "class" => "\app\components\CustomAuth",
-            "only" => ["bayar",],
+            "only" => ["bayar"],
         ];
 
         return $parent;
+    }
+
+    protected function verbs()
+    {
+        return [
+            'bayar' => ['POST'],
+            'jumlah-pembayaran' => ['GET'],
+            'total-nominal' => ['GET'],
+        ];
     }
 
     public $modelClass = 'app\models\Pembayaran';
@@ -74,5 +83,30 @@ class PembayaranController extends \yii\rest\ActiveController
         } else {
             return ['success' => false, 'message' => 'gagal', 'data' => $model->getErrors()];
         }
+    }
+
+    public function actionJumlahPembayaran($id)
+    {
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $pendanaans = Pembayaran::find()->where(['pendanaan_id'=>$id])->count();
+        
+
+        return [
+            "success" => true,
+            "message" => "Pendanaan",
+            "data" => $pendanaans,
+        ];
+    }
+
+    public function actionTotalNominal($id)
+    {
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $pendanaans = Pembayaran::find()->where(['pendanaan_id'=>$id])->sum('nominal');
+
+        return [
+            "success" => true,
+            "message" => "Pendanaan",
+            "data" => $pendanaans,
+        ];
     }
 }
