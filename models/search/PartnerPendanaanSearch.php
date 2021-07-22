@@ -18,8 +18,8 @@ class PartnerPendanaanSearch extends PartnerPendanaan
 public function rules()
 {
 return [
-[['id', 'bank_partner'], 'integer'],
-            [['nama_partner', 'no_rekening_partner'], 'safe'],
+[['id', 'pendanaan_id'], 'integer'],
+            [['nama_partner', 'foto_ktp_partner'], 'safe'],
 ];
 }
 
@@ -57,11 +57,11 @@ return $dataProvider;
 
 $query->andFilterWhere([
             'id' => $this->id,
-            'bank_partner' => $this->bank_partner,
+            'pendanaan_id' => $this->pendanaan_id,
         ]);
 
         $query->andFilterWhere(['like', 'nama_partner', $this->nama_partner])
-            ->andFilterWhere(['like', 'no_rekening_partner', $this->no_rekening_partner]);
+            ->andFilterWhere(['like', 'foto_ktp_partner', $this->foto_ktp_partner]);
 
 return $dataProvider;
 }
