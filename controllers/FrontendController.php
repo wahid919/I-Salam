@@ -35,19 +35,19 @@ class FrontendController extends Controller
         $setting = Setting::find()->one();
         $icon = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->logo;
         $bg = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->bg_pin;
-        $model = new HubungiKami();
+        $model = new HubungiKami;
 
-        try {
+        
             $model->status = 0;
             if ($model->load($_POST) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
-            } elseif (!\Yii::$app->request->isPost) {
-                $model->load($_GET);
-            }
-        } catch (\Exception $e) {
-            $msg = (isset($e->errorInfo[2])) ? $e->errorInfo[2] : $e->getMessage();
-            $model->addError('_exception', $msg);
-        }
+                Yii::$app->session->setFlash('success', 'User added');
+            
+                return $this->redirect(['index']);
+              }
+              else {
+                Yii::$app->session->setFlash('error', 'Error adding user');
+              }
+              
         return $this->render('index', [
             'setting' => $setting,
             'icon' => $icon,
