@@ -53,7 +53,7 @@ protected function verbs()
     public function actionByPendanaan($id)
     {
         Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-        $pendanaans = PartnerPendanaan::findOne(['pendanaan_id' => $id]);
+        $pendanaans = PartnerPendanaan::find()->where(['pendanaan_id' => $id])->all();
 
 
         return [
