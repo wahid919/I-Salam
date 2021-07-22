@@ -73,23 +73,23 @@ class UserController extends \yii\rest\ActiveController
                         $user->secret_token = $generate_random_string;
                         $user->save();
                     $result['success'] = true;
-                    $result['message'] = "success";
+                    $result['message'] = "success login";
                     unset($user->password); // remove password from response
-                    $result["result"] = [$user];
+                    $result["data"] = $user;
                     }else{
                         $result["success"] = false;
-                        $result["message"] = "gagal";
-                        $result["result"] = "password salah";
+                        $result["message"] = "password salah";
+                        $result["data"] = null;
                     }
                 } else {
                     $result["success"] = false;
-                    $result["message"] = "gagal";
-                    $result["result"] = "username tidak ada";
+                    $result["message"] = "username tidak ada";
+                    $result["data"] = null;
                 }
             } catch (\Exception $e) {
                 $result["success"] = false;
-                $result["message"] = "gagal";
-                $result["result"] = "username atau password salah";
+                $result["message"] = "username atau password salah";
+                $result["data"] = null;
             }
         }
     
