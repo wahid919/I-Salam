@@ -88,8 +88,8 @@ class PembayaranController extends \yii\rest\ActiveController
     public function actionInformasi($id)
     {
         Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-        $jumlah = Pembayaran::find()->where(['pendanaan_id'=>$id])->count();
-        $nominal = Pembayaran::find()->where(['pendanaan_id'=>$id])->sum('nominal');
+        $jumlah = Pembayaran::find()->where(['pendanaan_id'=>$id,'status_id'=>6])->count();
+        $nominal = Pembayaran::find()->where(['pendanaan_id'=>$id,'status_id'=>6])->sum('nominal');
         $pembayar = Pendanaan::find()->where(['id'=>$id])->one();
         $uang_pendanaan = (int)$pembayar->nominal;
         $persen = $nominal / $uang_pendanaan  * 100;
