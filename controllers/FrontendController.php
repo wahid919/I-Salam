@@ -40,9 +40,13 @@ class FrontendController extends Controller
 
         if ($model->load($_POST)) {
             $model->status = 0;
+
             if ($model->save()) {
-                Yii::$app->session->setFlash('success', 'User added');
+                Yii::$app->session->setFlash('success', "Data created successfully."); 
+            } else {
+                Yii::$app->session->setFlash('error', "Data not saved.");
             }
+            return $this->redirect('frontend/index');
         }
 
         return $this->render('index', [
