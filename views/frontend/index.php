@@ -263,6 +263,12 @@ use yii\bootstrap\Html;
           </div>
         </div>
         <div class="col-12 col-lg-12 animated" data-animation="fadeInUp" data-animation-delay="150">
+          <?php if (Yii::$app->session->hasFlash('success')) { ?>
+            <div class="alert alert-success">
+              <!-- flash message -->
+              <?php Yii::$app->session->getFlash('success'); ?>
+            </div>
+          <?php } ?>
           <div class="contact-form">
 
             <?php $form = ActiveForm::begin(
@@ -337,16 +343,16 @@ use yii\bootstrap\Html;
                   ); ?>
                 </div>
               </div>
-                  <?php echo $form->errorSummary($model); ?>
+              <?php echo $form->errorSummary($model); ?>
 
-                  <div class="col-12 text-center">
-                      <?= Html::submitButton('<i class="fa fa-save"></i> Simpan', ['class' => 'btn btn-primary']); ?>
-                    </div>
+              <div class="col-12 text-center">
+                <?= Html::submitButton('<i class="fa fa-save"></i> Simpan', ['class' => 'btn btn-primary']); ?>
+              </div>
             </div>
 
-                  <?php ActiveForm::end(); ?>
+            <?php ActiveForm::end(); ?>
 
-                  <!-- <form class="mb-0" id="cf" name="cf" action="include/sendemail.php" method="post" autocomplete="off">
+            <!-- <form class="mb-0" id="cf" name="cf" action="include/sendemail.php" method="post" autocomplete="off">
                     <div class="form-row">
 
                       <div class="col-12 col-md-4">
@@ -382,11 +388,11 @@ use yii\bootstrap\Html;
 
                     </div>
                   </form> -->
-                  <div class="contact-form-result"></div>
-                </div>
-              </div>
+            <div class="contact-form-result"></div>
+          </div>
+        </div>
 
-            </div>
+      </div>
     </section>
 
   </div>
