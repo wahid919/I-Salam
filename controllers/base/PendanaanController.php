@@ -169,6 +169,15 @@ class PendanaanController extends Controller
                'danger',
                'Nominal Pencairan Melebihi Nominal Pendanaan !'
             );
+            $pembayar = Pembayaran::find()->where(['pendanaan_id'=>$model->id,'status_id'=>6])->all();
+            foreach($pembayar as $value){
+               $notifikasi = new Notifikasi;
+               $notifikasi->message = "Pendanaan ".$model->pendanaaan->nama_pendanaaan." Telah di cairkan";
+               $notifikasi->user_id = $value->user_id;
+               $notifikasi->flag = 1;
+               $notifikasi->date=date('Y-m-d H:i:s');
+               $notifikasi->save();
+            }
             return $this->render('pendanaan-cair', [
                'model' => $model,
                'cair' => $cair,
@@ -203,7 +212,16 @@ class PendanaanController extends Controller
       if ($model) {
          $model->status_id = 4;
          if ($model->save()) {
-
+            $pembayar = Pembayaran::find()->where(['pendanaan_id'=>$model->id,'status_id'=>6])->all();
+            foreach($pembayar as $value){
+               $notifikasi = new Notifikasi;
+               $notifikasi->message = "Pendanaan ".$model->pendanaaan->nama_pendanaaan." Telah selesai";
+               $notifikasi->user_id = $value->user_id;
+               $notifikasi->flag = 1;
+               $notifikasi->date=date('Y-m-d H:i:s');
+               $notifikasi->save();
+            }
+            
             \Yii::$app->getSession()->setFlash(
                'success',
                'Pendanaan Telah Selesai!'

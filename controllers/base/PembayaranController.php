@@ -6,6 +6,7 @@ namespace app\controllers\base;
 
 use Yii;
 use app\models\Pembayaran;
+use app\models\Notifikasi;
 use app\models\search\PembayaranSearch;
 use yii\web\Controller;
 use yii\web\HttpException;
@@ -136,6 +137,8 @@ class PembayaranController extends Controller
             $model->status_id = 6;
             $model->tanggal_konfirmasi = date('Y-m-d H:i:s');
             if ($model->save()) {
+            $notifikasi = new Notifikasi;
+            $notifikasi->message = "Pembayaran dana untuk Pendanaan ".$model->pendanaaan->nama_pendanaaan." Telah disetujui";
 
                 \Yii::$app->getSession()->setFlash(
                     'success',

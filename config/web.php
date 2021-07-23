@@ -129,11 +129,16 @@ $config = [
                 'pencairan/add-pencairan' => 'pencairan/add-pencairan',
 
                 
-                //agenda-pendanaan
+                //partner-pendanaan
                 'partner-pendanaan/all' => 'partner-pendanaan/all',
                 'partner-pendanaan/add-partner' => 'partner-pendanaan/add-partner',
                 'partner-pendanaan/deleted' => 'partner-pendanaan/deleted',
                 'partner-pendanaan/by-pendanaan/<unique_id:[\w\_\-]+>' => 'partner-pendanaan/by-pendanaan',
+
+                
+                //notifikasi
+                'notifikasi/all' => 'notifikasi/all',
+                'notifikasi/detail/<unique_id:[\w\_\-]+>' => 'notifikasi/detail',
 
                 // 
                 '<controller:[\w\_\-]+>/<id:\d+>' => '<controller>/view',
