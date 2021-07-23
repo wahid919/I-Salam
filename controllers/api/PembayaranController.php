@@ -80,33 +80,38 @@ class PembayaranController extends \yii\rest\ActiveController
         // die;
 
         $model->pendanaan_id = $val['pendanaan_id'];
+        $model->kode_transaksi = Yii::$app->security->generateRandomString(10) . date('dmYHis');
+
+        // var_dump($model->kode_transaksi);
+        // die;
+
         $model->nama = $val['nama'];
         $model->nominal = $val['nominal'];
-        $model->bank = $val['bank'];
+        $model->jenis_pembayaran_id = $val['jenis_pembayaran_id'];
         $model->user_id = \Yii::$app->user->identity->id;
         $model->status_id = 5;
-        $model->tanggal_pembayaran = date('Y-m-d');
+        // $model->tanggal_pembayaran = date('Y-m-d');
         $bukti_transaksis = UploadedFile::getInstanceByName('bukti_transaksi');
 
         // var_dump($bukti_transaksis);
         // die;
-        if ($bukti_transaksis != NULL) {
-            # store the source bukti_transaksis name
-            $model->bukti_transaksi = $bukti_transaksis->name;
-            $arr = explode(".", $bukti_transaksis->name);
-            $extension = end($arr);
+        // if ($bukti_transaksis != NULL) {
+        //     # store the source bukti_transaksis name
+        //     $model->bukti_transaksi = $bukti_transaksis->name;
+        //     $arr = explode(".", $bukti_transaksis->name);
+        //     $extension = end($arr);
 
-            # generate a unique bukti_transaksis name
-            $model->bukti_transaksi = Yii::$app->security->generateRandomString() . ".{$extension}";
+        //     # generate a unique bukti_transaksis name
+        //     $model->bukti_transaksi = Yii::$app->security->generateRandomString() . ".{$extension}";
 
-            # the path to save bukti_transaksis
-            // unlink(Yii::getAlias("@app/web/uploads/pengajuan/") . $oldFile);
-            if (file_exists(Yii::getAlias("@app/web/uploads/pembayaran/bukti_transaksi/")) == false) {
-                mkdir(Yii::getAlias("@app/web/uploads/pembayaran/bukti_transaksi/"), 0777, true);
-            }
-            $path = Yii::getAlias("@app/web/uploads/pembayaran/bukti_transaksi/") . $model->bukti_transaksi;
-            $bukti_transaksis->saveAs($path);
-        }
+        //     # the path to save bukti_transaksis
+        //     // unlink(Yii::getAlias("@app/web/uploads/pengajuan/") . $oldFile);
+        //     if (file_exists(Yii::getAlias("@app/web/uploads/pembayaran/bukti_transaksi/")) == false) {
+        //         mkdir(Yii::getAlias("@app/web/uploads/pembayaran/bukti_transaksi/"), 0777, true);
+        //     }
+        //     $path = Yii::getAlias("@app/web/uploads/pembayaran/bukti_transaksi/") . $model->bukti_transaksi;
+        //     $bukti_transaksis->saveAs($path);
+        // }
         if ($model->validate()) {
             $model->save();
 
@@ -116,7 +121,7 @@ class PembayaranController extends \yii\rest\ActiveController
             return ['success' => false, 'message' => 'gagal', 'data' => $model->getErrors()];
         }
     }
-    public function actionUploadFile()
+    public function actionUploadPembayaran()
     {
         Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         $val = \yii::$app->request->post();
@@ -128,7 +133,9 @@ class PembayaranController extends \yii\rest\ActiveController
         // die;
         if ($bukti_transaksis != NULL) {
             # store the source bukti_transaksis name
+            $model->tanggal_upload_bukti = date('Y-m-d H:i:s');
             $model->bukti_transaksi = $bukti_transaksis->name;
+            $model->status_id = 10;
             $arr = explode(".", $bukti_transaksis->name);
             $extension = end($arr);
 

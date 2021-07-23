@@ -90,10 +90,10 @@ abstract class Pembayaran extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['nama', 'nominal', 'user_id', 'bank', 'pendanaan_id', 'tanggal_pembayaran', 'status_id'], 'required'],
+            [['nama', 'nominal', 'kode_transaksi', 'user_id', 'jenis_pembayaran_id', 'pendanaan_id', 'status_id'], 'required'],
             [['nominal', 'user_id', 'pendanaan_id', 'status_id'], 'integer'],
-            [['tanggal_pembayaran'], 'safe'],
-            [['nama', 'bukti_transaksi', 'bank'], 'string', 'max' => 255],
+            [['tanggal_upload_bukti', 'tanggal_konfirmasi'], 'safe'],
+            [['nama', 'bukti_transaksi', 'tanggal_upload_bukti', 'tanggal_konfirmasi' ], 'string', 'max' => 255],
             [['status_id'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\Status::className(), 'targetAttribute' => ['status_id' => 'id']],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\User::className(), 'targetAttribute' => ['user_id' => 'id']],
             [['pendanaan_id'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\Pendanaan::className(), 'targetAttribute' => ['pendanaan_id' => 'id']]
@@ -107,13 +107,15 @@ abstract class Pembayaran extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
+            'kode_transaksi' => 'Kode Transaksi',
             'nama' => 'Nama',
             'nominal' => 'Nominal',
+            'jenis_pembayaran_id' => 'Jenis Pembayaran',
             'bukti_transaksi' => 'Bukti Transaksi',
             'user_id' => 'Pewakaf',
-            'bank' => 'Bank',
             'pendanaan_id' => 'Pendanaan',
-            'tanggal_pembayaran' => 'Tanggal Pembayaran',
+            'tanggal_upload_bukti' => 'Tanggal Upload Bukti',
+            'tanggal_konfirmasi' => 'Tanggal Konfirmasi',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
             'status_id' => 'Status',
@@ -144,6 +146,11 @@ abstract class Pembayaran extends \yii\db\ActiveRecord
     public function getPendanaan()
     {
         return $this->hasOne(\app\models\Pendanaan::className(), ['id' => 'pendanaan_id']);
+    }
+
+    public function getJenisPembayaran()
+    {
+        return $this->hasOne(\app\models\JenisPembayaran::className(), ['id' => 'jenis_pembayaran_id']);
     }
 
 

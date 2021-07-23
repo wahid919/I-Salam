@@ -74,7 +74,7 @@ use yii\helpers\Html;
                 'visible'=>\Yii::$app->user->identity->role_id ==1,
                 'buttons' => [
                   'approve-pembayaran' => function ($url, $model, $key) {
-                    if($model->status_id ==5){
+                    if($model->status_id ==10){
                       return Html::a("<i class='fa fa-check'></i>", ["approve-pembayaran", "id"=>$model->id], [
                           "class"=>"btn btn-success",
                           "title"=>"Approve Pembayaran",
@@ -83,7 +83,7 @@ use yii\helpers\Html;
                     }
                   },
                   'tolak' => function ($url, $model, $key) {
-                    if($model->status_id ==5){
+                    if($model->status_id ==10){
                     return Html::a("<i class='fa fa-times'></i>", ["pembayaran-tolak", "id"=>$model->id], [
                         "class"=>"btn btn-danger",
                         "title"=>"Cancel",

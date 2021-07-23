@@ -134,6 +134,7 @@ class PembayaranController extends Controller
         //return print_r($model);
         if ($model) {
             $model->status_id = 6;
+            $model->tanggal_konfirmasi = date('Y-m-d H:i:s');
             if ($model->save()) {
 
                 \Yii::$app->getSession()->setFlash(

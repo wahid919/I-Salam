@@ -5,12 +5,12 @@ namespace app\models\search;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\Pembayaran;
+use app\models\JenisPembayaran;
 
 /**
-* PembayaranSearch represents the model behind the search form about `app\models\Pembayaran`.
+* JenisPembayaranSearch represents the model behind the search form about `app\models\JenisPembayaran`.
 */
-class PembayaranSearch extends Pembayaran
+class JenisPembayaranSearch extends JenisPembayaran
 {
 /**
 * @inheritdoc
@@ -18,8 +18,8 @@ class PembayaranSearch extends Pembayaran
 public function rules()
 {
 return [
-[['id', 'nominal', 'user_id', 'pendanaan', 'status_id'], 'integer'],
-            [['nama', 'bukti_transaksi','tanggal_upload_bukti'], 'safe'],
+[['id'], 'integer'],
+            [['nama_jenis'], 'safe'],
 ];
 }
 
@@ -41,7 +41,7 @@ return Model::scenarios();
 */
 public function search($params)
 {
-$query = Pembayaran::find();
+$query = JenisPembayaran::find();
 
 $dataProvider = new ActiveDataProvider([
 'query' => $query,
@@ -57,14 +57,9 @@ return $dataProvider;
 
 $query->andFilterWhere([
             'id' => $this->id,
-            'nominal' => $this->nominal,
-            'user_id' => $this->user_id,
-            'pendanaan' => $this->pendanaan,
-            'status_id' => $this->status_id,
         ]);
 
-        $query->andFilterWhere(['like', 'nama', $this->nama])
-            ->andFilterWhere(['like', 'bukti_transaksi', $this->bukti_transaksi]);
+        $query->andFilterWhere(['like', 'nama_jenis', $this->nama_jenis]);
 
 return $dataProvider;
 }
