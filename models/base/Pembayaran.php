@@ -65,7 +65,7 @@ abstract class Pembayaran extends \yii\db\ActiveRecord
     {
         return [
             [['nama', 'nominal', 'user_id', 'bank', 'pendanaan_id', 'tanggal_pembayaran', 'status_id'], 'required'],
-            [['nominal', 'user_id', 'marketing_id', 'pendanaan_id', 'status_id'], 'integer'],
+            [['nominal', 'user_id', 'pendanaan_id', 'status_id'], 'integer'],
             [['tanggal_pembayaran'], 'safe'],
             [['nama', 'bukti_transaksi', 'bank'], 'string', 'max' => 255],
             [['status_id'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\Status::className(), 'targetAttribute' => ['status_id' => 'id']],
@@ -86,7 +86,6 @@ abstract class Pembayaran extends \yii\db\ActiveRecord
             'nominal' => 'Nominal',
             'bukti_transaksi' => 'Bukti Transaksi',
             'user_id' => 'Pewakaf',
-            'marketing_id' => 'Marketing',
             'bank' => 'Bank',
             'pendanaan_id' => 'Pendanaan',
             'tanggal_pembayaran' => 'Tanggal Pembayaran',

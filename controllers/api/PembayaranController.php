@@ -49,7 +49,6 @@ class PembayaranController extends \yii\rest\ActiveController
         $model->pendanaan_id = $val['pendanaan_id'];
         $model->nama = $val['nama'];
         $model->nominal = $val['nominal'];
-        $model->marketing_id = $val['marketing_id'];
         $model->bank = $val['bank'];
         $model->user_id = \Yii::$app->user->identity->id;
         $model->status_id = 5;
