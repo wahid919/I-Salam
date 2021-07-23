@@ -32,7 +32,7 @@ class PendanaanController extends \yii\rest\ActiveController
         $parent = parent::behaviors();
         $parent['authentication'] = [
             "class" => "\app\components\CustomAuth",
-            "only" => ["add-pendanaan", "draf-pendanaan", "all",],
+            "only" => ["add-pendanaan", "draf-pendanaan", "all","pendanaan-diterima",],
         ];
 
         return $parent;
@@ -43,12 +43,14 @@ class PendanaanController extends \yii\rest\ActiveController
         return [
             'all' => ['GET'],
             'show-pendanaan' => ['GET'],
+            'pendanaan-diterima' => ['GET'],
             'add-pendanaan' => ['POST'],
             'draf-pendanaan' => ['POST'],
             'approve-pendanaan' => ['POST'],
             'pendanaan-cair' => ['POST'],
             'pendanaan-selesai' => ['POST'],
             'pendanaan-tolak' => ['POST'],
+            'pendanaan-wakaf' => ['GET'],
         ];
     }
     public function actions()
@@ -65,24 +67,55 @@ class PendanaanController extends \yii\rest\ActiveController
     public function actionAll()
     {
         Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-        $pendanaans = Pendanaan::find()->where(['user_id' => \Yii::$app->user->identity->id])->all();
-
-        $list_pendanaan = [];
-        foreach ($pendanaans as $pendanaan) {
-            $list_pendanaan[] = $pendanaan;
+        if(\Yii::$app->user->identity->role_id ==2 ){
+            $pendanaans = Pendanaan::find()->where(['user_id' => \Yii::$app->user->identity->id])->all();
+        //     $not = Pendanaaan::find()
+        //    ->where(['movie_id'=>$id])
+        //    ->andWhere(['location_id'=>$loc_id])
+        //    ->andWhere(['<>','cancel_date', $date])
+        //    ->all();
+            return [
+                "success" => true,
+                "message" => "List Pendanaan",
+                "data" => $pendanaans,
+            ];
+        }else{
+            $pendanaans = Pendanaan::find()->where(['status_id' => 2])->all();
+            return [
+                "success" => true,
+                "message" => "List Pendanaan All",
+                "data" => $pendanaans,
+            ];
         }
-
+        
         return [
             "success" => true,
-            "message" => "List Pendanaan",
-            "data" => $list_pendanaan,
+            "message" => "Data Tidak ditemukan",
+            
         ];
+
+       
+
+       
     }
 
     public function actionShowPendanaan($id)
     {
         Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         $pendanaans = Pendanaan::findOne(['id' => $id]);
+
+
+        return [
+            "success" => true,
+            "message" => "List Pendanaan",
+            "data" => $pendanaans,
+        ];
+    }
+
+    public function actionPendanaanDiterima()
+    {
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $pendanaans = Pendanaan::find(['status_id' => 1])->all();
 
 
         return [
@@ -342,7 +375,37 @@ public function actionPendanaanBatal(){
         return ['success' => false, 'message' => 'Data Tidak Ditemukan'];
       }
     }
+    public function actionPendanaanWakaf($id)
+    {
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $wf = Pendanaan::find()->where(['id'=>$id])->one();
+       if($wf != null){
+           $wa = Pembayaran::find()->where(['pendanaan_id'=>$wf->id,'status_id'=>6])->all();
+           
+           if($wa != null){
 
+            return [
+                "success" => true,
+                "message" => "Data Wakaf All ",
+                "data" =>$wa,
+            ];
+           }else{
+
+            return [
+                "success" => false,
+                "message" => "Belum Ada yang Wakaf ",
+                "data" =>null,
+            ];
+           }
+       }else{
+        return [
+            "success" => false,
+            "message" => "Data Pendanaan Tidak Ditemukan",
+            "data" =>null,
+        ];
+       }
+
+    }
 
 
 

@@ -75,10 +75,11 @@ class User extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['username', 'password', 'name', 'pin', 'role_id'], 'required'],
+            [['username', 'password', 'name','role_id'], 'required'],
             [['role_id','confirm'], 'integer'],
             [['last_login', 'last_logout'], 'safe'],
             [[ 'name'], 'string', 'max' => 50],
+            [[ 'pin'], 'string', 'max' => 8],
             ['username', 'email'],
             [['nomor_handphone'], 'string', 'max' => 15],
             // [[], 'string', 'max' => 32],
@@ -99,6 +100,7 @@ class User extends \yii\db\ActiveRecord
             'name' => 'Name',
             'role_id' => 'Role',
             'photo_url' => 'Photo Url',
+            'pin' => 'Pin',
             'secret_token' => 'Secret Token',
             'nomor_handphone' => 'Nomor Handphone',
             'last_login' => 'Last Login',

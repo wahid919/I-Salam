@@ -16,7 +16,6 @@ use yii\db\Expression;
  * @property integer $nominal
  * @property string $bukti_transaksi
  * @property integer $user_id
- * @property integer $marketing_id
  * @property string $bank
  * @property integer $pendanaan_id
  * @property string $tanggal_pembayaran
@@ -26,13 +25,40 @@ use yii\db\Expression;
  *
  * @property \app\models\Status $status
  * @property \app\models\User $user
- * @property \app\models\User $marketing
  * @property \app\models\Pendanaan $pendanaan
  * @property string $aliasModel
  */
 abstract class Pembayaran extends \yii\db\ActiveRecord
 {
 
+    public function fields()
+    {
+        $parent = parent::fields();
+
+        
+
+
+       
+
+        if (isset($parent['pendanaan_id'])) {
+            unset($parent['pendanaan_id']);
+            
+            $parent['pendanaan'] = function ($model) {
+                return $model->pendanaan;
+            };
+        }
+
+        if (isset($parent['status_id'])) {
+            unset($parent['status_id']);
+            
+            $parent['status'] = function ($model) {
+                return $model->status;
+            };
+        }
+
+        
+        return $parent;
+    }
 
 
     /**
@@ -70,7 +96,6 @@ abstract class Pembayaran extends \yii\db\ActiveRecord
             [['nama', 'bukti_transaksi', 'bank'], 'string', 'max' => 255],
             [['status_id'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\Status::className(), 'targetAttribute' => ['status_id' => 'id']],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\User::className(), 'targetAttribute' => ['user_id' => 'id']],
-            [['marketing_id'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\User::className(), 'targetAttribute' => ['marketing_id' => 'id']],
             [['pendanaan_id'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\Pendanaan::className(), 'targetAttribute' => ['pendanaan_id' => 'id']]
         ];
     }
@@ -111,13 +136,7 @@ abstract class Pembayaran extends \yii\db\ActiveRecord
         return $this->hasOne(\app\models\User::className(), ['id' => 'user_id']);
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getMarketing()
-    {
-        return $this->hasOne(\app\models\User::className(), ['id' => 'marketing_id']);
-    }
+    
 
     /**
      * @return \yii\db\ActiveQuery

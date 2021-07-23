@@ -143,16 +143,17 @@ class UserController extends \yii\rest\ActiveController
         $user->name = $val['name'];
         $user->role_id = $rolee;
         $user->confirm = 0;
-        $user->confirm = 0;
+        $user->status = 0;
+        $user->pin = $val['pin'];
         $user->photo_url = 'default.png';
         $user->nomor_handphone = ($val['no_hp']) ?? '';
         // $user->address = $val['address'];
 
         if ( $val['confirm_password'] != $val['password']) {
-            return ['success' => false, 'message' => 'gagal', 'result' => "Password tidak sama"];
+            return ['success' => false, 'message' => 'Password tidak sama', 'data' => null];
                         }
         if ($user->nomor_handphone == '') {
-            return ['success' => false, 'message' => 'gagal', 'data' => 'No Telp tidak boleh kosong'];
+            return ['success' => false, 'message' => 'No Telp tidak boleh kosong', 'data' => null];
         }
 
         // if ($user->username == '') {
@@ -160,16 +161,22 @@ class UserController extends \yii\rest\ActiveController
         // }
 
         if (strlen($val['password']) < 3) {
-            return ['success' => false, 'message' => 'gagal', 'data' => 'Password minimal 4 karakter'];
+            return ['success' => false, 'message' => 'Password minimal 4 karakter', 'data' =>null];
+        }
+        if (strlen($val['pin']) < 3) {
+            return ['success' => false, 'message' => 'Pin minimal 3 karakter', 'data' => null];
+        }
+        if (filter_var($val['pin'], FILTER_VALIDATE_INT) == false) {
+            return ['success' => false, 'message' => 'Pin Harus berupa angka', 'data' => null];
         }
 
         if (filter_var($user->username, FILTER_VALIDATE_EMAIL) == false) {
-            return ['success' => false, 'message' => 'gagal', 'data' => 'Username anda tidak valid'];
+            return ['success' => false, 'message' => 'Username anda tidak valid', 'data' => null];
         }
 
         $check = User::findOne(['nomor_handphone' => $user->nomor_handphone]);
         if ($check != null) {
-            return ['success' => false, 'message' => 'gagal', 'data' => 'No Telp telah digunakan'];
+            return ['success' => false, 'message' => 'No Telp telah digunakan', 'data' => null];
         }
 
         // $check = User::findOne(['email' => $user->email]);
@@ -181,7 +188,7 @@ class UserController extends \yii\rest\ActiveController
         if ($user->username) {
             $cek = User::find()->where(['username' => $user->username])->asArray()->one();
             if (isset($cek)) {
-                return ['success' => false, 'message' => 'gagal', 'data' => 'Username telah digunakan'];
+                return ['success' => false, 'message' => 'Username telah digunakan', 'data' => null];
             }
         }
 
