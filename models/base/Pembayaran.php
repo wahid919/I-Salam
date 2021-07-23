@@ -55,6 +55,13 @@ abstract class Pembayaran extends \yii\db\ActiveRecord
                 return $model->status;
             };
         }
+        if (isset($parent['jenis_pembayaran_id'])) {
+            unset($parent['jenis_pembayaran_id']);
+            
+            $parent['jenis_pembayaran'] = function ($model) {
+                return $model->jenisPembayaran;
+            };
+        }
 
         
         return $parent;
@@ -93,7 +100,7 @@ abstract class Pembayaran extends \yii\db\ActiveRecord
             [['nama', 'nominal', 'kode_transaksi', 'user_id', 'jenis_pembayaran_id', 'pendanaan_id', 'status_id'], 'required'],
             [['nominal', 'user_id', 'pendanaan_id', 'status_id'], 'integer'],
             [['tanggal_upload_bukti', 'tanggal_konfirmasi'], 'safe'],
-            [['nama', 'bukti_transaksi', 'tanggal_upload_bukti', 'tanggal_konfirmasi' ], 'string', 'max' => 255],
+            [['nama', 'bukti_transaksi'], 'string', 'max' => 255],
             [['status_id'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\Status::className(), 'targetAttribute' => ['status_id' => 'id']],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\User::className(), 'targetAttribute' => ['user_id' => 'id']],
             [['pendanaan_id'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\Pendanaan::className(), 'targetAttribute' => ['pendanaan_id' => 'id']]

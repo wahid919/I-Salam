@@ -139,6 +139,10 @@ class PembayaranController extends Controller
             if ($model->save()) {
             $notifikasi = new Notifikasi;
             $notifikasi->message = "Pembayaran dana untuk Pendanaan ".$model->pendanaaan->nama_pendanaaan." Telah disetujui";
+            $notifikasi->user_id = $model->user_id;
+            $notifikasi->flag = 1;
+            $notifikasi->date=date('Y-m-d H:i:s');
+            $notifikasi->save();
 
                 \Yii::$app->getSession()->setFlash(
                     'success',
@@ -161,6 +165,13 @@ class PembayaranController extends Controller
             $model->status_id = 8;
             if ($model->save()) {
 
+                $model->tanggal_konfirmasi = date('Y-m-d H:i:s');
+                $notifikasi = new Notifikasi;
+                $notifikasi->message = "Pembayaran dana untuk Pendanaan ".$model->pendanaaan->nama_pendanaaan." Telah ditolak";
+                $notifikasi->user_id = $model->user_id;
+                $notifikasi->flag = 1;
+                $notifikasi->date=date('Y-m-d H:i:s');
+                $notifikasi->save();
                 \Yii::$app->getSession()->setFlash(
                     'success',
                     'Pembayaran Telah Ditolak!'
