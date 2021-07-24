@@ -8,6 +8,7 @@ namespace app\controllers\api;
 
 use app\models\Pembayaran;
 use app\models\Pendanaan;
+use app\models\JenisPembayaran;
 use Yii;
 use yii\filters\AccessControl;
 use yii\helpers\ArrayHelper;
@@ -21,7 +22,7 @@ class PembayaranController extends \yii\rest\ActiveController
         $parent = parent::behaviors();
         $parent['authentication'] = [
             "class" => "\app\components\CustomAuth",
-            "only" => ["bayar","wakaf"],
+            "only" => ["bayar","wakaf","detail-wakaf"],
         ];
 
         return $parent;
@@ -33,6 +34,7 @@ class PembayaranController extends \yii\rest\ActiveController
             'bayar' => ['POST'],
             'upload-file' => ['POST'],
             'informasi' => ['GET'],
+            'detail-wakaf' => ['GET'],
             'wakaf' => ['GET'],
         ];
     }
@@ -69,6 +71,35 @@ class PembayaranController extends \yii\rest\ActiveController
        }
 
     }
+    public function actionDetailWakaf($id)
+    {
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $wf = Pembayaran::find()->where(['id'=>$id])->one();
+       if($wf != null){
+          if($wf->user_id != \Yii::$app->user->identity->id ){
+            return [
+                "success" => true,
+                "message" => "Mohon Maaf Data Tidak ditemukan",
+                "data" =>null,
+            ];
+          }else{
+            return [
+                "success" => true,
+                "message" => "Wakaf ",
+                "data" =>$wf,
+            ];
+          }
+            
+           
+       }else{
+        return [
+            "success" => false,
+            "message" => "Data Wakaf Tidak Ditemukan",
+            "data" =>null,
+        ];
+       }
+
+    }
     
     public function actionBayar()
     {
@@ -87,7 +118,7 @@ class PembayaranController extends \yii\rest\ActiveController
 
         $model->nama = $val['nama'];
         $model->nominal = $val['nominal'];
-        $model->jenis_pembayaran_id = $val['jenis_pembayaran_id'];
+        $model->jenis_pembayaran_id = $val['jenis_pembayaran_id'] ?? '';;
         $model->user_id = \Yii::$app->user->identity->id;
         $model->status_id = 5;
         // $model->tanggal_pembayaran = date('Y-m-d');
@@ -131,33 +162,39 @@ class PembayaranController extends \yii\rest\ActiveController
 
         // var_dump($bukti_transaksis);
         // die;
-        if ($bukti_transaksis != NULL) {
-            # store the source bukti_transaksis name
-            $model->tanggal_upload_bukti = date('Y-m-d H:i:s');
-            $model->bukti_transaksi = $bukti_transaksis->name;
-            $model->status_id = 10;
-            $arr = explode(".", $bukti_transaksis->name);
-            $extension = end($arr);
-
-            # generate a unique bukti_transaksis name
-            $model->bukti_transaksi = Yii::$app->security->generateRandomString() . ".{$extension}";
-
-            # the path to save bukti_transaksis
-            // unlink(Yii::getAlias("@app/web/uploads/pengajuan/") . $oldFile);
-            if (file_exists(Yii::getAlias("@app/web/uploads/pembayaran/bukti_transaksi/")) == false) {
-                mkdir(Yii::getAlias("@app/web/uploads/pembayaran/bukti_transaksi/"), 0777, true);
+        if($model != null){
+            if ($bukti_transaksis != NULL) {
+                # store the source bukti_transaksis name
+                $model->bukti_transaksi = $bukti_transaksis->name;
+                $arr = explode(".", $bukti_transaksis->name);
+                $extension = end($arr);
+    
+                # generate a unique bukti_transaksis name
+                $model->bukti_transaksi = Yii::$app->security->generateRandomString() . ".{$extension}";
+    
+                # the path to save bukti_transaksis
+                // unlink(Yii::getAlias("@app/web/uploads/pengajuan/") . $oldFile);
+                if (file_exists(Yii::getAlias("@app/web/uploads/pembayaran/bukti_transaksi/")) == false) {
+                    mkdir(Yii::getAlias("@app/web/uploads/pembayaran/bukti_transaksi/"), 0777, true);
+                }
+                $path = Yii::getAlias("@app/web/uploads/pembayaran/bukti_transaksi/") . $model->bukti_transaksi;
+                $bukti_transaksis->saveAs($path);
             }
-            $path = Yii::getAlias("@app/web/uploads/pembayaran/bukti_transaksi/") . $model->bukti_transaksi;
-            $bukti_transaksis->saveAs($path);
+            
+            $model->tanggal_upload_bukti = date('Y-m-d H:i:s');
+            $model->status_id = 10;
+            if ($model->validate()) {
+                $model->save();
+    
+                // unset($model->password);
+                return ['success' => true, 'message' => 'success', 'data' => $model];
+            } else {
+                return ['success' => false, 'message' => 'gagal', 'data' => $model->getErrors()];
+            }
+        }else{
+            return ['success' => false, 'message' => 'Data tidak ditemukan', 'data' => null];
         }
-        if ($model->validate()) {
-            $model->save();
-
-            // unset($model->password);
-            return ['success' => true, 'message' => 'success', 'data' => $model];
-        } else {
-            return ['success' => false, 'message' => 'gagal', 'data' => $model->getErrors()];
-        }
+        
     }
 
 

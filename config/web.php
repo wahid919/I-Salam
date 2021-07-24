@@ -114,6 +114,7 @@ $config = [
                 'pembayaran/wakaf' => 'pembayaran/wakaf',
                 'pembayaran/upload-file' => 'pembayaran/upload-file',
                 'pembayaran/informasi/<unique_id:[\w\_\-]+>' => 'pembayaran/informasi',
+                'pembayaran/detail-wakaf/<unique_id:[\w\_\-]+>' => 'pembayaran/detail-wakaf',
                 
                 //kategori pendanaans
                 // 'kategori-pendanaan/all' => 'kategori-pendanaan/all',

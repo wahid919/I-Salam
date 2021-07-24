@@ -310,7 +310,11 @@ if ($model != null) {
    if($bayar < $val['nominal']){
     return ['success' => false, 'message' => 'Nominal Melebihi Jumlah yang didapat'];
    }else{
-      $cair->nominal = $val['nominal'];
+       if($val['nominal'] == null){
+           $cair->nominal = $bayar;
+       }else{
+           $cair->nominal = $val['nominal'];
+       }
       $cair->tanggal = date('Y-m-d');
    $cair->save();
         if($model->save()){
