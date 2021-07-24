@@ -66,10 +66,10 @@ class SiteController extends Controller
         $year = date('Y');
         $datenow = date('Y-m-d');
         $harian = Pembayaran::find()
-        ->where(['and', ['>=', 'tanggal_pembayaran', "$year-$month-01"], ['<=', 'tanggal_pembayaran', "$datenow"]])
+        ->where(['and', ['>=', 'tanggal_konfirmasi', "$year-$month-01"], ['<=', 'tanggal_konfirmasi', "$datenow"]])
         ->andWhere(['status_id' => 6])
-        ->select(['status_id','tanggal_pembayaran', 'sum(nominal) as nominal'])
-        ->groupBy(['tanggal_pembayaran'])->all();
+        ->select(['status_id','tanggal_konfirmasi', 'sum(nominal) as nominal'])
+        ->groupBy(['tanggal_konfirmasi'])->all();
         // var_dump($harian);
         // die;
 

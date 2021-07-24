@@ -19,7 +19,7 @@ $this->title = 'Dashboard';
 		 foreach($harian as $row)
 		 {
 
-			echo "['".$row['tanggal_pembayaran']."',".$row['nominal']."],";
+			echo "['".$row['tanggal_konfirmasi']."',".$row['nominal']."],";
 		 } 
 		 
 		 ?>
