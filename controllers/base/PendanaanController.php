@@ -6,6 +6,8 @@ namespace app\controllers\base;
 
 use Yii;
 use app\models\Pendanaan;
+use app\models\Notifikasi;
+use app\models\Pembayaran;
 use app\models\Pencairan;
 use app\models\Setting;
 use app\models\search\PendanaanSearch;
@@ -172,7 +174,7 @@ class PendanaanController extends Controller
             $pembayar = Pembayaran::find()->where(['pendanaan_id'=>$model->id,'status_id'=>6])->all();
             foreach($pembayar as $value){
                $notifikasi = new Notifikasi;
-               $notifikasi->message = "Pendanaan ".$model->pendanaaan->nama_pendanaaan." Telah di cairkan";
+               $notifikasi->message = "Pendanaan ".$model->nama_pendanaan." Telah di cairkan";
                $notifikasi->user_id = $value->user_id;
                $notifikasi->flag = 1;
                $notifikasi->date=date('Y-m-d H:i:s');
@@ -211,16 +213,18 @@ class PendanaanController extends Controller
       //return print_r($model);
       if ($model) {
          $model->status_id = 4;
+         $pembayar = Pembayaran::find()->where(['pendanaan_id'=>$model->id,'status_id'=>6])->all();
+         foreach($pembayar as $value){
+            $notifikasi = new Notifikasi;
+            $notifikasi->message = "Pendanaan ".$model->nama_pendanaan." Telah selesai";
+            $notifikasi->user_id = $value->user_id;
+            $notifikasi->flag = 1;
+            $notifikasi->date=date('Y-m-d H:i:s');
+            $notifikasi->save();
+         }
+         
          if ($model->save()) {
-            $pembayar = Pembayaran::find()->where(['pendanaan_id'=>$model->id,'status_id'=>6])->all();
-            foreach($pembayar as $value){
-               $notifikasi = new Notifikasi;
-               $notifikasi->message = "Pendanaan ".$model->pendanaaan->nama_pendanaaan." Telah selesai";
-               $notifikasi->user_id = $value->user_id;
-               $notifikasi->flag = 1;
-               $notifikasi->date=date('Y-m-d H:i:s');
-               $notifikasi->save();
-            }
+           
             
             \Yii::$app->getSession()->setFlash(
                'success',
