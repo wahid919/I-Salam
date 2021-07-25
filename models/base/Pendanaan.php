@@ -132,7 +132,7 @@ abstract class Pendanaan extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'nama_pendanaan' => 'Nama Pendanaan',
-            'foto' => 'Foto',
+            'foto' => 'Foto Pendanaan',
             'uraian' => 'Uraian',
             'nominal' => 'Nominal',
             'pendanaan_berakhir' => 'Pendanaan Berakhir',

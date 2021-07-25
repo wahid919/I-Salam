@@ -91,7 +91,25 @@ class PendanaanController extends Controller
          if ($model->load($_POST)) {
             $model->status_id = 1;
             $model->user_id = \Yii::$app->user->identity->id;
-            $fotos_ktp = UploadedFile::getInstance($model, 'foto_ktp');
+            $fotos = UploadedFile::getInstance($model, 'foto');
+            if ($fotos != NULL) {
+               # store the source fotos name
+               $model->foto = $fotos->name;
+               $arr = explode(".", $fotos->name);
+               $extension = end($arr);
+
+               # generate a unique fotos name
+               $model->foto = Yii::$app->security->generateRandomString() . ".{$extension}";
+
+               # the path to save fotos
+               // unlink(Yii::getAlias("@app/web/uploads/pengajuan/") . $oldFile);
+               if (file_exists(Yii::getAlias("@app/web/uploads/pendanaaan/foto/")) == false) {
+                  mkdir(Yii::getAlias("@app/web/uploads/pendanaaan/foto/"), 0777, true);
+               }
+               $path = Yii::getAlias("@app/web/uploads/pendanaaan/foto/") . $model->foto;
+               $fotos->saveAs($path);
+            }
+            $fotos_ktp = UploadedFile::getInstance($model, 'foto');
             if ($fotos_ktp != NULL) {
                # store the source fotos_ktp name
                $model->foto_ktp = $fotos_ktp->name;
@@ -289,9 +307,35 @@ class PendanaanController extends Controller
    public function actionUpdate($id)
    {
       $model = $this->findModel($id);
+      $oldBuktiFts = $model->foto;
       $oldBukti = $model->foto_ktp;
       $oldBuktiKk = $model->foto_kk;
       if ($model->load($_POST)) {
+         $fts = UploadedFile::getInstance($model, 'foto');
+         if ($fts != NULL) {
+            # store the source file name
+            $model->foto = $fts->name;
+            $arr = explode(".", $fts->name);
+            $extension = end($arr);
+
+            # generate a unique file name
+            $model->foto = Yii::$app->security->generateRandomString() . ".{$extension}";
+
+            # the path to save file
+            if (file_exists(Yii::getAlias("@app/web/uploads/pendanaan/foto/")) == false) {
+               mkdir(Yii::getAlias("@app/web/uploads/pendanaan/foto/"), 0777, true);
+            }
+            $path = Yii::getAlias("@app/web/uploads/pendanaan/foto/") . $model->foto;
+            if ($oldBukti != NULL) {
+
+               $fts->saveAs($path);
+               unlink(Yii::$app->basePath . '/web/uploads/pendanaan/foto/' . $oldBuktiFts);
+            } else {
+               $fts->saveAs($path);
+            }
+         } else {
+            $model->foto_ktp = $oldBukti;
+         }
          $fotos = UploadedFile::getInstance($model, 'foto_ktp');
          if ($fotos != NULL) {
             # store the source file name
@@ -363,9 +407,11 @@ class PendanaanController extends Controller
    {
       try {
          $model = $this->findModel($id);
+         $oldFtss = $model->foto;
          $oldBukti = $model->foto_ktp;
          $oldBuktiKk = $model->foto_kk;
          $model->delete();
+         unlink(Yii::$app->basePath . '/web/uploads/pendanaan/foto/' . $oldFtss);
          unlink(Yii::$app->basePath . '/web/uploads/pendanaan/foto_ktp/' . $oldBukti);
          unlink(Yii::$app->basePath . '/web/uploads/pendanaan/foto_kk/' . $oldBuktiKk);
       } catch (\Exception $e) {

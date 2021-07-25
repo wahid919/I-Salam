@@ -61,6 +61,32 @@ $form->field($model, 'kategori_pendanaan_id')->dropDownList(
     'dropZoneEnabled' => false,
     'browseLabel' => 'Upload File',
 ],
+]);?> <?= $form->field($model, 'foto_ktp',[
+                    
+    'options' => ['tag' => false]])->widget(FileInput::classname(), [
+'options' => ['accept' => 'file/*'],
+'pluginOptions' => [
+    'allowedFileExtensions' => ['png','jpg','jpeg'],
+    'maxFileSize' => 6500,
+    'showRemove' => false,
+    'showUpload' => false,
+    'showCaption' => false,
+    'dropZoneEnabled' => false,
+    'browseLabel' => 'Upload File',
+],
+]);?> <?= $form->field($model, 'foto_kk',[
+                    
+    'options' => ['tag' => false]])->widget(FileInput::classname(), [
+'options' => ['accept' => 'file/*'],
+'pluginOptions' => [
+    'allowedFileExtensions' => ['png','jpg','jpeg'],
+    'maxFileSize' => 6500,
+    'showRemove' => false,
+    'showUpload' => false,
+    'showCaption' => false,
+    'dropZoneEnabled' => false,
+    'browseLabel' => 'Upload File',
+],
 ]);?>   <hr/>
         <?php echo $form->errorSummary($model); ?>
         <div class="row">

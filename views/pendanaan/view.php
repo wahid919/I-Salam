@@ -88,6 +88,13 @@ $this->title = 'Pendanaan ' . $model->nama_pendanaan;
     }
 ],
 [
+    'attribute' =>'foto',
+    'format' =>'html',
+    'value' =>function($model) {
+       return Html::img(\Yii::$app->request->BaseUrl.'/uploads/pendanaan/foto/'.$model->foto,['width'=>100]);
+     },
+ ],
+[
         'attribute' =>'foto_ktp',
         'format' =>'html',
         'value' =>function($model) {

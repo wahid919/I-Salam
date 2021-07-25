@@ -187,15 +187,15 @@ class PendanaanController extends \yii\rest\ActiveController
         if ($model != null) {
             $image = UploadedFile::getInstanceByName("foto");
             if ($image) {
-                $response = $this->uploadImage($image, "pendanaan");
+                $response = $this->uploadImage($image, "pendanaan/foto");
                 if ($response->success == false) {
                     throw new HttpException(419, "Gambar gagal diunggah");
                 }
                 $model->foto = $response->filename;
             }
-            $image_ktp = UploadedFile::getInstanceByName("foto_ktp_nasabah");
+            $image_ktp = UploadedFile::getInstanceByName("foto_ktp");
             if ($image_ktp) {
-                $response_ktp = $this->uploadImage($image_ktp, "pendanaan");
+                $response_ktp = $this->uploadImage($image_ktp, "pendanaan/foto_ktp");
                 if ($response_ktp->success == false) {
                     throw new HttpException(419, "Foto KTP gagal diunggah");
                 }
@@ -203,7 +203,7 @@ class PendanaanController extends \yii\rest\ActiveController
             }
             $image_kk = UploadedFile::getInstanceByName("foto_kk");
             if ($image_kk) {
-                $response_kk = $this->uploadImage($image_kk, "pendanaan");
+                $response_kk = $this->uploadImage($image_kk, "pendanaan/foto_kk");
                 if ($response_kk->success == false) {
                     throw new HttpException(419, "Foto KK gagal diunggah");
                 }
