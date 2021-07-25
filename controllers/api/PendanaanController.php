@@ -193,7 +193,7 @@ class PendanaanController extends \yii\rest\ActiveController
                 }
                 $model->foto = $response->filename;
             }
-            $image_ktp = UploadedFile::getInstanceByName("foto_ktp");
+            $image_ktp = UploadedFile::getInstanceByName("foto_ktp_nasabah");
             if ($image_ktp) {
                 $response_ktp = $this->uploadImage($image_ktp, "pendanaan/foto_ktp");
                 if ($response_ktp->success == false) {
