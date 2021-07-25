@@ -18,7 +18,7 @@ class PembayaranSearch extends Pembayaran
 public function rules()
 {
 return [
-[['id', 'nominal', 'user_id', 'pendanaan', 'status_id'], 'integer'],
+[['id', 'nominal', 'user_id', 'pendanaan', 'status_id','jenis_pembayaran_id'], 'integer'],
             [['nama', 'bukti_transaksi','tanggal_upload_bukti'], 'safe'],
 ];
 }
@@ -61,6 +61,7 @@ $query->andFilterWhere([
             'user_id' => $this->user_id,
             'pendanaan' => $this->pendanaan,
             'status_id' => $this->status_id,
+            'jenis_pembayaran_id' => $this->jenis_pembayaran_id,
         ]);
 
         $query->andFilterWhere(['like', 'nama', $this->nama])

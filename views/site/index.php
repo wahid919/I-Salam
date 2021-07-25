@@ -1,8 +1,10 @@
 <?php
 /* @var $this yii\web\View */
 $this->title = 'Dashboard';
+use app\components\Tanggal;
 
 //$tableData = array_diff($tableData,$stk);
+          
 ?>
 
 <html>
@@ -16,11 +18,14 @@ $this->title = 'Dashboard';
         var data = google.visualization.arrayToDataTable([
           ['Tanggal', 'Nominal'],
           <?php 
-		 foreach($harian as $row)
-		 {
-
-			echo "['".$row['tanggal_konfirmasi']."',".$row['nominal']."],";
-		 } 
+		  foreach($harian as $key => $row){
+        $tgl = $row['tanggal_konfirmasi'];
+        $tgl_ex = explode(" ", $tgl);
+        $tgl_show = Tanggal::toReadableDates($tgl_ex[0]);
+        $nominal =$row['nominal'];
+        echo "['".$tgl_show."',".$nominal."],";
+    }
+		  
 		 
 		 ?>
         ]);

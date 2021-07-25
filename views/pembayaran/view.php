@@ -65,16 +65,17 @@ $this->params['breadcrumbs'][] = 'View';
                             return \app\components\Angka::toReadableHarga($model->nominal);
                         },
                     ],
-                    [
-                        'attribute' => 'jenis_pembayaran_id',
-                        'label' => 'Jenis Pembayaran',
-                        'format' => 'raw',
-                        'filter' => false,
-                        'value' => function ($model) {
-
-                            return $model->jenisPembayaran->nama_jenis;
-                        },
-                    ],
+                    // [
+                    //     'attribute' => 'jenis_pembayaran_id',
+                    //     'format' => 'raw',
+                    //     'value' => function ($model) {
+                    //         if($model->jenis_pembayaran_id != null){
+                    //             return $model->jenisPembayaran->nama_jenis;
+                    //         }else{
+                    //             return "Belum Melakukan Pembayaran";
+                    //         }
+                    //     }
+                    // ],
                     [
                         'attribute' => 'bukti_transaksi',
                         'format' => 'html',

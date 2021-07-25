@@ -72,6 +72,8 @@ class SiteController extends Controller
         ->groupBy(['tanggal_konfirmasi'])->all();
         // var_dump($harian);
         // die;
+       
+
 
         return $this->render('index',[
             'userAll' => $userAll,
