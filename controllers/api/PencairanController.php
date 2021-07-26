@@ -3,33 +3,33 @@
 namespace app\controllers\api;
 
 /**
-* This is the class for REST controller "PencairanController".
-*/
-use Yii;
+ * This is the class for REST controller "PencairanController".
+ */
+use app\models\Pembayaran;
 use app\models\Pencairan;
-use yii\filters\AccessControl;
-use yii\helpers\ArrayHelper;
+use app\models\Pendanaan;
+use Yii;
 
 class PencairanController extends \yii\rest\ActiveController
 {
-public $modelClass = 'app\models\Pencairan';
-public function behaviors()
-{
-    $parent = parent::behaviors();
-    $parent['authentication'] = [
-        "class" => "\app\components\CustomAuth",
-        "only" => ["add-pencairan"],
-    ];
-
-    return $parent;
-}
-protected function verbs()
+    public $modelClass = 'app\models\Pencairan';
+    public function behaviors()
     {
-       return [
-           'all' => ['GET'],
-           'add-pencairan' => ['POST'],
-        //    'deleted' => ['DELETE'],
-       ];
+        $parent = parent::behaviors();
+        $parent['authentication'] = [
+            "class" => "\app\components\CustomAuth",
+            "only" => ["add-pencairan"],
+        ];
+
+        return $parent;
+    }
+    protected function verbs()
+    {
+        return [
+            'all' => ['GET'],
+            'add-pencairan' => ['POST'],
+            //    'deleted' => ['DELETE'],
+        ];
     }
     public function actions()
     {
@@ -61,64 +61,75 @@ protected function verbs()
     public function actionAddPencairan()
     {
         \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-        $user = \Yii::$app->user->identity->pin;
+        $user = \Yii::$app->user->identity;
         $val = \yii::$app->request->post();
-        if($user == null){
-            return ['success' => false, 'message' => 'Anda Belum membuat Pin', 'data' => null];
-        }else{
-            if($user == $val['pin']){
-                $pendanaans = Pendanaan::findOne(['id'=>$val['pendanaan_id'],'status_id'=>4]);
-                if($pendanaans != null){
-                    $model = new Pencairan;
-                    $model->nominal = $val['nominal'];
-                    // $model->foto =$fotos;
-                    $model->pendanaan_id = $val['pendanaan_id'] ?? '';
-                    $model->tanggal = date('Y-m-d');
-                    
-                    
-            
-                    if ($model->validate()) {
-                        $model->save();
-                        $pendanaans->status_id=3;
-                        $pendanaans->save();                        
-                        // unset($model->password);
-                        return ['success' => true, 'message' => 'success', 'data' => $model];
+        $model = Pendanaan::findOne(['id' => $val["id_pendanaan"]]);
+        try {
+            //code...
+            if ($user->pin == null) {
+                return ['success' => false, 'message' => 'Anda Belum Menambahkan Pin'];
+            } else {
+                if ($user->pin != $val['pin']) {
+                    return ['success' => false, 'message' => 'Pin Salah'];
+                } else {
+                    $bayar = Pembayaran::find()->where(['pendanaan_id' => $val["id_pendanaan"]])->sum('nominal');
+                    $cair = new Pencairan;
+                    if ($model->status_id == 4 || strtotime($model->pendanaan_berakhir) <= date('Y-m-d')) {
+
+                        $model->status_id = 3;
+                        $cair->pendanaan_id = $val['id_pendanaan'];
+                        if (!isset($val['nominal'])) {
+                            $cair->nominal = $bayar;
+                        } else {
+                            if ($bayar < $val['nominal']) {
+                                return ['success' => false, 'message' => 'Nominal Melebihi Jumlah yang didapat'];
+                            } else {
+                                $cair->nominal = $val['nominal'];
+                               
+                            }
+                        }
+                        $cair->tanggal = date('Y-m-d');
+                            $cair->save();
+                            if ($model->save()) {
+                                return ['success' => true, 'message' => 'success', 'data' => $model];
+                            }
+
+                        // return $this->redirect(Url::previous());
                     } else {
-                        return ['success' => false, 'message' => 'gagal', 'data' => $model->getErrors()];
+                        return ['success' => false, 'message' => 'Pendanaan Telah dicairkan/Belum selesai'];
                     }
-                }else{
-                    
-                return ['success' => false, 'message' => 'Pendanaan Sudah di cairkan/tidak ditemukan', 'data' => null];
+
                 }
-                
-            }else{
-                
-                return ['success' => false, 'message' => 'Pin salah', 'data' => null];
             }
+        } catch (\Throwable $th) {
+            return [
+                'success' => false,
+                'message' => $th->getMessage(),
+            ];
         }
-       
-        
-            }
+// $model->tanggal_received=date('Y-m-d H:i:s');
+
+    }
 
     //         public function actionDeleted($id)
     // {
     //     \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
     //     $val = \yii::$app->request->post();
     //     $agendas = AgendaPendanaan::findOne(['id'=>$id]);
-        
+
     //     if($agendas->delete()){
-         
+
     //     return [
     //         "success" => true,
     //         "message" => "Data Berhasil di hapus",
     //         "data" => $agendas
-    //     ];     
+    //     ];
     //     }  else{
-            
+
     //     return [
     //         "success" => false,
     //         "message" => "Data gagal terhapus",
-    //     ];  
+    //     ];
     //     }
     // }
 

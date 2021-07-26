@@ -23,6 +23,21 @@ use yii\db\Expression;
 abstract class Pencairan extends \yii\db\ActiveRecord
 {
 
+    public function fields()
+    {
+        $parent = parent::fields();
+        if (isset($parent['pendanaan_id'])) {
+            unset($parent['pendanaan_id']);
+            // $parent['_pendanaan_id'] = function ($model) {
+            //     return $model->pendanaan_id;
+            // };
+            $parent['pendanaan'] = function ($model) {
+                return $model->pendanaan;
+            };
+        }
+
+        return $parent;
+    }
 
 
     /**

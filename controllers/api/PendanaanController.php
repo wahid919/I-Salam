@@ -69,6 +69,7 @@ class PendanaanController extends \yii\rest\ActiveController
         Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         if(\Yii::$app->user->identity->role_id ==2 ){
             $pendanaans = Pendanaan::find()->where(['user_id' => \Yii::$app->user->identity->id])->all();
+            
         //     $not = Pendanaaan::find()
         //    ->where(['movie_id'=>$id])
         //    ->andWhere(['location_id'=>$loc_id])
@@ -103,7 +104,6 @@ class PendanaanController extends \yii\rest\ActiveController
     {
         Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         $pendanaans = Pendanaan::findOne(['id' => $id]);
-
 
         return [
             "success" => true,

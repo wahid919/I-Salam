@@ -9,6 +9,7 @@ namespace app\controllers\api;
 use app\models\Pembayaran;
 use app\models\Pendanaan;
 use app\models\JenisPembayaran;
+use app\models\Pencairan;
 use Yii;
 use yii\filters\AccessControl;
 use yii\helpers\ArrayHelper;
@@ -206,16 +207,67 @@ class PembayaranController extends \yii\rest\ActiveController
         $pembayar = Pendanaan::find()->where(['id'=>$id])->one();
         $uang_pendanaan = (int)$pembayar->nominal;
         $persen = $nominal / $uang_pendanaan  * 100;
-
-
-        return [
-            "success" => true,
-            "message" => "Pendanaan",
-            "data" => [
-                'jumlah' => $jumlah,
-                'nominal' => $nominal,
-                'persen' => $persen,
-            ],
-        ];
+        $cair = Pencairan::findOne(['pendanaan_id'=>$id]);
+        if($pembayar->status_id== 3){
+            if($cair !=null){
+                return [
+                    "success" => true,
+                "message" => "Pendanaan",
+                "data" => [
+                    'selesai' => false,
+                    'cair' => true,
+                    "data-cair" =>$cair,
+                    'jumlah' => $jumlah,
+                    'nominal' => $nominal,
+                    'persen' => $persen,
+                ],
+                ];
+            }else{
+                return [
+                    "success" => true,
+                "message" => "Pendanaan",
+                "data" => [
+                    'selesai' => false,
+                    'cair' => false,
+                    "data-cair" =>$cair,
+                    'jumlah' => $jumlah,
+                    'nominal' => $nominal,
+                    'persen' => $persen,
+                ],
+                ];
+            }
+            
+           
+        }else{
+            if($pembayar->status_id== 4 || strtotime($pembayar->pendanaan_berakhir) <= date('Y-m-d H:i:s')){
+                if($cair != null){
+                    return [
+                        "success" => true,
+                    "message" => "Pendanaan",
+                    "data" => [
+                        'selesai' => true,
+                        'cair' => true,
+                        "data-cair" =>$cair,
+                        'jumlah' => $jumlah,
+                        'nominal' => $nominal,
+                        'persen' => $persen,
+                    ],
+                    ];
+                }
+                return [
+                "success" => true,
+                "message" => "Pendanaan",
+                "data" => [
+                    'selesai' => true,
+                    'cair' => false,
+                    "data-cair" =>$cair,
+                    'jumlah' => $jumlah,
+                    'nominal' => $nominal,
+                    'persen' => $persen,
+                ],
+                ];
+            }
+            
+        }
     }
 }
