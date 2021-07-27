@@ -8,6 +8,7 @@ namespace app\controllers\api;
 use app\models\Pembayaran;
 use app\models\Pencairan;
 use app\models\Pendanaan;
+use app\models\Notifikasi;
 use Yii;
 
 class PencairanController extends \yii\rest\ActiveController
@@ -91,6 +92,16 @@ class PencairanController extends \yii\rest\ActiveController
                         $cair->tanggal = date('Y-m-d');
                             $cair->save();
                             if ($model->save()) {
+                                $pembayar = Pembayaran::find()->where(['pendanaan_id'=>$val["id_pendanaan"],'status_id'=>6])->all();
+                                foreach($pembayar as $value){
+                                   $notifikasi = new Notifikasi;
+                                   $tgl = \app\components\Tanggal::toReadableDates(date('Y-m-d'));
+                                   $notifikasi->message = "Hai ".$value->nama.",Pendanaan ".$model->nama_pendanaan." Telah di cairkan Pada Tanggal ".$tgl;
+                                   $notifikasi->user_id = $value->user_id;
+                                   $notifikasi->flag = 1;
+                                   $notifikasi->date=date('Y-m-d H:i:s');
+                                   $notifikasi->save();
+                                }
                                 return ['success' => true, 'message' => 'success', 'data' => $model];
                             }
 
