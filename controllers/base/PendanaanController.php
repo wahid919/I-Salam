@@ -179,7 +179,12 @@ class PendanaanController extends Controller
       if ($model) {
          $model->status_id = 2;
          if ($model->save()) {
-
+            $notifikasi = new Notifikasi;
+            $notifikasi->message = "Pendanaan ".$model->nama_pendanaan." Telah di Setujui";
+            $notifikasi->user_id = $model->user_id;
+            $notifikasi->flag = 1;
+            $notifikasi->date=date('Y-m-d H:i:s');
+            $notifikasi->save();
             \Yii::$app->getSession()->setFlash(
                'success',
                'Pendanaan Telah Disetujui!'

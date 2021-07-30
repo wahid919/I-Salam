@@ -130,10 +130,10 @@ class UserController extends \yii\rest\ActiveController
     {
         \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         $val = \yii::$app->request->post();
-        if($val['role'] == "admin_pendanaan"){
-            $rolee = 2;
-        }else{
-         $rolee =  5;   
+        
+        $rolee =  2; 
+        if($val['role'] == "pewakaf"){
+            $rolee = 5;
         }
         
         $user = new User();
@@ -202,7 +202,7 @@ class UserController extends \yii\rest\ActiveController
             $otp->is_used = 0;
             $otp->save();
             $text = "
-            Hay,\nini adalah kode OTP untuk reset password anda.\n
+            Hay,\nini adalah kode OTP untuk Login anda.\n
             {$otp->kode_otp}
             \nJangan bagikan kode ini dengan siapapun.
             \nKode akan Kadaluarsa dalam 5 Menit
@@ -271,7 +271,7 @@ class UserController extends \yii\rest\ActiveController
             $otp->kode_otp = (string) random_int(1000, 9999);
             $otp->save();
             $text = "
-        Hay,\nini adalah kode OTP untuk reset password anda.\n
+        Hay,\nini adalah kode OTP untuk Login anda.\n
         {$otp->kode_otp}
         \nJangan bagikan kode ini dengan siapapun.
         \nKode akan Kadaluarsa dalam 5 Menit

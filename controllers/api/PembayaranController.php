@@ -203,11 +203,16 @@ class PembayaranController extends \yii\rest\ActiveController
     {
         Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         $jumlah = Pembayaran::find()->where(['pendanaan_id'=>$id,'status_id'=>6])->count();
+        
         $nominal = Pembayaran::find()->where(['pendanaan_id'=>$id,'status_id'=>6])->sum('nominal');
+        if($nominal == null){
+            $nominal = 0;
+        }
         $pembayar = Pendanaan::find()->where(['id'=>$id])->one();
         $uang_pendanaan = (int)$pembayar->nominal;
         $persen = $nominal / $uang_pendanaan  * 100;
         $cair = Pencairan::findOne(['pendanaan_id'=>$id]);
+        
         if($pembayar->status_id== 3){
             if($cair !=null){
                 return [
@@ -245,8 +250,8 @@ class PembayaranController extends \yii\rest\ActiveController
                         "success" => true,
                     "message" => "Pendanaan",
                     "data" => [
-                        'selesai' => true,
-                        'cair' => true,
+                        'selesai' => false,
+                        'cair' => false,
                         "data-cair" =>$cair,
                         'jumlah' => $jumlah,
                         'nominal' => $nominal,
@@ -258,7 +263,7 @@ class PembayaranController extends \yii\rest\ActiveController
                 "success" => true,
                 "message" => "Pendanaan",
                 "data" => [
-                    'selesai' => true,
+                    'selesai' => false,
                     'cair' => false,
                     "data-cair" =>$cair,
                     'jumlah' => $jumlah,
@@ -269,5 +274,17 @@ class PembayaranController extends \yii\rest\ActiveController
             }
             
         }
+        return [
+            "success" => true,
+            "message" => "Pendanaan",
+            "data" => [
+                'selesai' => false,
+                'cair' => false,
+                "data-cair" =>$cair,
+                'jumlah' => $jumlah,
+                'nominal' => $nominal,
+                'persen' => $persen,
+            ],
+            ];
     }
 }
