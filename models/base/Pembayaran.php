@@ -99,9 +99,9 @@ abstract class Pembayaran extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['nama', 'nominal', 'kode_transaksi', 'user_id', 'pendanaan_id', 'status_id'], 'required'],
+            [['nama', 'nominal', 'user_id', 'pendanaan_id', 'status_id'], 'required'],
             [['nominal', 'user_id', 'pendanaan_id', 'status_id','jenis_pembayaran_id'], 'integer'],
-            [['tanggal_upload_bukti', 'tanggal_konfirmasi'], 'safe'],
+            [['tanggal_upload_bukti', 'tanggal_konfirmasi', 'kode_transaksi'], 'safe'],
             [['nama', 'bukti_transaksi'], 'string', 'max' => 255],
             [['status_id'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\Status::className(), 'targetAttribute' => ['status_id' => 'id']],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\User::className(), 'targetAttribute' => ['user_id' => 'id']],
