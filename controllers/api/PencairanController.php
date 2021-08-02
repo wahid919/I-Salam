@@ -102,6 +102,12 @@ class PencairanController extends \yii\rest\ActiveController
                                    $notifikasi->date=date('Y-m-d H:i:s');
                                    $notifikasi->save();
                                 }
+                                $notifikasi2 = new Notifikasi;
+                                $notifikasi2->message = "Pendanaan ".$model->nama_pendanaan." Telah anda Cairkan";
+                                $notifikasi2->user_id = $model->user_id;
+                                $notifikasi2->flag = 1;
+                                $notifikasi2->date=date('Y-m-d H:i:s');
+                                $notifikasi2->save();
                                 return ['success' => true, 'message' => 'success', 'data' => $model];
                             }
 
