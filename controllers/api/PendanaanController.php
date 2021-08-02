@@ -164,7 +164,7 @@ class PendanaanController extends \yii\rest\ActiveController
             if ($check != null) {
                 return ['success' => false, 'message' => 'Nomor Rekening telah digunakan'];
             }
-            if (strlen($val['nomor_rekening']) >= 11) {
+            if (strlen($val['nomor_rekening']) >= 16) {
                 return ['success' => false, 'message' => 'Nomor Rekening Tidak Valid', 'data' => null];
             }
 
