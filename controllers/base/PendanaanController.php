@@ -355,8 +355,9 @@ class PendanaanController extends Controller
                $fts->saveAs($path);
             }
          } else {
-            $model->foto_ktp = $oldBukti;
+            $model->foto = $oldBuktiFts;
          }
+
          $fotos = UploadedFile::getInstance($model, 'foto_ktp');
          if ($fotos != NULL) {
             # store the source file name
