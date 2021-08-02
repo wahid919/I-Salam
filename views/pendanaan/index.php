@@ -42,7 +42,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 \app\components\ActionButton::getButtons(),
                 
                 'nama_pendanaan',
-                'uraian:ntext',
+                // 'uraian:ntext',
                 [
                     'attribute' => 'nominal',
                     'label' => 'Nominal',
