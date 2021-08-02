@@ -1,4 +1,4 @@
--- Adminer 4.6.2 MySQL dump
+-- Adminer 4.7.7 MySQL dump
 
 SET NAMES utf8;
 SET time_zone = '+00:00';
@@ -12,7 +12,7 @@ CREATE TABLE `action` (
   `action_id` varchar(50) NOT NULL,
   `name` varchar(50) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=latin1;
 
 INSERT INTO `action` (`id`, `controller_id`, `action_id`, `name`) VALUES
 (12,	'site',	'index',	'Index'),
@@ -115,7 +115,7 @@ CREATE TABLE `agenda_pendanaan` (
   PRIMARY KEY (`id`),
   KEY `pendanaan_id` (`pendanaan_id`),
   CONSTRAINT `agenda_pendanaan_ibfk_1` FOREIGN KEY (`pendanaan_id`) REFERENCES `pendanaan` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4;
 
 INSERT INTO `agenda_pendanaan` (`id`, `pendanaan_id`, `nama_agenda`, `tanggal`) VALUES
 (1,	3,	'Nama Agenda Pendanaan',	'2021-07-07'),
@@ -129,7 +129,7 @@ CREATE TABLE `bank` (
   `name` varchar(255) DEFAULT NULL,
   `logo` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4;
 
 INSERT INTO `bank` (`id`, `name`, `logo`) VALUES
 (1,	'BNI',	NULL),
@@ -158,15 +158,21 @@ CREATE TABLE `jenis_pembayaran` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `nama_jenis` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 
+INSERT INTO `jenis_pembayaran` (`id`, `nama_jenis`) VALUES
+(1,	'Bank'),
+(2,	'OVO'),
+(3,	'GOPAY'),
+(4,	'Alfamart'),
+(5,	'Indomaret');
 
 DROP TABLE IF EXISTS `kategori_pendanaan`;
 CREATE TABLE `kategori_pendanaan` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4;
 
 INSERT INTO `kategori_pendanaan` (`id`, `name`) VALUES
 (1,	'Perdagangan'),
@@ -190,7 +196,7 @@ CREATE TABLE `marketing_data_user` (
   KEY `fk-marketing-data-user-bank` (`bank_id`),
   CONSTRAINT `fk-marketing-data-user-bank` FOREIGN KEY (`bank_id`) REFERENCES `bank` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk-marketing-data-user-to-user-table` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4;
 
 INSERT INTO `marketing_data_user` (`id`, `nama`, `alamat`, `domisili`, `no_rekening`, `no_identitas`, `referensi_kerja`, `bank_id`, `user_id`) VALUES
 (3,	'Budi Admin',	'ponorogo',	'Batu',	12345,	'1234',	'banyak',	1,	1),
@@ -203,12 +209,12 @@ CREATE TABLE `menu` (
   `controller` varchar(50) NOT NULL,
   `action` varchar(50) NOT NULL DEFAULT 'index',
   `icon` varchar(50) NOT NULL,
-  `order` int(11) NOT NULL DEFAULT '1',
+  `order` int(11) NOT NULL DEFAULT 1,
   `parent_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `parent_id` (`parent_id`),
   CONSTRAINT `menu_ibfk_1` FOREIGN KEY (`parent_id`) REFERENCES `menu` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
 
 INSERT INTO `menu` (`id`, `name`, `controller`, `action`, `icon`, `order`, `parent_id`) VALUES
 (1,	'Home',	'site',	'index',	'fa fa-home',	1,	NULL),
@@ -236,8 +242,12 @@ CREATE TABLE `notifikasi` (
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
   CONSTRAINT `notifikasi_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
+INSERT INTO `notifikasi` (`id`, `message`, `date`, `flag`, `user_id`) VALUES
+(1,	'Pendanaan Pendanaan 12 Telah selesai',	'2021-07-25 12:14:32',	1,	1),
+(2,	'Pendanaan Sumbangan Diri Telah selesai',	'2021-07-25 12:39:44',	1,	18),
+(3,	'Pendanaan Sumbangan Diri Telah selesai',	'2021-07-25 12:39:44',	1,	10);
 
 DROP TABLE IF EXISTS `otp`;
 CREATE TABLE `otp` (
@@ -245,12 +255,12 @@ CREATE TABLE `otp` (
   `id_user` int(11) NOT NULL,
   `kode_otp` int(11) NOT NULL,
   `is_used` int(11) NOT NULL,
-  `created_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `created_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `id_user` (`id_user`),
   CONSTRAINT `otp_ibfk_1` FOREIGN KEY (`id_user`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4;
 
 INSERT INTO `otp` (`id`, `id_user`, `kode_otp`, `is_used`, `created_at`, `updated_at`) VALUES
 (3,	10,	6891,	0,	'2021-07-18 19:29:47',	'2021-07-18 19:29:47'),
@@ -268,7 +278,7 @@ CREATE TABLE `partner_pendanaan` (
   PRIMARY KEY (`id`),
   KEY `pendanaan_id` (`pendanaan_id`),
   CONSTRAINT `partner_pendanaan_ibfk_1` FOREIGN KEY (`pendanaan_id`) REFERENCES `pendanaan` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 INSERT INTO `partner_pendanaan` (`id`, `nama_partner`, `pendanaan_id`, `foto_ktp_partner`) VALUES
 (2,	'Partner Isalam 1',	13,	'foto_ktp_partner/20210721_88f6892d65e5e92d41b3a9d20748f1c157eaf4c9.png'),
@@ -287,7 +297,7 @@ CREATE TABLE `pembayaran` (
   `pendanaan_id` int(11) NOT NULL,
   `tanggal_konfirmasi` datetime DEFAULT NULL,
   `tanggal_upload_bukti` datetime DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `created_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
   `updated_at` timestamp NULL DEFAULT NULL,
   `status_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
@@ -299,14 +309,15 @@ CREATE TABLE `pembayaran` (
   CONSTRAINT `fk-pembayaran-user` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `pembayaran_ibfk_2` FOREIGN KEY (`pendanaan_id`) REFERENCES `pendanaan` (`id`),
   CONSTRAINT `pembayaran_ibfk_3` FOREIGN KEY (`jenis_pembayaran_id`) REFERENCES `jenis_pembayaran` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4;
 
 INSERT INTO `pembayaran` (`id`, `kode_transaksi`, `nama`, `nominal`, `jenis_pembayaran_id`, `bukti_transaksi`, `user_id`, `pendanaan_id`, `tanggal_konfirmasi`, `tanggal_upload_bukti`, `created_at`, `updated_at`, `status_id`) VALUES
 (2,	NULL,	'WIldan',	10000,	NULL,	'4-lbEYDOMV-TypUtm8PtDf7nILy6HCy3.png',	1,	3,	'2021-07-20 00:00:00',	NULL,	'2021-07-24 02:25:59',	'2021-07-20 14:56:01',	6),
 (3,	NULL,	'WIldan',	10000,	NULL,	'4-lbEYDOMV-TypUtm8PtDf7nILy6HCy3.png',	1,	3,	'2021-07-20 00:00:00',	NULL,	'2021-07-20 15:19:17',	'2021-07-20 15:19:17',	6),
-(4,	NULL,	'WIldan',	10000,	NULL,	'4-lbEYDOMV-TypUtm8PtDf7nILy6HCy3.png',	1,	3,	'2021-07-21 00:00:00',	NULL,	'2021-07-21 06:36:28',	'2021-07-20 15:19:20',	6),
+(4,	NULL,	'WIldan',	10000,	NULL,	'4-lbEYDOMV-TypUtm8PtDf7nILy6HCy3.png',	1,	3,	'2021-07-22 00:00:00',	NULL,	'2021-07-24 16:42:19',	'2021-07-20 15:19:20',	6),
 (10,	'tz2vg_9rdK24072021090408',	'nama',	100000,	NULL,	NULL,	18,	16,	NULL,	NULL,	'2021-07-24 02:04:08',	'2021-07-24 02:04:08',	5),
-(11,	'tz2vg_9rdK24072021090408',	'nama',	100000,	NULL,	'p72rJFOU150tc2OGor2UUJuK_QofDftW.jpg',	18,	16,	NULL,	'2021-07-24 09:26:16',	'2021-07-24 02:26:16',	'2021-07-24 02:26:16',	10);
+(11,	'tz2vg_9rdK24072021090408',	'nama',	100000,	1,	'p72rJFOU150tc2OGor2UUJuK_QofDftW.jpg',	18,	16,	NULL,	'2021-07-24 09:26:16',	'2021-07-25 05:39:34',	'2021-07-24 02:26:16',	6),
+(12,	'tz2vy_9rdK24072021090408',	'nama',	100000,	1,	'p72rJFOU150tc2OGor2UUJuK_QofDftW.jpg',	10,	16,	NULL,	'2021-07-24 09:26:16',	'2021-07-24 16:16:24',	'2021-07-24 02:26:16',	6);
 
 DROP TABLE IF EXISTS `pencairan`;
 CREATE TABLE `pencairan` (
@@ -314,22 +325,23 @@ CREATE TABLE `pencairan` (
   `pendanaan_id` int(11) NOT NULL,
   `nominal` int(11) NOT NULL,
   `tanggal` date NOT NULL,
-  `created_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `created_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
   PRIMARY KEY (`id`),
   KEY `pendanaan_id` (`pendanaan_id`),
   CONSTRAINT `pencairan_ibfk_1` FOREIGN KEY (`pendanaan_id`) REFERENCES `pendanaan` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
 
 INSERT INTO `pencairan` (`id`, `pendanaan_id`, `nominal`, `tanggal`, `created_at`) VALUES
 (1,	3,	9000,	'2021-07-20',	'2021-07-20 16:22:52'),
-(2,	3,	1000,	'2021-07-09',	'2021-07-20 17:26:59');
+(2,	3,	1000,	'2021-07-09',	'2021-07-20 17:26:59'),
+(3,	16,	10,	'2021-07-25',	'2021-07-25 05:41:31');
 
 DROP TABLE IF EXISTS `pendanaan`;
 CREATE TABLE `pendanaan` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `nama_pendanaan` varchar(255) DEFAULT NULL,
   `foto` varchar(255) DEFAULT NULL,
-  `uraian` text,
+  `uraian` text DEFAULT NULL,
   `nominal` int(11) DEFAULT NULL,
   `pendanaan_berakhir` datetime DEFAULT NULL,
   `user_id` int(11) NOT NULL,
@@ -337,7 +349,7 @@ CREATE TABLE `pendanaan` (
   `nomor_rekening` int(11) DEFAULT NULL,
   `nama_nasabah` varchar(255) DEFAULT NULL,
   `nama_perusahaan` varchar(255) DEFAULT NULL,
-  `deskripsi` text,
+  `deskripsi` text DEFAULT NULL,
   `foto_ktp` varchar(255) DEFAULT NULL,
   `foto_kk` varchar(255) DEFAULT NULL,
   `kategori_pendanaan_id` int(11) NOT NULL,
@@ -351,12 +363,12 @@ CREATE TABLE `pendanaan` (
   CONSTRAINT `fk-pendanaan-user` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk-status-pendanaan` FOREIGN KEY (`status_id`) REFERENCES `status` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `pendanaan_ibfk_1` FOREIGN KEY (`bank_id`) REFERENCES `bank` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4;
 
 INSERT INTO `pendanaan` (`id`, `nama_pendanaan`, `foto`, `uraian`, `nominal`, `pendanaan_berakhir`, `user_id`, `bank_id`, `nomor_rekening`, `nama_nasabah`, `nama_perusahaan`, `deskripsi`, `foto_ktp`, `foto_kk`, `kategori_pendanaan_id`, `status_id`) VALUES
 (2,	'Pendanaan 1',	NULL,	'Tes Uraian',	80000,	'0000-00-00 00:00:00',	1,	NULL,	NULL,	NULL,	NULL,	NULL,	NULL,	NULL,	1,	7),
 (3,	'Pendanaan 12',	NULL,	'Tes Uraian',	80000,	'0000-00-00 00:00:00',	1,	NULL,	NULL,	NULL,	NULL,	NULL,	NULL,	NULL,	1,	2),
-(4,	'Pendanaan 1',	NULL,	'Tes Uraian',	80000,	'0000-00-00 00:00:00',	1,	NULL,	NULL,	NULL,	NULL,	NULL,	NULL,	NULL,	1,	4),
+(4,	'Pendanaan 1',	NULL,	'Tes Uraian',	80000,	'0000-00-00 00:00:00',	1,	NULL,	NULL,	NULL,	NULL,	NULL,	NULL,	NULL,	1,	3),
 (5,	'Pendanaan 1',	NULL,	'Tes Uraian',	80000,	'0000-00-00 00:00:00',	1,	NULL,	NULL,	NULL,	NULL,	NULL,	NULL,	NULL,	1,	1),
 (6,	'Pendanaan 1',	NULL,	'Tes Uraian',	80000,	'0000-00-00 00:00:00',	1,	NULL,	NULL,	NULL,	NULL,	NULL,	NULL,	NULL,	1,	1),
 (7,	'Pendanaan 1',	'pendanaan/20210719_2dc0c690d3726aed41ab1c89d2ed65c9f01e4337.PNG',	'Tes Uraian',	80000,	'0000-00-00 00:00:00',	1,	NULL,	NULL,	NULL,	NULL,	NULL,	NULL,	NULL,	1,	1),
@@ -367,14 +379,15 @@ INSERT INTO `pendanaan` (`id`, `nama_pendanaan`, `foto`, `uraian`, `nominal`, `p
 (12,	'Pendanaan 1',	'pendanaan/20210720_7c86ae7523e8e05e8722ad2e1011878662bce335.PNG',	'Tes Uraian',	80000,	'0000-00-00 00:00:00',	1,	1,	NULL,	'Nama Nasabah',	'Perusahaan Nama',	'tidak ada',	NULL,	NULL,	1,	1),
 (13,	'Pendanaan 1',	'',	'uraian 1',	100000,	'2021-07-20 02:50:32',	1,	NULL,	NULL,	NULL,	NULL,	NULL,	'pendanaan/20210721_a165fbd61c277745f187eaac7182d9c05d0d1171.png',	'pendanaan/20210721_7f8ee84f4cf599be71dc87a7eecacf740c7f12b7.png',	1,	1),
 (15,	'Pendanaan 1',	'pendanaan/20210721_e85056a1203e6df1d2f52d464cb23070b33fd85c.PNG',	'Tes Uraian',	80000,	'2021-09-07 19:18:41',	1,	1,	123456,	'Budi',	'Perusahaan Nama',	'tidak ada',	'pendanaan/20210721_619cc696ef6af0741f624818aca554fcaba2ad9e.png',	'pendanaan/20210721_cd45b5b7049c852536ee19af1309a5aac70c61b3.png',	1,	1),
-(16,	'Sumbangan Diri',	'pendanaan/20210722_1574bddb75c78a6fd2251d61e2993b5146201319.jpg',	'',	10000000,	'2021-08-31 00:00:00',	17,	1,	123456789,	'Ian',	'Pribadi',	'Mmisquen',	'pendanaan/20210722_e0dadb2ff54f4f7476f0c3ca3e904b778384e4ca.jpg',	'pendanaan/20210722_1e587263e3e1bf03411c4415cc1743a8aba34915.jpg',	2,	2);
+(16,	'Sumbangan Diri',	'pendanaan/20210722_1574bddb75c78a6fd2251d61e2993b5146201319.jpg',	'',	10000000,	'2021-08-31 00:00:00',	17,	1,	123456789,	'Ian',	'Pribadi',	'Mmisquen',	'pendanaan/20210722_e0dadb2ff54f4f7476f0c3ca3e904b778384e4ca.jpg',	'pendanaan/20210722_1e587263e3e1bf03411c4415cc1743a8aba34915.jpg',	2,	3),
+(17,	'asdas',	'W5cei9MATGqA-aCU7Q6_ILmUoSEJKDH6.PNG',	'asdasasd',	12312123,	'2021-07-07 02:50:13',	1,	NULL,	NULL,	NULL,	NULL,	NULL,	'WVWKCgLayqTcx72zP__qtIKBJ-QG-bvM.PNG',	's0vPpgDFDDMYnGhrkQ4OeI1x1-Dt2ACX.PNG',	3,	1);
 
 DROP TABLE IF EXISTS `role`;
 CREATE TABLE `role` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(50) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 
 INSERT INTO `role` (`id`, `name`) VALUES
 (1,	'Super Administrator'),
@@ -393,7 +406,7 @@ CREATE TABLE `role_action` (
   KEY `action_id` (`action_id`),
   CONSTRAINT `role_action_ibfk_1` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`),
   CONSTRAINT `role_action_ibfk_2` FOREIGN KEY (`action_id`) REFERENCES `action` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=370 DEFAULT CHARSET=latin1;
 
 INSERT INTO `role_action` (`id`, `role_id`, `action_id`) VALUES
 (33,	2,	12),
@@ -523,7 +536,7 @@ CREATE TABLE `role_menu` (
   KEY `menu_id` (`menu_id`),
   CONSTRAINT `role_menu_ibfk_1` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`),
   CONSTRAINT `role_menu_ibfk_2` FOREIGN KEY (`menu_id`) REFERENCES `menu` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=126 DEFAULT CHARSET=latin1;
 
 INSERT INTO `role_menu` (`id`, `role_id`, `menu_id`) VALUES
 (56,	2,	1),
@@ -565,7 +578,7 @@ CREATE TABLE `setting` (
   `alamat` text NOT NULL,
   `slogan_web` text NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
 
 INSERT INTO `setting` (`id`, `pin`, `logo`, `judul_web`, `link_download_apk_marketing`, `bg_login`, `bg_pin`, `link_download_apk`, `nama_web`, `alamat`, `slogan_web`) VALUES
 (3,	1234,	'UHHB5dc9RcnV-d48no4oK8EQc8NWte-O.png',	'Wakaf Mudah Pahala Berlimpah',	'marketing',	'PZ9iQ72nyBx7QNfqO5aK2x95Zt-v8Rbq.jpg',	'z4spKTc3CoEp3MIWk1iG6YhhAVwj1JlM.jpg',	'playstore',	'ISALAM',	'Batu',	'Ketika manusia meninggal dunia, maka terputus sudah amal jariahnya kecuali tiga perkara yakni: sedekah jariyah, ilmu bermanfaat dan doa anak yang sholeh. ');
@@ -575,7 +588,7 @@ CREATE TABLE `status` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4;
 
 INSERT INTO `status` (`id`, `name`) VALUES
 (1,	'Pendanaan diajukan'),
@@ -594,7 +607,7 @@ CREATE TABLE `tema_hubungi_kami` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `nama_tema` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
 
 INSERT INTO `tema_hubungi_kami` (`id`, `nama_tema`) VALUES
 (1,	'Saya Tertarik Menjadi Investor'),
@@ -619,10 +632,10 @@ CREATE TABLE `user` (
   UNIQUE KEY `username` (`username`),
   KEY `role_id` (`role_id`),
   CONSTRAINT `user_ibfk_1` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=latin1;
 
 INSERT INTO `user` (`id`, `username`, `password`, `name`, `role_id`, `confirm`, `status`, `pin`, `photo_url`, `secret_token`, `nomor_handphone`, `last_login`, `last_logout`) VALUES
-(1,	'admin@admin.com',	'$2y$13$jfVHR0wNqQMpR42YeRoG9ue8LavYwtz0Ou9wLTOEN.g5Mv7/TxIOe',	'Administrator',	1,	1,	1,	NULL,	'default.png',	'ISALAMMTYyNzErUmJEZmtPcGt4WVFVVW9Dal_YnkcI_Vjb3AxdFlXV2p5WjdjSiswOTg5Nw==S3CRETKEY',	NULL,	'2021-07-22 21:50:18',	'2021-07-21 19:06:29'),
+(1,	'admin@admin.com',	'$2y$13$jfVHR0wNqQMpR42YeRoG9ue8LavYwtz0Ou9wLTOEN.g5Mv7/TxIOe',	'Administrator',	1,	1,	1,	'1234',	'default.png',	'ISALAMMTYyNzErUmJEZmtPcGt4WVFVVW9Dal_YnkcI_Vjb3AxdFlXV2p5WjdjSiswOTg5Nw==S3CRETKEY',	'',	'2021-07-24 22:50:52',	'2021-07-24 22:50:41'),
 (2,	'user',	'ee11cbb19052e40b07aac0ca060c23ee',	'Regular User',	3,	1,	1,	NULL,	'default.png',	NULL,	NULL,	NULL,	NULL),
 (3,	'budi@gmail.com',	'21232f297a57a5a743894a0e4a801fc3',	'budi@gmail.com',	3,	0,	1,	NULL,	'default.png',	NULL,	'0876786876',	NULL,	NULL),
 (4,	'budi1@gmail.com',	'827ccb0eea8a706c4c34a16891f84e7b',	'Name budi',	3,	0,	1,	NULL,	'default.png',	NULL,	'08767868761',	NULL,	NULL),
@@ -633,4 +646,4 @@ INSERT INTO `user` (`id`, `username`, `password`, `name`, `role_id`, `confirm`, 
 (17,	'hardiansah7101@gmail.com',	'$2y$13$pm1zgDOB5jNY4MNS93eibuhUSu.bPAEcagIxT6mYu73NsNattN9jG',	'Muh. Hardiansah',	2,	1,	1,	NULL,	'default.png',	'ISALAMMTYyNzArWktRdWFYMzJocjVSWVFNUDRnVVRM_o7B8W_MC1VQy02aWVNeGN1bEhGaExIemFOKzQxMjEyS3CRETKEY',	'081911106262',	NULL,	NULL),
 (18,	'dellanjng@gmail.com',	'$2y$13$pskad5BMklO4gWTrinjG0e2FD5/GTrH3NkFnRqE/S/HS7wIunMZni',	'Fahru',	5,	1,	1,	'1234',	'default.png',	'ISALAMMTYyNzErcERzc3lLR1VNWUdEY1FYMUJHZ0dYeG_fwFRb_NtR1ZTQStLMm5sdVFVZHZNWnNyQUUrMzI1Nzk=S3CRETKEY',	'081082083081',	NULL,	NULL);
 
--- 2021-07-24 11:19:39
+-- 2021-08-02 07:09:24
