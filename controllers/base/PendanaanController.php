@@ -230,6 +230,12 @@ class PendanaanController extends Controller
             $cair->tanggal = date('Y-m-d');
             $cair->save();
             if ($model->save()) {
+               $notifikasi2 = new Notifikasi;
+            $notifikasi2->message = "Pendanaan ".$model->nama_pendanaan." Telah Anda Cairkan";
+            $notifikasi2->user_id = $model->user_id;
+            $notifikasi2->flag = 1;
+            $notifikasi2->date=date('Y-m-d H:i:s');
+            $notifikasi2->save();
                \Yii::$app->getSession()->setFlash(
                   'success',
                   'Pendanaan Telah Dicairkan!'
@@ -265,7 +271,12 @@ class PendanaanController extends Controller
          }
          
          if ($model->save()) {
-           
+            $notifikasi2 = new Notifikasi;
+            $notifikasi2->message = "Pendanaan ".$model->nama_pendanaan." Telah selesai";
+            $notifikasi2->user_id = $model->user_id;
+            $notifikasi2->flag = 1;
+            $notifikasi2->date=date('Y-m-d H:i:s');
+            $notifikasi2->save(); 
             
             \Yii::$app->getSession()->setFlash(
                'success',
@@ -288,7 +299,12 @@ class PendanaanController extends Controller
       if ($model) {
          $model->status_id = 7;
          if ($model->save()) {
-
+            $notifikasi = new Notifikasi;
+            $notifikasi->message = "Pendanaan ".$model->nama_pendanaan." Telah Ditolak Oleh pihak Admin";
+            $notifikasi->user_id = $model->user_id;
+            $notifikasi->flag = 1;
+            $notifikasi->date=date('Y-m-d H:i:s');
+            $notifikasi->save();
             \Yii::$app->getSession()->setFlash(
                'success',
                'Pendanaan Telah Ditolak!'
