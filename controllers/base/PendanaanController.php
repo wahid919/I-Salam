@@ -109,7 +109,7 @@ class PendanaanController extends Controller
                $path = Yii::getAlias("@app/web/uploads/pendanaan/foto/") . $model->foto;
                $fotos->saveAs($path);
             }
-            $fotos_ktp = UploadedFile::getInstance($model, 'foto');
+            $fotos_ktp = UploadedFile::getInstance($model, 'foto_ktp');
             if ($fotos_ktp != NULL) {
                # store the source fotos_ktp name
                $model->foto_ktp = $fotos_ktp->name;
