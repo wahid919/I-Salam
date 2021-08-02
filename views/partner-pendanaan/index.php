@@ -50,7 +50,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' =>'foto_ktp_partner',
                 'format' =>'html',
                 'value' =>function($model) {
-                   return Html::img(\Yii::$app->request->BaseUrl.'/uploads/'.$model->foto_ktp_partner,['width'=>100]);
+                   return Html::img(\Yii::$app->request->BaseUrl.'/uploads/partner-pendanaan/foto_ktp_partner/'.$model->foto_ktp_partner,['width'=>100]);
                  },
              ],
                 ],
