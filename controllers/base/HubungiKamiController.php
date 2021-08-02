@@ -77,7 +77,7 @@ class HubungiKamiController extends Controller
     public function actionCreate()
     {
         $model = new HubungiKami;
-
+        $model->status = 0;
         try {
             if ($model->load($_POST) && $model->save()) {
                 return $this->redirect(['view', 'id' => $model->id]);
