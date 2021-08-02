@@ -33,7 +33,6 @@ use \dmstr\bootstrap\Tabs;
                 'disabled' => (isset($relAttributes) && isset($relAttributes['tema_hubungi_kami_id'])),
             ]
         ); ?>
-        <?= $form->field($model, 'status')->textInput() ?>
         <hr />
         <?php echo $form->errorSummary($model); ?>
         <div class="row">
