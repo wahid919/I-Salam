@@ -103,10 +103,10 @@ class PendanaanController extends Controller
 
                # the path to save fotos
                // unlink(Yii::getAlias("@app/web/uploads/pengajuan/") . $oldFile);
-               if (file_exists(Yii::getAlias("@app/web/uploads/pendanaaan/foto/")) == false) {
-                  mkdir(Yii::getAlias("@app/web/uploads/pendanaaan/foto/"), 0777, true);
+               if (file_exists(Yii::getAlias("@app/web/uploads/pendanaan/foto/")) == false) {
+                  mkdir(Yii::getAlias("@app/web/uploads/pendanaan/foto/"), 0777, true);
                }
-               $path = Yii::getAlias("@app/web/uploads/pendanaaan/foto/") . $model->foto;
+               $path = Yii::getAlias("@app/web/uploads/pendanaan/foto/") . $model->foto;
                $fotos->saveAs($path);
             }
             $fotos_ktp = UploadedFile::getInstance($model, 'foto');
@@ -121,10 +121,10 @@ class PendanaanController extends Controller
 
                # the path to save fotos_ktp
                // unlink(Yii::getAlias("@app/web/uploads/pengajuan/") . $oldFile);
-               if (file_exists(Yii::getAlias("@app/web/uploads/pendanaaan/foto_ktp/")) == false) {
-                  mkdir(Yii::getAlias("@app/web/uploads/pendanaaan/foto_ktp/"), 0777, true);
+               if (file_exists(Yii::getAlias("@app/web/uploads/pendanaan/foto_ktp/")) == false) {
+                  mkdir(Yii::getAlias("@app/web/uploads/pendanaan/foto_ktp/"), 0777, true);
                }
-               $path = Yii::getAlias("@app/web/uploads/pendanaaan/foto_ktp/") . $model->foto_ktp;
+               $path = Yii::getAlias("@app/web/uploads/pendanaan/foto_ktp/") . $model->foto_ktp;
                $fotos_ktp->saveAs($path);
             }
             $fotos_kk = UploadedFile::getInstance($model, 'foto_kk');
@@ -139,10 +139,10 @@ class PendanaanController extends Controller
 
                # the path to save fotos_kk
                // unlink(Yii::getAlias("@app/web/uploads/pengajuan/") . $oldFile);
-               if (file_exists(Yii::getAlias("@app/web/uploads/pendanaaan/foto_kk/")) == false) {
-                  mkdir(Yii::getAlias("@app/web/uploads/pendanaaan/foto_kk/"), 0777, true);
+               if (file_exists(Yii::getAlias("@app/web/uploads/pendanaan/foto_kk/")) == false) {
+                  mkdir(Yii::getAlias("@app/web/uploads/pendanaan/foto_kk/"), 0777, true);
                }
-               $path = Yii::getAlias("@app/web/uploads/pendanaaan/foto_kk/") . $model->foto_kk;
+               $path = Yii::getAlias("@app/web/uploads/pendanaan/foto_kk/") . $model->foto_kk;
                $fotos_kk->saveAs($path);
             }
             if ($model->save()) {
