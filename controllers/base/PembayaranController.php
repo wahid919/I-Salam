@@ -87,7 +87,7 @@ class PembayaranController extends Controller
             if ($model->load($_POST)) {
                 $model->user_id = \Yii::$app->user->identity->id;
                 $model->status_id = 5;
-                $model->tanggal_pembayaran = date('Y-m-d');
+                // $model->tanggal_pembayaran = date('Y-m-d');
                 $bukti_transaksis = UploadedFile::getInstance($model, 'bukti_transaksi');
                 if ($bukti_transaksis != NULL) {
                     # store the source bukti_transaksis name
