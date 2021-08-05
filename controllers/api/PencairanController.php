@@ -108,7 +108,10 @@ class PencairanController extends \yii\rest\ActiveController
                                 $notifikasi2->flag = 1;
                                 $notifikasi2->date=date('Y-m-d H:i:s');
                                 $notifikasi2->save();
-                                return ['success' => true, 'message' => 'success', 'data' => $model];
+                                return ['success' => true, 'message' => 'success', 
+                                'data-cair' => $cair,
+                                'pendanaan' => $model,
+                            ];
                             }
 
                         // return $this->redirect(Url::previous());
