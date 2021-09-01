@@ -41,7 +41,7 @@ return Model::scenarios();
 */
 public function search($params)
 {
-$query = Pendanaan::find();
+$query = Pendanaan::find()->orderBy(['status_id'=>SORT_ASC]);
 
 $dataProvider = new ActiveDataProvider([
 'query' => $query,

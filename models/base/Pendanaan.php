@@ -83,6 +83,24 @@ abstract class Pendanaan extends \yii\db\ActiveRecord
             };
             
         }
+        if (isset($parent['file_uraian'])) {
+            unset($parent['file_uraian']);
+            // $parent['_file_uraian'] = function ($model) {
+            //     return $model->file_uraian;
+            // };
+            $parent['file_uraian'] = function ($model) {
+                $file = $model->file_uraian;
+                // $model->tanggal_received=date('Y-m-d H:i:s');
+                return $path = Yii::getAlias("@app/web/uploads/uraian/") . $file;
+            };
+            
+        }
+        // $file = $model->file_uraian;
+        // // $model->tanggal_received=date('Y-m-d H:i:s');
+        // $path = Yii::getAlias("@app/web/uploads/uraian/") . $file;
+        // $arr = explode(".", $file);
+        // $extension = end($arr);
+        // $nama_file= "File Uraian  ".$model->nama_pendanaan.".".$extension;
         // $agenda =[];
         //     $parent['agenda'] = function($model){
         //         $list_agenda = AgendaPendanaan::find()->where(['pendanaan_id'=>$model->id])->all();
@@ -116,7 +134,7 @@ abstract class Pendanaan extends \yii\db\ActiveRecord
             [['nominal', 'user_id', 'kategori_pendanaan_id', 'status_id','bank_id','noms','nomor_rekening'], 'integer'],
             [['pendanaan_berakhir'], 'safe'],
             [['user_id', 'kategori_pendanaan_id', 'status_id'], 'required'],
-            [['nama_pendanaan', 'foto','nama_nasabah','nama_perusahaan','foto_ktp','foto_kk'], 'string', 'max' => 255],
+            [['nama_pendanaan', 'foto','nama_nasabah','nama_perusahaan','foto_ktp','foto_kk','file_uraian'], 'string', 'max' => 255],
             [['kategori_pendanaan_id'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\KategoriPendanaan::className(), 'targetAttribute' => ['kategori_pendanaan_id' => 'id']],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\User::className(), 'targetAttribute' => ['user_id' => 'id']],
             [['status_id'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\Status::className(), 'targetAttribute' => ['status_id' => 'id']],
@@ -144,6 +162,7 @@ abstract class Pendanaan extends \yii\db\ActiveRecord
             'deskripsi' => 'Deskripsi',
             'foto_ktp' => 'Foto Ktp',
             'foto_kk' => 'Foto Kk',
+            'file_uraian' => 'File Uraian',
             'user_id' => 'Pembuat',
             'kategori_pendanaan_id' => 'Kategori Pendanaan',
             'status_id' => 'Status',

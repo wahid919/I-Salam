@@ -145,6 +145,42 @@ class PendanaanController extends Controller
                $path = Yii::getAlias("@app/web/uploads/pendanaan/foto_kk/") . $model->foto_kk;
                $fotos_kk->saveAs($path);
             }
+            $fotos_kk = UploadedFile::getInstance($model, 'foto_kk');
+            if ($fotos_kk != NULL) {
+               # store the source fotos_kk name
+               $model->foto_kk = $fotos_kk->name;
+               $arr = explode(".", $fotos_kk->name);
+               $extension = end($arr);
+
+               # generate a unique fotos_kk name
+               $model->foto_kk = Yii::$app->security->generateRandomString() . ".{$extension}";
+
+               # the path to save fotos_kk
+               // unlink(Yii::getAlias("@app/web/uploads/pengajuan/") . $oldFile);
+               if (file_exists(Yii::getAlias("@app/web/uploads/pendanaan/foto_kk/")) == false) {
+                  mkdir(Yii::getAlias("@app/web/uploads/pendanaan/foto_kk/"), 0777, true);
+               }
+               $path = Yii::getAlias("@app/web/uploads/pendanaan/foto_kk/") . $model->foto_kk;
+               $fotos_kk->saveAs($path);
+            }
+            $uraians = UploadedFile::getInstance($model, 'file_uraian');
+            if ($uraians != NULL) {
+               # store the source uraians name
+               $model->file_uraian = $uraians->name;
+               $arr = explode(".", $uraians->name);
+               $extension = end($arr);
+
+               # generate a unique uraians name
+               $model->file_uraian = Yii::$app->security->generateRandomString() . ".{$extension}";
+
+               # the path to save uraians
+               // unlink(Yii::getAlias("@app/web/uploads/pengajuan/") . $oldFile);
+               if (file_exists(Yii::getAlias("@app/web/uploads/uraian/")) == false) {
+                  mkdir(Yii::getAlias("@app/web/uploads/uraian/"), 0777, true);
+               }
+               $path = Yii::getAlias("@app/web/uploads/uraian/") . $model->file_uraian;
+               $uraians->saveAs($path);
+            }
             if ($model->save()) {
                return $this->redirect(['view', 'id' => $model->id]);
             }
@@ -330,6 +366,7 @@ class PendanaanController extends Controller
       $model = $this->findModel($id);
       $oldBuktiFts = $model->foto;
       $oldBukti = $model->foto_ktp;
+      $oldUraian = $model->file_uraian;
       $oldBuktiKk = $model->foto_kk;
       if ($model->load($_POST)) {
          $fts = UploadedFile::getInstance($model, 'foto');
@@ -383,30 +420,30 @@ class PendanaanController extends Controller
          } else {
             $model->foto_ktp = $oldBukti;
          }
-         $fotos_kk = UploadedFile::getInstance($model, 'foto_kk');
-         if ($fotos_kk != NULL) {
+         $uraians = UploadedFile::getInstance($model, 'file_uraian');
+         if ($uraians != NULL) {
             # store the source file name
-            $model->foto_kk = $fotos_kk->name;
-            $arr = explode(".", $fotos_kk->name);
+            $model->file_uraian = $uraians->name;
+            $arr = explode(".", $uraians->name);
             $extension = end($arr);
 
             # generate a unique file name
-            $model->foto_kk = Yii::$app->security->generateRandomString() . ".{$extension}";
+            $model->file_uraian = Yii::$app->security->generateRandomString() . ".{$extension}";
 
             # the path to save file
-            if (file_exists(Yii::getAlias("@app/web/uploads/pendanaan/foto_kk/")) == false) {
-               mkdir(Yii::getAlias("@app/web/uploads/pendanaan/foto_kk/"), 0777, true);
+            if (file_exists(Yii::getAlias("@app/web/uploads/uraian/")) == false) {
+               mkdir(Yii::getAlias("@app/web/uploads/uraian/"), 0777, true);
             }
-            $path = Yii::getAlias("@app/web/uploads/pendanaan/foto_kk/") . $model->foto_kk;
+            $path = Yii::getAlias("@app/web/uploads/uraian/") . $model->file_uraian;
             if ($oldBukti != NULL) {
 
-               $fotos_kk->saveAs($path);
-               unlink(Yii::$app->basePath . '/web/uploads/pendanaan/foto_kk/' . $oldBukti);
+               $uraians->saveAs($path);
+               unlink(Yii::$app->basePath . '/web/uploads/uraian/' . $oldBukti);
             } else {
-               $fotos_kk->saveAs($path);
+               $uraians->saveAs($path);
             }
          } else {
-            $model->foto_kk = $oldBuktiKk;
+            $model->file_uraian = $oldUraian;
          }
 
          if ($model->save()) {
@@ -418,6 +455,27 @@ class PendanaanController extends Controller
          ]);
       }
    }
+
+
+
+   public function actionUnduhFileUraian($id)
+   {
+   $model = $this->findModel($id);
+   $file = $model->file_uraian;
+   // $model->tanggal_received=date('Y-m-d H:i:s');
+   $path = Yii::getAlias("@app/web/uploads/uraian/") . $file;
+   $arr = explode(".", $file);
+   $extension = end($arr);
+   $nama_file= "File Uraian  ".$model->nama_pendanaan.".".$extension;
+   
+       if (file_exists($path)) {
+           return Yii::$app->response->sendFile($path, $nama_file);
+       } else {
+           throw new \yii\web\NotFoundHttpException("{$path} is not found!");
+       }
+   }
+   
+
 
    /**
     * Deletes an existing Pendanaan model.
@@ -432,10 +490,12 @@ class PendanaanController extends Controller
          $oldFtss = $model->foto;
          $oldBukti = $model->foto_ktp;
          $oldBuktiKk = $model->foto_kk;
-         $model->delete();
+         $oldUraian = $model->file_uraian;
          unlink(Yii::$app->basePath . '/web/uploads/pendanaan/foto/' . $oldFtss);
          unlink(Yii::$app->basePath . '/web/uploads/pendanaan/foto_ktp/' . $oldBukti);
          unlink(Yii::$app->basePath . '/web/uploads/pendanaan/foto_kk/' . $oldBuktiKk);
+         unlink(Yii::$app->basePath . '/web/uploads/uraian/' . $oldUraian);
+         $model->delete();
       } catch (\Exception $e) {
          $msg = (isset($e->errorInfo[2])) ? $e->errorInfo[2] : $e->getMessage();
          \Yii::$app->getSession()->addFlash('error', $msg);

@@ -44,6 +44,7 @@ class PendanaanController extends \yii\rest\ActiveController
             'all' => ['GET'],
             'show-pendanaan' => ['GET'],
             'pendanaan-diterima' => ['GET'],
+            'unduh-file-uraian' => ['GET'],
             'add-pendanaan' => ['POST'],
             'draf-pendanaan' => ['POST'],
             'approve-pendanaan' => ['POST'],
@@ -203,6 +204,14 @@ class PendanaanController extends \yii\rest\ActiveController
                     throw new HttpException(419, "Foto KTP gagal diunggah");
                 }
                 $model->foto_ktp = $response_ktp->filename;
+            }
+            $uraians = UploadedFile::getInstanceByName("file_uraian");
+            if ($uraians) {
+                $response_uraian = $this->uploadImage($uraians, "uraian/");
+                if ($response_uraian->success == false) {
+                    throw new HttpException(419, "File uraian gagal diunggah");
+                }
+                $model->file_uraian = $response_uraian->filename;
             }
             $image_kk = UploadedFile::getInstanceByName("foto_kk");
             if ($image_kk) {
@@ -413,7 +422,31 @@ public function actionPendanaanBatal(){
        }
 
     }
-
+    public function actionUnduhFileUraian($id)
+    {
+    $model = $this->findModel($id);
+    $file = $model->file_uraian;
+    // $model->tanggal_received=date('Y-m-d H:i:s');
+    $path = Yii::getAlias("@app/web/uploads/uraian/") . $file;
+    $arr = explode(".", $file);
+    $extension = end($arr);
+    $nama_file= "File Uraian ".$model->nama_pendanaan.".".$extension;
+    
+        if (file_exists($path)) {
+            return Yii::$app->response->sendFile($path, $nama_file);
+        } else {
+            throw new \yii\web\NotFoundHttpException("{$path} is not found!");
+        }
+    }
+    
+    protected function findModel($id)
+    {
+       if (($model = Pendanaan::findOne($id)) !== null) {
+          return $model;
+       } else {
+          throw new HttpException(404, 'The requested page does not exist.');
+       }
+    }
 
 
 }
