@@ -213,6 +213,14 @@ class PendanaanController extends \yii\rest\ActiveController
                 }
                 $model->file_uraian = $response_uraian->filename;
             }
+            $posters = UploadedFile::getInstanceByName("poster");
+            if ($posters) {
+                $response_poster = $this->uploadImage($posters, "poster/");
+                if ($response_poster->success == false) {
+                    throw new HttpException(419, "File poster gagal diunggah");
+                }
+                $model->poster = $response_poster->filename;
+            }
             $image_kk = UploadedFile::getInstanceByName("foto_kk");
             if ($image_kk) {
                 $response_kk = $this->uploadImage($image_kk, "pendanaan/foto_kk");

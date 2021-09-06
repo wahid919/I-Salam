@@ -181,6 +181,25 @@ class PendanaanController extends Controller
                $path = Yii::getAlias("@app/web/uploads/uraian/") . $model->file_uraian;
                $uraians->saveAs($path);
             }
+
+            $posters = UploadedFile::getInstance($model, 'poster');
+            if ($posters != NULL) {
+               # store the source posters name
+               $model->poster = $posters->name;
+               $arr = explode(".", $posters->name);
+               $extension = end($arr);
+
+               # generate a unique posters name
+               $model->poster = Yii::$app->security->generateRandomString() . ".{$extension}";
+
+               # the path to save posters
+               // unlink(Yii::getAlias("@app/web/uploads/pengajuan/") . $oldFile);
+               if (file_exists(Yii::getAlias("@app/web/uploads/poster/")) == false) {
+                  mkdir(Yii::getAlias("@app/web/uploads/poster/"), 0777, true);
+               }
+               $path = Yii::getAlias("@app/web/uploads/poster/") . $model->poster;
+               $posters->saveAs($path);
+            }
             if ($model->save()) {
                return $this->redirect(['view', 'id' => $model->id]);
             }
@@ -367,6 +386,7 @@ class PendanaanController extends Controller
       $oldBuktiFts = $model->foto;
       $oldBukti = $model->foto_ktp;
       $oldUraian = $model->file_uraian;
+      $oldPoster = $model->poster;
       $oldBuktiKk = $model->foto_kk;
       if ($model->load($_POST)) {
          $fts = UploadedFile::getInstance($model, 'foto');
@@ -444,6 +464,33 @@ class PendanaanController extends Controller
             }
          } else {
             $model->file_uraian = $oldUraian;
+         }
+
+
+         $posters = UploadedFile::getInstance($model, 'poster');
+         if ($posters != NULL) {
+            # store the source file name
+            $model->poster = $posters->name;
+            $arr = explode(".", $posters->name);
+            $extension = end($arr);
+
+            # generate a unique file name
+            $model->poster = Yii::$app->security->generateRandomString() . ".{$extension}";
+
+            # the path to save file
+            if (file_exists(Yii::getAlias("@app/web/uploads/poster/")) == false) {
+               mkdir(Yii::getAlias("@app/web/uploads/poster/"), 0777, true);
+            }
+            $path = Yii::getAlias("@app/web/uploads/poster/") . $model->poster;
+            if ($oldBukti != NULL) {
+
+               $posters->saveAs($path);
+               unlink(Yii::$app->basePath . '/web/uploads/poster/' . $oldBukti);
+            } else {
+               $posters->saveAs($path);
+            }
+         } else {
+            $model->poster = $oldPoster;
          }
 
          if ($model->save()) {

@@ -67,6 +67,7 @@ $this->title = 'Setting ' . $model->nama_web;
         'judul_web',
         'alamat:ntext',
         'slogan_web:ntext',
+        'tentang_kami:ntext',
             ],
             ]); ?>
 

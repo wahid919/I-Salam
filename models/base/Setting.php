@@ -41,8 +41,8 @@ abstract class Setting extends \yii\db\ActiveRecord
         return [
             [['pin'], 'integer'],
             [['nama_web','judul_web', 'alamat', 'slogan_web'], 'required'],
-            [['alamat', 'slogan_web'], 'string'],
-            [['logo', 'bg_login', 'bg_pin', 'link_download_apk', 'link_download_apk_marketing', 'nama_web'], 'string', 'max' => 255]
+            [['alamat', 'slogan_web','tentang_kami'], 'string'],
+            [['logo', 'bg_login', 'bg_pin', 'link_download_apk', 'link_download_apk_marketing', 'nama_web','latitude','longitude'], 'string', 'max' => 255]
         ];
     }
 
@@ -62,6 +62,7 @@ abstract class Setting extends \yii\db\ActiveRecord
             'nama_web' => 'Nama Web',
             'judul_web' => 'Judul Web',
             'alamat' => 'Alamat',
+            'tentang_kami' => 'Tentang Kami',
             'slogan_web' => 'Slogan Web',
         ];
     }

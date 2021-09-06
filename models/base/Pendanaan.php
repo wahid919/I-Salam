@@ -95,6 +95,18 @@ abstract class Pendanaan extends \yii\db\ActiveRecord
             };
             
         }
+        if (isset($parent['poster'])) {
+            unset($parent['poster']);
+            // $parent['_poster'] = function ($model) {
+            //     return $model->poster;
+            // };
+            $parent['poster'] = function ($model) {
+                $file = $model->poster;
+                // $model->tanggal_received=date('Y-m-d H:i:s');
+                return $path = Yii::getAlias("@app/web/uploads/poster/") . $file;
+            };
+            
+        }
         // $file = $model->file_uraian;
         // // $model->tanggal_received=date('Y-m-d H:i:s');
         // $path = Yii::getAlias("@app/web/uploads/uraian/") . $file;
@@ -134,7 +146,7 @@ abstract class Pendanaan extends \yii\db\ActiveRecord
             [['nominal', 'user_id', 'kategori_pendanaan_id', 'status_id','bank_id','noms','nomor_rekening'], 'integer'],
             [['pendanaan_berakhir'], 'safe'],
             [['user_id', 'kategori_pendanaan_id', 'status_id'], 'required'],
-            [['nama_pendanaan', 'foto','nama_nasabah','nama_perusahaan','foto_ktp','foto_kk','file_uraian'], 'string', 'max' => 255],
+            [['nama_pendanaan', 'foto','nama_nasabah','nama_perusahaan','foto_ktp','foto_kk','file_uraian','poster'], 'string', 'max' => 255],
             [['kategori_pendanaan_id'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\KategoriPendanaan::className(), 'targetAttribute' => ['kategori_pendanaan_id' => 'id']],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\User::className(), 'targetAttribute' => ['user_id' => 'id']],
             [['status_id'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\Status::className(), 'targetAttribute' => ['status_id' => 'id']],

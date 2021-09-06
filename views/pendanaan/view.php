@@ -101,6 +101,13 @@ $this->title = 'Pendanaan ' . $model->nama_pendanaan;
                         },
                     ],
                     [
+                        'attribute' => 'poster',
+                        'format' => 'html',
+                        'value' => function ($model) {
+                            return Html::img(\Yii::$app->request->BaseUrl . '/uploads/poster/' . $model->poster, ['width' => 100]);
+                        },
+                    ],
+                    [
                         'attribute' => 'File Uraian',
                         'header'=> 'Download File Uraian',
                         'format' =>'raw',

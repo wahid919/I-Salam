@@ -109,7 +109,7 @@ use kartik\file\FileInput;
             </div>
         </div>
         <div class="row">
-            <div class="col-sm-12 col-md-6 col-lg-6">
+            <div class="col-sm-12 col-md-4 col-lg-4">
                 <?= $form->field($model, 'alamat', [
                     'template' => '
                         {label}
@@ -123,9 +123,9 @@ use kartik\file\FileInput;
                         'class' => 'control-label'
                     ],
                     'options' => ['tag' => false]
-                ])->textarea(['rows' => 6]) ?>
+                ])->textarea(['rows' => 4]) ?>
             </div>
-            <div class="col-sm-12 col-md-6 col-lg-6">
+            <div class="col-sm-12 col-md-4 col-lg-4">
                 <?= $form->field($model, 'slogan_web', [
                     'template' => '
                         {label}
@@ -139,7 +139,23 @@ use kartik\file\FileInput;
                         'class' => 'control-label'
                     ],
                     'options' => ['tag' => false]
-                ])->textarea(['rows' => 6]) ?>
+                ])->textarea(['rows' => 4]) ?>
+            </div>
+            <div class="col-sm-12 col-md-4 col-lg-4">
+                <?= $form->field($model, 'tentang_kami', [
+                    'template' => '
+                        {label}
+                        {input}
+                        {error}
+                    ',
+                    'inputOptions' => [
+                        'class' => 'form-control'
+                    ],
+                    'labelOptions' => [
+                        'class' => 'control-label'
+                    ],
+                    'options' => ['tag' => false]
+                ])->textarea(['rows' => 4]) ?>
             </div>
         </div>
 
