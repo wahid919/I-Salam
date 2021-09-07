@@ -482,10 +482,10 @@ class PendanaanController extends Controller
                mkdir(Yii::getAlias("@app/web/uploads/poster/"), 0777, true);
             }
             $path = Yii::getAlias("@app/web/uploads/poster/") . $model->poster;
-            if ($oldBukti != NULL) {
+            if ($oldPoster != NULL) {
 
                $posters->saveAs($path);
-               unlink(Yii::$app->basePath . '/web/uploads/poster/' . $oldBukti);
+               unlink(Yii::$app->basePath . '/web/uploads/poster/' . $oldPoster);
             } else {
                $posters->saveAs($path);
             }

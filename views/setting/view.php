@@ -1,6 +1,6 @@
 <?php
 
-use dmstr\helpers\Html;
+use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\GridView;
 use yii\widgets\DetailView;
@@ -68,6 +68,27 @@ $this->title = 'Setting ' . $model->nama_web;
         'alamat:ntext',
         'slogan_web:ntext',
         'tentang_kami:ntext',
+        [
+            'attribute' =>'instagram',
+            'format' =>'html',
+            'value' =>function($model) {
+               return Html::a('Instagram', $model->instagram, ['target'=>'_blank']);
+             },
+         ],
+         [
+            'attribute' =>'facebook',
+            'format' =>'html',
+            'value' =>function($model) {
+               return Html::a('Facebook', $model->facebook, ['target'=>'_blank']);
+             },
+         ],
+         [
+            'attribute' =>'twitter',
+            'format' =>'html',
+            'value' =>function($model) {
+                return Html::a('Twitter', $model->twitter, ['target'=>'_blank']);
+             },
+         ],
             ],
             ]); ?>
 
