@@ -61,6 +61,46 @@ class FrontendController extends Controller
             'model' => $model
         ]);
     }
+
+    public function actionAbout()
+    {
+
+        $this->layout = false;
+
+        $setting = Setting::find()->one();
+        $icon = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->logo;
+        $bg_login = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->bg_login;
+        $bg = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->bg_pin;
+        $organisasis = Organisasi::find()->where(['flag'=>1])->all();
+        $lembagas = LembagaPenerima::find()->where(['flag'=>1])->all();
+        $count_program = Pendanaan::find()->where(['status_id'=>2])->count();
+        $count_wakif = User::find()->where(['role_id'=>5])->count();
+        $model = new HubungiKami;
+
+
+        if ($model->load($_POST)) {
+            $model->status = 0;
+
+            if ($model->save()) {
+                Yii::$app->session->setFlash('success', "Data created successfully."); 
+            } else {
+                Yii::$app->session->setFlash('error', "Data not saved.");
+            }
+            return $this->redirect('frontend/about_us');
+        }
+
+        return $this->render('about_us', [
+            'setting' => $setting,
+            'count_program' => $count_program,
+            'count_wakif' => $count_wakif,
+            'organisasis' => $organisasis,
+            'lembagas' => $lembagas,
+            'icon' => $icon,
+            'bg_login' => $bg_login,
+            'bg' => $bg,
+            'model' => $model
+        ]);
+    }
     public function actionProgram()
     {
 
