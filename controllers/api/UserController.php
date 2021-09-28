@@ -219,6 +219,7 @@ class UserController extends \yii\rest\ActiveController
             unset($user->password);
             return ['success' => true, 'message' => 'success', 'data' => $user];
         } else {
+            $user->rollback();
             return ['success' => false, 'message' => 'gagal', 'data' => $user->getErrors()];
         }
     }

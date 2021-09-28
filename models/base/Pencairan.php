@@ -26,13 +26,14 @@ abstract class Pencairan extends \yii\db\ActiveRecord
     public function fields()
     {
         $parent = parent::fields();
-        if (isset($parent['pendanaan_id'])) {
-            unset($parent['pendanaan_id']);
-            // $parent['_pendanaan_id'] = function ($model) {
-            //     return $model->pendanaan_id;
+        if (isset($parent['created_at'])) {
+            unset($parent['created_at']);
+            // $parent['_created_at'] = function ($model) {
+            //     return $model->created_at;
             // };
-            $parent['pendanaan'] = function ($model) {
-                return $model->pendanaan;
+            $parent['created_at'] = function ($model) {
+               
+                return date('Y-m-d H:i:s');
             };
         }
 

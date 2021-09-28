@@ -41,7 +41,7 @@ return Model::scenarios();
 */
 public function search($params)
 {
-$query = Pembayaran::find();
+$query = Pembayaran::find()->orderBy(['status_id'=>SORT_DESC]);
 
 $dataProvider = new ActiveDataProvider([
 'query' => $query,

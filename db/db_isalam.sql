@@ -12,7 +12,7 @@ CREATE TABLE `action` (
   `action_id` varchar(50) NOT NULL,
   `name` varchar(50) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=111 DEFAULT CHARSET=latin1;
 
 INSERT INTO `action` (`id`, `controller_id`, `action_id`, `name`) VALUES
 (12,	'site',	'index',	'Index'),
@@ -102,7 +102,18 @@ INSERT INTO `action` (`id`, `controller_id`, `action_id`, `name`) VALUES
 (96,	'agenda-pendanaan',	'view',	'View'),
 (97,	'agenda-pendanaan',	'create',	'Create'),
 (98,	'agenda-pendanaan',	'update',	'Update'),
-(99,	'agenda-pendanaan',	'delete',	'Delete');
+(99,	'agenda-pendanaan',	'delete',	'Delete'),
+(100,	'pendanaan',	'unduh-file-uraian',	'Unduh File Uraian'),
+(101,	'organisasi',	'index',	'Index'),
+(102,	'organisasi',	'view',	'View'),
+(103,	'organisasi',	'create',	'Create'),
+(104,	'organisasi',	'update',	'Update'),
+(105,	'organisasi',	'delete',	'Delete'),
+(106,	'lembaga-penerima',	'index',	'Index'),
+(107,	'lembaga-penerima',	'view',	'View'),
+(108,	'lembaga-penerima',	'create',	'Create'),
+(109,	'lembaga-penerima',	'update',	'Update'),
+(110,	'lembaga-penerima',	'delete',	'Delete');
 
 SET NAMES utf8mb4;
 
@@ -180,6 +191,21 @@ INSERT INTO `kategori_pendanaan` (`id`, `name`) VALUES
 (3,	'wakaf'),
 (4,	'bencana alam');
 
+DROP TABLE IF EXISTS `lembaga_penerima`;
+CREATE TABLE `lembaga_penerima` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nama` varchar(255) NOT NULL,
+  `foto` varchar(255) DEFAULT NULL,
+  `flag` int(11) NOT NULL,
+  `deskripsi` text DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
+
+INSERT INTO `lembaga_penerima` (`id`, `nama`, `foto`, `flag`, `deskripsi`) VALUES
+(1,	'Bank Muamalat',	'27xYmMsNGk_Nf4jv7rIlFXxME4fUyt6g.png',	1,	''),
+(2,	'BNI Syariah',	'bIMEdbhrWtMfBuEDeiNHodNpex-StnTb.png',	1,	''),
+(3,	'Bank Syariah Mandiri',	'zc5c0F1glP8_3IC-g05i879oVXjm59x-.png',	1,	'');
+
 DROP TABLE IF EXISTS `marketing_data_user`;
 CREATE TABLE `marketing_data_user` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -214,7 +240,7 @@ CREATE TABLE `menu` (
   PRIMARY KEY (`id`),
   KEY `parent_id` (`parent_id`),
   CONSTRAINT `menu_ibfk_1` FOREIGN KEY (`parent_id`) REFERENCES `menu` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=latin1;
 
 INSERT INTO `menu` (`id`, `name`, `controller`, `action`, `icon`, `order`, `parent_id`) VALUES
 (1,	'Home',	'site',	'index',	'fa fa-home',	1,	NULL),
@@ -230,7 +256,9 @@ INSERT INTO `menu` (`id`, `name`, `controller`, `action`, `icon`, `order`, `pare
 (11,	'Master Status',	'status',	'index',	'fa fa-align-justify',	9,	2),
 (12,	'Setting Website',	'setting',	'index',	'fa fa-align-justify',	5,	NULL),
 (13,	'Partner Pendanaan',	'partner-pendanaan',	'index',	'fa fa-users',	1,	NULL),
-(14,	'Agenda Pendanaan',	'agenda-pendanaan',	'index',	'fa fa-calendar',	1,	NULL);
+(14,	'Agenda Pendanaan',	'agenda-pendanaan',	'index',	'fa fa-calendar',	1,	NULL),
+(15,	'Organisasi',	'organisasi',	'index',	'fa fa-users',	1,	2),
+(16,	'Lembaga Penerima',	'lembaga-penerima',	'index',	'fa fa-building-o',	1,	2);
 
 DROP TABLE IF EXISTS `notifikasi`;
 CREATE TABLE `notifikasi` (
@@ -242,12 +270,32 @@ CREATE TABLE `notifikasi` (
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
   CONSTRAINT `notifikasi_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 
 INSERT INTO `notifikasi` (`id`, `message`, `date`, `flag`, `user_id`) VALUES
 (1,	'Pendanaan Pendanaan 12 Telah selesai',	'2021-07-25 12:14:32',	1,	1),
 (2,	'Pendanaan Sumbangan Diri Telah selesai',	'2021-07-25 12:39:44',	1,	18),
-(3,	'Pendanaan Sumbangan Diri Telah selesai',	'2021-07-25 12:39:44',	1,	10);
+(3,	'Pendanaan Sumbangan Diri Telah selesai',	'2021-07-25 12:39:44',	1,	10),
+(4,	'Pendanaan Pembagunan Masjid di Batu Telah di Setujui',	'2021-09-03 15:13:07',	1,	1),
+(5,	'Pendanaan Pendanaan 1 Telah di Setujui',	'2021-09-03 15:14:37',	1,	1);
+
+DROP TABLE IF EXISTS `organisasi`;
+CREATE TABLE `organisasi` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nama` varchar(255) NOT NULL,
+  `jabatan` varchar(255) NOT NULL,
+  `foto` varchar(255) DEFAULT NULL,
+  `quotes` text DEFAULT NULL,
+  `flag` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4;
+
+INSERT INTO `organisasi` (`id`, `nama`, `jabatan`, `foto`, `quotes`, `flag`) VALUES
+(1,	'Bapak Direktur Utama',	'Direktur Utama',	NULL,	'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.',	1),
+(2,	'Ibu Sekretaris',	'Sekretaris',	NULL,	'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.',	1),
+(3,	'Ibu Bendahara',	'Bendahara',	NULL,	'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.',	1),
+(4,	'Mbak Marketing',	'Marketing',	'pkRPu_WbjzO5PCyZkEsyvkt5k8bN24ao.jpg',	'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.',	1),
+(5,	'Mas Marketing',	'Marketing',	'wUr-1yfVtjIPKYE8J4DOhORtRGkvqVb9.jpg',	'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.',	1);
 
 DROP TABLE IF EXISTS `otp`;
 CREATE TABLE `otp` (
@@ -312,7 +360,7 @@ CREATE TABLE `pembayaran` (
 ) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4;
 
 INSERT INTO `pembayaran` (`id`, `kode_transaksi`, `nama`, `nominal`, `jenis_pembayaran_id`, `bukti_transaksi`, `user_id`, `pendanaan_id`, `tanggal_konfirmasi`, `tanggal_upload_bukti`, `created_at`, `updated_at`, `status_id`) VALUES
-(2,	NULL,	'WIldan',	10000,	NULL,	'4-lbEYDOMV-TypUtm8PtDf7nILy6HCy3.png',	1,	3,	'2021-07-20 00:00:00',	NULL,	'2021-07-24 02:25:59',	'2021-07-20 14:56:01',	6),
+(2,	NULL,	'WIldan',	10000,	NULL,	'4-lbEYDOMV-TypUtm8PtDf7nILy6HCy3.png',	1,	3,	'2021-07-20 00:00:00',	NULL,	'2021-08-30 05:51:14',	'2021-07-20 14:56:01',	6),
 (3,	NULL,	'WIldan',	10000,	NULL,	'4-lbEYDOMV-TypUtm8PtDf7nILy6HCy3.png',	1,	3,	'2021-07-20 00:00:00',	NULL,	'2021-07-20 15:19:17',	'2021-07-20 15:19:17',	6),
 (4,	NULL,	'WIldan',	10000,	NULL,	'4-lbEYDOMV-TypUtm8PtDf7nILy6HCy3.png',	1,	3,	'2021-07-22 00:00:00',	NULL,	'2021-07-24 16:42:19',	'2021-07-20 15:19:20',	6),
 (10,	'tz2vg_9rdK24072021090408',	'nama',	100000,	NULL,	NULL,	18,	16,	NULL,	NULL,	'2021-07-24 02:04:08',	'2021-07-24 02:04:08',	5),
@@ -352,6 +400,8 @@ CREATE TABLE `pendanaan` (
   `deskripsi` text DEFAULT NULL,
   `foto_ktp` varchar(255) DEFAULT NULL,
   `foto_kk` varchar(255) DEFAULT NULL,
+  `file_uraian` varchar(255) DEFAULT NULL,
+  `poster` varchar(255) DEFAULT NULL,
   `kategori_pendanaan_id` int(11) NOT NULL,
   `status_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
@@ -363,24 +413,25 @@ CREATE TABLE `pendanaan` (
   CONSTRAINT `fk-pendanaan-user` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk-status-pendanaan` FOREIGN KEY (`status_id`) REFERENCES `status` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `pendanaan_ibfk_1` FOREIGN KEY (`bank_id`) REFERENCES `bank` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4;
 
-INSERT INTO `pendanaan` (`id`, `nama_pendanaan`, `foto`, `uraian`, `nominal`, `pendanaan_berakhir`, `user_id`, `bank_id`, `nomor_rekening`, `nama_nasabah`, `nama_perusahaan`, `deskripsi`, `foto_ktp`, `foto_kk`, `kategori_pendanaan_id`, `status_id`) VALUES
-(2,	'Pendanaan 1',	NULL,	'Tes Uraian',	80000,	'0000-00-00 00:00:00',	1,	NULL,	NULL,	NULL,	NULL,	NULL,	NULL,	NULL,	1,	7),
-(3,	'Pendanaan 12',	NULL,	'Tes Uraian',	80000,	'0000-00-00 00:00:00',	1,	NULL,	NULL,	NULL,	NULL,	NULL,	NULL,	NULL,	1,	2),
-(4,	'Pendanaan 1',	NULL,	'Tes Uraian',	80000,	'0000-00-00 00:00:00',	1,	NULL,	NULL,	NULL,	NULL,	NULL,	NULL,	NULL,	1,	3),
-(5,	'Pendanaan 1',	NULL,	'Tes Uraian',	80000,	'0000-00-00 00:00:00',	1,	NULL,	NULL,	NULL,	NULL,	NULL,	NULL,	NULL,	1,	1),
-(6,	'Pendanaan 1',	NULL,	'Tes Uraian',	80000,	'0000-00-00 00:00:00',	1,	NULL,	NULL,	NULL,	NULL,	NULL,	NULL,	NULL,	1,	1),
-(7,	'Pendanaan 1',	'pendanaan/20210719_2dc0c690d3726aed41ab1c89d2ed65c9f01e4337.PNG',	'Tes Uraian',	80000,	'0000-00-00 00:00:00',	1,	NULL,	NULL,	NULL,	NULL,	NULL,	NULL,	NULL,	1,	1),
-(8,	'Pendanaan 1',	'pendanaan/20210719_5b1537e128fb3f98238b1aa0ebc1214d63e7e5b7.PNG',	'Tes Uraian',	80000,	'0000-00-00 00:00:00',	1,	NULL,	NULL,	NULL,	NULL,	NULL,	NULL,	NULL,	1,	1),
-(9,	'Pendanaan 1',	'pendanaan/20210719_23d202fb561c67ac5d22ae22f0e595ed35106b02.PNG',	'Tes Uraian',	80000,	'0000-00-00 00:00:00',	1,	NULL,	NULL,	NULL,	NULL,	NULL,	NULL,	NULL,	1,	1),
-(10,	'Pendanaan 1',	'pendanaan/20210720_5be92fce55bc28add0e9b38755d67690f7199977.PNG',	'Tes Uraian',	80000,	'0000-00-00 00:00:00',	1,	NULL,	NULL,	NULL,	NULL,	NULL,	NULL,	NULL,	1,	1),
-(11,	'Pendanaan 1',	'pendanaan/20210720_a14750179f4f06b4cbe8f1fd53d87ed980b18155.PNG',	'Tes Uraian',	80000,	'0000-00-00 00:00:00',	1,	NULL,	NULL,	NULL,	NULL,	NULL,	NULL,	NULL,	1,	1),
-(12,	'Pendanaan 1',	'pendanaan/20210720_7c86ae7523e8e05e8722ad2e1011878662bce335.PNG',	'Tes Uraian',	80000,	'0000-00-00 00:00:00',	1,	1,	NULL,	'Nama Nasabah',	'Perusahaan Nama',	'tidak ada',	NULL,	NULL,	1,	1),
-(13,	'Pendanaan 1',	'',	'uraian 1',	100000,	'2021-07-20 02:50:32',	1,	NULL,	NULL,	NULL,	NULL,	NULL,	'pendanaan/20210721_a165fbd61c277745f187eaac7182d9c05d0d1171.png',	'pendanaan/20210721_7f8ee84f4cf599be71dc87a7eecacf740c7f12b7.png',	1,	1),
-(15,	'Pendanaan 1',	'pendanaan/20210721_e85056a1203e6df1d2f52d464cb23070b33fd85c.PNG',	'Tes Uraian',	80000,	'2021-09-07 19:18:41',	1,	1,	123456,	'Budi',	'Perusahaan Nama',	'tidak ada',	'pendanaan/20210721_619cc696ef6af0741f624818aca554fcaba2ad9e.png',	'pendanaan/20210721_cd45b5b7049c852536ee19af1309a5aac70c61b3.png',	1,	1),
-(16,	'Sumbangan Diri',	'pendanaan/20210722_1574bddb75c78a6fd2251d61e2993b5146201319.jpg',	'',	10000000,	'2021-08-31 00:00:00',	17,	1,	123456789,	'Ian',	'Pribadi',	'Mmisquen',	'pendanaan/20210722_e0dadb2ff54f4f7476f0c3ca3e904b778384e4ca.jpg',	'pendanaan/20210722_1e587263e3e1bf03411c4415cc1743a8aba34915.jpg',	2,	3),
-(17,	'asdas',	'W5cei9MATGqA-aCU7Q6_ILmUoSEJKDH6.PNG',	'asdasasd',	12312123,	'2021-07-07 02:50:13',	1,	NULL,	NULL,	NULL,	NULL,	NULL,	'WVWKCgLayqTcx72zP__qtIKBJ-QG-bvM.PNG',	's0vPpgDFDDMYnGhrkQ4OeI1x1-Dt2ACX.PNG',	3,	1);
+INSERT INTO `pendanaan` (`id`, `nama_pendanaan`, `foto`, `uraian`, `nominal`, `pendanaan_berakhir`, `user_id`, `bank_id`, `nomor_rekening`, `nama_nasabah`, `nama_perusahaan`, `deskripsi`, `foto_ktp`, `foto_kk`, `file_uraian`, `poster`, `kategori_pendanaan_id`, `status_id`) VALUES
+(2,	'Pendanaan 1',	NULL,	'Tes Uraian',	80000,	'0000-00-00 00:00:00',	1,	NULL,	NULL,	NULL,	NULL,	NULL,	NULL,	NULL,	NULL,	NULL,	1,	7),
+(3,	'Pendanaan 12',	NULL,	'Tes Uraian',	80000,	'2021-09-04 00:00:00',	1,	NULL,	NULL,	NULL,	NULL,	NULL,	NULL,	'',	'dQMufAQuevXNEY9DgRxHBbe7X1XvNxYF.pdf',	'QZI4SYIAIoDWr5aVZ7lAU5Ey5JW83tgW.jpg',	1,	2),
+(4,	'Pendanaan 1',	NULL,	'Tes Uraian',	80000,	'0000-00-00 00:00:00',	1,	NULL,	NULL,	NULL,	NULL,	NULL,	NULL,	NULL,	NULL,	NULL,	1,	3),
+(5,	'Pendanaan 1',	NULL,	'Tes Uraian',	80000,	'2021-09-05 00:00:00',	1,	NULL,	NULL,	NULL,	NULL,	NULL,	NULL,	'',	NULL,	'XFnsbS7D88MTCd70FnmWERrvyMU3udKM.jpg',	1,	2),
+(6,	'Pendanaan 1',	NULL,	'Tes Uraian',	80000,	'0000-00-00 00:00:00',	1,	NULL,	NULL,	NULL,	NULL,	NULL,	NULL,	NULL,	NULL,	NULL,	1,	1),
+(7,	'Pendanaan 1',	'pendanaan/20210719_2dc0c690d3726aed41ab1c89d2ed65c9f01e4337.PNG',	'Tes Uraian',	80000,	'0000-00-00 00:00:00',	1,	NULL,	NULL,	NULL,	NULL,	NULL,	NULL,	NULL,	NULL,	NULL,	1,	1),
+(8,	'Pendanaan 1',	'pendanaan/20210719_5b1537e128fb3f98238b1aa0ebc1214d63e7e5b7.PNG',	'Tes Uraian',	80000,	'0000-00-00 00:00:00',	1,	NULL,	NULL,	NULL,	NULL,	NULL,	NULL,	NULL,	NULL,	NULL,	1,	1),
+(9,	'Pendanaan 1',	'pendanaan/20210719_23d202fb561c67ac5d22ae22f0e595ed35106b02.PNG',	'Tes Uraian',	80000,	'0000-00-00 00:00:00',	1,	NULL,	NULL,	NULL,	NULL,	NULL,	NULL,	NULL,	NULL,	NULL,	1,	1),
+(10,	'Pendanaan 1',	'pendanaan/20210720_5be92fce55bc28add0e9b38755d67690f7199977.PNG',	'Tes Uraian',	80000,	'0000-00-00 00:00:00',	1,	NULL,	NULL,	NULL,	NULL,	NULL,	NULL,	NULL,	NULL,	NULL,	1,	1),
+(11,	'Pendanaan 1',	'pendanaan/20210720_a14750179f4f06b4cbe8f1fd53d87ed980b18155.PNG',	'Tes Uraian',	80000,	'0000-00-00 00:00:00',	1,	NULL,	NULL,	NULL,	NULL,	NULL,	NULL,	NULL,	NULL,	NULL,	1,	1),
+(12,	'Pendanaan 1',	'pendanaan/20210720_7c86ae7523e8e05e8722ad2e1011878662bce335.PNG',	'Tes Uraian',	80000,	'0000-00-00 00:00:00',	1,	1,	NULL,	'Nama Nasabah',	'Perusahaan Nama',	'tidak ada',	NULL,	NULL,	NULL,	NULL,	1,	1),
+(13,	'Pendanaan 1',	'',	'uraian 1',	100000,	'2021-07-20 02:50:32',	1,	NULL,	NULL,	NULL,	NULL,	NULL,	'pendanaan/20210721_a165fbd61c277745f187eaac7182d9c05d0d1171.png',	'pendanaan/20210721_7f8ee84f4cf599be71dc87a7eecacf740c7f12b7.png',	NULL,	NULL,	1,	1),
+(15,	'Pendanaan 1',	'pendanaan/20210721_e85056a1203e6df1d2f52d464cb23070b33fd85c.PNG',	'Tes Uraian',	80000,	'2021-09-07 19:18:41',	1,	1,	123456,	'Budi',	'Perusahaan Nama',	'tidak ada',	'pendanaan/20210721_619cc696ef6af0741f624818aca554fcaba2ad9e.png',	'pendanaan/20210721_cd45b5b7049c852536ee19af1309a5aac70c61b3.png',	NULL,	NULL,	1,	1),
+(16,	'Sumbangan Diri',	'pendanaan/20210722_1574bddb75c78a6fd2251d61e2993b5146201319.jpg',	'',	10000000,	'2021-08-31 00:00:00',	17,	1,	123456789,	'Ian',	'Pribadi',	'Mmisquen',	'pendanaan/20210722_e0dadb2ff54f4f7476f0c3ca3e904b778384e4ca.jpg',	'pendanaan/20210722_1e587263e3e1bf03411c4415cc1743a8aba34915.jpg',	NULL,	NULL,	2,	3),
+(17,	'asdas',	'W5cei9MATGqA-aCU7Q6_ILmUoSEJKDH6.PNG',	'asdasasd',	12312123,	'2021-07-07 02:50:13',	1,	NULL,	NULL,	NULL,	NULL,	NULL,	'WVWKCgLayqTcx72zP__qtIKBJ-QG-bvM.PNG',	's0vPpgDFDDMYnGhrkQ4OeI1x1-Dt2ACX.PNG',	NULL,	NULL,	3,	3),
+(18,	'Pembagunan Masjid di Batu',	'wO3y75f6JafgFw9Lq7pfFgNEYOJo2bLv.jpg',	'-',	50000,	'2021-09-13 03:05:36',	1,	NULL,	NULL,	NULL,	NULL,	NULL,	'fpt0SvFnm9EhkVZd3AITHDYsBa6hsaSm.jpg',	'kFj4O_lMLeefcXbnuMnUCLNRyMtVCzHj.jpg',	'F5mQ8CMaUxsJYRe8QTj5OfxiewD_L3Li.pdf',	'X6Pu3pzmvwhR39gJYE1k5mI3dPc97bN5.jpg',	3,	2);
 
 DROP TABLE IF EXISTS `role`;
 CREATE TABLE `role` (
@@ -406,7 +457,7 @@ CREATE TABLE `role_action` (
   KEY `action_id` (`action_id`),
   CONSTRAINT `role_action_ibfk_1` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`),
   CONSTRAINT `role_action_ibfk_2` FOREIGN KEY (`action_id`) REFERENCES `action` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=370 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=604 DEFAULT CHARSET=latin1;
 
 INSERT INTO `role_action` (`id`, `role_id`, `action_id`) VALUES
 (33,	2,	12),
@@ -453,78 +504,89 @@ INSERT INTO `role_action` (`id`, `role_id`, `action_id`) VALUES
 (117,	3,	31),
 (118,	3,	32),
 (119,	3,	33),
-(298,	1,	12),
-(299,	1,	13),
-(300,	1,	14),
-(301,	1,	15),
-(302,	1,	17),
-(303,	1,	18),
-(304,	1,	19),
-(305,	1,	20),
-(306,	1,	21),
-(307,	1,	22),
-(308,	1,	23),
-(309,	1,	24),
-(310,	1,	25),
-(311,	1,	26),
-(312,	1,	27),
-(313,	1,	28),
-(314,	1,	29),
-(315,	1,	30),
-(316,	1,	31),
-(317,	1,	32),
-(318,	1,	33),
-(319,	1,	49),
-(320,	1,	50),
-(321,	1,	51),
-(322,	1,	52),
-(323,	1,	53),
-(324,	1,	54),
-(325,	1,	55),
-(326,	1,	56),
-(327,	1,	57),
-(328,	1,	58),
-(329,	1,	59),
-(330,	1,	60),
-(331,	1,	61),
-(332,	1,	62),
-(333,	1,	63),
-(334,	1,	64),
-(335,	1,	65),
-(336,	1,	66),
-(337,	1,	67),
-(338,	1,	68),
-(339,	1,	69),
-(340,	1,	70),
-(341,	1,	71),
-(342,	1,	88),
-(343,	1,	89),
-(344,	1,	72),
-(345,	1,	73),
-(346,	1,	74),
-(347,	1,	75),
-(348,	1,	76),
-(349,	1,	84),
-(350,	1,	85),
-(351,	1,	86),
-(352,	1,	87),
-(353,	1,	77),
-(354,	1,	78),
-(355,	1,	79),
-(356,	1,	80),
-(357,	1,	81),
-(358,	1,	82),
-(359,	1,	83),
-(360,	1,	90),
-(361,	1,	91),
-(362,	1,	92),
-(363,	1,	93),
-(364,	1,	94),
-(365,	1,	95),
-(366,	1,	96),
-(367,	1,	97),
-(368,	1,	98),
-(369,	1,	99);
+(521,	1,	12),
+(522,	1,	13),
+(523,	1,	14),
+(524,	1,	15),
+(525,	1,	17),
+(526,	1,	18),
+(527,	1,	19),
+(528,	1,	20),
+(529,	1,	21),
+(530,	1,	22),
+(531,	1,	23),
+(532,	1,	24),
+(533,	1,	25),
+(534,	1,	26),
+(535,	1,	27),
+(536,	1,	28),
+(537,	1,	29),
+(538,	1,	30),
+(539,	1,	31),
+(540,	1,	32),
+(541,	1,	33),
+(542,	1,	49),
+(543,	1,	50),
+(544,	1,	51),
+(545,	1,	52),
+(546,	1,	53),
+(547,	1,	54),
+(548,	1,	55),
+(549,	1,	56),
+(550,	1,	57),
+(551,	1,	58),
+(552,	1,	59),
+(553,	1,	60),
+(554,	1,	61),
+(555,	1,	62),
+(556,	1,	63),
+(557,	1,	101),
+(558,	1,	102),
+(559,	1,	103),
+(560,	1,	104),
+(561,	1,	105),
+(562,	1,	106),
+(563,	1,	107),
+(564,	1,	108),
+(565,	1,	109),
+(566,	1,	110),
+(567,	1,	64),
+(568,	1,	65),
+(569,	1,	66),
+(570,	1,	67),
+(571,	1,	68),
+(572,	1,	69),
+(573,	1,	70),
+(574,	1,	71),
+(575,	1,	88),
+(576,	1,	89),
+(577,	1,	72),
+(578,	1,	73),
+(579,	1,	74),
+(580,	1,	75),
+(581,	1,	76),
+(582,	1,	84),
+(583,	1,	85),
+(584,	1,	86),
+(585,	1,	87),
+(586,	1,	77),
+(587,	1,	100),
+(588,	1,	78),
+(589,	1,	79),
+(590,	1,	80),
+(591,	1,	81),
+(592,	1,	82),
+(593,	1,	83),
+(594,	1,	90),
+(595,	1,	91),
+(596,	1,	92),
+(597,	1,	93),
+(598,	1,	94),
+(599,	1,	95),
+(600,	1,	96),
+(601,	1,	97),
+(602,	1,	98),
+(603,	1,	99);
 
 DROP TABLE IF EXISTS `role_menu`;
 CREATE TABLE `role_menu` (
@@ -536,7 +598,7 @@ CREATE TABLE `role_menu` (
   KEY `menu_id` (`menu_id`),
   CONSTRAINT `role_menu_ibfk_1` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`),
   CONSTRAINT `role_menu_ibfk_2` FOREIGN KEY (`menu_id`) REFERENCES `menu` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=126 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=171 DEFAULT CHARSET=latin1;
 
 INSERT INTO `role_menu` (`id`, `role_id`, `menu_id`) VALUES
 (56,	2,	1),
@@ -549,20 +611,22 @@ INSERT INTO `role_menu` (`id`, `role_id`, `menu_id`) VALUES
 (73,	3,	3),
 (74,	3,	4),
 (75,	3,	5),
-(112,	1,	1),
-(113,	1,	2),
-(114,	1,	3),
-(115,	1,	4),
-(116,	1,	5),
-(117,	1,	6),
-(118,	1,	7),
-(119,	1,	11),
-(120,	1,	8),
-(121,	1,	9),
-(122,	1,	10),
-(123,	1,	12),
-(124,	1,	13),
-(125,	1,	14);
+(155,	1,	1),
+(156,	1,	2),
+(157,	1,	3),
+(158,	1,	4),
+(159,	1,	5),
+(160,	1,	6),
+(161,	1,	7),
+(162,	1,	11),
+(163,	1,	15),
+(164,	1,	16),
+(165,	1,	8),
+(166,	1,	9),
+(167,	1,	10),
+(168,	1,	12),
+(169,	1,	13),
+(170,	1,	14);
 
 DROP TABLE IF EXISTS `setting`;
 CREATE TABLE `setting` (
@@ -574,14 +638,17 @@ CREATE TABLE `setting` (
   `bg_login` varchar(255) DEFAULT NULL,
   `bg_pin` varchar(255) DEFAULT NULL,
   `link_download_apk` varchar(255) DEFAULT NULL,
+  `tentang_kami` text DEFAULT NULL,
+  `latitude` varchar(255) DEFAULT NULL,
+  `longitude` varchar(255) DEFAULT NULL,
   `nama_web` varchar(255) NOT NULL,
   `alamat` text NOT NULL,
   `slogan_web` text NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
 
-INSERT INTO `setting` (`id`, `pin`, `logo`, `judul_web`, `link_download_apk_marketing`, `bg_login`, `bg_pin`, `link_download_apk`, `nama_web`, `alamat`, `slogan_web`) VALUES
-(3,	1234,	'UHHB5dc9RcnV-d48no4oK8EQc8NWte-O.png',	'Wakaf Mudah Pahala Berlimpah',	'marketing',	'PZ9iQ72nyBx7QNfqO5aK2x95Zt-v8Rbq.jpg',	'z4spKTc3CoEp3MIWk1iG6YhhAVwj1JlM.jpg',	'playstore',	'ISALAM',	'Batu',	'Ketika manusia meninggal dunia, maka terputus sudah amal jariahnya kecuali tiga perkara yakni: sedekah jariyah, ilmu bermanfaat dan doa anak yang sholeh. ');
+INSERT INTO `setting` (`id`, `pin`, `logo`, `judul_web`, `link_download_apk_marketing`, `bg_login`, `bg_pin`, `link_download_apk`, `tentang_kami`, `latitude`, `longitude`, `nama_web`, `alamat`, `slogan_web`) VALUES
+(3,	1234,	'PIVCd3QPQ5nZWUpqFxSu0yMKfpe2UGt5.png',	'Wakaf Mudah Pahala Berlimpah',	'marketing',	'Zk2Bn-BQSmtTFiC_lXs2K179n-mR3bR0.jpg',	NULL,	'playstore',	'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.',	'-7.8712057',	'112.530626',	'ISALAM',	'Batu',	'Ketika manusia meninggal dunia, maka terputus sudah amal jariahnya kecuali tiga perkara yakni: sedekah jariyah, ilmu bermanfaat dan doa anak yang sholeh. ');
 
 DROP TABLE IF EXISTS `status`;
 CREATE TABLE `status` (
@@ -635,7 +702,7 @@ CREATE TABLE `user` (
 ) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=latin1;
 
 INSERT INTO `user` (`id`, `username`, `password`, `name`, `role_id`, `confirm`, `status`, `pin`, `photo_url`, `secret_token`, `nomor_handphone`, `last_login`, `last_logout`) VALUES
-(1,	'admin@admin.com',	'$2y$13$jfVHR0wNqQMpR42YeRoG9ue8LavYwtz0Ou9wLTOEN.g5Mv7/TxIOe',	'Administrator',	1,	1,	1,	'1234',	'default.png',	'ISALAMMTYyNzErUmJEZmtPcGt4WVFVVW9Dal_YnkcI_Vjb3AxdFlXV2p5WjdjSiswOTg5Nw==S3CRETKEY',	'',	'2021-07-24 22:50:52',	'2021-07-24 22:50:41'),
+(1,	'admin@admin.com',	'$2y$13$jfVHR0wNqQMpR42YeRoG9ue8LavYwtz0Ou9wLTOEN.g5Mv7/TxIOe',	'Administrator',	1,	1,	1,	'1234',	'default.png',	'ISALAMMTYyNzErUmJEZmtPcGt4WVFVVW9Dal_YnkcI_Vjb3AxdFlXV2p5WjdjSiswOTg5Nw==S3CRETKEY',	'',	'2021-09-03 15:06:35',	'2021-07-24 22:50:41'),
 (2,	'user',	'ee11cbb19052e40b07aac0ca060c23ee',	'Regular User',	3,	1,	1,	NULL,	'default.png',	NULL,	NULL,	NULL,	NULL),
 (3,	'budi@gmail.com',	'21232f297a57a5a743894a0e4a801fc3',	'budi@gmail.com',	3,	0,	1,	NULL,	'default.png',	NULL,	'0876786876',	NULL,	NULL),
 (4,	'budi1@gmail.com',	'827ccb0eea8a706c4c34a16891f84e7b',	'Name budi',	3,	0,	1,	NULL,	'default.png',	NULL,	'08767868761',	NULL,	NULL),
@@ -646,4 +713,4 @@ INSERT INTO `user` (`id`, `username`, `password`, `name`, `role_id`, `confirm`, 
 (17,	'hardiansah7101@gmail.com',	'$2y$13$pm1zgDOB5jNY4MNS93eibuhUSu.bPAEcagIxT6mYu73NsNattN9jG',	'Muh. Hardiansah',	2,	1,	1,	NULL,	'default.png',	'ISALAMMTYyNzArWktRdWFYMzJocjVSWVFNUDRnVVRM_o7B8W_MC1VQy02aWVNeGN1bEhGaExIemFOKzQxMjEyS3CRETKEY',	'081911106262',	NULL,	NULL),
 (18,	'dellanjng@gmail.com',	'$2y$13$pskad5BMklO4gWTrinjG0e2FD5/GTrH3NkFnRqE/S/HS7wIunMZni',	'Fahru',	5,	1,	1,	'1234',	'default.png',	'ISALAMMTYyNzErcERzc3lLR1VNWUdEY1FYMUJHZ0dYeG_fwFRb_NtR1ZTQStLMm5sdVFVZHZNWnNyQUUrMzI1Nzk=S3CRETKEY',	'081082083081',	NULL,	NULL);
 
--- 2021-08-02 07:09:24
+-- 2021-09-06 05:40:16

@@ -18,7 +18,7 @@ use yii\helpers\Html;
         {
             return [
                 'class' => 'yii\grid\ActionColumn',
-                'template' => '{approve-pendanaan} {cancel} {pendanaan-selesai} {pendanaan-cair}',
+                'template' => '{approve-pendanaan} {cancel} {pendanaan-selesai} {pendanaan-cair} {export}',
                 'header' => 'Pendanaan',
                 'visible'=>\Yii::$app->user->identity->role_id ==1,
                 'buttons' => [
@@ -56,6 +56,16 @@ use yii\helpers\Html;
                           "class"=>"btn btn-success",
                           "title"=>"Approve Pencairan Pendanaan",
                           "data-confirm" => "Apakah Anda yakin ingin mencairkan pendanaan ?",
+                      ]);
+                    }
+                  },
+                  'export' => function ($url, $model, $key) {
+                    if($model->status_id ==3){
+                      return Html::a("<i class='fa fa-file-excel-o'></i>", ["export", "id"=>$model->id], [
+                          "class"=>"btn btn-success",
+                          'target'=>'_blank',
+                          "title"=>"Export Pendanaan",
+                          "data-confirm" => "Apakah Anda yakin ingin Export Data Pendanaan ini ?",
                       ]);
                     }
                   },

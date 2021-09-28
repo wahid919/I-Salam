@@ -4,6 +4,8 @@
 
 namespace app\controllers\base;
 
+use app\components\Angka;
+use app\components\Tanggal;
 use Yii;
 use app\models\Pendanaan;
 use app\models\Notifikasi;
@@ -18,6 +20,7 @@ use yii\filters\AccessControl;
 use dmstr\bootstrap\Tabs;
 use app\models\Action;
 use app\models\User;
+use yii\db\Query;
 use yii\web\UploadedFile;
 
 /**
@@ -144,6 +147,61 @@ class PendanaanController extends Controller
                }
                $path = Yii::getAlias("@app/web/uploads/pendanaan/foto_kk/") . $model->foto_kk;
                $fotos_kk->saveAs($path);
+            }
+            $fotos_kk = UploadedFile::getInstance($model, 'foto_kk');
+            if ($fotos_kk != NULL) {
+               # store the source fotos_kk name
+               $model->foto_kk = $fotos_kk->name;
+               $arr = explode(".", $fotos_kk->name);
+               $extension = end($arr);
+
+               # generate a unique fotos_kk name
+               $model->foto_kk = Yii::$app->security->generateRandomString() . ".{$extension}";
+
+               # the path to save fotos_kk
+               // unlink(Yii::getAlias("@app/web/uploads/pengajuan/") . $oldFile);
+               if (file_exists(Yii::getAlias("@app/web/uploads/pendanaan/foto_kk/")) == false) {
+                  mkdir(Yii::getAlias("@app/web/uploads/pendanaan/foto_kk/"), 0777, true);
+               }
+               $path = Yii::getAlias("@app/web/uploads/pendanaan/foto_kk/") . $model->foto_kk;
+               $fotos_kk->saveAs($path);
+            }
+            $uraians = UploadedFile::getInstance($model, 'file_uraian');
+            if ($uraians != NULL) {
+               # store the source uraians name
+               $model->file_uraian = $uraians->name;
+               $arr = explode(".", $uraians->name);
+               $extension = end($arr);
+
+               # generate a unique uraians name
+               $model->file_uraian = Yii::$app->security->generateRandomString() . ".{$extension}";
+
+               # the path to save uraians
+               // unlink(Yii::getAlias("@app/web/uploads/pengajuan/") . $oldFile);
+               if (file_exists(Yii::getAlias("@app/web/uploads/uraian/")) == false) {
+                  mkdir(Yii::getAlias("@app/web/uploads/uraian/"), 0777, true);
+               }
+               $path = Yii::getAlias("@app/web/uploads/uraian/") . $model->file_uraian;
+               $uraians->saveAs($path);
+            }
+
+            $posters = UploadedFile::getInstance($model, 'poster');
+            if ($posters != NULL) {
+               # store the source posters name
+               $model->poster = $posters->name;
+               $arr = explode(".", $posters->name);
+               $extension = end($arr);
+
+               # generate a unique posters name
+               $model->poster = Yii::$app->security->generateRandomString() . ".{$extension}";
+
+               # the path to save posters
+               // unlink(Yii::getAlias("@app/web/uploads/pengajuan/") . $oldFile);
+               if (file_exists(Yii::getAlias("@app/web/uploads/poster/")) == false) {
+                  mkdir(Yii::getAlias("@app/web/uploads/poster/"), 0777, true);
+               }
+               $path = Yii::getAlias("@app/web/uploads/poster/") . $model->poster;
+               $posters->saveAs($path);
             }
             if ($model->save()) {
                return $this->redirect(['view', 'id' => $model->id]);
@@ -330,6 +388,8 @@ class PendanaanController extends Controller
       $model = $this->findModel($id);
       $oldBuktiFts = $model->foto;
       $oldBukti = $model->foto_ktp;
+      $oldUraian = $model->file_uraian;
+      $oldPoster = $model->poster;
       $oldBuktiKk = $model->foto_kk;
       if ($model->load($_POST)) {
          $fts = UploadedFile::getInstance($model, 'foto');
@@ -383,30 +443,57 @@ class PendanaanController extends Controller
          } else {
             $model->foto_ktp = $oldBukti;
          }
-         $fotos_kk = UploadedFile::getInstance($model, 'foto_kk');
-         if ($fotos_kk != NULL) {
+         $uraians = UploadedFile::getInstance($model, 'file_uraian');
+         if ($uraians != NULL) {
             # store the source file name
-            $model->foto_kk = $fotos_kk->name;
-            $arr = explode(".", $fotos_kk->name);
+            $model->file_uraian = $uraians->name;
+            $arr = explode(".", $uraians->name);
             $extension = end($arr);
 
             # generate a unique file name
-            $model->foto_kk = Yii::$app->security->generateRandomString() . ".{$extension}";
+            $model->file_uraian = Yii::$app->security->generateRandomString() . ".{$extension}";
 
             # the path to save file
-            if (file_exists(Yii::getAlias("@app/web/uploads/pendanaan/foto_kk/")) == false) {
-               mkdir(Yii::getAlias("@app/web/uploads/pendanaan/foto_kk/"), 0777, true);
+            if (file_exists(Yii::getAlias("@app/web/uploads/uraian/")) == false) {
+               mkdir(Yii::getAlias("@app/web/uploads/uraian/"), 0777, true);
             }
-            $path = Yii::getAlias("@app/web/uploads/pendanaan/foto_kk/") . $model->foto_kk;
+            $path = Yii::getAlias("@app/web/uploads/uraian/") . $model->file_uraian;
             if ($oldBukti != NULL) {
 
-               $fotos_kk->saveAs($path);
-               unlink(Yii::$app->basePath . '/web/uploads/pendanaan/foto_kk/' . $oldBukti);
+               $uraians->saveAs($path);
+               unlink(Yii::$app->basePath . '/web/uploads/uraian/' . $oldBukti);
             } else {
-               $fotos_kk->saveAs($path);
+               $uraians->saveAs($path);
             }
          } else {
-            $model->foto_kk = $oldBuktiKk;
+            $model->file_uraian = $oldUraian;
+         }
+
+
+         $posters = UploadedFile::getInstance($model, 'poster');
+         if ($posters != NULL) {
+            # store the source file name
+            $model->poster = $posters->name;
+            $arr = explode(".", $posters->name);
+            $extension = end($arr);
+
+            # generate a unique file name
+            $model->poster = Yii::$app->security->generateRandomString() . ".{$extension}";
+
+            # the path to save file
+            if (file_exists(Yii::getAlias("@app/web/uploads/poster/")) == false) {
+               mkdir(Yii::getAlias("@app/web/uploads/poster/"), 0777, true);
+            }
+            $path = Yii::getAlias("@app/web/uploads/poster/") . $model->poster;
+            if ($oldPoster != NULL) {
+
+               $posters->saveAs($path);
+               unlink(Yii::$app->basePath . '/web/uploads/poster/' . $oldPoster);
+            } else {
+               $posters->saveAs($path);
+            }
+         } else {
+            $model->poster = $oldPoster;
          }
 
          if ($model->save()) {
@@ -418,6 +505,27 @@ class PendanaanController extends Controller
          ]);
       }
    }
+
+
+
+   public function actionUnduhFileUraian($id)
+   {
+   $model = $this->findModel($id);
+   $file = $model->file_uraian;
+   // $model->tanggal_received=date('Y-m-d H:i:s');
+   $path = Yii::getAlias("@app/web/uploads/uraian/") . $file;
+   $arr = explode(".", $file);
+   $extension = end($arr);
+   $nama_file= "File Uraian  ".$model->nama_pendanaan.".".$extension;
+   
+       if (file_exists($path)) {
+           return Yii::$app->response->sendFile($path, $nama_file);
+       } else {
+           throw new \yii\web\NotFoundHttpException("{$path} is not found!");
+       }
+   }
+   
+
 
    /**
     * Deletes an existing Pendanaan model.
@@ -432,10 +540,12 @@ class PendanaanController extends Controller
          $oldFtss = $model->foto;
          $oldBukti = $model->foto_ktp;
          $oldBuktiKk = $model->foto_kk;
-         $model->delete();
+         $oldUraian = $model->file_uraian;
          unlink(Yii::$app->basePath . '/web/uploads/pendanaan/foto/' . $oldFtss);
          unlink(Yii::$app->basePath . '/web/uploads/pendanaan/foto_ktp/' . $oldBukti);
          unlink(Yii::$app->basePath . '/web/uploads/pendanaan/foto_kk/' . $oldBuktiKk);
+         unlink(Yii::$app->basePath . '/web/uploads/uraian/' . $oldUraian);
+         $model->delete();
       } catch (\Exception $e) {
          $msg = (isset($e->errorInfo[2])) ? $e->errorInfo[2] : $e->getMessage();
          \Yii::$app->getSession()->addFlash('error', $msg);
@@ -456,6 +566,110 @@ class PendanaanController extends Controller
          return $this->redirect(['index']);
       }
    }
+
+   public function actionExport($id)
+    {
+       
+       
+        
+            $mdl = \app\models\Pendanaan::find()
+                ->where(['id'=>$id])
+                ->one();
+            $mdl1 = \app\models\AgendaPendanaan::find()
+                ->where(['pendanaan_id'=>$mdl->id])
+                ->all();
+            $mdl2 = \app\models\Pembayaran::find()
+               ->where(['pendanaan_id'=>$mdl->id])->andWhere(['status_id'=>6])->all();
+            
+
+            $bayar = \app\models\Pembayaran::find()
+            ->where(['pendanaan_id'=>$mdl->id])->andWhere(['status_id'=>6])->sum('nominal');
+
+            $cair = \app\models\Pencairan::find()
+                   ->where(['pendanaan_id' => $mdl->id])
+                   ->sum('nominal');
+        $objPHPExcel = new \PHPExcel();
+
+        $sheet = 0;
+
+        $objPHPExcel->setActiveSheetIndex($sheet);
+
+        $objPHPExcel->getActiveSheet()->getColumnDimension('A')->setWidth(5);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('B')->setWidth(30);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('C')->setWidth(30);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('D')->setWidth(50);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('E')->setWidth(5);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('F')->setWidth(30);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('G')->setWidth(30);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('H')->setWidth(30);
+
+        $objPHPExcel->getActiveSheet()->setTitle('Laporan Wakaf '.$mdl->nama_pendanaan)
+            ->setCellValue('A1', 'NO')
+            ->setCellValue('B1', 'Kode Transaksi')
+            ->setCellValue('C1', 'Wakif')
+            ->setCellValue('D1', 'Jumlah Masuk')
+            ->setCellValue('E1', '')
+            ->setCellValue('F1', 'NO')
+            ->setCellValue('G1', 'Agenda')
+            ->setCellValue('H1', 'Tanggal Agenda');
+        $count = 1;
+        $row = 2;
+        
+        // var_dump($mdl1);die;
+        foreach ($mdl2 as $m) {
+            // $detail = \app\models\DetailTransaksi::find()
+            //     ->where(['id_transaksi' => $m->id])
+            //     ->sum('total_harga_item');
+            // $cek = Outlet::find()->where(['id' => $m->id_outlet])->one();
+            // $usr = User::find()->where(['id' => $m->id_user])->one();
+            $objPHPExcel->getActiveSheet()->setCellValue('A' . $row, $count);
+            $objPHPExcel->getActiveSheet()->setCellValue('B' . $row, $m->kode_transaksi);
+            $objPHPExcel->getActiveSheet()->setCellValue('C' . $row, $m->nama);
+            $objPHPExcel->getActiveSheet()->setCellValue('D' . $row, 'Rp ' . Angka::toReadableAngka($m->nominal, FALSE));
+            // $objPHPExcel->getActiveSheet()->setCellValue('E' . $row, Tanggal::toReadableDate($m->tgl_transaksi, FALSE));
+            foreach ($mdl1 as $m) {
+               $objPHPExcel->getActiveSheet()->setCellValue('F' . $row, $count);
+               $objPHPExcel->getActiveSheet()->setCellValue('G' . $row, $m->nama_agenda);
+               $objPHPExcel->getActiveSheet()->setCellValue('H' . $row, Tanggal::toReadableDate($m->tanggal, FALSE));
+           }
+            // $objPHPExcel->getActiveSheet()->setCellValue('F' . $row, 'Rp ' . Angka::toReadableAngka($subtotal, FALSE));
+            // $objPHPExcel->getActiveSheet()->setCellValue('G' . $row,  Angka::toReadableAngka($m->tax, FALSE).'%');
+            // $objPHPExcel->getActiveSheet()->setCellValue('H' . $row, 'Rp ' . Angka::toReadableAngka($m->total_harga, FALSE));
+            $row++;
+            $count++;
+            
+            if ($m === end($mdl)) {
+               
+                
+               //  foreach ($mdl1 as $key => $bayar) {
+            # code...
+
+            $objPHPExcel->getActiveSheet()->setCellValue('C' . $row, "Total Masuk");
+            $objPHPExcel->getActiveSheet()->setCellValue('D' . $row, 'Rp ' . Angka::toReadableAngka($bayar, FALSE));
+            $row++;
+      //   }
+            $objPHPExcel->getActiveSheet()->setCellValue('C' . $row++, 'Total Pencairan');
+            $objPHPExcel->getActiveSheet()->setCellValue('D' . --$row, 'Rp ' . Angka::toReadableAngka($cair, FALSE));
+                
+                // $leftStr = $bayar['nama_pembayaran'];
+                //     $value = Angka::toReadableAngka($bayar['ttl_harga'], false);
+                //     $jumlahcharharga = "Rp. " . tampilanHarga($value) . $value;
+            }
+            
+        }
+
+        
+
+        $filename = "Laporan Wakaf " . $mdl->nama_pendanaan . ".xls";
+        ob_end_clean();
+        header('Content-Type: application/vnd.ms-excel');
+        header('Content-Disposition: attachment;filename=' . $filename . ' ');
+        header("Pragma: no-cache");
+        header("Expires: 0");
+        $objWriter = \PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+        $objWriter->save('php://output');
+        ob_end_clean();
+    }
 
    /**
     * Finds the Pendanaan model based on its primary key value.
