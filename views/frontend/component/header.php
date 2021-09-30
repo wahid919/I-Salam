@@ -24,7 +24,7 @@ $icons = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->logo;
                 <a href="#" class="nav__item-link">NEWS</a>
               </li><!-- /.nav-item -->
               <li class="nav__item">
-                <a href="#" class="nav__item-link">ABOUT US</a>
+                <a href="<?=Yii::$app->request->baseUrl . "/frontend/about/" ?>" class="nav__item-link">ABOUT US</a>
               </li><!-- /.nav-item -->
             </ul><!-- /.navbar-nav -->
           </div><!-- /.navbar-collapse -->

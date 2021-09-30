@@ -75,6 +75,56 @@ use kartik\file\FileInput;
             </div>
         </div>
         <div class="row">
+            <div class="col-sm-12 col-md-6 col-lg-4">
+                <?= $form->field($model, 'instagram', [
+                    'template' => '
+                        {label}
+                        {input}
+                        {error}
+                    ',
+                    'inputOptions' => [
+                        'class' => 'form-control'
+                    ],
+                    'labelOptions' => [
+                        'class' => 'control-label'
+                    ],
+                    'options' => ['tag' => false]
+                ])->textInput(['maxlength' => true]) ?>
+            </div>
+            <div class="col-sm-12 col-md-6 col-lg-4">
+                <?= $form->field($model, 'facebook', [
+                    'template' => '
+                        {label}
+                        {input}
+                        {error}
+                    ',
+                    'inputOptions' => [
+                        'class' => 'form-control'
+                    ],
+                    'labelOptions' => [
+                        'class' => 'control-label'
+                    ],
+                    'options' => ['tag' => false]
+                ])->textInput(['maxlength' => true]) ?>
+            </div>
+            <div class="col-sm-12 col-md-6 col-lg-4">
+                <?= $form->field($model, 'twitter', [
+                    'template' => '
+                        {label}
+                        {input}
+                        {error}
+                    ',
+                    'inputOptions' => [
+                        'class' => 'form-control'
+                    ],
+                    'labelOptions' => [
+                        'class' => 'control-label'
+                    ],
+                    'options' => ['tag' => false]
+                ])->textInput(['maxlength' => true]) ?>
+            </div>
+        </div>
+        <div class="row">
             <div class="col-sm-12 col-md-6 col-lg-6">
                 <?= $form->field($model, 'link_download_apk', [
                     'template' => '
@@ -156,6 +206,42 @@ use kartik\file\FileInput;
                     ],
                     'options' => ['tag' => false]
                 ])->textarea(['rows' => 4]) ?>
+            </div>
+        </div>
+
+        <div class="row">
+            
+            <div class="col-sm-12 col-md-6 col-lg-6">
+                <?= $form->field($model, 'visi', [
+                    'template' => '
+                        {label}
+                        {input}
+                        {error}
+                    ',
+                    'inputOptions' => [
+                        'class' => 'form-control'
+                    ],
+                    'labelOptions' => [
+                        'class' => 'control-label'
+                    ],
+                    'options' => ['tag' => false]
+                ])->textarea(['rows' => 6]) ?>
+            </div>
+            <div class="col-sm-12 col-md-6 col-lg-6">
+                <?= $form->field($model, 'misi', [
+                    'template' => '
+                        {label}
+                        {input}
+                        {error}
+                    ',
+                    'inputOptions' => [
+                        'class' => 'form-control'
+                    ],
+                    'labelOptions' => [
+                        'class' => 'control-label'
+                    ],
+                    'options' => ['tag' => false]
+                ])->textarea(['rows' => 6]) ?>
             </div>
         </div>
 
