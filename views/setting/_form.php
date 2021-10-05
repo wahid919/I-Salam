@@ -210,6 +210,42 @@ use kartik\file\FileInput;
         </div>
 
         <div class="row">
+            
+            <div class="col-sm-12 col-md-6 col-lg-6">
+                <?= $form->field($model, 'visi', [
+                    'template' => '
+                        {label}
+                        {input}
+                        {error}
+                    ',
+                    'inputOptions' => [
+                        'class' => 'form-control'
+                    ],
+                    'labelOptions' => [
+                        'class' => 'control-label'
+                    ],
+                    'options' => ['tag' => false]
+                ])->textarea(['rows' => 6]) ?>
+            </div>
+            <div class="col-sm-12 col-md-6 col-lg-6">
+                <?= $form->field($model, 'misi', [
+                    'template' => '
+                        {label}
+                        {input}
+                        {error}
+                    ',
+                    'inputOptions' => [
+                        'class' => 'form-control'
+                    ],
+                    'labelOptions' => [
+                        'class' => 'control-label'
+                    ],
+                    'options' => ['tag' => false]
+                ])->textarea(['rows' => 6]) ?>
+            </div>
+        </div>
+
+        <div class="row">
             <div class="col-sm-12 col-md-6 col-lg-4">
                 <?= $form->field($model, 'logo', [
                     'template' => '

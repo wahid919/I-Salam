@@ -68,6 +68,8 @@ $this->title = 'Setting ' . $model->nama_web;
         'alamat:ntext',
         'slogan_web:ntext',
         'tentang_kami:ntext',
+        'visi:ntext',
+        'misi:ntext',
         [
             'attribute' =>'instagram',
             'format' =>'html',
