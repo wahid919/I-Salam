@@ -67,9 +67,9 @@
           <ul style="display: inline-block;margin-left: auto;margin-right: auto;">
             <ul class="list-group list-group-horizontal border-0 text-dark text-center">
               <li class="list-group-item">Semua</li>
-              <li class="list-group-item">Literasi Wakaf</li>
-              <li class="list-group-item">Wakaf in Action</li>
-              <li class="list-group-item">Kata Wakif</li>
+              <?php foreach ($categories as $kategori) {  ?>
+                <li class="list-group-item"><?= $kategori->nama ?></li>
+              <?php } ?>
             </ul>
           </ul>
         </div>
