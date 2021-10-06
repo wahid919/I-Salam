@@ -44,22 +44,6 @@
     </section><!-- /.slider -->
 
     <div class="mt-4 mb-4">
-      <div class="row">
-        <div class="col-lg-6 col-md-6">
-          <div class="card">
-            <div class="card-body" style="background-image: url(<?= \Yii::$app->request->baseUrl . "/uploads/berita/" ?>news.jpg);background-size: cover;height: 200px;">
-
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-6 col-md-6">
-          <div class="card">
-            <div class="card-body" style="background-image: url(<?= \Yii::$app->request->baseUrl . "/uploads/berita/" ?>news.jpg);background-size: cover;height: 200px;">
-
-            </div>
-          </div>
-        </div>
-      </div>
       <div class="container mt-4 mb-4">
         <input type="text" class="form-control mt-4" style="border-radius: 0.8rem;border-color: black;" placeholder="Cari Berita Disini">
         <div class="text-center mt-4 mb-4">
@@ -75,15 +59,20 @@
         </div>
 
         <div class="row">
+          <?php foreach($news as $berita){ ?>
           <div class="col-lg-4 col-md-4 mt-3">
+            <a href="<?=\Yii::$app->request->baseUrl . "/frontend/detail-berita?id=".$berita->slug?>">
             <div class="card">
-              <img src="<?= \Yii::$app->request->baseUrl . "/uploads/berita/" ?>news.jpg" class="card-img-top" alt="...">
+              <!-- <img src="" class="card-img-top" alt="..."> -->
+              <div style="background-image: url(<?= \Yii::$app->request->baseUrl . "/uploads/berita/". $berita->gambar ?>);background-size: cover;height: 200px;">
+
+              </div>
               <div class="card-body">
-                <h6 class="card-title">Card title</h6>
+                <h6 class="card-title"><?= $berita->judul ?></h6>
                 <hr>
                 <div class="row">
                   <div class="col-lg-6 col-md-6 col-6 text-left">
-                    10 Oktober 2021
+                    <?= date("d-m-Y", strtotime($berita->created_at)); ?>
                   </div>
                   <div class="col-lg-6 col-md-6 col-6 text-right">
                     Baca Selengkapnya
@@ -91,92 +80,10 @@
                 </div>
               </div>
             </div>
+            </a>
           </div>
-          <div class="col-lg-4 col-md-4 mt-3">
-            <div class="card">
-              <img src="<?= \Yii::$app->request->baseUrl . "/uploads/berita/" ?>news.jpg" class="card-img-top" alt="...">
-              <div class="card-body">
-                <h6 class="card-title">Card title</h6>
-                <hr>
-                <div class="row">
-                  <div class="col-lg-6 col-md-6 col-6 text-left">
-                    10 Oktober 2021
-                  </div>
-                  <div class="col-lg-6 col-md-6 col-6 text-right">
-                    Baca Selengkapnya
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-4 col-md-4 mt-3">
-            <div class="card">
-              <img src="<?= \Yii::$app->request->baseUrl . "/uploads/berita/" ?>news.jpg" class="card-img-top" alt="...">
-              <div class="card-body">
-                <h6 class="card-title">Card title</h6>
-                <hr>
-                <div class="row">
-                  <div class="col-lg-6 col-md-6 col-6 text-left">
-                    10 Oktober 2021
-                  </div>
-                  <div class="col-lg-6 col-md-6 col-6 text-right">
-                    Baca Selengkapnya
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-4 col-md-4 mt-3">
-            <div class="card">
-              <img src="<?= \Yii::$app->request->baseUrl . "/uploads/berita/" ?>news.jpg" class="card-img-top" alt="...">
-              <div class="card-body">
-                <h6 class="card-title">Card title</h6>
-                <hr>
-                <div class="row">
-                  <div class="col-lg-6 col-md-6 col-6 text-left">
-                    10 Oktober 2021
-                  </div>
-                  <div class="col-lg-6 col-md-6 col-6 text-right">
-                    Baca Selengkapnya
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-4 col-md-4 mt-3">
-            <div class="card">
-              <img src="<?= \Yii::$app->request->baseUrl . "/uploads/berita/" ?>news.jpg" class="card-img-top" alt="...">
-              <div class="card-body">
-                <h6 class="card-title">Card title</h6>
-                <hr>
-                <div class="row">
-                  <div class="col-lg-6 col-md-6 col-6 text-left">
-                    10 Oktober 2021
-                  </div>
-                  <div class="col-lg-6 col-md-6 col-6 text-right">
-                    Baca Selengkapnya
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-4 col-md-4 mt-3">
-            <div class="card">
-              <img src="<?= \Yii::$app->request->baseUrl . "/uploads/berita/" ?>news.jpg" class="card-img-top" alt="...">
-              <div class="card-body">
-                <h6 class="card-title">Card title</h6>
-                <hr>
-                <div class="row">
-                  <div class="col-lg-6 col-md-6 col-6 text-left">
-                    10 Oktober 2021
-                  </div>
-                  <div class="col-lg-6 col-md-6 col-6 text-right">
-                    Baca Selengkapnya
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+          <?php } ?>
+          
         </div>
       </div>
     </div>
