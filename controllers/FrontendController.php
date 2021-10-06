@@ -62,6 +62,28 @@ class FrontendController extends Controller
         ]);
     }
 
+    public function actionBerita()
+    {
+        $this->layout = false;
+        $setting = Setting::find()->one();
+        $model = new HubungiKami;
+
+        if ($model->load($_POST)) {
+            $model->status = 0;
+
+            if ($model->save()) {
+                Yii::$app->session->setFlash('success', "Data created successfully."); 
+            } else {
+                Yii::$app->session->setFlash('error', "Data not saved.");
+            }
+            return $this->redirect('frontend/about_us');
+        }
+        return $this->render('berita',[
+            'setting' => $setting,
+            'model' => $model
+        ]);
+    }
+
     public function actionAbout()
     {
 
