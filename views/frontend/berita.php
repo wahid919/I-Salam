@@ -45,45 +45,53 @@
 
     <div class="mt-4 mb-4">
       <div class="container mt-4 mb-4">
-        <input type="text" class="form-control mt-4" style="border-radius: 0.8rem;border-color: black;" placeholder="Cari Berita Disini">
+
+        <form action="<?= \Yii::$app->request->baseUrl . "/frontend/news" ?>" method="get">
+          <div class="input-group mb-4">
+            <input type="text" name="cari" class="form-control" placeholder="Cari Berita" aria-label="Cari Berita" aria-describedby="button-addon2">
+            <div class="input-group-append">
+              <button class="btn btn-outline-secondary text-white" type=submit" id="cari" style="background-color:orange; border:orange;">Cari</button>
+            </div>
+          </div>
+        </form>
         <div class="text-center mt-4 mb-4">
           <h3>Kategori Berita</h3>
           <ul style="display: inline-block;margin-left: auto;margin-right: auto;">
             <ul class="list-group list-group-horizontal border-0 text-dark text-center">
-              <li class="list-group-item">Semua</li>
+              <li class="list-group-item"><a href="<?=\Yii::$app->request->baseUrl . "/frontend/news/"?>"> Semua </a></li>
               <?php foreach ($categories as $kategori) {  ?>
-                <li class="list-group-item"><?= $kategori->nama ?></li>
+                <li class="list-group-item"><a href="<?=\Yii::$app->request->baseUrl . "/frontend/news?kategori=".$kategori->id?>"><?= $kategori->nama ?> </a></li>
               <?php } ?>
             </ul>
           </ul>
         </div>
 
         <div class="row">
-          <?php foreach($news as $berita){ ?>
-          <div class="col-lg-4 col-md-4 mt-3">
-            <a href="<?=\Yii::$app->request->baseUrl . "/frontend/detail-berita?id=".$berita->slug?>">
-            <div class="card">
-              <!-- <img src="" class="card-img-top" alt="..."> -->
-              <div style="background-image: url(<?= \Yii::$app->request->baseUrl . "/uploads/berita/". $berita->gambar ?>);background-size: cover;height: 200px;">
+          <?php foreach ($news as $berita) { ?>
+            <div class="col-lg-4 col-md-4 mt-3">
+              <a href="<?= \Yii::$app->request->baseUrl . "/frontend/detail-berita?id=" . $berita->slug ?>">
+                <div class="card">
+                  <!-- <img src="" class="card-img-top" alt="..."> -->
+                  <div style="background-image: url(<?= \Yii::$app->request->baseUrl . "/uploads/berita/" . $berita->gambar ?>);background-size: cover;height: 200px;">
 
-              </div>
-              <div class="card-body">
-                <h6 class="card-title"><?= $berita->judul ?></h6>
-                <hr>
-                <div class="row">
-                  <div class="col-lg-6 col-md-6 col-6 text-left">
-                    <?= date("d-m-Y", strtotime($berita->created_at)); ?>
                   </div>
-                  <div class="col-lg-6 col-md-6 col-6 text-right">
-                    Baca Selengkapnya
+                  <div class="card-body">
+                    <h6 class="card-title"><?= $berita->judul ?></h6>
+                    <hr>
+                    <div class="row">
+                      <div class="col-lg-6 col-md-6 col-6 text-left">
+                        <?= date("d-m-Y", strtotime($berita->created_at)); ?>
+                      </div>
+                      <div class="col-lg-6 col-md-6 col-6 text-right">
+                        Baca Selengkapnya
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
+              </a>
             </div>
-            </a>
-          </div>
           <?php } ?>
-          
+
         </div>
       </div>
     </div>

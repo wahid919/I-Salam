@@ -71,10 +71,25 @@ class FrontendController extends Controller
     public function actionNews()
     {
         $this->layout = false;
-        $setting = Setting::find()->one();
+        if(isset($_GET['cari'])){
+            $cari = $_GET['cari'];
+            $news = Berita::find()->where(['like', 'judul',$cari])->all();
+            // var_dump($news);die;
+        }else{
+            $news = Berita::find()->all();
+        }
+        if(isset($_GET['kategori'])){
+            $cat = $_GET['kategori'];
+            $news = Berita::find()->where(['kategori_berita_id' => $cat])->all();
+            // var_dump($news);die;
+        }else{
+            $news = Berita::find()->all();
+        }
         $categories = KategoriBerita::find()->all();
-        $news = Berita::find()->all();
+        $setting = Setting::find()->one();
+        $bg_login = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->bg_login;
         $model = new HubungiKami;
+        
 
         if ($model->load($_POST)) {
             $model->status = 0;
@@ -90,7 +105,8 @@ class FrontendController extends Controller
             'setting' => $setting,
             'categories' => $categories,
             'news' => $news,
-            'model' => $model
+            'model' => $model,
+            'bg_login' => $bg_login
         ]);
     }
 
@@ -100,9 +116,11 @@ class FrontendController extends Controller
         $this->layout = false;
         $berita = Berita::find()->where(['slug' => $id])->one();
         $setting = Setting::find()->one();
+        $bg_login = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->bg_login;
         return $this->render('detail-berita',[
             'setting' => $setting,
-            'berita' => $berita
+            'berita' => $berita,
+            'bg_login' => $bg_login
         ]);
     }
 
