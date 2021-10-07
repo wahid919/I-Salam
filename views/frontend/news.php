@@ -43,37 +43,6 @@
           </div><!-- /.container -->
         </div><!-- /.slide-item -->
       </div><!-- /.carousel -->
-      <div class="container">
-        <div class="row">
-          <div class="col-sm-12 col-md-12 col-lg-12 d-none d-lg-block">
-            <div class="owl-thumbs thumbs-dots" data-slider-id="slider1">
-              <button class="owl-thumb-item">
-                <i class="icon-forklift-1"></i>
-                <span>Jumlah Program </span>
-                <div class="counter-item">
-                <h4><span><?= $count_program ?></span></h4>
-                </div>
-              </button>
-              <button class="owl-thumb-item">
-                <i class="icon-air-freight"></i>
-                <span>Jumlah Penerima Wakaf</span>
-                <h4><span>5</span></h4>
-              </button>
-              <button class="owl-thumb-item">
-                <i class="icon-cargo-ship"></i>
-                <span>Jumlah Wakif</span>
-                <h4><span><?= $count_wakif ?></span></h4>
-              </button>
-              <!-- <button class="owl-thumb-item">
-                <i class="icon-truck"></i>
-                <span>Road Freight</span>
-                <h4><span class="counter">5,154</span><span>m</span></h4>
-              </button> -->
-            </div><!-- /.owl-thumbs -->
-          </div><!-- /.col-lg-12 -->
-          
-        </div><!-- /.row -->
-      </div><!-- /.container -->
     </section><!-- /.slider -->
 
     <!-- ========================
