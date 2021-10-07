@@ -4,19 +4,21 @@
 
 namespace app\controllers\base;
 
-use app\models\HubungiKami;
-use app\models\search\HubungiKamiSearch;
+use app\models\Berita;
+use app\models\search\BeritaSearch;
 use yii\web\Controller;
 use yii\web\HttpException;
 use yii\helpers\Url;
 use yii\filters\AccessControl;
 use dmstr\bootstrap\Tabs;
 use app\models\Action;
+use Yii;
+use yii\web\UploadedFile;
 
 /**
- * HubungiKamiController implements the CRUD actions for HubungiKami model.
+ * BeritaController implements the CRUD actions for Berita model.
  */
-class HubungiKamiController extends Controller
+class BeritaController extends Controller
 {
 
 
@@ -33,12 +35,12 @@ class HubungiKamiController extends Controller
     }
 
     /**
-     * Lists all HubungiKami models.
+     * Lists all Berita models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel  = new HubungiKamiSearch;
+        $searchModel  = new BeritaSearch;
         $dataProvider = $searchModel->search($_GET);
 
         Tabs::clearLocalStorage();
@@ -53,7 +55,7 @@ class HubungiKamiController extends Controller
     }
 
     /**
-     * Displays a single HubungiKami model.
+     * Displays a single Berita model.
      * @param integer $id
      *
      * @return mixed
@@ -70,17 +72,40 @@ class HubungiKamiController extends Controller
     }
 
     /**
-     * Creates a new HubungiKami model.
+     * Creates a new Berita model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new HubungiKami;
-        $model->status = 0;
+        $model = new Berita;
+
         try {
-            if ($model->load($_POST) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
+            $model->user_id = Yii::$app->user->id;
+            if ($model->load($_POST)) {
+                $slug = str_replace(' ', '-', $model->judul);
+                $model->slug = $slug.date('Y-m-d');
+                $gambar = UploadedFile::getInstance($model, 'gambar');
+                if ($gambar != NULL) {
+                    # store the source gambars name
+                    $model->gambar = $gambar->name;
+                    $arr = explode(".", $gambar->name);
+                    $extension = end($arr);
+
+                    # generate a unique gambars name
+                    $model->gambar = Yii::$app->security->generateRandomString() . ".{$extension}";
+
+                    # the path to save gambars
+                    // unlink(Yii::getAlias("@app/web/uploads/pengajuan/") . $oldFile);
+                    if (file_exists(Yii::getAlias("@app/web/uploads/berita/")) == false) {
+                        mkdir(Yii::getAlias("@app/web/uploads/berita/"), 0777, true);
+                    }
+                    $path = Yii::getAlias("@app/web/uploads/berita/") . $model->gambar;
+                    $gambar->saveAs($path);
+                }
+                if ($model->save()) {
+                    return $this->redirect(['view', 'id' => $model->id]);
+                }
             } elseif (!\Yii::$app->request->isPost) {
                 $model->load($_GET);
             }
@@ -92,7 +117,7 @@ class HubungiKamiController extends Controller
     }
 
     /**
-     * Updates an existing HubungiKami model.
+     * Updates an existing Berita model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -100,8 +125,36 @@ class HubungiKamiController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $oldgambar = $model->gambar;
 
-        if ($model->load($_POST) && $model->save()) {
+        if ($model->load($_POST)) {
+            $gambar = UploadedFile::getInstance($model, 'gambar');
+            if ($gambar != NULL) {
+                # store the source file name
+                $model->gambar = $gambar->name;
+                $arr = explode(".", $gambar->name);
+                $extension = end($arr);
+
+                # generate a unique file name
+                $model->gambar = Yii::$app->security->generateRandomString() . ".{$extension}";
+
+                # the path to save file
+                if (file_exists(Yii::getAlias("@app/web/uploads/berita/")) == false) {
+                    mkdir(Yii::getAlias("@app/web/uploads/berita/"), 0777, true);
+                }
+                $path = Yii::getAlias("@app/web/uploads/berita/") . $model->gambar;
+                if ($oldgambar != NULL) {
+
+                    $gambar->saveAs($path);
+                    unlink(Yii::$app->basePath . '/web/uploads/berita/' . $oldgambar);
+                } else {
+                    $gambar->saveAs($path);
+                }
+            } else {
+                $model->gambar = $oldgambar;
+            }
+            
+            $model->save();
             return $this->redirect(Url::previous());
         } else {
             return $this->render('update', [
@@ -111,7 +164,7 @@ class HubungiKamiController extends Controller
     }
 
     /**
-     * Deletes an existing HubungiKami model.
+     * Deletes an existing Berita model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -142,40 +195,18 @@ class HubungiKamiController extends Controller
     }
 
     /**
-     * Finds the HubungiKami model based on its primary key value.
+     * Finds the Berita model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return HubungiKami the loaded model
+     * @return Berita the loaded model
      * @throws HttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = HubungiKami::findOne($id)) !== null) {
+        if (($model = Berita::findOne($id)) !== null) {
             return $model;
         } else {
             throw new HttpException(404, 'The requested page does not exist.');
-        }
-    }
-
-    public function actionSudahDihubungi($id)
-    {
-        $model = $this->findModel($_GET['id']);
-        //return print_r($model);
-        if ($model) {
-            $model->status = 1;
-            if ($model->save()) {
-
-                \Yii::$app->getSession()->setFlash(
-                    'success',
-                    'Telah Dihubungi!'
-                );
-            } else {
-                \Yii::$app->getSession()->setFlash(
-                    'danger',
-                    'Gagal!'
-                );
-            }
-            return $this->redirect(['index']);
         }
     }
 }

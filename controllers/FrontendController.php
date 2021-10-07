@@ -9,7 +9,9 @@ use yii\helpers\Url;
 use yii\filters\AccessControl;
 use dmstr\bootstrap\Tabs;
 use app\models\Action;
+use app\models\Berita;
 use app\models\HubungiKami;
+use app\models\KategoriBerita;
 use yii\helpers\ArrayHelper;
 use app\models\Setting;
 use app\models\Organisasi;
@@ -59,6 +61,44 @@ class FrontendController extends Controller
             'bg_login' => $bg_login,
             'bg' => $bg,
             'model' => $model
+        ]);
+    }
+
+    public function actionBerita()
+    {
+        $this->layout = false;
+        $setting = Setting::find()->one();
+        $categories = KategoriBerita::find()->all();
+        $news = Berita::find()->all();
+        $model = new HubungiKami;
+
+        if ($model->load($_POST)) {
+            $model->status = 0;
+
+            if ($model->save()) {
+                Yii::$app->session->setFlash('success', "Data created successfully."); 
+            } else {
+                Yii::$app->session->setFlash('error', "Data not saved.");
+            }
+            return $this->redirect('frontend/about_us');
+        }
+        return $this->render('berita',[
+            'setting' => $setting,
+            'categories' => $categories,
+            'news' => $news,
+            'model' => $model
+        ]);
+    }
+
+    public function actionDetailBerita($id)
+    {
+        // var_dump($id);die;
+        $this->layout = false;
+        $berita = Berita::find()->where(['slug' => $id])->one();
+        $setting = Setting::find()->one();
+        return $this->render('detail-berita',[
+            'setting' => $setting,
+            'berita' => $berita
         ]);
     }
 
