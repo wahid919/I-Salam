@@ -162,15 +162,16 @@
                     </table>
                     <!-- <p class="project__desc">We understand that data is the greatest asset when it comes to
                     analyzing and optimizing your supply chain performance.</p> -->
-
-                  </div><!-- /.project-content -->
-                  <div class="row">
-                    <div class="col-sm-12 col-md-12 col-lg-4">
-                      <a href="#" class="btn btn__primary" style="background-color:orange; border:orange;">Install Aplikasi For Donate</a>
-                    </div>
-                    <div class="col-sm-12 col-md-12 col-lg-2"></div>
-                    <div class="col-sm-12 col-md-12 col-lg-4">
-                      <a href="#" class="btn btn__primary" style="background-color:orange; border:orange;">Download prospektur</a>
+                   
+                </div><!-- /.project-content -->
+                <div class="row">
+                <div class="col-sm-12 col-md-12 col-lg-4">
+                            <a href="#" class="btn btn__primary" style="background-color:orange; border:orange;">Install Aplikasi For Donate</a>
+                        </div>
+                        <div class="col-sm-12 col-md-12 col-lg-2"></div>
+                        <div class="col-sm-12 col-md-12 col-lg-4">
+                        <a href="../unduh-file-uraian/<?php echo $pendanaan->id ?>" class="btn btn__primary" style="background-color:orange; border:orange;">Download prospektur</a>
+                        </div>
                     </div>
                   </div>
                 </div><!-- /.project-item -->

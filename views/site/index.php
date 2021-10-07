@@ -91,7 +91,12 @@ use app\components\Tanggal;
           <div class="row">
             <div class="col-md-9">
             
-    <div id="chart_div" style="width: 100%; height: 100%"></div>
+            <div class="panel panel-primary">
+                <div class="panel-heading">Data Penjualan Menu Ketegori</div>
+                <div class="panel-body">
+                    <canvas id="MenuChart" width="400" height="250"></canvas>
+                </div>
+            </div>
             </div>
             <div class="col-md-3">
               <table style="width: 100%;">
@@ -169,3 +174,56 @@ use app\components\Tanggal;
 
   </body>
 </html>
+
+               
+  
+<?php
+function random_rgb()
+{
+    return 'rgb(' . rand(0, 255) . ',' . rand(0, 255) . ',' . rand(0, 255) . ')';
+}
+$random_color = random_rgb();
+?>
+                <script>
+                var ctx = document.getElementById('MenuChart').getContext('2d');
+                var myChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: $namamenu,
+                        datasets: [{
+                            label: 'Data Transaksi',
+                            data: $jumlahmenu,
+                            borderColor: [
+                                '$random_color',
+                            ],
+                            backgroundColor: [
+                                '$random_color',
+                            ],
+                            pointBackgroundColor: [
+                                '#f00',
+                            ],
+                            pointBorderColor: [
+                                '#f00',
+                            ],
+                            pointHoverBackgroundColor: [
+                                '#f00',
+                            ],
+                            pointHoverBorderColor: [
+                                '$random_color',
+                            ],
+                            fill: false,
+                            borderWidth: 2
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true
+                                }
+                            }]
+                        },
+                        
+                    }
+                });
+                </script>

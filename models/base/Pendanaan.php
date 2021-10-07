@@ -91,7 +91,7 @@ abstract class Pendanaan extends \yii\db\ActiveRecord
             $parent['file_uraian'] = function ($model) {
                 $file = $model->file_uraian;
                 // $model->tanggal_received=date('Y-m-d H:i:s');
-                return $path = Yii::getAlias("@app/web/uploads/uraian/") . $file;
+                return $path = "http://117.53.45.118/isalam/web/uploads/" . $file;
             };
             
         }
@@ -103,7 +103,7 @@ abstract class Pendanaan extends \yii\db\ActiveRecord
             $parent['poster'] = function ($model) {
                 $file = $model->poster;
                 // $model->tanggal_received=date('Y-m-d H:i:s');
-                return $path = Yii::getAlias("@app/web/uploads/poster/") . $file;
+                return $path = "http://117.53.45.118/isalam/web/uploads/" . $file;
             };
             
         }

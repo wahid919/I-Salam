@@ -36,6 +36,15 @@ abstract class Pencairan extends \yii\db\ActiveRecord
                 return date('Y-m-d H:i:s');
             };
         }
+        if (isset($parent['pendanaan_id'])) {
+            unset($parent['pendanaan_id']);
+            // $parent['_pendanaan_id'] = function ($model) {
+            //     return $model->pendanaan_id;
+            // };
+            $parent['pendanaan'] = function ($model) {
+                return $model->pendanaan;
+            };
+        }
 
         return $parent;
     }

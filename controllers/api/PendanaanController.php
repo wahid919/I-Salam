@@ -44,7 +44,7 @@ class PendanaanController extends \yii\rest\ActiveController
             'all' => ['GET'],
             'show-pendanaan' => ['GET'],
             'pendanaan-diterima' => ['GET'],
-            'unduh-file-uraian' => ['GET'],
+            'prespekture' => ['GET'],
             'add-pendanaan' => ['POST'],
             'draf-pendanaan' => ['POST'],
             'approve-pendanaan' => ['POST'],
@@ -430,9 +430,10 @@ public function actionPendanaanBatal(){
        }
 
     }
-    public function actionUnduhFileUraian($id)
+    public function actionPrespekture($pendanaan_id)
     {
-    $model = $this->findModel($id);
+    $models = $this->findModels($pendanaan_id);
+    $model = $this->findModel($models->pendanaan_id);
     $file = $model->file_uraian;
     // $model->tanggal_received=date('Y-m-d H:i:s');
     $path = Yii::getAlias("@app/web/uploads/uraian/") . $file;
@@ -450,6 +451,15 @@ public function actionPendanaanBatal(){
     protected function findModel($id)
     {
        if (($model = Pendanaan::findOne($id)) !== null) {
+          return $model;
+       } else {
+          throw new HttpException(404, 'The requested page does not exist.');
+       }
+    }
+
+    protected function findModels($pendanaan_id)
+    {
+       if (($model = Pencairan::findOne(['pendanaan_id'=>$pendanaan_id])) !== null) {
           return $model;
        } else {
           throw new HttpException(404, 'The requested page does not exist.');

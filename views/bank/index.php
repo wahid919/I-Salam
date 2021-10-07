@@ -38,8 +38,13 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 \app\components\ActionButton::getButtons(),
 
-			'name',
-			'logo',
+			'name',[
+                'attribute' =>'logo',
+                'format' =>'html',
+                'value' =>function($model) {
+                   return Html::img(\Yii::$app->request->BaseUrl.'/uploads/bank/logo/'.$model->logo,['width'=>100]);
+                 },
+             ],
                 ],
                 ]); ?>
             </div>

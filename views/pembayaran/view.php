@@ -23,6 +23,17 @@ $this->params['breadcrumbs'][] = 'View';
     <p class='pull-left'>
         <?= Html::a('<span class="glyphicon glyphicon-pencil"></span> ' . 'Edit', ['update', 'id' => $model->id], ['class' => 'btn btn-info']) ?>
         <?= Html::a('<span class="glyphicon glyphicon-plus"></span> ' . 'Tambah Baru', ['create'], ['class' => 'btn btn-success']) ?>
+        <?php 
+        if($model->status_id == 6){
+            echo Html::a("<i class='fa fa-download'></i>" . ' Akad/Ikrar Wakaf', ['cetak','id'=>$model->id],[
+                "class"=>"btn btn-primary",
+                "title"=>"Unduh File",
+                'target' => '_blank',
+                "data-confirm" => "Apakah Anda akan mengunduh File ini ?",
+            ]);
+        }
+        ?>
+        
     </p>
     <p class="pull-right">
         <?= Html::a('<span class="glyphicon glyphicon-list"></span> ' . 'Daftar Pembayaran', ['index'], ['class' => 'btn btn-default']) ?>
