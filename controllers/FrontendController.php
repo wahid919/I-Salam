@@ -19,6 +19,8 @@ use app\models\LembagaPenerima;
 use app\models\Pendanaan;
 use app\models\User;
 use app\models\KategoriPendanaan;
+use app\models\Testimonials;
+
 /**
  * This is the class for controller "BeritaController".
  */
@@ -38,6 +40,7 @@ class FrontendController extends Controller
         $count_program = Pendanaan::find()->where(['status_id'=>2])->count();
         $count_wakif = User::find()->where(['role_id'=>5])->count();
         $model = new HubungiKami;
+        $testimonials = Testimonials::find()->all();
 
 
         if ($model->load($_POST)) {
@@ -60,6 +63,7 @@ class FrontendController extends Controller
             'icon' => $icon,
             'bg_login' => $bg_login,
             'bg' => $bg,
+            'testimonials' => $testimonials,
             'model' => $model
         ]);
     }

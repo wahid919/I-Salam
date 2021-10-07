@@ -4,8 +4,8 @@
 
 namespace app\controllers\base;
 
-use app\models\Berita;
-use app\models\search\BeritaSearch;
+use app\models\Testimonials;
+use app\models\search\TestimonialsSearch;
 use yii\web\Controller;
 use yii\web\HttpException;
 use yii\helpers\Url;
@@ -16,9 +16,9 @@ use Yii;
 use yii\web\UploadedFile;
 
 /**
- * BeritaController implements the CRUD actions for Berita model.
+ * TestimonialsController implements the CRUD actions for Testimonials model.
  */
-class BeritaController extends Controller
+class TestimonialsController extends Controller
 {
 
 
@@ -35,12 +35,12 @@ class BeritaController extends Controller
     }
 
     /**
-     * Lists all Berita models.
+     * Lists all Testimonials models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel  = new BeritaSearch;
+        $searchModel  = new TestimonialsSearch;
         $dataProvider = $searchModel->search($_GET);
 
         Tabs::clearLocalStorage();
@@ -55,7 +55,7 @@ class BeritaController extends Controller
     }
 
     /**
-     * Displays a single Berita model.
+     * Displays a single Testimonials model.
      * @param integer $id
      *
      * @return mixed
@@ -72,19 +72,16 @@ class BeritaController extends Controller
     }
 
     /**
-     * Creates a new Berita model.
+     * Creates a new Testimonials model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new Berita;
+        $model = new Testimonials;
 
         try {
-            $model->user_id = Yii::$app->user->id;
             if ($model->load($_POST)) {
-                $slug = str_replace(' ', '-', $model->judul);
-                $model->slug = $slug.date('Y-m-d');
                 $gambar = UploadedFile::getInstance($model, 'gambar');
                 if ($gambar != NULL) {
                     # store the source gambars name
@@ -97,10 +94,10 @@ class BeritaController extends Controller
 
                     # the path to save gambars
                     // unlink(Yii::getAlias("@app/web/uploads/pengajuan/") . $oldFile);
-                    if (file_exists(Yii::getAlias("@app/web/uploads/berita/")) == false) {
-                        mkdir(Yii::getAlias("@app/web/uploads/berita/"), 0777, true);
+                    if (file_exists(Yii::getAlias("@app/web/uploads/testimonials/")) == false) {
+                        mkdir(Yii::getAlias("@app/web/uploads/testimonials/"), 0777, true);
                     }
-                    $path = Yii::getAlias("@app/web/uploads/berita/") . $model->gambar;
+                    $path = Yii::getAlias("@app/web/uploads/testimonials/") . $model->gambar;
                     $gambar->saveAs($path);
                 }
                 if ($model->save()) {
@@ -117,7 +114,7 @@ class BeritaController extends Controller
     }
 
     /**
-     * Updates an existing Berita model.
+     * Updates an existing Testimonials model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -125,6 +122,7 @@ class BeritaController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+
         $oldgambar = $model->gambar;
 
         if ($model->load($_POST)) {
@@ -139,14 +137,14 @@ class BeritaController extends Controller
                 $model->gambar = Yii::$app->security->generateRandomString() . ".{$extension}";
 
                 # the path to save file
-                if (file_exists(Yii::getAlias("@app/web/uploads/berita/")) == false) {
-                    mkdir(Yii::getAlias("@app/web/uploads/berita/"), 0777, true);
+                if (file_exists(Yii::getAlias("@app/web/uploads/testimonials/")) == false) {
+                    mkdir(Yii::getAlias("@app/web/uploads/testimonials/"), 0777, true);
                 }
-                $path = Yii::getAlias("@app/web/uploads/berita/") . $model->gambar;
+                $path = Yii::getAlias("@app/web/uploads/testimonials/") . $model->gambar;
                 if ($oldgambar != NULL) {
 
                     $gambar->saveAs($path);
-                    unlink(Yii::$app->basePath . '/web/uploads/berita/' . $oldgambar);
+                    unlink(Yii::$app->basePath . '/web/uploads/testimonials/' . $oldgambar);
                 } else {
                     $gambar->saveAs($path);
                 }
@@ -164,7 +162,7 @@ class BeritaController extends Controller
     }
 
     /**
-     * Deletes an existing Berita model.
+     * Deletes an existing Testimonials model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -174,7 +172,7 @@ class BeritaController extends Controller
         try {
             $model = $this->findModel($id);
             $oldGambar = $model->gambar;
-            unlink(Yii::$app->basePath . '/web/uploads/berita/' . $oldGambar);
+            unlink(Yii::$app->basePath . '/web/uploads/testimonials/' . $oldGambar);
             $model->delete();
         } catch (\Exception $e) {
             $msg = (isset($e->errorInfo[2])) ? $e->errorInfo[2] : $e->getMessage();
@@ -198,15 +196,15 @@ class BeritaController extends Controller
     }
 
     /**
-     * Finds the Berita model based on its primary key value.
+     * Finds the Testimonials model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Berita the loaded model
+     * @return Testimonials the loaded model
      * @throws HttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Berita::findOne($id)) !== null) {
+        if (($model = Testimonials::findOne($id)) !== null) {
             return $model;
         } else {
             throw new HttpException(404, 'The requested page does not exist.');

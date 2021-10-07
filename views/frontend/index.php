@@ -41,31 +41,6 @@
           </div><!-- /.container -->
         </div><!-- /.slide-item -->
       </div><!-- /.carousel -->
-      <div class="container">
-        <div class="row">
-          <div class="col-sm-12 col-md-12 col-lg-12 d-none d-lg-block">
-            <div class="owl-thumbs thumbs-dots" data-slider-id="slider1">
-              <button class="owl-thumb-item">
-                <i class="icon-forklift-1"></i>
-                <span>Jumlah Program </span>
-                <div class="counter-item">
-                  <h4><span><?= $count_program ?></span></h4>
-                </div>
-              </button>
-              <button class="owl-thumb-item">
-                <i class="icon-air-freight"></i>
-                <span>Jumlah Penerima Wakaf</span>
-                <h4><span>5</span></h4>
-              </button>
-              <button class="owl-thumb-item">
-                <i class="icon-cargo-ship"></i>
-                <span>Jumlah Wakif</span>
-                <h4><span><?= $count_wakif ?></span></h4>
-              </button>
-            </div>
-          </div>
-        </div>
-      </div><!-- /.container -->
     </section><!-- /.slider -->
 
     <div class="container">
@@ -228,7 +203,7 @@
                                     'class' => 'form-control'
                                   ],
                                   'labelOptions' => [
-                                    'class' => 'text-white'
+                                    'class' => ''
                                   ],
                                   'options' => ['tag' => false]
                                 ])->textInput(['maxlength' => true, 'placeholder' => 'Nama']) ?>
@@ -246,7 +221,7 @@
                                     'class' => 'form-control'
                                   ],
                                   'labelOptions' => [
-                                    'class' => 'text-white'
+                                    'class' => ''
                                   ],
                                   'options' => ['tag' => false]
                                 ])->textInput(['maxlength' => true, 'placeholder' => 'Nomor Handphone']) ?>
@@ -265,7 +240,7 @@
                                     'class' => 'form-control'
                                   ],
                                   'labelOptions' => [
-                                    'class' => 'text-white'
+                                    'class' => ''
                                   ],
                                   'options' => ['tag' => false]
                                 ])->dropDownList(
@@ -300,75 +275,6 @@
                     </div><!-- /.widget-download -->
                   </div><!-- /.request-quote-panel-->
                 </div><!-- /.tab -->
-                <div class="tab-pane fade" id="track">
-                  <div class="request-quote-panel">
-                    <div class="request__form-body">
-                      <div class="row">
-                        <div class="col-sm-12 col-md-12 col-lg-12">
-                          <div class="form-group">
-                            <label>Shipment Type</label>
-                            <div class="form-group form-group-select">
-                              <select class="form-control">
-                                <option>Packaging</option>
-                                <option>Packaging 1</option>
-                                <option>Packaging 2</option>
-                              </select>
-                            </div>
-                          </div>
-                        </div><!-- /.col-lg-12 -->
-                        <div class="col-sm-12 col-md-12 col-lg-12">
-                          <div class="form-group">
-                            <label>Tracking Number</label>
-                            <div class="form-group">
-                              <textarea class="form-control" placeholder="You can enter up to a maximum of 10 airway bill numbers for tracking."></textarea>
-                            </div>
-                          </div>
-                        </div><!-- /.col-lg-12 -->
-                        <div class="col-sm-12 col-md-12 col-lg-12 d-flex flex-wrap">
-                          <div class="form-group input-radio">
-                            <label class="label-radio">Fragile
-                              <input type="radio" name="radioGroup2" checked="">
-                              <span class="radio-indicator"></span>
-                            </label>
-                          </div>
-                          <div class="form-group input-radio">
-                            <label class="label-radio">Express Delivery
-                              <input type="radio" name="radioGroup2">
-                              <span class="radio-indicator"></span>
-                            </label>
-                          </div>
-                          <div class="form-group input-radio">
-                            <label class="label-radio">Insurance
-                              <input type="radio" name="radioGroup2">
-                              <span class="radio-indicator"></span>
-                            </label>
-                          </div>
-                          <div class="form-group input-radio">
-                            <label class="label-radio">Packaging
-                              <input type="radio" name="radioGroup2">
-                              <span class="radio-indicator"></span>
-                            </label>
-                          </div>
-                        </div><!-- /.col-lg-12 -->
-                        <div class="col-sm-12 col-md-12 col-lg-12">
-                          <button class="btn btn__secondary btn__block">Track & Trace</button>
-                        </div><!-- /.col-lg-12 -->
-                      </div>
-
-
-                    </div><!-- /.request__form-body -->
-                    <div class="widget widget-download bg-theme">
-                      <div class="widget__content">
-                        <h5>Industry<br>Solutions!</h5>
-                        <p>Our worldwide presence ensures the timeliness, cost efficiency and compliance adherence
-                          required to ensure your production timelines are met.</p>
-                        <a href="#" class="btn btn__secondary btn__hover2 btn__block">
-                          <span>Download 2019 Brochure</span><i class="icon-arrow-right"></i>
-                        </a>
-                      </div><!-- /.widget__content -->
-                    </div><!-- /.widget-download -->
-                  </div><!-- /.request-quote-panel-->
-                </div><!-- /.tab -->
               </div><!-- /.tab-content -->
             </div><!-- /.request-form -->
           </div><!-- /.col-lg-12 -->
@@ -394,36 +300,20 @@
           <div class="col-sm-12 col-md-12 col-lg-10 offset-lg-1">
             <div class="carousel owl-carousel carousel-arrows carousel-dots" data-slide="1" data-slide-md="1" data-slide-sm="1" data-autoplay="true" data-nav="true" data-dots="true" data-space="0" data-loop="true" data-speed="800">
               <!-- Testimonial #1 -->
+              <?php foreach($testimonials as $testi) { ?>
               <div class=" testimonial-item">
                 <div class="testimonial__thumb">
-                  <img src="<?= \Yii::$app->request->BaseUrl ?>/template/assets/images/testimonials/thumbs/1.jpg" alt="author thumb">
+                  <img src="<?= \Yii::$app->request->BaseUrl . "/uploads/testimonials/" . $testi->gambar?>"alt="author thumb">
                 </div><!-- /.testimonial-thumb -->
                 <div class="testimonial__content">
-                  <p class="testimonial__desc">They are the best of the best, and expertly trained team members who take
-                    the extra step and go the extra mile, all to fulfill our dedicated promise to deliver innovative and
-                    dynamic solutions to our customers to fit the needs of a rapidly changing global environment.</p>
+                  <p class="testimonial__desc"><?= $testi->isi ?></p>
                 </div><!-- /.testimonial-content -->
                 <div class="testimonial__meta">
-                  <img src="<?= \Yii::$app->request->BaseUrl ?>/template/assets/images/testimonials/signature.png" alt="signature">
-                  <p class="testimonial__meta-desc">The Move Inc</p>
+                  <p><?= $testi->nama ?></p>
+                  <p class="testimonial__meta-desc"><?= $testi->jabatan ?></p>
                 </div><!-- /.testimonial-meta -->
               </div><!-- /. testimonial-item -->
-              <!-- Testimonial #2 -->
-              <div class=" testimonial-item">
-                <div class="testimonial__thumb">
-                  <img src="<?= \Yii::$app->request->BaseUrl ?>/template/assets/images/testimonials/thumbs/1.jpg" alt="author thumb">
-                </div><!-- /.testimonial-thumb -->
-                <div class="testimonial__content">
-                  <p class="testimonial__desc">Logisti team is the best of the best, and expertly trained team members
-                    who take the extra step and go the extra mile, all to fulfill our dedicated promise to deliver
-                    innovative and dynamic solutions to our customers to fit the needs of a rapidly changing global
-                    environment.</p>
-                </div><!-- /.testimonial-content -->
-                <div class="testimonial__meta">
-                  <img src="<?= \Yii::$app->request->BaseUrl ?>/template/assets/images/testimonials/signature.png" alt="signature">
-                  <p class="testimonial__meta-desc">The Move Inc</p>
-                </div><!-- /.testimonial-meta -->
-              </div><!-- /. testimonial-item -->
+             <?php } ?>
             </div>
           </div><!-- /.col-lg-12 -->
         </div><!-- /.row -->

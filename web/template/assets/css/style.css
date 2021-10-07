@@ -1766,7 +1766,7 @@ label {
   height: 50px;
   line-height: 50px;
   border: none;
-  border: 1px solid #eaeaea;
+  border: 2px solid #ffa500;
   border-radius: 1px;
   padding: 0 0 0 20px;
   font-size: 14px;
@@ -4093,6 +4093,8 @@ textarea.form-control {
 
 .request__form .request__form-body {
   padding: 50px;
+  border-style: solid;
+  border-color: #ffa500;
 }
 
 .request__form .input-radio {
@@ -4108,27 +4110,6 @@ textarea.form-control {
   border-radius: 5px;
 }
 
-.request-quote-tabs .request__form:before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: -39px;
-  width: 41px;
-  height: 160px;
-  background-color: #121c45;
-  border-radius: 5px 0 0 0;
-}
-
-.request-quote-tabs .request__form:after {
-  content: "";
-  position: absolute;
-  top: 0;
-  right: -39px;
-  width: 41px;
-  height: 160px;
-  background-color: #121c45;
-  border-radius: 0 5px 0 0;
-}
 
 .request-quote-tabs .request__form h6 {
   font-family: "Roboto", sans-serif;
