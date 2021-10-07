@@ -16,6 +16,7 @@ use dmstr\bootstrap\Tabs;
 use app\models\Action;
 use app\models\Setting;
 use app\models\User;
+use kartik\mpdf\Pdf;
 use yii\web\UploadedFile;
 
 /**
@@ -273,7 +274,58 @@ class PembayaranController extends Controller
             return $this->redirect(['index']);
         }
     }
-
+    public function actionCetak($id) {
+        $formatter = \Yii::$app->formatter;
+        $model = Pembayaran::findOne(['id' => $id]);
+        $content = $this->renderPartial('view-print',[
+            'model' => $model,
+    ]);
+        
+        // setup kartik\mpdf\Pdf component
+        $pdf = new Pdf([
+            // set to use core fonts only
+            'mode' => Pdf::MODE_CORE, 
+            //Name file
+            'filename' => 'Akad Wakaf'."pdf",
+            // LEGAL paper format
+            'format' => Pdf::FORMAT_LEGAL, 
+            // portrait orientation
+            'orientation' => Pdf::ORIENT_PORTRAIT, 
+            // stream to browser inline
+            'destination' => Pdf::DEST_BROWSER, 
+            // your html content input
+            'content' => $content,  
+            'marginHeader' => 0,
+            'marginFooter' => 1,
+            'marginTop' => 1,
+            'marginBottom' => 5,
+            'marginLeft' => 0,
+            'marginRight' => 0,
+            // format content from your own css file if needed or use the
+            // enhanced bootstrap css built by Krajee for mPDF formatting 
+            'cssFile' => '@vendor/kartik-v/yii2-mpdf/src/assets/kv-mpdf-bootstrap.min.css',
+            // any css to be embedded if required
+            // 'cssInline' => '.kv-heading-1{font-size:25px}', 
+            'cssInline' => 'body { font-family: irannastaliq; font-size: 17px; }.page-break {display: none;};
+            .kv-heading-1{font-size:17px}table{width: 100%;line-height: inherit;text-align: left; border-collapse: collapse;}table, td, th {margin-left:50px;margin-right:50px;},fa { font-family: fontawesome;} @media print{
+                .page-break{display: block;page-break-before: always;}
+            }',
+             // set mPDF properties on the fly
+             'options' => [               
+                'defaultheaderline' => 0,  //for header
+                 'defaultfooterline' => 0,  //for footer
+            ],
+             // call mPDF methods on the fly
+            'methods' => [
+                'SetTitle'=>'Print', 
+                'SetHeader' => $this->renderPartial('header_gambar'),
+              //   // 'SetHeader'=>['AMONG TANI FOUNDATION'],
+              //   'SetFooter'=>$this->renderPartial('footer_gambar'),
+                
+            ]
+        ]);
+        return $pdf->render(); 
+    }
     /**
      * Finds the Pembayaran model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.

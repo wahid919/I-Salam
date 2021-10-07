@@ -20,6 +20,12 @@ $this->title = 'Pendanaan ' . $model->nama_pendanaan;
     <p class='pull-left'>
         <?= Html::a('<span class="glyphicon glyphicon-pencil"></span> ' . 'Edit', ['update', 'id' => $model->id], ['class' => 'btn btn-info']) ?>
         <?= Html::a('<span class="glyphicon glyphicon-plus"></span> ' . 'Tambah Baru', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a("<i class='fa fa-download'></i>" . ' Akad/Ikrar Wakaf', ['cetak'],[
+                                "class"=>"btn btn-primary",
+                                "title"=>"Unduh File",
+                                'target' => '_blank',
+                                "data-confirm" => "Apakah Anda akan mengunduh File ini ?",
+                            ]); ?>
     </p>
     <p class="pull-right">
         <?= Html::a('<span class="glyphicon glyphicon-list"></span> ' . 'Daftar Pendanaan', ['index'], ['class' => 'btn btn-default']) ?>
@@ -83,21 +89,21 @@ $this->title = 'Pendanaan ' . $model->nama_pendanaan;
                         'attribute' => 'foto',
                         'format' => 'html',
                         'value' => function ($model) {
-                            return Html::img(\Yii::$app->request->BaseUrl . '/uploads/pendanaan/foto/' . $model->foto, ['width' => 100]);
+                            return Html::img(\Yii::$app->request->BaseUrl . '/uploads/' . $model->foto, ['width' => 100]);
                         },
                     ],
                     [
                         'attribute' => 'foto_ktp',
                         'format' => 'html',
                         'value' => function ($model) {
-                            return Html::img(\Yii::$app->request->BaseUrl . '/uploads/pendanaan/foto_ktp/' . $model->foto_ktp, ['width' => 100]);
+                            return Html::img(\Yii::$app->request->BaseUrl . '/uploads/' . $model->foto_ktp, ['width' => 100]);
                         },
                     ],
                     [
                         'attribute' => 'foto_kk',
                         'format' => 'html',
                         'value' => function ($model) {
-                            return Html::img(\Yii::$app->request->BaseUrl . '/uploads/pendanaan/foto_kk/' . $model->foto_kk, ['width' => 100]);
+                            return Html::img(\Yii::$app->request->BaseUrl . '/uploads/' . $model->foto_kk, ['width' => 100]);
                         },
                     ],
                     [

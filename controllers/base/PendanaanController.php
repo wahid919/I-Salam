@@ -20,6 +20,7 @@ use yii\filters\AccessControl;
 use dmstr\bootstrap\Tabs;
 use app\models\Action;
 use app\models\User;
+use kartik\mpdf\Pdf;
 use yii\db\Query;
 use yii\web\UploadedFile;
 
@@ -403,14 +404,14 @@ class PendanaanController extends Controller
             $model->foto = Yii::$app->security->generateRandomString() . ".{$extension}";
 
             # the path to save file
-            if (file_exists(Yii::getAlias("@app/web/uploads/pendanaan/foto/")) == false) {
-               mkdir(Yii::getAlias("@app/web/uploads/pendanaan/foto/"), 0777, true);
+            if (file_exists(Yii::getAlias("@app/web/uploads/")) == false) {
+               mkdir(Yii::getAlias("@app/web/uploads/"), 0777, true);
             }
-            $path = Yii::getAlias("@app/web/uploads/pendanaan/foto/") . $model->foto;
+            $path = Yii::getAlias("@app/web/uploads/") . $model->foto;
             if ($oldBukti != NULL) {
 
                $fts->saveAs($path);
-               unlink(Yii::$app->basePath . '/web/uploads/pendanaan/foto/' . $oldBuktiFts);
+               // unlink(Yii::$app->basePath . '/web/uploads/' . $oldBuktiFts);
             } else {
                $fts->saveAs($path);
             }
@@ -436,7 +437,7 @@ class PendanaanController extends Controller
             if ($oldBukti != NULL) {
 
                $fotos->saveAs($path);
-               unlink(Yii::$app->basePath . '/web/uploads/pendanaan/foto_ktp/' . $oldBukti);
+               // unlink(Yii::$app->basePath . '/web/uploads/pendanaan/foto_ktp/' . $oldBukti);
             } else {
                $fotos->saveAs($path);
             }
@@ -458,10 +459,10 @@ class PendanaanController extends Controller
                mkdir(Yii::getAlias("@app/web/uploads/uraian/"), 0777, true);
             }
             $path = Yii::getAlias("@app/web/uploads/uraian/") . $model->file_uraian;
-            if ($oldBukti != NULL) {
+            if ($oldUraian != NULL) {
 
                $uraians->saveAs($path);
-               unlink(Yii::$app->basePath . '/web/uploads/uraian/' . $oldBukti);
+               // unlink(Yii::$app->basePath . '/web/uploads/uraian/' . $oldUraian);
             } else {
                $uraians->saveAs($path);
             }
@@ -524,6 +525,59 @@ class PendanaanController extends Controller
            throw new \yii\web\NotFoundHttpException("{$path} is not found!");
        }
    }
+
+   public function actionCetak() {
+      $formatter = \Yii::$app->formatter;
+      
+      $content = $this->renderPartial('view-print',[
+          
+  ]);
+      
+      // setup kartik\mpdf\Pdf component
+      $pdf = new Pdf([
+          // set to use core fonts only
+          'mode' => Pdf::MODE_CORE, 
+          //Name file
+          'filename' => 'Akad Wakaf'."pdf",
+          // LEGAL paper format
+          'format' => Pdf::FORMAT_LEGAL, 
+          // portrait orientation
+          'orientation' => Pdf::ORIENT_PORTRAIT, 
+          // stream to browser inline
+          'destination' => Pdf::DEST_BROWSER, 
+          // your html content input
+          'content' => $content,  
+          'marginHeader' => 0,
+          'marginFooter' => 1,
+          'marginTop' => 1,
+          'marginBottom' => 5,
+          'marginLeft' => 0,
+          'marginRight' => 0,
+          // format content from your own css file if needed or use the
+          // enhanced bootstrap css built by Krajee for mPDF formatting 
+          'cssFile' => '@vendor/kartik-v/yii2-mpdf/src/assets/kv-mpdf-bootstrap.min.css',
+          // any css to be embedded if required
+          // 'cssInline' => '.kv-heading-1{font-size:25px}', 
+          'cssInline' => 'body { font-family: irannastaliq; font-size: 17px; }.page-break {display: none;};
+          .kv-heading-1{font-size:17px}table{width: 100%;line-height: inherit;text-align: left; border-collapse: collapse;}table, td, th {margin-left:50px;margin-right:50px;},fa { font-family: fontawesome;} @media print{
+              .page-break{display: block;page-break-before: always;}
+          }',
+           // set mPDF properties on the fly
+           'options' => [               
+              'defaultheaderline' => 0,  //for header
+               'defaultfooterline' => 0,  //for footer
+          ],
+           // call mPDF methods on the fly
+          'methods' => [
+              'SetTitle'=>'Print', 
+              'SetHeader' => $this->renderPartial('header_gambar'),
+            //   // 'SetHeader'=>['AMONG TANI FOUNDATION'],
+            //   'SetFooter'=>$this->renderPartial('footer_gambar'),
+              
+          ]
+      ]);
+      return $pdf->render(); 
+  }
    
 
 
@@ -603,7 +657,7 @@ class PendanaanController extends Controller
         $objPHPExcel->getActiveSheet()->getColumnDimension('G')->setWidth(30);
         $objPHPExcel->getActiveSheet()->getColumnDimension('H')->setWidth(30);
 
-        $objPHPExcel->getActiveSheet()->setTitle('Laporan Wakaf '.$mdl->nama_pendanaan)
+        $objPHPExcel->getActiveSheet()->setTitle('Laporan Wakaf '.$mdl->id)
             ->setCellValue('A1', 'NO')
             ->setCellValue('B1', 'Kode Transaksi')
             ->setCellValue('C1', 'Wakif')
@@ -660,7 +714,7 @@ class PendanaanController extends Controller
 
         
 
-        $filename = "Laporan Wakaf " . $mdl->nama_pendanaan . ".xls";
+        $filename = "Laporan Wakaf " . $mdl->id . ".xls";
         ob_end_clean();
         header('Content-Type: application/vnd.ms-excel');
         header('Content-Disposition: attachment;filename=' . $filename . ' ');

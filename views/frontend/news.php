@@ -81,148 +81,50 @@
     =========================== -->
     <section id="services" class="services pb-90">
       <div class="container">
-      <div class="row">
-          <h2 class="heading__title color-black">Kategori Program</h2>
-          <div class="col-sm-12 col-md-12 col-lg-6 offset-lg-3">
-            <div class="heading text-left mb-40">
-              <!-- <span class="heading__subtitle">Our Features</span> -->
-              <!-- <h2 class="heading__title color-black">PROGRAM KAMI</h2> -->
-              <!-- <p class="heading__desc">We continue to pursue that same vision in today's complex, uncertain world,
-                working every day to earn our customers’ trust!</p> -->
-            </div><!-- /.heading -->
+        <div class="row heading heading-2 mb-40">
+          <div class="col-sm-12 col-md-12 col-lg-12">
+            <!-- <span class="heading__subtitle" style="color:orange;">Tentang Kami</span> -->
+          </div><!-- /.col-lg-12 -->
+          <div class="col-sm-12 col-md-12 col-lg-6">
+            <h2 class="heading__title" style="color:orange;">Visi</h2>
+            <!-- <br> -->
+            <!-- <img src="<?= $icon ?>" class="logo" alt="logo" style="width:35%;"> -->
+          </div><!-- /.col-lg-5 -->
+          <div class="col-sm-12 col-md-12 col-lg-6 ">
+            <p class="heading__desc"><?= $setting->visi ?></p>
           </div><!-- /.col-lg-6 -->
         </div><!-- /.row -->
-        <div class="row">
+       
+        
+      </div><!-- /.container -->
+    </section><!-- /.Services -->
+    <section id="services" class="services pb-90">
+      <div class="container">
+        <div class="row heading heading-2 mb-40">
           <div class="col-sm-12 col-md-12 col-lg-12">
-            <div class="carousel owl-carousel carousel-arrows" data-slide="4" data-slide-md="2" data-slide-sm="1"
-              data-autoplay="true" data-nav="true" data-dots="false" data-space="20" data-loop="true" data-speed="800">
-              <!-- fancybox item #1 -->
-              <?php foreach($kategori_pendanaans as $kategori_pendanaan){ ?>
-              <div class="fancybox-item">
-                <div class="fancybox__icon">
-
-                </div><!-- /.fancybox-icon -->
-                <div class="fancybox__content">
-                  <h4 class="fancybox__title" style=" border-style: solid;border-width: thin;"><?= $kategori_pendanaan->name ?></h4>
-                  <!-- <p class="fancybox__desc">International supply chains involves challenging regulations.</p> -->
-                </div><!-- /.fancybox-content -->
-              </div><!-- /.fancybox-item -->
-              <?php } ?>
-            </div><!-- /.carousel -->
+            <!-- <span class="heading__subtitle" style="color:orange;">Tentang Kami</span> -->
           </div><!-- /.col-lg-12 -->
+          <div class="col-sm-12 col-md-12 col-lg-6">
+            <h2 class="heading__title" style="color:orange;">MISI</h2>
+            <!-- <br> -->
+            <!-- <img src="<?= $icon ?>" class="logo" alt="logo" style="width:35%;"> -->
+          </div><!-- /.col-lg-5 -->
+          <div class="col-sm-12 col-md-12 col-lg-6 ">
+            <p class="heading__desc"><?= $setting->misi ?></p>
+          </div><!-- /.col-lg-6 -->
         </div><!-- /.row -->
+       
         
       </div><!-- /.container -->
     </section><!-- /.Services -->
     <!-- =========================== 
       fancybox Carousel
     ============================= -->
-    <style>
-table {
-  width: 100%;
-}
-
-</style>
-    <section id="projectsCarousel" class="projects-carousel">
-      <div class="container">
-          <div class="row">
-              <div class="col-sm-12 col-md-12 col-lg-6 offset-lg-3">
-                  <div class="heading text-center mb-50">
-                <h4>Program Berlangsung</h4>
-              <p class="heading__desc">Program Kami Yang Sedang Berlangsung:</p>
-            </div><!-- /.heading -->
-          </div><!-- /.col-lg-6 -->
-        </div><!-- /.row -->
-        <div class="row">
-          <div class="col-sm-12 col-md-12 col-lg-12">
-            <div class="carousel owl-carousel carousel-dots" data-slide="3" data-slide-md="2" data-slide-sm="1"
-              data-autoplay="true" data-nav="false" data-dots="true" data-space="30" data-loop="true" data-speed="800">
-              <?php foreach($pendanaans as $pendanaan){
-                  $nominal = \app\models\Pembayaran::find()->where(['pendanaan_id'=>$pendanaan->id,'status_id'=>6])->sum('nominal');
-                 
-                        $datetime1 =  new Datetime($pendanaan->pendanaan_berakhir);
-                        $datetime2 =  new Datetime(date("Y-m-d H:i:s"));
-                        $interval = $datetime1->diff($datetime2)->days;
-
-                
-              ?>
-              <div class="project-item">
-                <div class="project__img">
-                  <img src="<?= \Yii::$app->request->baseUrl . "/uploads/poster/" . $pendanaan->poster; ?>" alt="<?= $pendanaan->nama_pendanaan ?>">
-                  <!-- <div class="project__cat">
-                    <a href="#"><?= $pendanaan->nama_pendanaan ?></a>
-                  </div> -->
-                  <!-- /.project-cat -->
-                </div><!-- /.project-img -->
-                <div class="project__content">
-                  <h4 class="project__title"><a href="#"><?= $pendanaan->nama_pendanaan ?></a></h4>
-                  <table>
-                      <tr>
-                          <th>Sudah Terkumpul</th>
-                          <th>Durasi</th>
-                      </tr>
-                      <tr>
-                          <td><?=\app\components\Angka::toReadableHarga($nominal,false)  ?></td>
-                          <td><?= $interval ?> Hari</td>
-                      </tr>
-                  </table>
-                  <!-- <p class="project__desc">We understand that data is the greatest asset when it comes to
-                    analyzing and optimizing your supply chain performance.</p> -->
-                   
-                </div><!-- /.project-content -->
-                <div class="row">
-                <div class="col-sm-12 col-md-12 col-lg-4">
-                            <a href="#" class="btn btn__primary" style="background-color:orange; border:orange;">Install Aplikasi For Donate</a>
-                        </div>
-                        <div class="col-sm-12 col-md-12 col-lg-2"></div>
-                        <div class="col-sm-12 col-md-12 col-lg-4">
-                        <a href="../unduh-file-uraian/<?php echo $pendanaan->id ?>" class="btn btn__primary" style="background-color:orange; border:orange;">Download prospektur</a>
-                        </div>
-                    </div>
-              </div><!-- /.project-item -->        
-              <?php } ?>     
-            </div><!-- /.carousel -->
-          </div><!-- /.col-lg-12 -->
-        </div><!-- /.row -->
-      </div><!-- /.container -->
-    </section><!-- /.projects-carousel -->
-    <!-- ========================
-        Request Quote Tabs
-    =========================== -->
-
-    <!-- ========================= 
-            Testimonial #1
-    =========================  -->
-
-    <!-- =====================
-       Clients 1
-    ======================== -->
-    <section id="clients1" class="clients clients-1 border-top">
-      <div class="container">
-        <div class="row">
-          <div class="col-sm-12 col-md-12 col-lg-12">
-           
-          </div><!-- /.col-lg-12 -->
-        </div><!-- /.row -->
-      </div><!-- /.container -->
-    </section><!-- /.clients 1 -->
-
-    <!-- ======================
-           banner 3
-      ========================= -->
-   
-    <!-- ======================
-      Blog Grid
-    ========================= -->
-
-    <!-- ========================= 
-            contact 1
-      =========================  -->
     
 
     <!-- ========================
-            Footer
-    ========================== -->
+        Request Quote Tabs
+    =========================== -->
     <?php
 
 use yii\bootstrap\ActiveForm;
@@ -233,6 +135,10 @@ use yii\bootstrap\Html;
         <div class="row">
           <div class="col-sm-12 col-md-12 col-lg-12">
             <div class="request__form">
+              <nav class="nav nav-tabs">
+                <!-- <a class="nav__link active" data-toggle="tab" href="#quote">Request A Quote</a>
+                <a class="nav__link" data-toggle="tab" href="#track">Track & Trace</a> -->
+              </nav>
               <div class="tab-content">
                 <div class="tab-pane fade show active" id="quote">
                   <div class="request-quote-panel">
@@ -336,12 +242,118 @@ use yii\bootstrap\Html;
                     </div><!-- /.widget-download -->
                   </div><!-- /.request-quote-panel-->
                 </div><!-- /.tab -->
+                <div class="tab-pane fade" id="track">
+                  <div class="request-quote-panel">
+                    <div class="request__form-body">
+                      <div class="row">
+                        <div class="col-sm-12 col-md-12 col-lg-12">
+                          <div class="form-group">
+                            <label>Shipment Type</label>
+                            <div class="form-group form-group-select">
+                              <select class="form-control">
+                                <option>Packaging</option>
+                                <option>Packaging 1</option>
+                                <option>Packaging 2</option>
+                              </select>
+                            </div>
+                          </div>
+                        </div><!-- /.col-lg-12 -->
+                        <div class="col-sm-12 col-md-12 col-lg-12">
+                          <div class="form-group">
+                            <label>Tracking Number</label>
+                            <div class="form-group">
+                              <textarea class="form-control"
+                                placeholder="You can enter up to a maximum of 10 airway bill numbers for tracking."></textarea>
+                            </div>
+                          </div>
+                        </div><!-- /.col-lg-12 -->
+                        <div class="col-sm-12 col-md-12 col-lg-12 d-flex flex-wrap">
+                          <div class="form-group input-radio">
+                            <label class="label-radio">Fragile
+                              <input type="radio" name="radioGroup2" checked="">
+                              <span class="radio-indicator"></span>
+                            </label>
+                          </div>
+                          <div class="form-group input-radio">
+                            <label class="label-radio">Express Delivery
+                              <input type="radio" name="radioGroup2">
+                              <span class="radio-indicator"></span>
+                            </label>
+                          </div>
+                          <div class="form-group input-radio">
+                            <label class="label-radio">Insurance
+                              <input type="radio" name="radioGroup2">
+                              <span class="radio-indicator"></span>
+                            </label>
+                          </div>
+                          <div class="form-group input-radio">
+                            <label class="label-radio">Packaging
+                              <input type="radio" name="radioGroup2">
+                              <span class="radio-indicator"></span>
+                            </label>
+                          </div>
+                        </div><!-- /.col-lg-12 -->
+                        <div class="col-sm-12 col-md-12 col-lg-12">
+                          <button class="btn btn__secondary btn__block">Track & Trace</button>
+                        </div><!-- /.col-lg-12 -->
+                      </div>
+
+
+                    </div><!-- /.request__form-body -->
+                    <div class="widget widget-download bg-theme">
+                      <div class="widget__content">
+                        <h5>Industry<br>Solutions!</h5>
+                        <p>Our worldwide presence ensures the timeliness, cost efficiency and compliance adherence
+                          required to ensure your production timelines are met.</p>
+                        <a href="#" class="btn btn__secondary btn__hover2 btn__block">
+                          <span>Download 2019 Brochure</span><i class="icon-arrow-right"></i>
+                        </a>
+                      </div><!-- /.widget__content -->
+                    </div><!-- /.widget-download -->
+                  </div><!-- /.request-quote-panel-->
+                </div><!-- /.tab -->
               </div><!-- /.tab-content -->
             </div><!-- /.request-form -->
           </div><!-- /.col-lg-12 -->
         </div><!-- /.row -->
       </div><!-- /.container -->
     </section><!-- /.Request Quote Tabs -->
+
+    <!-- ========================= 
+            Testimonial #1
+    =========================  -->
+    
+
+    <!-- =====================
+       Clients 1
+    ======================== -->
+    <section id="clients1" class="clients clients-1 border-top">
+      <div class="container">
+        <div class="row">
+          <div class="col-sm-12 col-md-12 col-lg-12">
+           
+          </div><!-- /.col-lg-12 -->
+        </div><!-- /.row -->
+      </div><!-- /.container -->
+    </section><!-- /.clients 1 -->
+
+    <!-- ======================
+           banner 3
+      ========================= -->
+   
+    <!-- ======================
+      Blog Grid
+    ========================= -->
+
+    <!-- ========================= 
+            contact 1
+      =========================  -->
+    
+
+    <!-- ========================
+            Footer
+    ========================== -->
+   
     <?= $this->render('component/footer') ?>
 
     <div class="module__search-container">
