@@ -97,7 +97,7 @@
             <div class="col-sm-6 col-md-6 col-lg-4">
               <div class="service-item">
                 <div class="service__icon"><a class="navbar-brand" href="#">
-                    <img src="<?= \Yii::$app->request->baseUrl . "/uploads/organisasi/" . $organisasi->foto; ?>" class="logo-light" alt="foto">
+                    <img src="<?= \Yii::$app->request->baseUrl . "/uploads/organisasi/" . $organisasi->foto; ?>" class="logo-light" alt="foto" width="50%;">
 
                   </a></div>
                 <div class="service__content">

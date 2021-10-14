@@ -44,8 +44,10 @@ use kartik\datetime\DateTimePicker;
                     'options' => ['tag' => false]
                 ])->textInput(['maxlength' => true]) ?>
             </div>
-            <div class="col-lg-12">
-                <?= $form->field($model, 'uraian', [
+        </div>
+        <div class="row">
+            <div class="col-lg-6">
+            <?= $form->field($model, 'uraian', [
                     'template' => '
                     {label}
                     {input}
@@ -59,6 +61,94 @@ use kartik\datetime\DateTimePicker;
                     ],
                     'options' => ['tag' => false]
                 ])->textarea(['rows' => 6]) ?>
+            </div>
+            <div class="col-lg-6">
+            <?= $form->field($model, 'deskripsi', [
+                    'template' => '
+                    {label}
+                    {input}
+                    {error}
+                    ',
+                    'inputOptions' => [
+                        'class' => 'form-control'
+                    ],
+                    'labelOptions' => [
+                        'class' => 'control-label'
+                    ],
+                    'options' => ['tag' => false]
+                ])->textarea(['rows' => 6]) ?>
+            </div>
+        </div>
+            <div class="row">
+            <div class="col-lg-3">
+                <?= $form->field($model, 'bank_id', [
+                    'template' => '
+                    {label}
+                    {input}
+                    {error}
+                    ',
+                    'inputOptions' => [
+                        'class' => 'form-control'
+                    ],
+                    'labelOptions' => [
+                        'class' => 'control-label'
+                    ],
+                    'options' => ['tag' => false]
+                ])->dropDownList(
+                    \yii\helpers\ArrayHelper::map(app\models\Bank::find()->all(), 'id', 'name'),
+                    [
+                        'prompt' => 'Select',
+                        'disabled' => (isset($relAttributes) && isset($relAttributes['bank_id'])),
+                    ]
+                ); ?>
+            </div>
+            <div class="col-lg-3">
+                <?= $form->field($model, 'nomor_rekening', [
+                    'template' => '
+                    {label}
+                    {input}
+                    {error}
+                    ',
+                    'inputOptions' => [
+                        'class' => 'form-control'
+                    ],
+                    'labelOptions' => [
+                        'class' => 'control-label'
+                    ],
+                    'options' => ['tag' => false]
+                ])->textInput(['maxlength' => true,'type'=>'number']) ?>
+            </div>
+            <div class="col-lg-3">
+                <?= $form->field($model, 'nama_nasabah', [
+                    'template' => '
+                    {label}
+                    {input}
+                    {error}
+                    ',
+                    'inputOptions' => [
+                        'class' => 'form-control'
+                    ],
+                    'labelOptions' => [
+                        'class' => 'control-label'
+                    ],
+                    'options' => ['tag' => false]
+                ])->textInput(['maxlength' => true]) ?>
+            </div>
+            <div class="col-lg-3">
+                <?= $form->field($model, 'nama_perusahaan', [
+                    'template' => '
+                    {label}
+                    {input}
+                    {error}
+                    ',
+                    'inputOptions' => [
+                        'class' => 'form-control'
+                    ],
+                    'labelOptions' => [
+                        'class' => 'control-label'
+                    ],
+                    'options' => ['tag' => false]
+                ])->textInput(['maxlength' => true]) ?>
             </div>
         </div>
         <div class="row">

@@ -78,6 +78,81 @@
     =========================== -->
     <section id="services" class="services pb-90">
       <div class="container">
+      <div class="text-center mt-4 mb-4">
+          <h3>Kategori Program</h3>
+          <ul style="display: inline-block;margin-left: auto;margin-right: auto;">
+            <ul class="list-group list-group-horizontal border-0 text-dark text-center">
+              <li class="list-group-item"><a href="<?=\Yii::$app->request->baseUrl . "/frontend/program/"?>"> Semua </a></li>
+              <?php foreach ($kategori_pendanaans as $kategori_pendanaan) {  ?>
+                <li class="list-group-item"><a href="<?=\Yii::$app->request->baseUrl . "/frontend/program?kategori=".$kategori_pendanaan->id?>"><?= $kategori_pendanaan->name ?> </a></li>
+              <?php } ?>
+            </ul>
+          </ul>
+        </div>
+
+        <div class="row">
+          <?php foreach ($pendanaans as $pendanaan) { 
+            
+            $nominal = \app\models\Pembayaran::find()->where(['pendanaan_id' => $pendanaan->id, 'status_id' => 6])->sum('nominal');
+            $datetime1 =  new Datetime($pendanaan->pendanaan_berakhir);
+            $datetime2 =  new Datetime(date("Y-m-d H:i:s"));
+            $interval = $datetime1->diff($datetime2)->days;
+            ?>
+            <div class="col-lg-4 col-md-4 mt-3">
+              <!-- <a href="<?= \Yii::$app->request->baseUrl . "/frontend/detail-berita?id=" . $berita->slug ?>"> -->
+                <div class="card">
+                  <!-- <img src="" class="card-img-top" alt="..."> -->
+                  <div style="background-image: url(<?= \Yii::$app->request->baseUrl . "/uploads/" . $pendanaan->poster ?>);background-size: cover;height: 200px;">
+
+                  </div>
+                  <div class="card-body">
+                    <h6 class="card-title"><?= $pendanaan->nama_pendanaan ?></h6>
+                    <div class="row">
+                      <div class="col-lg-6 col-md-6 col-6 text-left">
+                        Sudah Terkumpul
+                      </div>
+                      <div class="col-lg-6 col-md-6 col-6 text-right">
+                        Durasi
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-lg-6 col-md-6 col-6 text-left">
+                      <?= \app\components\Angka::toReadableHarga($nominal, false)  ?>
+                      </div>
+                      <div class="col-lg-6 col-md-6 col-6 text-right">
+                      <?= $interval;?> Hari
+                      </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                    <div class="col-sm-12 col-md-12 col-lg-12">
+                            <a href="#" class="btn btn__primary" style="background-color:orange; width:100%;height:100%; border:orange;">Install Aplikasi Untuk Donasi</a>
+                        </div>
+                    
+                    </div>
+                <hr>
+                    <div class="row">
+                    
+                        <div class="col-sm-12 col-md-12 col-lg-12">
+                        <a href="../unduh-file-uraian/<?php echo $pendanaan->id ?>" class="btn btn__primary" style="background-color:orange;width:100%;height:100%;border:orange;">Download prospektur</a>
+                        </div>
+                    </div>
+                  </div>
+                </div>
+              </a>
+            </div>
+          <?php } 
+          ?>
+
+        </div>
+        <hr>
+        <div class='d-flex justify-content-center'>
+        <?php echo \yii\widgets\LinkPager::widget([
+            'pagination' => $pagination,
+        ]); ?>
+        </div>
+        
+<?php /* 
         <div class="row">
           <h2 class="heading__title color-black">Kategori Program</h2>
           <div class="col-sm-12 col-md-12 col-lg-6 offset-lg-3">
@@ -107,7 +182,7 @@
             </div><!-- /.carousel -->
           </div><!-- /.col-lg-12 -->
         </div><!-- /.row -->
-
+*/ ?>
       </div><!-- /.container -->
     </section><!-- /.Services -->
     <!-- =========================== 
@@ -118,6 +193,7 @@
         width: 100%;
       }
     </style>
+    <?php /*
     <section id="projectsCarousel" class="projects-carousel">
       <div class="container">
         <div class="row">
@@ -165,7 +241,7 @@
                    
                 </div><!-- /.project-content -->
                 <div class="row">
-                <div class="col-sm-12 col-md-12 col-lg-4">
+                    <div class="col-sm-12 col-md-12 col-lg-4">
                             <a href="#" class="btn btn__primary" style="background-color:orange; border:orange;">Install Aplikasi For Donate</a>
                         </div>
                         <div class="col-sm-12 col-md-12 col-lg-2"></div>
@@ -181,6 +257,7 @@
         </div><!-- /.row -->
       </div><!-- /.container -->
     </section><!-- /.projects-carousel -->
+    */ ?>
     <!-- ========================
         Request Quote Tabs
     =========================== -->

@@ -20,6 +20,8 @@ use app\models\Pendanaan;
 use app\models\User;
 use app\models\KategoriPendanaan;
 use app\models\Testimonials;
+use yii\data\ActiveDataProvider;
+use yii\data\Pagination;
 
 /**
  * This is the class for controller "BeritaController".
@@ -213,7 +215,25 @@ class FrontendController extends Controller
         $icon = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->logo;
         $bg_login = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->bg_login;
         $bg = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->bg_pin;
-        $pendanaans = Pendanaan::find()->where(['status_id'=>2])->all();
+
+
+        if(isset($_GET['kategori'])){
+            $kategori = $_GET['kategori'];
+
+            $query = Pendanaan::find()->where(['status_id' => 2,'kategori_pendanaan_id'=>$kategori]);
+            $count = $query->count();
+            $pagination = new Pagination(['totalCount' => $count, 'pageSize'=>9]);
+            $pendanaans = $query->offset($pagination->offset)
+                ->limit($pagination->limit)
+                ->all();
+        }else{
+            $query = Pendanaan::find()->where(['status_id' => 2]);
+            $count = $query->count();
+            $pagination = new Pagination(['totalCount' => $count, 'pageSize'=>1]);          
+            $pendanaans = $query->offset($pagination->offset)
+                ->limit($pagination->limit)
+                ->all();
+        }
         $organisasis = Organisasi::find()->where(['flag'=>1])->all();
         $kategori_pendanaans = KategoriPendanaan::find()->all();
         $count_program = Pendanaan::find()->count();
@@ -242,7 +262,8 @@ class FrontendController extends Controller
             'icon' => $icon,
             'bg_login' => $bg_login,
             'bg' => $bg,
-            'model' => $model
+            'model' => $model,
+            'pagination' => $pagination
         ]);
     }
     public function actionUnduhFileUraian($id)
@@ -250,7 +271,7 @@ class FrontendController extends Controller
    $model = Pendanaan::findOne(['id'=>$id]);
    $file = $model->file_uraian;
    // $model->tanggal_received=date('Y-m-d H:i:s');
-   $path = Yii::getAlias("@app/web/uploads/uraian/") . $file;
+   $path = Yii::getAlias("@app/web/uploads/") . $file;
    $arr = explode(".", $file);
    $extension = end($arr);
    $nama_file= "File Uraian  ".$model->nama_pendanaan.".".$extension;
