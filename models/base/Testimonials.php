@@ -35,7 +35,7 @@ abstract class Testimonials extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['nama', 'jabatan', 'isi', 'gambar'], 'required'],
+            [['nama', 'jabatan', 'isi'], 'required'],
             [['isi'], 'string'],
             [['nama', 'jabatan', 'gambar'], 'string', 'max' => 255]
         ];
@@ -49,7 +49,7 @@ abstract class Testimonials extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'nama' => 'Nama',
-            'jabatan' => 'Jabatan',
+            'jabatan' => 'Email',
             'isi' => 'Isi',
             'gambar' => 'Gambar',
         ];

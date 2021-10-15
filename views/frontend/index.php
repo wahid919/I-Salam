@@ -104,9 +104,9 @@
                   <h4 class="service__title"><?= $organisasi->nama ?></h4>
                   <h6 class="service__title"><?= $organisasi->jabatan ?></h6>
                   <p class="service__desc"><?= $organisasi->quotes ?></p>
-                  <a href="#" class="btn btn__white">
-                    <!-- <span>Read More</span><i class="icon-arrow-right"></i> -->
-                  </a>
+                  <!-- <a href="#" class="btn btn__white">
+                    <span>Read More</span><i class="icon-arrow-right"></i>
+                  </a> -->
                 </div>
               </div><!-- /.service-item -->
             </div><!-- /.col-lg-4 -->

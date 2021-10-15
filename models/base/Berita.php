@@ -73,8 +73,8 @@ abstract class Berita extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'kategori_berita_id' => 'Kategori Berita ID',
-            'user_id' => 'User ID',
+            'kategori_berita_id' => 'Kategori Berita',
+            'user_id' => 'User',
             'judul' => 'Judul',
             'gambar' => 'Gambar',
             'isi' => 'Isi',

@@ -45,7 +45,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         'attribute' => 'kategori_berita_id',
                         'value' => function ($model) {
                             if ($rel = $model->kategoriBerita) {
-                                return Html::a($rel->id, ['kategori-berita/view', 'id' => $rel->id,], ['data-pjax' => 0]);
+                                return Html::a($rel->nama, ['kategori-berita/view', 'id' => $rel->nama,], ['data-pjax' => 0]);
                             } else {
                                 return '';
                             }
