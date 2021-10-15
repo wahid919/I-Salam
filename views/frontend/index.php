@@ -394,12 +394,14 @@
       $lat = $setting->latitude;
       $lon = $setting->longitude;
 
-      echo ("addMarker($lat, $lon, '<b>$nama</b>');\n");
+      echo ("addMarker('<b>$nama</b>');\n");
 
       ?>
 
       // Proses membuat marker 
-      function addMarker(lat, lng, info) {
+      function addMarker(info) {
+        var lat = <?php echo $lat ?>;
+        var lng = <?php echo $lon ?>;
         var lokasi = new google.maps.LatLng(lat, lng);
         bounds.extend(lokasi);
         var marker = new google.maps.Marker({
