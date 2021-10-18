@@ -13,7 +13,17 @@ use dmstr\bootstrap\Tabs;
 */
 
 $this->title = 'Setting ' . $model->nama_web;
+\app\components\MapAsset::register($this);
 ?>
+<style>
+    #map_canvas {
+        width: 100%;
+        height: 70vh;
+        margin-bottom: 1rem;
+        border-radius: 20px;
+        box-shadow: 0 8px 4px 5px #eee;
+    }
+</style>
 <div class="giiant-crud setting-view">
 
     <!-- menu buttons -->
@@ -23,7 +33,7 @@ $this->title = 'Setting ' . $model->nama_web;
     </p>
 
     <div class="clearfix"></div>
-
+    <div id="map_canvas"></div>
     <!-- flash message -->
     <?php if (\Yii::$app->session->getFlash('deleteError') !== null) : ?>
         <span class="alert alert-info alert-dismissible" role="alert">
@@ -121,3 +131,41 @@ $this->title = 'Setting ' . $model->nama_web;
         </div>
     </div>
 </div>
+<?php
+
+// if($model->coordinate!=null){
+//     $coordinate = json_decode($model->coordinate);
+//     $model->latitude = $coordinate->latitude;
+//     $model->longitude = $coordinate->longitude;
+// }
+$lat = ($model->latitude) ? $model->latitude : 0;
+$long = ($model->longitude) ? $model->longitude : 0;
+
+$js = <<<JS
+$(function() {
+    let lat = $lat,
+    lng = $long,
+    latlng = new google.maps.LatLng(lat, lng);
+    let mapOptions = {
+        center: new google.maps.LatLng(lat, lng),
+        zoom: 10,
+        mapTypeId: google.maps.MapTypeId.ROADMAP,
+        panControl: true,
+        panControlOptions: {
+            position: google.maps.ControlPosition.TOP_RIGHT
+        },
+        zoomControl: true,
+        zoomControlOptions: {
+            style: google.maps.ZoomControlStyle.LARGE,
+            position: google.maps.ControlPosition.TOP_left
+        }
+    },
+    map = new google.maps.Map(document.getElementById('map_canvas'), mapOptions),
+    marker = new google.maps.Marker({
+        position: latlng,
+        map: map,
+    });
+});
+JS;
+
+$this->registerJs($js);
