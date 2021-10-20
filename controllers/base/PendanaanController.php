@@ -95,6 +95,19 @@ class PendanaanController extends Controller
          if ($model->load($_POST)) {
             $model->status_id = 1;
             $model->user_id = \Yii::$app->user->identity->id;
+         
+         $nom = str_replace(",","",$model->nominal);
+         // var_dump($nom);die;
+         $model->nominal = $nom;
+         if($model->status_lembaran != 0){
+            $nom_lembaran = str_replace(",","",$model->nominal_lembaran);
+            $model->nominal_lembaran = $nom_lembaran;
+            $jml = (int)$nom / (int)$nom_lembaran;
+            $model->jumlah_lembaran = round($jml);
+         }else{
+            $model->nominal_lembaran = 0;
+            $model->jumlah_lembaran = 0;
+         }
             $fotos = UploadedFile::getInstance($model, 'foto');
             if ($fotos != NULL) {
                # store the source fotos name
@@ -222,13 +235,15 @@ class PendanaanController extends Controller
       $bg = $setting->bg_pin;
 
 
-      if (yii::$app->request->post('display') == $pin->pin) {
-         return $this->render('create', ['model' => $model]);
-      } else {
-         Yii::$app->session->setFlash('Pin Salah');
-      }
-      $this->layout = 'front';
-      return $this->render('security', ['bg' => $bg,]);
+      // if (yii::$app->request->post('display') == $pin->pin) {
+      //    return $this->render('create', ['model' => $model]);
+      // } else {
+      //    Yii::$app->session->setFlash('Pin Salah');
+      // }
+      // $this->layout = 'front';
+      // return $this->render('security', ['bg' => $bg,]);
+
+      return $this->render('create', ['model' => $model]);
    }
 
    public function actionApprovePendanaan($id)
@@ -393,6 +408,18 @@ class PendanaanController extends Controller
       $oldPoster = $model->poster;
       $oldBuktiKk = $model->foto_kk;
       if ($model->load($_POST)) {
+         $nom = str_replace(",","",$model->nominal);
+         // var_dump($nom);die;
+         $model->nominal = $nom;
+         if($model->status_lembaran != 0){
+            $nom_lembaran = str_replace(",","",$model->nominal_lembaran);
+            $model->nominal_lembaran = $nom_lembaran;
+            $jml = (int)$nom / (int)$nom_lembaran;
+            $model->jumlah_lembaran = round($jml);
+         }else{
+            $model->nominal_lembaran = "0";
+            $model->jumlah_lembaran = "0";
+         }
          $fts = UploadedFile::getInstance($model, 'foto');
          if ($fts != NULL) {
             # store the source file name

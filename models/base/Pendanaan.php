@@ -52,6 +52,41 @@ abstract class Pendanaan extends \yii\db\ActiveRecord
             };
         }
 
+        if (isset($parent['nominal'])) {
+            unset($parent['nominal']);
+            // $parent['_user_id'] = function ($model) {
+            //     return $model->user_id;
+            // };
+            $parent['nominal'] = function ($model) {
+                $nom = $model->nominal;
+                return (int)$nom;
+            };
+        }
+        if (isset($parent['jumlah_lembaran'])) {
+            unset($parent['jumlah_lembaran']);
+            // $parent['_user_id'] = function ($model) {
+            //     return $model->user_id;
+            // };
+            $parent['jumlah_lembaran'] = function ($model) {
+                $nom = $model->jumlah_lembaran;
+                return $nom." Lembar";
+            };
+        }
+
+        if (isset($parent['sisa_lembaran'])) {
+            unset($parent['sisa_lembaran']);
+            // $parent['_user_id'] = function ($model) {
+            //     return $model->user_id;
+            // };
+            $parent['sisa_lembaran'] = function ($model) {
+                $byr = \app\models\Pembayaran::find()
+                ->where(['pendanaan_id' => $model->id])                
+                ->sum('jumlah_lembaran');
+                $nom = (int)$model->jumlah_lembaran - (int)$byr;
+                return $nom." Lembar";
+            };
+        }
+
         if (isset($parent['kategori_pendanaan_id'])) {
             unset($parent['kategori_pendanaan_id']);
             // $parent['_kategori_pendanaan_id'] = function ($model) {
@@ -143,10 +178,10 @@ abstract class Pendanaan extends \yii\db\ActiveRecord
     {
         return [
             [['uraian','deskripsi'], 'string'],
-            [['nominal', 'user_id', 'kategori_pendanaan_id', 'status_id','bank_id','noms','nomor_rekening'], 'integer'],
+            [['user_id', 'kategori_pendanaan_id', 'status_id','bank_id','noms','nomor_rekening','status_lembaran','jumlah_lembaran'], 'integer'],
             [['pendanaan_berakhir'], 'safe'],
             [['user_id', 'kategori_pendanaan_id', 'status_id'], 'required'],
-            [['nama_pendanaan', 'foto','nama_nasabah','nama_perusahaan','foto_ktp','foto_kk','file_uraian','poster'], 'string', 'max' => 255],
+            [['nama_pendanaan', 'foto','nama_nasabah','nama_perusahaan','foto_ktp','foto_kk','file_uraian','poster','nominal','nominal_lembaran'], 'string', 'max' => 255],
             [['kategori_pendanaan_id'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\KategoriPendanaan::className(), 'targetAttribute' => ['kategori_pendanaan_id' => 'id']],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\User::className(), 'targetAttribute' => ['user_id' => 'id']],
             [['status_id'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\Status::className(), 'targetAttribute' => ['status_id' => 'id']],
@@ -166,6 +201,9 @@ abstract class Pendanaan extends \yii\db\ActiveRecord
             'uraian' => 'Uraian',
             'nominal' => 'Nominal',
             'pendanaan_berakhir' => 'Pendanaan Berakhir',
+            'status_lembaran' => 'Status Lembaran(Aktif/Tidak)',
+            'nominal_lembaran' => 'Nominal Lembaran',
+            'jumlah_lembaran' => 'Jumlah Lembaran',
             'bank_id' => 'Bank',
             'nama_nasabah' => 'Nama Nasabah',
             'nama_perusahaan' => 'Nama Perusahaan',

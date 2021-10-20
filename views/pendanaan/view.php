@@ -6,7 +6,7 @@ use yii\grid\GridView;
 use yii\widgets\DetailView;
 use yii\widgets\Pjax;
 use dmstr\bootstrap\Tabs;
-
+// var_dump("Tes");die;
 /**
  * @var yii\web\View $this
  * @var app\models\Pendanaan $model
@@ -63,6 +63,25 @@ $this->title = 'Pendanaan ' . $model->nama_pendanaan;
                         },
                     ],
                     [
+                        'attribute' => 'nominal_lembaran',
+                        'label' => 'Nominal per Lembar',
+                        'format' => 'raw',
+                        'filter' => false,
+                        'value' => function ($model) {
+
+                            return \app\components\Angka::toReadableHarga($model->nominal_lembaran);
+                        },
+                    ],
+                    [
+                        'attribute' => 'jumlah_lembaran',
+                        'format' => 'raw',
+                        'filter' => false,
+                        'value' => function ($model) {
+
+                            return $model->jumlah_lembaran." Lembar";
+                        },
+                    ],
+                    [
                         'attribute' => 'bank_id',
                         'value' => function ($model) {
                             return $model->bank->name;
@@ -93,6 +112,33 @@ $this->title = 'Pendanaan ' . $model->nama_pendanaan;
                         'attribute' => 'status_id',
                         'value' => function ($model) {
                             return $model->status->name;
+                        }
+                    ],
+                    [
+                        'class' => yii\grid\DataColumn::className(),
+                        'attribute' => 'status_id',
+                        'format' => 'raw',
+                        'header' => 'Expired',
+                        'value' => function ($model) {
+                            return '<span class="label label-success">'.$model->status->name.'</span>';
+                            // if ($model->status_lembaran == 1) {
+
+                            // } else {
+                            //     return '<span class="label label-danger">Lembaran Tidak Aktif</span>';
+                            // }
+                        }
+                    ],
+                    [
+                        'class' => yii\grid\DataColumn::className(),
+                        'attribute' => 'status_lembaran',
+                        'format' => 'raw',
+                        'value' => function ($model) {
+                            if ($model->status_lembaran == 1) {
+
+                                return '<span class="label label-success">Lembaran Aktif</span>';
+                            } else {
+                                return '<span class="label label-danger">Lembaran Tidak Aktif</span>';
+                            }
                         }
                     ],
                     [

@@ -76,6 +76,15 @@ $this->params['breadcrumbs'][] = 'View';
                             return \app\components\Angka::toReadableHarga($model->nominal);
                         },
                     ],
+                    [
+                        'attribute' => 'jumlah_lembaran',
+                        'format' => 'raw',
+                        'filter' => false,
+                        'value' => function ($model) {
+
+                            return $model->jumlah_lembaran." Lembar";
+                        },
+                    ],
                     // [
                     //     'attribute' => 'jenis_pembayaran_id',
                     //     'format' => 'raw',
