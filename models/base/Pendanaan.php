@@ -73,14 +73,15 @@ abstract class Pendanaan extends \yii\db\ActiveRecord
             };
         }
 
-        if (isset($parent['sisa_lembaran'])) {
-            unset($parent['sisa_lembaran']);
+        if (!isset($parent['sisa_lembaran'])) {
+            // unset($parent['sisa_lembaran']);
             // $parent['_user_id'] = function ($model) {
             //     return $model->user_id;
             // };
             $parent['sisa_lembaran'] = function ($model) {
                 $byr = \app\models\Pembayaran::find()
-                ->where(['pendanaan_id' => $model->id])                
+                ->where(['pendanaan_id' => $model->id]) 
+                ->andWhere(['status_id'=>6])               
                 ->sum('jumlah_lembaran');
                 $nom = (int)$model->jumlah_lembaran - (int)$byr;
                 return $nom." Lembar";

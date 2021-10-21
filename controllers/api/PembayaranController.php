@@ -118,8 +118,24 @@ class PembayaranController extends \yii\rest\ActiveController
         // die;
 
         $model->nama = $val['nama'];
-        $model->nominal = $val['nominal'];
-        $model->jenis_pembayaran_id = $val['jenis_pembayaran_id'] ?? '';;
+        if($val['lembaran'] != 0){
+            $pendanaan = \app\models\Pendanaan::find()
+                ->where(['id' => $val['pendanaan_id']])->one();
+
+
+            $model->jumlah_lembaran = (int)$val['lembaran'];
+            $total = (int)$pendanaan->nominal_lembaran * (int)$val['lembaran'];
+            $model->nominal = (int)$total;
+        }else{
+            if($val['nominal'] == NULL){
+                return ['success' => false, 'message' => 'Silahkan Isi nominal yang akan anda masukkan,nominal anda masih 0.'];
+            }else{
+
+                $model->jumlah_lembaran = 0;  
+                $model->nominal = $val['nominal'];
+            }
+        }
+        $model->jenis_pembayaran_id = $val['jenis_pembayaran_id'] ?? '';
         $model->user_id = \Yii::$app->user->identity->id;
         $model->status_id = 5;
         // $model->tanggal_pembayaran = date('Y-m-d');
