@@ -100,9 +100,9 @@ abstract class Pembayaran extends \yii\db\ActiveRecord
     {
         return [
             [['nama', 'nominal', 'kode_transaksi', 'user_id', 'pendanaan_id', 'status_id'], 'required'],
-            [['nominal', 'user_id', 'pendanaan_id', 'status_id','jenis_pembayaran_id','jumlah_lembaran'], 'integer'],
+            [['nominal', 'user_id', 'pendanaan_id', 'status_id','jumlah_lembaran'], 'integer'],
             [['tanggal_upload_bukti', 'tanggal_konfirmasi'], 'safe'],
-            [['nama', 'bukti_transaksi'], 'string', 'max' => 255],
+            [['nama', 'bukti_transaksi','jenis_pembayaran_id'], 'string', 'max' => 255],
             [['status_id'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\Status::className(), 'targetAttribute' => ['status_id' => 'id']],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\User::className(), 'targetAttribute' => ['user_id' => 'id']],
             [['pendanaan_id'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\Pendanaan::className(), 'targetAttribute' => ['pendanaan_id' => 'id']]
@@ -158,10 +158,6 @@ abstract class Pembayaran extends \yii\db\ActiveRecord
         return $this->hasOne(\app\models\Pendanaan::className(), ['id' => 'pendanaan_id']);
     }
 
-    public function getJenisPembayaran()
-    {
-        return $this->hasOne(\app\models\JenisPembayaran::className(), ['id' => 'jenis_pembayaran_id']);
-    }
 
 
 
