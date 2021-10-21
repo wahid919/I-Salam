@@ -24,7 +24,7 @@ class PembayaranController extends \yii\rest\ActiveController
         $parent = parent::behaviors();
         $parent['authentication'] = [
             "class" => "\app\components\CustomAuth",
-            "only" => ["bayar", "wakaf", "detail-wakaf"],
+            "only" => ["bayar", "wakaf", "detail-wakaf","status-midtrans"],
         ];
 
         return $parent;
