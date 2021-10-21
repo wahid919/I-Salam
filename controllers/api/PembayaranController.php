@@ -10,6 +10,7 @@ use app\models\Pembayaran;
 use app\models\Pendanaan;
 use app\models\JenisPembayaran;
 use app\models\Pencairan;
+use Midtrans\ActionMidtrans;
 use Yii;
 use yii\filters\AccessControl;
 use yii\helpers\ArrayHelper;
@@ -23,7 +24,7 @@ class PembayaranController extends \yii\rest\ActiveController
         $parent = parent::behaviors();
         $parent['authentication'] = [
             "class" => "\app\components\CustomAuth",
-            "only" => ["bayar","wakaf","detail-wakaf"],
+            "only" => ["bayar", "wakaf", "detail-wakaf"],
         ];
 
         return $parent;
@@ -33,9 +34,11 @@ class PembayaranController extends \yii\rest\ActiveController
     {
         return [
             'bayar' => ['POST'],
+            'mid' => ['POST'],
             'upload-file' => ['POST'],
             'informasi' => ['GET'],
             'detail-wakaf' => ['GET'],
+            'status-midtrans' => ['GET'],
             'wakaf' => ['GET'],
         ];
     }
@@ -45,63 +48,59 @@ class PembayaranController extends \yii\rest\ActiveController
     public function actionWakaf()
     {
         Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-        $wf = Pembayaran::find()->where(['user_id'=>\Yii::$app->user->identity->id])->all();
-       if($wf != null){
-           if(\Yii::$app->user->identity->role_id == 2){
+        $wf = Pembayaran::find()->where(['user_id' => \Yii::$app->user->identity->id])->all();
+        if ($wf != null) {
+            if (\Yii::$app->user->identity->role_id == 2) {
 
-            $wa = Pembayaran::find()->all();
+                $wa = Pembayaran::find()->all();
+                return [
+                    "success" => true,
+                    "message" => "Data Wakaf All ",
+                    "data" => $wa,
+                ];
+            } else {
+
+                return [
+                    "success" => true,
+                    "message" => "Wakaf ",
+                    "data" => $wf,
+                ];
+            }
+        } else {
             return [
-                "success" => true,
-                "message" => "Data Wakaf All ",
-                "data" =>$wa,
+                "success" => false,
+                "message" => "Anda Belum Pernah melakukan Wakaf",
+                "data" => null,
             ];
-           }else{
-
-            return [
-                "success" => true,
-                "message" => "Wakaf ",
-                "data" =>$wf,
-            ];
-           }
-       }else{
-        return [
-            "success" => false,
-            "message" => "Anda Belum Pernah melakukan Wakaf",
-            "data" =>null,
-        ];
-       }
-
+        }
     }
     public function actionDetailWakaf($id)
     {
         Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-        $wf = Pembayaran::find()->where(['id'=>$id])->one();
-       if($wf != null){
-          if($wf->user_id != \Yii::$app->user->identity->id ){
+        $wf = Pembayaran::find()->where(['id' => $id])->one();
+        if ($wf != null) {
+            if ($wf->user_id != \Yii::$app->user->identity->id) {
+                return [
+                    "success" => true,
+                    "message" => "Mohon Maaf Data Tidak ditemukan",
+                    "data" => null,
+                ];
+            } else {
+                return [
+                    "success" => true,
+                    "message" => "Wakaf ",
+                    "data" => $wf,
+                ];
+            }
+        } else {
             return [
-                "success" => true,
-                "message" => "Mohon Maaf Data Tidak ditemukan",
-                "data" =>null,
+                "success" => false,
+                "message" => "Data Wakaf Tidak Ditemukan",
+                "data" => null,
             ];
-          }else{
-            return [
-                "success" => true,
-                "message" => "Wakaf ",
-                "data" =>$wf,
-            ];
-          }
-            
-           
-       }else{
-        return [
-            "success" => false,
-            "message" => "Data Wakaf Tidak Ditemukan",
-            "data" =>null,
-        ];
-       }
-
+        }
     }
-    
+
     public function actionBayar()
     {
         Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
@@ -110,29 +109,50 @@ class PembayaranController extends \yii\rest\ActiveController
 
         // var_dump($model->nama);
         // die;
-
+        $order_id_midtrans = rand();
         $model->pendanaan_id = $val['pendanaan_id'];
-        $model->kode_transaksi = Yii::$app->security->generateRandomString(10) . date('dmYHis');
+        // $model->kode_transaksi = Yii::$app->security->generateRandomString(10) . date('dmYHis');
+        $model->kode_transaksi = $order_id_midtrans;
 
         // var_dump($model->kode_transaksi);
         // die;
+        $transaction_details = array(
+            'order_id' => $order_id_midtrans,
+            'gross_amount' => 10000, // no decimal allowed for creditcard
+        );
 
+
+        $pendanaan = \app\models\Pendanaan::find()
+            ->where(['id' => $val['pendanaan_id']])->one();
         $model->nama = $val['nama'];
-        if($val['lembaran'] != 0){
-            $pendanaan = \app\models\Pendanaan::find()
-                ->where(['id' => $val['pendanaan_id']])->one();
+        if ($val['lembaran'] != 0) {
 
 
             $model->jumlah_lembaran = (int)$val['lembaran'];
             $total = (int)$pendanaan->nominal_lembaran * (int)$val['lembaran'];
             $model->nominal = (int)$total;
-        }else{
-            if($val['nominal'] == NULL){
+            // Optional
+            $item1_details = array(
+                'id' => '1',
+                'price' => (int)$pendanaan->nominal_lembaran,
+                'quantity' => (int)$val['lembaran'],
+                'name' => $pendanaan->nama_pendanaan . "(Lembaran)"
+            );
+        } else {
+            if ($val['nominal'] == NULL) {
                 return ['success' => false, 'message' => 'Silahkan Isi nominal yang akan anda masukkan,nominal anda masih 0.'];
-            }else{
+            } else {
 
-                $model->jumlah_lembaran = 0;  
+                $model->jumlah_lembaran = 0;
                 $model->nominal = $val['nominal'];
+
+                // Optional
+                $item1_details = array(
+                    'id' => '1',
+                    'price' => $val['nominal'],
+                    'quantity' => 1,
+                    'name' => $pendanaan->nama_pendanaan . "(Non Lembaran)"
+                );
             }
         }
         $model->jenis_pembayaran_id = $val['jenis_pembayaran_id'] ?? '';
@@ -141,6 +161,26 @@ class PembayaranController extends \yii\rest\ActiveController
         // $model->tanggal_pembayaran = date('Y-m-d');
         $bukti_transaksis = UploadedFile::getInstanceByName('bukti_transaksi');
 
+        $shipping_address = array(
+            'first_name'    => $pendanaan->nama_nasabah,
+            'last_name'     => "(" . $pendanaan->nama_perusahaan . ")",
+            // 'address'       => "Batu",
+            //     'city'          => "Jakarta",
+            //     'postal_code'   => "16602",
+            //     'phone'         => "081122334455",
+            'country_code'  => 'IDN'
+        );
+
+        $customer_details = array(
+            'first_name'    => \Yii::$app->user->identity->name,
+            'last_name'     => "(" . $val['nama'] . ")",
+            'email'         => \Yii::$app->user->identity->username,
+            'phone'         => \Yii::$app->user->identity->nomor_handphone,
+            'billing_address'  => $shipping_address,
+            'shipping_address' => $shipping_address
+        );
+
+        $hasil = \app\components\ActionMidtrans::toReadableOrder($item1_details, $transaction_details, $customer_details);
         // var_dump($bukti_transaksis);
         // die;
         // if ($bukti_transaksis != NULL) {
@@ -164,7 +204,7 @@ class PembayaranController extends \yii\rest\ActiveController
             $model->save();
 
             // unset($model->password);
-            return ['success' => true, 'message' => 'success', 'data' => $model];
+            return ['success' => true, 'message' => 'success', 'data' => $model, 'code' => $hasil];
         } else {
             return ['success' => false, 'message' => 'gagal', 'data' => $model->getErrors()];
         }
@@ -173,22 +213,22 @@ class PembayaranController extends \yii\rest\ActiveController
     {
         Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         $val = \yii::$app->request->post();
-        $model = Pembayaran::findOne(['id'=>$val["id_pembayaran"],'status_id'=>5]);
+        $model = Pembayaran::findOne(['id' => $val["id_pembayaran"], 'status_id' => 5]);
 
         $bukti_transaksis = UploadedFile::getInstanceByName('bukti_transaksi');
 
         // var_dump($bukti_transaksis);
         // die;
-        if($model != null){
+        if ($model != null) {
             if ($bukti_transaksis != NULL) {
                 # store the source bukti_transaksis name
                 $model->bukti_transaksi = $bukti_transaksis->name;
                 $arr = explode(".", $bukti_transaksis->name);
                 $extension = end($arr);
-    
+
                 # generate a unique bukti_transaksis name
                 $model->bukti_transaksi = Yii::$app->security->generateRandomString() . ".{$extension}";
-    
+
                 # the path to save bukti_transaksis
                 // unlink(Yii::getAlias("@app/web/uploads/pengajuan/") . $oldFile);
                 if (file_exists(Yii::getAlias("@app/web/uploads/pembayaran/bukti_transaksi/")) == false) {
@@ -197,98 +237,94 @@ class PembayaranController extends \yii\rest\ActiveController
                 $path = Yii::getAlias("@app/web/uploads/pembayaran/bukti_transaksi/") . $model->bukti_transaksi;
                 $bukti_transaksis->saveAs($path);
             }
-            
+
             $model->tanggal_upload_bukti = date('Y-m-d H:i:s');
             $model->status_id = 10;
             if ($model->validate()) {
                 $model->save();
-    
+
                 // unset($model->password);
                 return ['success' => true, 'message' => 'success', 'data' => $model];
             } else {
                 return ['success' => false, 'message' => 'gagal', 'data' => $model->getErrors()];
             }
-        }else{
+        } else {
             return ['success' => false, 'message' => 'Data tidak ditemukan', 'data' => null];
         }
-        
     }
 
 
     public function actionInformasi($id)
     {
         Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-        $jumlah = Pembayaran::find()->where(['pendanaan_id'=>$id,'status_id'=>6])->count();
-        
-        $nominal = Pembayaran::find()->where(['pendanaan_id'=>$id,'status_id'=>6])->sum('nominal');
-        if($nominal == null){
+        $jumlah = Pembayaran::find()->where(['pendanaan_id' => $id, 'status_id' => 6])->count();
+
+        $nominal = Pembayaran::find()->where(['pendanaan_id' => $id, 'status_id' => 6])->sum('nominal');
+        if ($nominal == null) {
             $nominal = 0;
         }
-        $pembayar = Pendanaan::find()->where(['id'=>$id])->one();
+        $pembayar = Pendanaan::find()->where(['id' => $id])->one();
         $uang_pendanaan = (int)$pembayar->nominal;
         $persen = $nominal / $uang_pendanaan  * 100;
-        $cair = Pencairan::findOne(['pendanaan_id'=>$id]);
-        
-        if($pembayar->status_id== 3){
-            if($cair !=null){
+        $cair = Pencairan::findOne(['pendanaan_id' => $id]);
+
+        if ($pembayar->status_id == 3) {
+            if ($cair != null) {
                 return [
                     "success" => true,
-                "message" => "Pendanaan",
-                "data" => [
-                    'selesai' => false,
-                    'cair' => true,
-                    "data-cair" =>$cair,
-                    'jumlah' => $jumlah,
-                    'nominal' => $nominal,
-                    'persen' => $persen,
-                ],
-                ];
-            }else{
-                return [
-                    "success" => true,
-                "message" => "Pendanaan",
-                "data" => [
-                    'selesai' => false,
-                    'cair' => false,
-                    "data-cair" =>$cair,
-                    'jumlah' => $jumlah,
-                    'nominal' => $nominal,
-                    'persen' => $persen,
-                ],
-                ];
-            }
-            
-           
-        }else{
-            if($pembayar->status_id== 4 || strtotime($pembayar->pendanaan_berakhir) <= date('Y-m-d H:i:s')){
-                if($cair != null){
-                    return [
-                        "success" => true,
                     "message" => "Pendanaan",
                     "data" => [
                         'selesai' => false,
-                        'cair' => false,
-                        "data-cair" =>$cair,
+                        'cair' => true,
+                        "data-cair" => $cair,
                         'jumlah' => $jumlah,
                         'nominal' => $nominal,
                         'persen' => $persen,
                     ],
+                ];
+            } else {
+                return [
+                    "success" => true,
+                    "message" => "Pendanaan",
+                    "data" => [
+                        'selesai' => false,
+                        'cair' => false,
+                        "data-cair" => $cair,
+                        'jumlah' => $jumlah,
+                        'nominal' => $nominal,
+                        'persen' => $persen,
+                    ],
+                ];
+            }
+        } else {
+            if ($pembayar->status_id == 4 || strtotime($pembayar->pendanaan_berakhir) <= date('Y-m-d H:i:s')) {
+                if ($cair != null) {
+                    return [
+                        "success" => true,
+                        "message" => "Pendanaan",
+                        "data" => [
+                            'selesai' => false,
+                            'cair' => false,
+                            "data-cair" => $cair,
+                            'jumlah' => $jumlah,
+                            'nominal' => $nominal,
+                            'persen' => $persen,
+                        ],
                     ];
                 }
                 return [
-                "success" => true,
-                "message" => "Pendanaan",
-                "data" => [
-                    'selesai' => false,
-                    'cair' => false,
-                    "data-cair" =>$cair,
-                    'jumlah' => $jumlah,
-                    'nominal' => $nominal,
-                    'persen' => $persen,
-                ],
+                    "success" => true,
+                    "message" => "Pendanaan",
+                    "data" => [
+                        'selesai' => false,
+                        'cair' => false,
+                        "data-cair" => $cair,
+                        'jumlah' => $jumlah,
+                        'nominal' => $nominal,
+                        'persen' => $persen,
+                    ],
                 ];
             }
-            
         }
         return [
             "success" => true,
@@ -296,11 +332,73 @@ class PembayaranController extends \yii\rest\ActiveController
             "data" => [
                 'selesai' => false,
                 'cair' => false,
-                "data-cair" =>$cair,
+                "data-cair" => $cair,
                 'jumlah' => $jumlah,
                 'nominal' => $nominal,
                 'persen' => $persen,
             ],
-            ];
+        ];
+    }
+    public function actionStatusMidtrans($id)
+    {
+
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => "https://api.sandbox.midtrans.com/v2/" . $id . "/status",
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => "",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "GET",
+            CURLOPT_POSTFIELDS => "\n\n",
+            CURLOPT_HTTPHEADER => array(
+                "Accept: application/json",
+                "Content-Type: application/json",
+                "Authorization: Basic U0ItTWlkLXNlcnZlci1MV1RfNVJHdkhsUk9sSWJtYUU4SzBudGI6"
+            ),
+        ));
+
+        $response = curl_exec($curl);
+
+        curl_close($curl);
+        echo $response;
+    }
+
+    public function actionMid()
+    {
+        try {
+            $transaction_details = array(
+                'order_id' => rand(),
+                'gross_amount' => 10000, // no decimal allowed for creditcard
+            );
+
+            // Optional
+            $item1_details = array(
+                'id' => 'a1',
+                'price' => 18000,
+                'quantity' => 4,
+                'name' => "Apple"
+            );
+
+            // Optional
+            $item2_details = array(
+                'id' => 'a2',
+                'price' => 20000,
+                'quantity' => 4,
+                'name' => "Orange"
+            );
+            // $hasil = \app\components\ActionMidtrans::toReadableOrder($item1_details, $transaction_details);
+            // // var_dump($transaction_details);die;
+            // return [
+            //     "success" => true,
+            //     "message" => "Berhasil",
+            //     "data" => $hasil,
+            // ];
+        } catch (\Throwable $th) {
+            echo $th->getMessage();
+        }
     }
 }
