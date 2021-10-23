@@ -53,16 +53,80 @@ abstract class Pembayaran extends \yii\db\ActiveRecord
             unset($parent['status_id']);
             
             $parent['status'] = function ($model) {
-                return $model->status;
+                $curl = curl_init();
+
+                curl_setopt_array($curl, array(
+                    CURLOPT_URL => "https://api.sandbox.midtrans.com/v2/" . $model->kode_transaksi . "/status",
+                    CURLOPT_RETURNTRANSFER => true,
+                    CURLOPT_ENCODING => "",
+                    CURLOPT_MAXREDIRS => 10,
+                    CURLOPT_TIMEOUT => 0,
+                    CURLOPT_FOLLOWLOCATION => true,
+                    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                    CURLOPT_CUSTOMREQUEST => "GET",
+                    CURLOPT_POSTFIELDS => "\n\n",
+                    CURLOPT_HTTPHEADER => array(
+                        "Accept: application/json",
+                        "Content-Type: application/json",
+                        "Authorization: Basic U0ItTWlkLXNlcnZlci1MV1RfNVJHdkhsUk9sSWJtYUU4SzBudGI6"
+                    ),
+                ));
+        
+                $response = curl_exec($curl);
+        
+                curl_close($curl);
+                $a = json_decode($response);
+                if($a->status_code == "404"){
+                    return "Pending";
+                }else{
+                    if($a->transaction_status == "pending"){
+                        return "Pending";
+                    }elseif($a->transaction_status == "capture" || $a->transaction_status == "settlement" ){
+                        return "Pembayaran Berhasil";
+                    }elseif($a->transaction_status == "deny" || $a->transaction_status == "cancel" || $a->transaction_status == "expire" ){
+                        return "Pembayaran Gagal";
+                    }
+                }
             };
         }
-        // if (isset($parent['jenis_pembayaran_id'])) {
-        //     unset($parent['jenis_pembayaran_id']);
+        if (isset($parent['jenis_pembayaran_id'])) {
+            unset($parent['jenis_pembayaran_id']);
             
-        //     $parent['jenis_pembayaran'] = function ($model) {
-        //         return $model->jenisPembayaran;
-        //     };
-        // }
+            $parent['jenis_pembayaran'] = function ($model) {
+                $curl = curl_init();
+
+                curl_setopt_array($curl, array(
+                    CURLOPT_URL => "https://api.sandbox.midtrans.com/v2/" . $model->kode_transaksi . "/status",
+                    CURLOPT_RETURNTRANSFER => true,
+                    CURLOPT_ENCODING => "",
+                    CURLOPT_MAXREDIRS => 10,
+                    CURLOPT_TIMEOUT => 0,
+                    CURLOPT_FOLLOWLOCATION => true,
+                    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                    CURLOPT_CUSTOMREQUEST => "GET",
+                    CURLOPT_POSTFIELDS => "\n\n",
+                    CURLOPT_HTTPHEADER => array(
+                        "Accept: application/json",
+                        "Content-Type: application/json",
+                        "Authorization: Basic U0ItTWlkLXNlcnZlci1MV1RfNVJHdkhsUk9sSWJtYUU4SzBudGI6"
+                    ),
+                ));
+        
+                $response = curl_exec($curl);
+        
+                curl_close($curl);
+                $a = json_decode($response);
+                if($a->status_code == "404"){
+                    return "Tidak Ditemukan";
+                }else{
+                    if($a->payment_type == "cstore"){
+                        return $a->store;
+                    }else{
+                        return $a->payment_type;
+                    }
+                }
+            };
+        }
         unset($parent['updated_at']);
         unset($parent['created_at']);
         

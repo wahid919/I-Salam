@@ -16,6 +16,8 @@ use yii\filters\AccessControl;
 use yii\helpers\ArrayHelper;
 use yii\web\UploadedFile;
 
+use function igorw\retry;
+
 class PembayaranController extends \yii\rest\ActiveController
 {
     use \app\components\UploadFile;
@@ -86,6 +88,30 @@ class PembayaranController extends \yii\rest\ActiveController
                     "data" => null,
                 ];
             } else {
+                $a = $this->findMidtrans($wf->kode_transaksi);
+
+                if($a->status_code == "404"){
+                     $wf->status_id = 5;
+                }else{
+                    if($a->transaction_status == "pending"){
+                         $wf->status_id = 5;
+                    }elseif($a->transaction_status == "capture" || $a->transaction_status == "settlement" ){
+                         $wf->status_id = 6;
+                    }elseif($a->transaction_status == "deny" || $a->transaction_status == "cancel" || $a->transaction_status == "expire" ){
+                         $wf->status_id = 8;
+                    }
+                }
+
+                if($a->status_code == "404"){
+                     $wf->jenis_pembayaran_id ="Tidak Ditemukan";
+                }else{
+                    if($a->payment_type == "cstore"){
+                         $wf->jenis_pembayaran_id = $a->store;
+                    }else{
+                         $wf->jenis_pembayaran_id = $a->payment_type;
+                    }
+                }
+                $wf->save();
                 return [
                     "success" => true,
                     "message" => "Wakaf ",
@@ -365,7 +391,8 @@ class PembayaranController extends \yii\rest\ActiveController
         $response = curl_exec($curl);
 
         curl_close($curl);
-        echo $response;
+        $a = json_decode($response);
+        return $a;
     }
 
     public function actionMid()
@@ -401,5 +428,32 @@ class PembayaranController extends \yii\rest\ActiveController
         } catch (\Throwable $th) {
             echo $th->getMessage();
         }
+    }
+    protected function findMidtrans($id)
+    {
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => "https://api.sandbox.midtrans.com/v2/" . $id . "/status",
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => "",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "GET",
+            CURLOPT_POSTFIELDS => "\n\n",
+            CURLOPT_HTTPHEADER => array(
+                "Accept: application/json",
+                "Content-Type: application/json",
+                "Authorization: Basic U0ItTWlkLXNlcnZlci1MV1RfNVJHdkhsUk9sSWJtYUU4SzBudGI6"
+            ),
+        ));
+
+        $response = curl_exec($curl);
+
+        curl_close($curl);
+        $a = json_decode($response);
+        return $a;
     }
 }
