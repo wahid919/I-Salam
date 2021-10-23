@@ -56,13 +56,13 @@ abstract class Pembayaran extends \yii\db\ActiveRecord
                 return $model->status;
             };
         }
-        if (isset($parent['jenis_pembayaran_id'])) {
-            unset($parent['jenis_pembayaran_id']);
+        // if (isset($parent['jenis_pembayaran_id'])) {
+        //     unset($parent['jenis_pembayaran_id']);
             
-            $parent['jenis_pembayaran'] = function ($model) {
-                return $model->jenisPembayaran;
-            };
-        }
+        //     $parent['jenis_pembayaran'] = function ($model) {
+        //         return $model->jenisPembayaran;
+        //     };
+        // }
         unset($parent['updated_at']);
         unset($parent['created_at']);
         

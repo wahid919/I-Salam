@@ -24,7 +24,7 @@ class PembayaranController extends \yii\rest\ActiveController
         $parent = parent::behaviors();
         $parent['authentication'] = [
             "class" => "\app\components\CustomAuth",
-            "only" => ["bayar", "wakaf", "detail-wakaf","status-midtrans"],
+            "only" => ["bayar", "wakaf", "detail-wakaf", "status-midtrans"],
         ];
 
         return $parent;
@@ -107,15 +107,11 @@ class PembayaranController extends \yii\rest\ActiveController
         $val = \yii::$app->request->post();
         $model = new Pembayaran();
 
-        // var_dump($model->nama);
-        // die;
         $order_id_midtrans = rand();
         $model->pendanaan_id = $val['pendanaan_id'];
         // $model->kode_transaksi = Yii::$app->security->generateRandomString(10) . date('dmYHis');
         $model->kode_transaksi = $order_id_midtrans;
-
-        // var_dump($model->kode_transaksi);
-        // die;
+        
         $transaction_details = array(
             'order_id' => $order_id_midtrans,
             'gross_amount' => 10000, // no decimal allowed for creditcard
@@ -181,6 +177,19 @@ class PembayaranController extends \yii\rest\ActiveController
         );
 
         $hasil = \app\components\ActionMidtrans::toReadableOrder($item1_details, $transaction_details, $customer_details);
+
+        if ($model->validate()) {
+            $model->save();
+
+            return ['success' => true, 'message' => 'success', 'data' => $model, 'code' => $hasil];
+        } else {
+            return ['success' => false, 'message' => 'gagal', 'data' => $model->getErrors()];
+        }
+
+
+
+
+        // unset($model->password);
         // var_dump($bukti_transaksis);
         // die;
         // if ($bukti_transaksis != NULL) {
@@ -200,14 +209,6 @@ class PembayaranController extends \yii\rest\ActiveController
         //     $path = Yii::getAlias("@app/web/uploads/pembayaran/bukti_transaksi/") . $model->bukti_transaksi;
         //     $bukti_transaksis->saveAs($path);
         // }
-        if ($model->validate()) {
-            $model->save();
-
-            // unset($model->password);
-            return ['success' => true, 'message' => 'success', 'data' => $model, 'code' => $hasil];
-        } else {
-            return ['success' => false, 'message' => 'gagal', 'data' => $model->getErrors()];
-        }
     }
     public function actionUploadPembayaran()
     {
