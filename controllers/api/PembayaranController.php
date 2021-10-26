@@ -202,12 +202,12 @@ class PembayaranController extends \yii\rest\ActiveController
             'shipping_address' => $shipping_address
         );
 
-        $hasil = \app\components\ActionMidtrans::toReadableOrder($item1_details, $transaction_details, $customer_details);
-
+        $hasil_code = \app\components\ActionMidtrans::toReadableOrder($item1_details, $transaction_details, $customer_details);
+        $hasil = 'https://app.sandbox.midtrans.com/snap/v2/vtweb/'.$hasil_code;
         if ($model->validate()) {
             $model->save();
 
-            return ['success' => true, 'message' => 'success', 'data' => $model, 'code' => $hasil];
+            return ['success' => true, 'message' => 'success', 'data' => $model, 'code' => $hasil_code,'url'=>$hasil];
         } else {
             return ['success' => false, 'message' => 'gagal', 'data' => $model->getErrors()];
         }
