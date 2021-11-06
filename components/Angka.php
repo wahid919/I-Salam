@@ -84,7 +84,7 @@ class Angka {
     }
     
     public static function toReadableHarga($str, $withSpan = TRUE) {
-        return ($withSpan ? "<span style='display:none'>" . ($str < 0 ? "-" : "+") . str_pad(abs($str), 10, "0", STR_PAD_LEFT) . "</span>" : "") . "IDR  " . number_format($str, 2, ",", ".");
+        return ($withSpan ? "<span style='display:none'>" . ($str < 0 ? "-" : "+") . str_pad(abs($str), 10, "0", STR_PAD_LEFT) . "</span>" : "") . "Rp  " . number_format($str, 2, ",", ".");
 //        return ($withSpan ? "<span style='display:none'>" . ($str < 0 ? "-" : "+") . str_pad(abs($str), 10, "0", STR_PAD_LEFT) . "</span>" : "") . "Rp " . number_format($str, 0, ".", ",");
     }
 

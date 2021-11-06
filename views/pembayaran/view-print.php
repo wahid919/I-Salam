@@ -13,7 +13,11 @@ use mdm\admin\components\Helper;
          <br>
          <br>
          <br>
-         <h3 style="solid black; text-align:center"><u> SURAT PERNYATAAN IKRAR WAKAF</u> <br><br><p style="font-size: 17px;">Bismillahirrahmanirrahim</p> </h3>
+         <h3 style="solid black; text-align:center"><b>IKRAR WAKAF</b> <br>
+         <!-- <p style="font-size: 17px;">Bismillahirrahmanirrahim</p> -->
+         <?= Html::img(\Yii::$app->request->BaseUrl . '/uploads/bismillah.png', ['width' => 300]); ?>
+        
+        </h3>
          <table>
          <thead>
          <tr>
@@ -39,9 +43,9 @@ use mdm\admin\components\Helper;
          <tbody>
          <tr>
              <br>
-             <td><br><br> Dengan ini menyatakan bahwa Saya telah menyerahkan uang
-             sebesar <?= \app\components\Angka::toReadableHarga($model->nominal); ?>  untuk keperluan wakaf <?= $model->pendanaan->nama_pendanaan?> <br><br><br>
-             Demikian Surat ini Saya buat dalam keadaan sadar dan tanpa paksaan dari siapapun juga untuk diketahui.
+             <td><br><br> Dengan ini saya berniat memberikan uang
+             sebesar <?= \app\components\Angka::toReadableHarga($model->nominal); ?> (<?= \app\components\Angka::toTerbilang($model->nominal) ?>)   untuk mengikuti wakaf <?= $model->pendanaan->nama_pendanaan?> <br><br><br>
+             Demikian Ikrar wakaf ini saya buat, semoga Allah SWT menerima amal saya,Aamiin.
             </td>
          </tr>
          <tr>

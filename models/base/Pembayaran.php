@@ -49,6 +49,21 @@ abstract class Pembayaran extends \yii\db\ActiveRecord
             };
         }
 
+        if (isset($parent['code'])) {
+            unset($parent['code']);
+            
+            $parent['code'] = function ($model) {
+                return $model->code;
+            };
+        }
+        if (!isset($parent['url'])) {
+            unset($parent['url']);
+            
+            $parent['url'] = function ($model) {
+                return 'https://app.sandbox.midtrans.com/snap/v2/vtweb/'.$model->code;
+            };
+        }
+
         if (isset($parent['status_id'])) {
             unset($parent['status_id']);
             
@@ -166,7 +181,7 @@ abstract class Pembayaran extends \yii\db\ActiveRecord
             [['nama', 'nominal', 'kode_transaksi', 'user_id', 'pendanaan_id', 'status_id'], 'required'],
             [['nominal', 'user_id', 'pendanaan_id', 'status_id','jumlah_lembaran'], 'integer'],
             [['tanggal_upload_bukti', 'tanggal_konfirmasi'], 'safe'],
-            [['nama', 'bukti_transaksi','jenis_pembayaran_id'], 'string', 'max' => 255],
+            [['nama', 'bukti_transaksi','jenis_pembayaran_id','code'], 'string', 'max' => 255],
             [['status_id'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\Status::className(), 'targetAttribute' => ['status_id' => 'id']],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\User::className(), 'targetAttribute' => ['user_id' => 'id']],
             [['pendanaan_id'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\Pendanaan::className(), 'targetAttribute' => ['pendanaan_id' => 'id']]

@@ -112,10 +112,13 @@ class PembayaranController extends \yii\rest\ActiveController
                     }
                 }
                 $wf->save();
+                $hasil  = 'https://app.sandbox.midtrans.com/snap/v2/vtweb/'.$wf->code;
                 return [
                     "success" => true,
                     "message" => "Wakaf ",
                     "data" => $wf,
+                    "code" => $wf->code,
+                    "url" => $hasil,
                 ];
             }
         } else {
@@ -203,6 +206,7 @@ class PembayaranController extends \yii\rest\ActiveController
         );
 
         $hasil_code = \app\components\ActionMidtrans::toReadableOrder($item1_details, $transaction_details, $customer_details);
+        $model->code = $hasil_code;
         $hasil = 'https://app.sandbox.midtrans.com/snap/v2/vtweb/'.$hasil_code;
         if ($model->validate()) {
             $model->save();
