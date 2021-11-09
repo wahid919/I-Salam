@@ -34,24 +34,6 @@ class ActionButton
         $template = '{view} {update} {delete}';
         $width = "120px";
 
-        if($btn_pengajuan_selanjutnya) {
-            $template = "{ajukan} <br> $template";
-            $btn["ajukan"] = function ($url, $model, $key) {
-                if($model->status_id == Constant::STATUS_SELESAI && $model->tingkat_id != Constant::PELATIHAN_TINGKAT_LANJUT_2){
-                    $check_exist = Pelatihan::findOne(['pelatihan_sebelumnya' => $model->id, 'flag' => 1]);
-                    if($check_exist == []){
-                        return Html::a("Tingkat Berikutnya", ["tingkat-lanjut", "id"=>$model->id], [
-                            "class"=>"btn btn-primary",
-                            'style' => 'margin-bottom: 5px',
-                            "title"=>"Pengajuan Data",
-                            "data-confirm" => "Apakah Anda yakin ingin mengajukan tingkat berikutnya ?",
-                            //"data-method" => "GET"
-                        ]);
-                    }
-                }
-            };
-            $width = "200px";
-        }
 
         return [
             'class' => 'yii\grid\ActionColumn',
@@ -84,6 +66,21 @@ class ActionButton
                         ]);
                     }
                     },
+    
+                ],
+                'contentOptions' => ['nowrap'=>'nowrap', 'style'=>'text-align:center;width:150px']
+            ];
+        }
+        public static function getButtonsView()
+        {
+            return [
+                'class' => 'yii\grid\ActionColumn',
+                'template' => '{view}',
+                'buttons' => [
+                    'view' => function ($url, $model, $key) {
+                        return Html::a("<i class='fa fa-eye'></i>", ["view", "id"=>$model->id], ["class"=>"btn btn-success", "title"=>"Lihat Data"]);
+                    },
+                   
     
                 ],
                 'contentOptions' => ['nowrap'=>'nowrap', 'style'=>'text-align:center;width:150px']

@@ -25,7 +25,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="box-body">
         <div class="table-responsive">
             <?= GridView::widget([
-                'layout' => '{summary}{items}{pager}',
+                'layout' => '{summary}{pager}{items}{pager}',
                 'dataProvider' => $dataProvider,
                 'pager'        => [
                     'class'          => yii\widgets\LinkPager::className(),
@@ -37,7 +37,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'headerRowOptions' => ['class' => 'x'],
                 'columns' => [
 
-                    \app\components\ActionButton::getButtons(),
+                    \app\components\ActionButton::getButtonsView(),
 
                     'nama',
                     'nomor_hp',
