@@ -41,7 +41,7 @@ use yii\bootstrap\Html;
         <p style="color:orange;font-size:1.5rem"><?= date("d-m-Y", strtotime($berita->created_at)); ?></p>
         <p style="color:orange;"><?= $berita->user->name ?></p>
         <p class="mt-4 text-dark text-justify">
-        <?= Html::encode($berita->isi) ?>
+        <?= $berita->isi ?>
         </p>
 
       </div>

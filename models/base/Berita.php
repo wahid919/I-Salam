@@ -57,7 +57,7 @@ abstract class Berita extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['kategori_berita_id', 'user_id', 'judul', 'slug','gambar', 'isi'], 'required'],
+            [['kategori_berita_id', 'user_id', 'judul', 'slug', 'isi'], 'required'],
             [['kategori_berita_id', 'user_id'], 'integer'],
             [['isi'], 'string'],
             [['judul', 'gambar'], 'string', 'max' => 255],

@@ -10,7 +10,26 @@ use kartik\file\FileInput;
  * @var app\models\Berita $model
  * @var yii\widgets\ActiveForm $form
  */
+$this->registerJsFile(Yii::getAlias("@web/tinymce/tinymce.min.js"));
+// $uploadlink = Url::to(['site/upload-image']);
+// $csrf = Yii::$app->request->csrfToken;
 
+$this->registerJs("
+      tinymce.init({
+        selector: '.tinymce-form',
+        height: '400',
+        plugins: [
+            'advlist autolink lists link image charmap print preview anchor',
+            'searchreplace visualblocks code fullscreen',
+            'insertdatetime media table paste code help wordcount',
+        ],
+
+        toolbar: 'undo redo | formatselect | ' +
+        'bold italic backcolor | alignleft aligncenter ' +
+        'alignright alignjustify | bullist numlist outdent indent | ' +
+        'removeformat | help',
+      });
+");
 ?>
 
 <div class="box box-info">
@@ -46,7 +65,8 @@ use kartik\file\FileInput;
                 'browseLabel' => 'Upload File',
             ],
         ]); ?>
-        <?= $form->field($model, 'isi')->textarea(['rows' => 6]) ?>
+
+    <?= $form->field($model, 'isi')->textarea(['class' => 'tinymce-form form-control']) ?>
         <hr />
         <?php echo $form->errorSummary($model); ?>
         <div class="row">

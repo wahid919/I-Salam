@@ -77,7 +77,11 @@ $this->params['breadcrumbs'][] = 'View';
                            return Html::img(\Yii::$app->request->BaseUrl.'/uploads/berita/'.$model->gambar,['width'=>100]);
                          },
                      ],
-                    'isi:ntext',
+                    // 'isi:ntext',
+                    [
+                        'attribute' => 'isi',
+                        'format' => 'html',
+                    ],
                     'created_at',
                     'updated_at',
                 ],
