@@ -29,9 +29,10 @@ $icons = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->logo;
                     <center>
 
                         <div class="social__icons">
-                            <a href="#"><i class="fa fa-facebook"></i></a>
-                            <a href="#"><i class="fa fa-twitter"></i></a>
-                            <a href="#"><i class="fa fa-instagram"></i></a>
+                            <a href="<?= $setting->facebook ?>" target="_blank"><i class="fa fa-facebook"></i></a>
+                            <a href="<?= $setting->twitter ?>" target="_blank"><i class="fa fa-twitter"></i></a>
+                            <a href="<?= $setting->instagram ?>" target="_blank"><i class="fa fa-instagram"></i></a>
+                            <a href="https://t.me/isalamkarim" target="_blank"><i class="fa fa-telegram"></i></a>
                         </div><!-- /.col-xl-2 -->
                     </center>
                 </ul>

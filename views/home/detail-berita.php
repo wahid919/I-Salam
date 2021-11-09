@@ -22,30 +22,12 @@ use yii\bootstrap\Html;
     <!-- =========================
         Header
     =========================== -->
-    <?= $this->render('component/header') ?>
+    <?= $this->render('component/header2') ?>
 
     <!-- ============================
         Slider
     ============================== -->
-    <section id="slider1" class="slider slider-1">
-      <div class="owl-carousel thumbs-carousel carousel-arrows" data-slider-id="slider1" data-dots="false" data-autoplay="true" data-nav="true" data-transition="fade" data-animate-out="fadeOut" data-animate-in="fadeIn">
-        <div class="slide-item align-v-h bg-overlay">
-          <div class="bg-img"><img src="<?= $bg_login ?>" alt="img"></div>
-          <div class="container">
-            <div class="row">
-              <div class="col-sm-12 col-md-12 col-lg-8">
-                <div class="slide__content">
-                  <h2 class="slide__title"><?= $setting->judul_web ?></h2>
-                  <p class="slide__desc"><?= $setting->slogan_web ?></p>
-                  <a href="#" class="btn btn__primary btn__hover2 mr-30">GET NOW</a>
-                  <a href="#" class="btn btn__white">CONTACT US</a>
-                </div><!-- /.slide-content -->
-              </div><!-- /.col-lg-8 -->
-            </div><!-- /.row -->
-          </div><!-- /.container -->
-        </div><!-- /.slide-item -->
-      </div><!-- /.carousel -->
-    </section><!-- /.slider -->
+    
 
     <div class="mt-4 mb-4">
       <div class="container mt-4 mb-4">
@@ -132,6 +114,7 @@ use yii\bootstrap\Html;
       // Menampilkan informasi pada masing-masing marker yang diklik
       function bindInfoWindow(marker, map, infoWindow, html) {
         google.maps.event.addListener(marker, 'click', function() {
+          if (map.getZoom() > 16) map.setZoom(16); 
           infoWindow.setContent(html);
           infoWindow.open(map, marker);
         });

@@ -289,7 +289,7 @@ class HomeController extends Controller
         }else{
             $query = Pendanaan::find()->where(['status_id' => 2]);
             $count = $query->count();
-            $pagination = new Pagination(['totalCount' => $count, 'pageSize'=>1]);          
+            $pagination = new Pagination(['totalCount' => $count, 'pageSize'=>9]);          
             $pendanaans = $query->offset($pagination->offset)
                 ->limit($pagination->limit)
                 ->all();

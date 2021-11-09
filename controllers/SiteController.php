@@ -7,6 +7,7 @@ namespace app\controllers;
 //use app\components\NodeLogger;
 use app\models\Action;
 use app\components\Tanggal;
+use app\models\ContactForm;
 use app\models\Pendanaan;
 use app\models\Pembayaran;
 use app\models\Pencairan;
@@ -139,23 +140,23 @@ class SiteController extends Controller
         ]);
     }
 
-    public function actionRegister()
-    {
-        $this->layout = "main-login";
+    // public function actionRegister()
+    // {
+    //     $this->layout = "main-login";
 
-        if (!\Yii::$app->user->isGuest) {
-            return $this->goHome();
-        }
+    //     if (!\Yii::$app->user->isGuest) {
+    //         return $this->goHome();
+    //     }
 
-        $model = new RegisterForm();
-        if ($model->load(Yii::$app->request->post()) && $model->register()) {
-            Yii::$app->session->addFlash("success", "Register success, please login");
-            return $this->redirect(["site/login"]);
-        }
-        return $this->render('register', [
-            'model' => $model,
-        ]);
-    }
+    //     $model = new RegisterForm();
+    //     if ($model->load(Yii::$app->request->post()) && $model->register()) {
+    //         Yii::$app->session->addFlash("success", "Register success, please login");
+    //         return $this->redirect(["site/login"]);
+    //     }
+    //     return $this->render('register', [
+    //         'model' => $model,
+    //     ]);
+    // }
 
     public function actionLogin()
     {

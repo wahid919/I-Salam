@@ -18,69 +18,22 @@
     <!-- =========================
         Header
     =========================== -->
-    <?= $this->render('component/header') ?>
+    <?= $this->render('component/header2') ?>
 
     <!-- ============================
         Slider
     ============================== -->
-    <section id="slider1" class="slider slider-1">
-      <div class="owl-carousel thumbs-carousel carousel-arrows" data-slider-id="slider1" data-dots="false" data-autoplay="true" data-nav="true" data-transition="fade" data-animate-out="fadeOut" data-animate-in="fadeIn">
-        <div class="slide-item align-v-h bg-overlay">
-          <div class="bg-img"><img src="<?= $bg_login ?>" alt="img"></div>
-          <div class="container">
-            <div class="row">
-              <div class="col-sm-12 col-md-12 col-lg-8">
-                <div class="slide__content">
-                  <h2 class="slide__title"><?= $setting->judul_web ?></h2>
-                  <p class="slide__desc"><?= $setting->slogan_web ?></p>
-                  <a href="#" class="btn btn__primary btn__hover2 mr-30">GET NOW</a>
-                  <a href="#" class="btn btn__white">CONTACT US</a>
-                </div><!-- /.slide-content -->
-              </div><!-- /.col-lg-8 -->
-            </div><!-- /.row -->
-          </div><!-- /.container -->
-        </div><!-- /.slide-item -->
-      </div><!-- /.carousel -->
-    </section><!-- /.slider -->
-
-    <div class="container">
-      <div class="row">
-        <div class="col-8 mx-auto">
-          <div class="card" style="border: 1px solid rgb(0 0 0 / 80%);border-radius: 1.5rem;">
-            <div class="card-body">
-              <div class="row">
-                <div class="col-4 text-center text-dark">
-                  <img src="<?= \Yii::$app->request->baseUrl . "/uploads/icons/give.png" ?>" width="80px" alt="">
-                  <p class="p-2" style="font-size: 3rem;"><?= $count_program ?></p>
-                  <p style="font-size: 1rem;">Jumlah Program
-                  <p>
-                </div>
-                <div class="col-4 text-center text-dark">
-                  <img src="<?= \Yii::$app->request->baseUrl . "/uploads/icons/donation.png" ?>" width="80px" alt="">
-                  <p class="p-2" style="font-size: 3rem;">4</p>
-                  <p style="font-size: 1rem;">Jumlah Penerima Wakaf
-                  <p>
-                </div>
-                <div class="col-4 text-center text-dark">
-                  <img src="<?= \Yii::$app->request->baseUrl . "/uploads/icons/community.png" ?>" width="80px" alt="">
-                  <p class="p-2" style="font-size: 3rem;"><?= $count_wakif ?></p>
-                  <p style="font-size: 1rem;">Jumlah Wakaf
-                  <p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    
     <!-- ========================
         Services
     =========================== -->
-    <section id="services" class="services pb-90">
+    <hr>
+    <section id="services" class="services pb-90" style="margin-top: -10%;">
       <div class="container">
       <div class="text-center mt-4 mb-4">
           <h3>Kategori Program</h3>
-          <ul style="display: inline-block;margin-left: auto;margin-right: auto;">
+          <!-- <ul style="display: inline-block;margin-left: auto;margin-right: auto;overflow: auto"> -->
+          <ul style="margin-left: auto;margin-right: auto;overflow: auto">
             <ul class="list-group list-group-horizontal border-0 text-dark text-center">
               <li class="list-group-item"><a href="<?=\Yii::$app->request->baseUrl . "/home/program/"?>"> Semua </a></li>
               <?php foreach ($kategori_pendanaans as $kategori_pendanaan) {  ?>
@@ -311,7 +264,7 @@
                     <div class="request__form-body">
                       <div class="row">
 
-                        <div class="contact-form">
+                        <div class="contact-form" style="margin-left: 10px;margin-right:10px;">
 
                           <?php $form = ActiveForm::begin(
                             [
@@ -477,6 +430,7 @@
       // Menampilkan informasi pada masing-masing marker yang diklik
       function bindInfoWindow(marker, map, infoWindow, html) {
         google.maps.event.addListener(marker, 'click', function() {
+          if (map.getZoom() > 16) map.setZoom(16); 
           infoWindow.setContent(html);
           infoWindow.open(map, marker);
         });

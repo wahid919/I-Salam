@@ -111,6 +111,7 @@ $config = [
                 'program' => 'home/program',
                 'news' => 'home/news',
                 'about' => 'home/about',
+                'detail-berita' => 'home/detail-berita',
 
                 //pembayaran
                 'pembayaran/all' => '/pembayaran/all',
