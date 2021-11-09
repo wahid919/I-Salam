@@ -12,6 +12,7 @@ use app\models\Pendanaan;
 use app\models\Pembayaran;
 use app\models\Pencairan;
 use app\models\LoginForm;
+use app\models\Setting;
 use app\models\User;
 use kartik\mpdf\Pdf;
 use Yii;
@@ -33,14 +34,23 @@ class SiteController extends Controller
     public function actions()
     {
         return [
-            'error' => [
-                'class' => 'yii\web\ErrorAction',
-            ],
+            // 'error' => [
+            //     'class' => 'yii\web\ErrorAction',
+            // ],
             'captcha' => [
                 'class' => 'yii\captcha\CaptchaAction',
                 'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
             ],
         ];
+    }
+    public function actionError()
+    {
+        $exception = Yii::$app->errorHandler->exception;
+        $setting = Setting::find()->one();
+        if ($exception !== null) {
+            $this->layout = false;
+            return $this->render('errors', ['exception' => $exception,'setting' => $setting]);
+        }
     }
 
     public function actionIndex()
