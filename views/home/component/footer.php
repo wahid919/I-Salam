@@ -9,21 +9,7 @@ $icons = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->logo;
             <div class="col-sm-12 col-md-12 col-lg-4 footer__widget footer__widget-about">
               <div class="footer__widget-content">
                 <img src="<?= $icons ?>" alt="logo" class="footer-logo" style="width:40%;">
-                <p><?= $setting->tentang_kami ?></p>
-                <ul class="contact__list list-unstyled">
-                  <!-- <li><span>Email:</span><span>Optime@7oroof.com</span></li>
-                  <li><span>Phone:</span><span>+01234567890</span></li> -->
-                </ul>
-              </div>
-            </div><!-- /.col-lg-4 -->
-            <div class="col-sm-12 col-md-12 col-lg-4 footer__widget footer__widget-about">
-              <div class="footer__widget-content">
-                  <br>
-                  <br>
-                  <br>
-              <h5>Lebih Dekat Dengan Kami</h5>
-                  <!-- <h5>Lembaga Wakaf <?= $setting->nama_web ?></h5> -->
-                  <h2 class="heading__title" style="color:orange;">Tentang Kami</h2>
+                <!-- <p><?= $setting->tentang_kami ?></p> -->
                 <p>Ikuti Sosial Media Kami untuk Informasi lebih update dan Terbaru.</p>
                 <ul class="contact__list list-unstyled">
                     <center>
@@ -36,6 +22,20 @@ $icons = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->logo;
                         </div><!-- /.col-xl-2 -->
                     </center>
                 </ul>
+                <ul class="contact__list list-unstyled">
+                  <!-- <li><span>Email:</span><span>Optime@7oroof.com</span></li>
+                  <li><span>Phone:</span><span>+01234567890</span></li> -->
+                </ul>
+              </div>
+            </div><!-- /.col-lg-4 -->
+            <div class="col-sm-12 col-md-12 col-lg-4 footer__widget footer__widget-about">
+              <div class="footer__widget-content">
+                  <!-- <br>
+                  <br>
+                  <br> -->
+
+                  <h2 class="heading__title" style="color:orange;">Tentang Kami</h2>
+             <p><?= $setting->tentang_kami ?></p>
                 </div>
               </div>
            
