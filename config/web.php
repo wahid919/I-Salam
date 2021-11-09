@@ -108,6 +108,10 @@ $config = [
                 // 'pendanaan/all' => '/pendanaan/all',
 
                 
+                'program' => 'home/program',
+                'news' => 'home/news',
+                'about' => 'home/about',
+
                 //pembayaran
                 'pembayaran/all' => '/pembayaran/all',
                 'pembayaran/bayar' => 'pembayaran/bayar',
@@ -172,7 +176,7 @@ $config = [
         ]
         ],
     'params' => $params,
-    'defaultRoute' => "frontend",
+    'defaultRoute' => "home",
 ];
 
 if (YII_ENV_DEV) {

@@ -82,9 +82,9 @@
           <h3>Kategori Program</h3>
           <ul style="display: inline-block;margin-left: auto;margin-right: auto;">
             <ul class="list-group list-group-horizontal border-0 text-dark text-center">
-              <li class="list-group-item"><a href="<?=\Yii::$app->request->baseUrl . "/frontend/program/"?>"> Semua </a></li>
+              <li class="list-group-item"><a href="<?=\Yii::$app->request->baseUrl . "/home/program/"?>"> Semua </a></li>
               <?php foreach ($kategori_pendanaans as $kategori_pendanaan) {  ?>
-                <li class="list-group-item"><a href="<?=\Yii::$app->request->baseUrl . "/frontend/program?kategori=".$kategori_pendanaan->id?>"><?= $kategori_pendanaan->name ?> </a></li>
+                <li class="list-group-item"><a href="<?=\Yii::$app->request->baseUrl . "/home/program?kategori=".$kategori_pendanaan->id?>"><?= $kategori_pendanaan->name ?> </a></li>
               <?php } ?>
             </ul>
           </ul>
@@ -99,7 +99,7 @@
             $interval = $datetime1->diff($datetime2)->days;
             ?>
             <div class="col-lg-4 col-md-4 mt-3">
-              <!-- <a href="<?= \Yii::$app->request->baseUrl . "/frontend/detail-berita?id=" . $berita->slug ?>"> -->
+              <!-- <a href="<?= \Yii::$app->request->baseUrl . "/home/detail-berita?id=" . $berita->slug ?>"> -->
                 <div class="card">
                   <!-- <img src="" class="card-img-top" alt="..."> -->
                   <div style="background-image: url(<?= \Yii::$app->request->baseUrl . "/uploads/" . $pendanaan->poster ?>);background-size: cover;height: 200px;">

@@ -46,7 +46,7 @@
     <div class="mt-4 mb-4">
       <div class="container mt-4 mb-4">
 
-        <form action="<?= \Yii::$app->request->baseUrl . "/frontend/news" ?>" method="get">
+        <form action="<?= \Yii::$app->request->baseUrl . "/news" ?>" method="get">
           <div class="input-group mb-4">
             <input type="text" name="cari" class="form-control" placeholder="Cari Berita" aria-label="Cari Berita" aria-describedby="button-addon2">
             <div class="input-group-append">
@@ -58,9 +58,9 @@
           <h3>Kategori Berita</h3>
           <ul style="display: inline-block;margin-left: auto;margin-right: auto;">
             <ul class="list-group list-group-horizontal border-0 text-dark text-center">
-              <li class="list-group-item"><a href="<?=\Yii::$app->request->baseUrl . "/frontend/news/"?>"> Semua </a></li>
+              <li class="list-group-item"><a href="<?=\Yii::$app->request->baseUrl . "/news"?>"> Semua </a></li>
               <?php foreach ($categories as $kategori) {  ?>
-                <li class="list-group-item"><a href="<?=\Yii::$app->request->baseUrl . "/frontend/news?kategori=".$kategori->id?>"><?= $kategori->nama ?> </a></li>
+                <li class="list-group-item"><a href="<?=\Yii::$app->request->baseUrl . "/news?kategori=".$kategori->nama?>"><?= $kategori->nama ?> </a></li>
               <?php } ?>
             </ul>
           </ul>
@@ -69,7 +69,7 @@
         <div class="row">
           <?php foreach ($news as $berita) { ?>
             <div class="col-lg-4 col-md-4 mt-3">
-              <a href="<?= \Yii::$app->request->baseUrl . "/frontend/detail-berita?id=" . $berita->slug ?>">
+              <a href="<?= \Yii::$app->request->baseUrl . "/detail-berita?id=" . $berita->slug ?>">
                 <div class="card">
                   <!-- <img src="" class="card-img-top" alt="..."> -->
                   <div style="background-image: url(<?= \Yii::$app->request->baseUrl . "/uploads/berita/" . $berita->gambar ?>);background-size: cover;height: 200px;">

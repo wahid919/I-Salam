@@ -15,16 +15,16 @@ $icons = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->logo;
           <div class="collapse navbar-collapse" id="mainNavigation">
             <ul class="navbar-nav ml-auto">
             <li class="nav__item">
-                <a href="/isalam" class="nav__item-link active">HOME</a>
+                <a href="<?=Yii::$app->request->baseUrl?>" class="nav__item-link active">HOME</a>
               </li><!-- /.nav-item -->
               <li class="nav__item">
-                <a href="<?=Yii::$app->request->baseUrl . "/frontend/program/" ?>" class="nav__item-link">PROGRAM</a>
+                <a href="<?=Yii::$app->request->baseUrl . "/program" ?>" class="nav__item-link">PROGRAM</a>
               </li><!-- /.nav-item -->
               <li class="nav__item">
-                <a href="<?=Yii::$app->request->baseUrl . "/frontend/news/" ?>" class="nav__item-link">NEWS</a>
+                <a href="<?=Yii::$app->request->baseUrl . "/news" ?>" class="nav__item-link">NEWS</a>
               </li><!-- /.nav-item -->
               <li class="nav__item">
-                <a href="<?=Yii::$app->request->baseUrl . "/frontend/about/" ?>" class="nav__item-link">ABOUT US</a>
+                <a href="<?=Yii::$app->request->baseUrl . "/about" ?>" class="nav__item-link">ABOUT US</a>
               </li><!-- /.nav-item -->
             </ul><!-- /.navbar-nav -->
           </div><!-- /.navbar-collapse -->

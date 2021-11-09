@@ -26,7 +26,7 @@ use Midtrans\Snap;
 /**
  * This is the class for controller "BeritaController".
  */
-class FrontendController extends Controller
+class HomeController extends Controller
 {
     public function actionIndex()
     {
@@ -60,7 +60,7 @@ class FrontendController extends Controller
             } else {
                 Yii::$app->session->setFlash('error', "Data not saved.");
             }
-            return $this->redirect('frontend/index');
+            return $this->redirect('home/index');
         }
 
         return $this->render('index', [
@@ -110,7 +110,7 @@ class FrontendController extends Controller
         //     } else {
         //         Yii::$app->session->setFlash('error', "Data not saved.");
         //     }
-        //     return $this->redirect('frontend/checkout');
+        //     return $this->redirect('home/checkout');
         // }
 
         return $this->render('checkout', [
@@ -140,7 +140,9 @@ class FrontendController extends Controller
         }
         if(isset($_GET['kategori'])){
             $cat = $_GET['kategori'];
-            $news = Berita::find()->where(['kategori_berita_id' => $cat])->all();
+
+            $kategori = KategoriBerita::find()->where(['nama' => $cat])->one();
+            $news = Berita::find()->where(['kategori_berita_id' => $kategori->id])->all();
             // var_dump($news);die;
         }else{
             $news = Berita::find()->all();
@@ -159,7 +161,7 @@ class FrontendController extends Controller
             } else {
                 Yii::$app->session->setFlash('error', "Data not saved.");
             }
-            return $this->redirect('frontend/about_us');
+            return $this->redirect('home/about_us');
         }
         return $this->render('berita',[
             'setting' => $setting,
@@ -208,7 +210,7 @@ class FrontendController extends Controller
             } else {
                 Yii::$app->session->setFlash('error', "Data not saved.");
             }
-            return $this->redirect('frontend/about_us');
+            return $this->redirect('home/about_us');
         }
 
         return $this->render('about_us', [
@@ -248,7 +250,7 @@ class FrontendController extends Controller
     //         } else {
     //             Yii::$app->session->setFlash('error', "Data not saved.");
     //         }
-    //         return $this->redirect('frontend/news');
+    //         return $this->redirect('home/news');
     //     }
 
     //     return $this->render('news', [
@@ -307,7 +309,7 @@ class FrontendController extends Controller
             } else {
                 Yii::$app->session->setFlash('error', "Data not saved.");
             }
-            return $this->redirect('frontend/program');
+            return $this->redirect('home/program');
         }
 
         return $this->render('program', [
