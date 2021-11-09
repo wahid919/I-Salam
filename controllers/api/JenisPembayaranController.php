@@ -11,5 +11,15 @@ use yii\helpers\ArrayHelper;
 
 class JenisPembayaranController extends \yii\rest\ActiveController
 {
+    public function behaviors()
+    {
+        $parent = parent::behaviors();
+        $parent['authentication'] = [
+            "class" => "\app\components\CustomAuth",
+            "only" => ["create", "update", "delete","index"],
+        ];
+
+        return $parent;
+    }
 public $modelClass = 'app\models\JenisPembayaran';
 }

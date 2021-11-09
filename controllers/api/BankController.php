@@ -12,6 +12,16 @@ use yii\helpers\ArrayHelper;
 
 class BankController extends \yii\rest\ActiveController
 {
+    public function behaviors()
+    {
+        $parent = parent::behaviors();
+        $parent['authentication'] = [
+            "class" => "\app\components\CustomAuth",
+            "only" => ["create", "update", "delete","index","all"],
+        ];
+
+        return $parent;
+    }
 public $modelClass = 'app\models\Bank';
 
 protected function verbs()

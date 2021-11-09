@@ -12,6 +12,16 @@ use app\models\KategoriPendanaan;
 
 class KategoriPendanaanController extends \yii\rest\ActiveController
 {
+    public function behaviors()
+    {
+        $parent = parent::behaviors();
+        $parent['authentication'] = [
+            "class" => "\app\components\CustomAuth",
+            "only" => ["create", "update", "delete","index"],
+        ];
+
+        return $parent;
+    }
 public $modelClass = 'app\models\KategoriPendanaan';
 
 protected function verbs()
