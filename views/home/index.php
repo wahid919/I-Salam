@@ -381,7 +381,7 @@
 
       //  Variabel untuk menyimpan peta Roadmap
       var mapOptions = {
-        zoom: 15,
+        zoom: 5,
         mapTypeId: google.maps.MapTypeId.ROADMAP
       }
 
@@ -412,7 +412,9 @@
           map: map,
           position: lokasi
         });
-        map.fitBounds(bounds);
+        // map.fitBounds(bounds);
+        map.setCenter(bounds.getCenter());
+        map.setZoom(16);
         bindInfoWindow(marker, map, infoWindow, info);
       }
 

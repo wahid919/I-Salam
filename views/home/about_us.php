@@ -379,7 +379,9 @@
           map: map,
           position: lokasi
         });
-        map.fitBounds(bounds);
+        // map.fitBounds(bounds);
+        map.setCenter(bounds.getCenter());
+        map.setZoom(16);
         bindInfoWindow(marker, map, infoWindow, info);
       }
 
