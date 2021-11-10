@@ -10,18 +10,14 @@ $icons = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->logo;
               <div class="footer__widget-content">
                 <img src="<?= $icons ?>" alt="logo" class="footer-logo" style="width:40%;">
                 <!-- <p><?= $setting->tentang_kami ?></p> -->
-                <ul class="contact__list list-unstyled">
-                  <!-- <li><span>Email:</span><span>Optime@7oroof.com</span></li>
-                  <li><span>Phone:</span><span>+01234567890</span></li> -->
-                </ul>
+                <!-- <ul class="contact__list list-unstyled">
+                  <li><span>Email:</span><span>Optime@7oroof.com</span></li>
+                  <li><span>Phone:</span><span>+01234567890</span></li>
+                </ul> -->
               </div>
             </div><!-- /.col-lg-4 -->
             <div class="col-sm-12 col-md-12 col-lg-4 footer__widget footer__widget-about">
               <div class="footer__widget-content">
-                  <!-- <br>
-                  <br>
-                  <br> -->
-
                   <h2 class="heading__title" style="color:orange;">Tentang Kami</h2>
                   <p>Ikuti Sosial Media Kami untuk Informasi lebih update dan Terbaru.</p>
                 <ul class="contact__list list-unstyled">
@@ -40,7 +36,7 @@ $icons = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->logo;
            
               <div class="col-sm-12 col-md-12 col-lg-4 footer__widget footer__widget-about">
               <div class="footer__widget-content">
-              <div id="map-canvas" style="height: 450px; width: 100%"></div>
+              <div id="map-canvas" style="height: 400px; width: 100%"></div>
                 </div>
               </div>
            

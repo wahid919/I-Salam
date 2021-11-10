@@ -298,19 +298,6 @@ class HomeController extends Controller
         $kategori_pendanaans = KategoriPendanaan::find()->all();
         $count_program = Pendanaan::find()->count();
         $count_wakif = User::find()->where(['role_id'=>5])->count();
-        $model = new HubungiKami;
-
-
-        if ($model->load($_POST)) {
-            $model->status = 0;
-
-            if ($model->save()) {
-                Yii::$app->session->setFlash('success', "Data created successfully."); 
-            } else {
-                Yii::$app->session->setFlash('error', "Data not saved.");
-            }
-            return $this->redirect('home/program');
-        }
 
         return $this->render('program', [
             'setting' => $setting,
@@ -322,7 +309,6 @@ class HomeController extends Controller
             'icon' => $icon,
             'bg_login' => $bg_login,
             'bg' => $bg,
-            'model' => $model,
             'pagination' => $pagination
         ]);
     }
