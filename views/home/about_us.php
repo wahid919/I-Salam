@@ -48,7 +48,7 @@
 
       </div><!-- /.container -->
     </section><!-- /.Services -->
-    <section id="services" class="services pb-90">
+    <section id="services" class="services pb-90" style="margin-top: -15%;">
       <div class="container">
         <div class="row heading heading-2 mb-40">
           <div class="col-sm-12 col-md-12 col-lg-12">
@@ -61,6 +61,26 @@
           </div><!-- /.col-lg-5 -->
           <div class="col-sm-12 col-md-12 col-lg-6 ">
             <p class="heading__desc"><?= $setting->misi ?></p>
+          </div><!-- /.col-lg-6 -->
+        </div><!-- /.row -->
+
+
+      </div><!-- /.container -->
+    </section><!-- /.Services -->
+
+    <section id="services" class="services pb-90" style="margin-top: -15%;">
+      <div class="container">
+        <div class="row heading heading-2 mb-40">
+          <div class="col-sm-12 col-md-12 col-lg-12">
+            <!-- <span class="heading__subtitle" style="color:orange;">Tentang Kami</span> -->
+          </div><!-- /.col-lg-12 -->
+          <div class="col-sm-12 col-md-12 col-lg-6">
+            <h2 class="heading__title" style="color:orange;">Tentang Kami</h2>
+            <!-- <br> -->
+            <!-- <img src="<?= $icon ?>" class="logo" alt="logo" style="width:35%;"> -->
+          </div><!-- /.col-lg-5 -->
+          <div class="col-sm-12 col-md-12 col-lg-6 ">
+            <p class="heading__desc"><?= $setting->tentang_kami ?></p>
           </div><!-- /.col-lg-6 -->
         </div><!-- /.row -->
 
