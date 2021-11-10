@@ -5,9 +5,13 @@ $icons = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->logo;
 <header id="header" class="header header-transparent">
       <nav class="navbar navbar-expand-lg sticky-navbar">
         <div class="container">
-          <a class="navbar-brand" href="<?=Yii::$app->request->baseUrl?>">
+          <!-- <a class="navbar-brand" href="<?=Yii::$app->request->baseUrl?>">
             <img src="<?= $icons ?>" class="logo-light" alt="logo">
             <img src="<?= $icons ?>" class="logo-dark" alt="logo">
+          </a> -->
+          <a  href="<?=Yii::$app->request->baseUrl?>">
+            <img src="<?= $icons ?>" style="width:65px;height:65px; margin-left:7px;" class="logo-light" alt="logo">
+            <img src="<?= $icons ?>" style="width:65px;height:65px; margin-left:7px;" class="logo-dark" alt="logo">
           </a>
           <button class="navbar-toggler" type="button">
             <span class="menu-lines"><span></span></span>

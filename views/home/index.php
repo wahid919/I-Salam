@@ -35,7 +35,7 @@
                   <p class="slide__desc"><?= $setting->slogan_web ?></p>
                   <a href="<?= \Yii::$app->request->baseUrl . "/program" ?>" class="btn btn__primary btn__hover2 mr-30">GET NOW</a>
                   <a href="#requestQuoteTabs" class="btn btn__white">CONTACT US</a>
-                  <a href="<?=Yii::$app->request->baseUrl . "/home/unduh-file-wakaf" ?>" class="btn btn__white">Cara Ikut Wakaf</a>
+                  <a href="<?=Yii::$app->request->baseUrl . "/home/unduh-file-wakaf" ?>" class="btn btn__primary btn__hover2 mr-30">Cara Ikut Wakaf</a>
                 </div><!-- /.slide-content -->
               </div><!-- /.col-lg-8 -->
             </div><!-- /.row -->
