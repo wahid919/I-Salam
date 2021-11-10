@@ -328,4 +328,21 @@ class HomeController extends Controller
            throw new \yii\web\NotFoundHttpException("{$path} is not found!");
        }
    }
+   public function actionUnduhFileWakaf()
+   {
+   $model = Setting::find()->one();
+//    var_dump($model);die;
+   $file = $model->ikut_wakaf;
+   // $model->tanggal_received=date('Y-m-d H:i:s');
+   $path = Yii::getAlias("@app/web/uploads/setting/") . $file;
+   $arr = explode(".", $file);
+   $extension = end($arr);
+   $nama_file= "Cara Mengikuti Wakaf .".$extension;
+   
+       if (file_exists($path)) {
+           return Yii::$app->response->sendFile($path, $nama_file);
+       } else {
+           throw new \yii\web\NotFoundHttpException("{$path} is not found!");
+       }
+   }
 }

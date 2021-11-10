@@ -71,6 +71,22 @@ $this->title = 'Setting ' . $model->nama_web;
                return Html::img(\Yii::$app->request->BaseUrl.'/uploads/setting/'.$model->bg_pin,['width'=>100]);
              },
          ],
+         [
+            'attribute' => 'ikut_wakaf',
+            'header'=> 'Download Cara Ikut Wakaf',
+            'format' =>'raw',
+            'value' => function($model){
+                if($model->ikut_wakaf != null){
+                    return Html::a("<i class='fa fa-download'></i>".' Unduh Cara ikut wakaf', ["unduh", "id"=>$model->id], [
+                        "class"=>"btn btn-primary",
+                        "title"=>"Unduh File",
+                        "data-confirm" => "Apakah Anda akan mengunduh File ini ?",
+                    ]);
+                }else{
+                    return "Belum Upload File";
+                }
+            }
+        ],
         'link_download_apk',
         'link_download_apk_marketing',
         'nama_web',

@@ -168,6 +168,7 @@ class SettingController extends Controller
         $oldlogo = $model->logo;
         $oldlogin = $model->bg_login;
         $oldpin = $model->bg_pin;
+        $oldikut = $model->ikut_wakaf;
 
         if ($model->load($_POST)) {
             $logo = UploadedFile::getInstance($model, 'logo');
@@ -194,6 +195,32 @@ class SettingController extends Controller
                 }
             } else {
                 $model->logo = $oldlogo;
+            }
+
+            $ikut_wakaf = UploadedFile::getInstance($model, 'ikut_wakaf');
+            if ($ikut_wakaf != NULL) {
+                # store the source file name
+                $model->ikut_wakaf = $ikut_wakaf->name;
+                $arr = explode(".", $ikut_wakaf->name);
+                $extension = end($arr);
+
+                # generate a unique file name
+                $model->ikut_wakaf = Yii::$app->security->generateRandomString() . ".{$extension}";
+
+                # the path to save file
+                if (file_exists(Yii::getAlias("@app/web/uploads/setting/")) == false) {
+                    mkdir(Yii::getAlias("@app/web/uploads/setting/"), 0777, true);
+                }
+                $path = Yii::getAlias("@app/web/uploads/setting/") . $model->ikut_wakaf;
+                if ($oldikut != NULL) {
+
+                    $ikut_wakaf->saveAs($path);
+                    unlink(Yii::$app->basePath . '/web/uploads/setting/' . $oldikut);
+                } else {
+                    $ikut_wakaf->saveAs($path);
+                }
+            } else {
+                $model->ikut_wakaf = $oldikut;
             }
 
             $bg_login = UploadedFile::getInstance($model, 'bg_login');
@@ -247,7 +274,7 @@ class SettingController extends Controller
             } else {
                 $model->bg_pin = $oldpin;
             }
-            
+
             $model->save();
             return $this->redirect(Url::previous());
         } else {
@@ -288,6 +315,22 @@ class SettingController extends Controller
         }
     }
 
+    public function actionUnduh($id)
+    {
+        $model = $this->findModel($id);
+        $file = $model->ikut_wakaf;
+        // $model->tanggal_received=date('Y-m-d H:i:s');
+        $path = Yii::getAlias("@app/web/uploads/setting/") . $file;
+        $arr = explode(".", $file);
+        $extension = end($arr);
+        $nama_file = "Tata Cara ikut Wakaf ." . $extension;
+
+        if (file_exists($path)) {
+            return Yii::$app->response->sendFile($path, $nama_file);
+        } else {
+            throw new \yii\web\NotFoundHttpException("{$path} is not found!");
+        }
+    }
     /**
      * Finds the Setting model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.

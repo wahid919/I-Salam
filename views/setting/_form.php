@@ -255,7 +255,7 @@ use kartik\file\FileInput;
         </div>
 
         <div class="row">
-            <div class="col-sm-12 col-md-6 col-lg-4">
+            <div class="col-sm-12 col-md-6 col-lg-3">
                 <?= $form->field($model, 'logo', [
                     'template' => '
                                 {label}
@@ -282,7 +282,7 @@ use kartik\file\FileInput;
                     ],
                 ]); ?>
             </div>
-            <div class="col-sm-12 col-md-6 col-lg-4">
+            <div class="col-sm-12 col-md-6 col-lg-3">
                 <?= $form->field($model, 'bg_login', [
                     'template' => '
                                 {label}
@@ -309,7 +309,7 @@ use kartik\file\FileInput;
                     ],
                 ]); ?>
             </div>
-            <div class="col-sm-12 col-md-6 col-lg-4">
+            <div class="col-sm-12 col-md-6 col-lg-3">
                 <?= $form->field($model, 'bg_pin', [
                     'template' => '
                                 {label}
@@ -328,6 +328,33 @@ use kartik\file\FileInput;
                     'pluginOptions' => [
                         'allowedFileExtensions' => ['png', 'jpg', 'jpeg', 'pdf', 'doc', 'docx'],
                         'maxFileSize' => 6500,
+                        'dropZoneEnabled' => false,
+                        'showCaption' => true,
+                        'showRemove' => false,
+                        'showUpload' => false,
+                        'browseLabel' => 'Upload File',
+                    ],
+                ]); ?>
+            </div>
+            <div class="col-sm-12 col-md-6 col-lg-3">
+                <?= $form->field($model, 'ikut_wakaf', [
+                    'template' => '
+                                {label}
+                                {input}
+                                {error}
+                            ',
+                    'inputOptions' => [
+                        'class' => 'form-control'
+                    ],
+                    'labelOptions' => [
+                        'class' => 'control-label'
+                    ],
+                    'options' => ['tag' => false]
+                ])->widget(FileInput::classname(), [
+                    'options' => ['accept' => 'file/*'],
+                    'pluginOptions' => [
+                        'allowedFileExtensions' => ['png', 'jpg', 'jpeg', 'pdf', 'doc', 'docx'],
+                        'maxFileSize' => 9000,
                         'dropZoneEnabled' => false,
                         'showCaption' => true,
                         'showRemove' => false,

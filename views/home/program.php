@@ -87,7 +87,7 @@
                     <div class="row">
                     
                         <div class="col-sm-12 col-md-12 col-lg-12">
-                        <a href="../unduh-file-uraian/<?php echo $pendanaan->id ?>" class="btn btn__primary" style="background-color:orange;width:100%;height:100%;border:orange;">Download prospektur</a>
+                        <a href="<?=Yii::$app->request->baseUrl . "/home/unduh-file-uraian/".$pendanaan->id ?>" class="btn btn__primary" style="background-color:orange;width:100%;height:100%;border:orange;">Download prospektur</a>
                         </div>
                     </div>
                   </div>

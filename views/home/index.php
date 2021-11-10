@@ -33,8 +33,9 @@
                 <div class="slide__content">
                   <h2 class="slide__title"><?= $setting->judul_web ?></h2>
                   <p class="slide__desc"><?= $setting->slogan_web ?></p>
-                  <a href="#" class="btn btn__primary btn__hover2 mr-30">GET NOW</a>
+                  <a href="<?= \Yii::$app->request->baseUrl . "/program" ?>" class="btn btn__primary btn__hover2 mr-30">GET NOW</a>
                   <a href="#requestQuoteTabs" class="btn btn__white">CONTACT US</a>
+                  <a href="<?=Yii::$app->request->baseUrl . "/home/unduh-file-wakaf" ?>" class="btn btn__white">Cara Ikut Wakaf</a>
                 </div><!-- /.slide-content -->
               </div><!-- /.col-lg-8 -->
             </div><!-- /.row -->

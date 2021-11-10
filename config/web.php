@@ -112,6 +112,7 @@ $config = [
                 'news' => 'home/news',
                 'about' => 'home/about',
                 'detail-berita' => 'home/detail-berita',
+                'unduh-file-uraian' => 'home/unduh-file-uraian',
 
                 //pembayaran
                 'pembayaran/all' => '/pembayaran/all',
