@@ -14,12 +14,14 @@ use yii\filters\AccessControl;
 use dmstr\bootstrap\Tabs;
 use app\models\Action;
 use yii\web\UploadedFile;
+use app\components\UploadFile;
 
 /**
  * SettingController implements the CRUD actions for Setting model.
  */
 class SettingController extends Controller
 {
+    use UploadFile;
 
 
     /**
@@ -197,29 +199,39 @@ class SettingController extends Controller
                 $model->logo = $oldlogo;
             }
 
+            // if ($ikut_wakaf != NULL) {
+            //     # store the source file name
+            //     $model->ikut_wakaf = $ikut_wakaf->name;
+            //     $arr = explode(".", $ikut_wakaf->name);
+            //     $extension = end($arr);
+
+            //     # generate a unique file name
+            //     $model->ikut_wakaf = Yii::$app->security->generateRandomString() . ".{$extension}";
+
+            //     # the path to save file
+            //     if (file_exists(Yii::getAlias("@app/web/uploads/setting/")) == false) {
+            //         mkdir(Yii::getAlias("@app/web/uploads/setting/"), 0777, true);
+            //     }
+            //     $path = Yii::getAlias("@app/web/uploads/setting/") . $model->ikut_wakaf;
+            //     if ($oldikut != NULL) {
+
+            //         $ikut_wakaf->saveAs($path);
+            //         unlink(Yii::$app->basePath . '/web/uploads/setting/' . $oldikut);
+            //     } else {
+            //         $ikut_wakaf->saveAs($path);
+            //     }
+            // } else {
+            //     $model->ikut_wakaf = $oldikut;
+            // }
+
             $ikut_wakaf = UploadedFile::getInstance($model, 'ikut_wakaf');
-            if ($ikut_wakaf != NULL) {
-                # store the source file name
-                $model->ikut_wakaf = $ikut_wakaf->name;
-                $arr = explode(".", $ikut_wakaf->name);
-                $extension = end($arr);
-
-                # generate a unique file name
-                $model->ikut_wakaf = Yii::$app->security->generateRandomString() . ".{$extension}";
-
-                # the path to save file
-                if (file_exists(Yii::getAlias("@app/web/uploads/setting/")) == false) {
-                    mkdir(Yii::getAlias("@app/web/uploads/setting/"), 0777, true);
+            if ($ikut_wakaf) {
+                $response = $this->uploadImage($ikut_wakaf, "setting");
+                if ($response->success == false) {
+                    throw new HttpException(419, "Gambar gagal diunggah");
                 }
-                $path = Yii::getAlias("@app/web/uploads/setting/") . $model->ikut_wakaf;
-                if ($oldikut != NULL) {
-
-                    $ikut_wakaf->saveAs($path);
-                    unlink(Yii::$app->basePath . '/web/uploads/setting/' . $oldikut);
-                } else {
-                    $ikut_wakaf->saveAs($path);
-                }
-            } else {
+                $model->ikut_wakaf = $response->filename;
+            }else{
                 $model->ikut_wakaf = $oldikut;
             }
 

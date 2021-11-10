@@ -354,7 +354,7 @@ use kartik\file\FileInput;
                     'options' => ['accept' => 'file/*'],
                     'pluginOptions' => [
                         'allowedFileExtensions' => ['png', 'jpg', 'jpeg', 'pdf', 'doc', 'docx'],
-                        'maxFileSize' => 9000,
+                        'maxFileSize' => 6500,
                         'dropZoneEnabled' => false,
                         'showCaption' => true,
                         'showRemove' => false,
