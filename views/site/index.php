@@ -19,7 +19,7 @@ GROUP BY `tgl`")->queryAll();
 $daftartanggal = [];
 $total = [];
 // $a =[];
-$a=0;
+$a = 0;
 for ($i = 1; $i <= $tgl_akhir; $i++) {
   $tgl_terpilih = date("Y-m-d", strtotime(date("Y-m-$i")));
   $daftartanggal[] = Tanggal::toReadableDate($tgl_terpilih, FALSE);
@@ -41,77 +41,7 @@ for ($i = 1; $i <= $tgl_akhir; $i++) {
 <html>
 
 <head>
-  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-  <script type="text/javascript">
-    google.charts.load('current', {
-      'packages': ['corechart']
-    });
-    google.charts.setOnLoadCallback(drawChart);
 
-    function drawChart() {
-      var data = google.visualization.arrayToDataTable([
-        ['Tanggal', 'Nominal'],
-        <?php
-        foreach ($harian as $key => $row) {
-          $tgl = $row['tanggal_konfirmasi'];
-          $tgl_ex = explode(" ", $tgl);
-          $tgl_show = Tanggal::toReadableDates($tgl_ex[0]);
-          $nominal = $row['nominal'];
-          echo "['" . $tgl_show . "'," . $nominal . "],";
-        }
-
-
-        ?>
-      ]);
-
-      var options = {
-        title: 'Data Pendanaan',
-        hAxis: {
-          title: 'Tanggal',
-          titleTextStyle: {
-            color: '#333'
-          }
-        },
-        vAxis: {
-          minValue: 0
-        }
-      };
-
-      var chart = new google.visualization.AreaChart(document.getElementById('chart_div'));
-      chart.draw(data, options);
-    }
-  </script>
-  <script type="text/javascript">
-    google.charts.load("current", {
-      packages: ["corechart"]
-    });
-    google.charts.setOnLoadCallback(drawChart);
-
-    function drawChart() {
-      var data = google.visualization.arrayToDataTable([
-        ['Keterangan', 'Jumlah'],
-
-        <?php
-
-
-        echo "['Jumlah Pengguna Aktif'," . $userAll . "],";
-        echo "['Jumlah Pengguna Investor'," . $investor . "],";
-        echo "['Jumlah Pendanaan Diselesaikan'," . $countPendanaan . "]";
-
-
-        ?>
-      ]);
-
-
-      var options = {
-        title: 'Data User',
-        pieHole: 0.4,
-      };
-
-      var chart = new google.visualization.PieChart(document.getElementById('donutchart'));
-      chart.draw(data, options);
-    }
-  </script>
 </head>
 
 <body>
@@ -211,7 +141,7 @@ for ($i = 1; $i <= $tgl_akhir; $i++) {
                     <th>Penyaluran Aktif Saat Ini</th>
                   </tr>
                   <tr>
-                    <th>IDR 784.000.000</th>
+                    <th>Rp 784.000.000</th>
                   </tr>
                   <tr>
                     <th>Total Wakaf yang telah dibagikan</th>
@@ -242,7 +172,33 @@ for ($i = 1; $i <= $tgl_akhir; $i++) {
             <div class="row">
               <div class="col-md-9">
 
-                <div id="donutchart" style="width: 500px; height: 500px;"></div>
+                <canvas id='pieChart' width='400' height='150'></canvas>
+                <script src="<?= \Yii::$app->request->BaseUrl ?>/chart/chart.js"></script>
+                <script>
+                  var ctx = document.getElementById('pieChart').getContext('2d');
+                  const data = {
+  labels: [
+    'Jumlah Pengguna Aktif',
+    'Jumlah Investor',
+    'Jumlah Pendanaan Diselesaikan'
+  ],
+  datasets: [{
+    label: 'My First Dataset',
+    data: [<?=$userAll ?>, <?=$investor ?>, <?= $countPendanaan ?>],
+    backgroundColor: [
+      'rgb(255, 99, 132)',
+      'rgb(54, 162, 235)',
+      'rgb(255, 205, 86)'
+    ],
+    hoverOffset: 4
+  }]
+};
+                  var myChart = new Chart(ctx, {
+                    type: 'doughnut',
+                    data: data,
+
+                  });
+                </script>
               </div>
               <div class="col-md-3">
                 <table style="width: 100%;">
@@ -276,13 +232,3 @@ for ($i = 1; $i <= $tgl_akhir; $i++) {
 </body>
 
 </html>
-
-
-
-<?php
-function random_rgb()
-{
-  return 'rgb(' . rand(0, 255) . ',' . rand(0, 255) . ',' . rand(0, 255) . ')';
-}
-$random_color = random_rgb();
-?>
