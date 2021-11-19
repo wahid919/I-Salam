@@ -33,9 +33,13 @@
                 <div class="slide__content">
                   <h2 class="slide__title"><?= $setting->judul_web ?></h2>
                   <p class="slide__desc"><?= $setting->slogan_web ?></p>
-                  <a href="<?= \Yii::$app->request->baseUrl . "/program" ?>" class="btn btn__primary btn__hover2 mr-30">GET NOW</a>
-                  <a href="#requestQuoteTabs" class="btn btn__white">CONTACT US</a>
-                  <a href="<?=Yii::$app->request->baseUrl . "/home/unduh-file-wakaf" ?>" class="btn btn__primary btn__hover2 mr-30">Cara Ikut Wakaf</a>
+                  <div class="row">
+                    <div class="col-12">
+                      <a href="<?= \Yii::$app->request->baseUrl . "/program" ?>" class="btn btn__primary btn__hover2 mr-10">GET NOW</a>
+                      <a href="#requestQuoteTabs" class="btn btn__white btn__hover2 mr-10">CONTACT US</a>
+                      <a href="<?= Yii::$app->request->baseUrl . "/home/unduh-file-wakaf" ?>" class="btn btn__primary btn__hover2">Cara Ikut Wakaf</a>
+                    </div>
+                  </div>
                 </div><!-- /.slide-content -->
               </div><!-- /.col-lg-8 -->
             </div><!-- /.row -->
@@ -80,45 +84,99 @@
     =========================== -->
     <section id="services" class="services pb-90">
       <div class="container">
-        <div class="row heading heading-2 mb-40">
+        <div class="row heading heading-2 mb-40 pr-4 pl-4">
           <div class="col-sm-12 col-md-12 col-lg-12">
-            <!-- <span class="heading__subtitle" style="color:orange;">Tentang Kami</span> -->
           </div><!-- /.col-lg-12 -->
-          <div class="col-sm-12 col-md-12 col-lg-6">
-            <h2 class="heading__title" style="color:orange;">Tentang Kami</h2>
-            <!-- <br> -->
-            <img src="<?= $icon ?>" class="logo" alt="logo" style="width:35%;">
-          </div><!-- /.col-lg-5 -->
-          <div class="col-sm-12 col-md-12 col-lg-6 ">
-            <p class="heading__desc"><?= $setting->tentang_kami ?></p>
-          </div><!-- /.col-lg-6 -->
+          <h2 class="heading__title mx-auto pb-3" style="color:orange;font-size:3rem">Tentang Kami</h2>
+          <div class="row">
+            <div class="col-sm-12 col-md-12 col-lg-6 text-center">
+              <img src="<?= $icon ?>" class="logo" alt="logo" style="width:35%;">
+            </div><!-- /.col-lg-5 -->
+            <div class="col-sm-12 col-md-12 col-lg-6 ">
+              <p class="heading__desc"><?= $setting->tentang_kami ?></p>
+            </div><!-- /.col-lg-6 -->
+          </div>
         </div><!-- /.row -->
-        <center>
-          <h1>Lebih Dekat Dengan Kami</h1>
-        </center>
+
+
+        <h2 class="text-center" style="color:orange">Lebih Dekat Dengan Kami</h2>
         <div class="row text-center">
           <?php foreach ($organisasis as $organisasi) { ?>
-            <div class="col-sm-6 col-md-6 col-lg-4">
+            <!-- <div class="col-sm-6 col-md-4 col-lg-3 mx-auto">
               <div class="service-item">
                 <div class="service__icon"><a class="navbar-brand" href="#">
-                    <img src="<?= \Yii::$app->request->baseUrl . "/uploads/organisasi/" . $organisasi->foto; ?>" class="logo-light" alt="foto" width="50%;">
-
-                  </a></div>
+                    <img src="<?= \Yii::$app->request->baseUrl . "/uploads/organisasi/" . $organisasi->foto; ?>" class="logo-light" alt="foto" width="50%;"></a>
+                </div>
                 <div class="service__content">
                   <h4 class="service__title"><?= $organisasi->nama ?></h4>
-                  <h6 class="service__title"><?= $organisasi->jabatan ?></h6>
+                  <h6><?= $organisasi->jabatan ?></h6>
                   <p class="service__desc"><?= $organisasi->quotes ?></p>
-                  <!-- <a href="#" class="btn btn__white">
-                    <span>Read More</span><i class="icon-arrow-right"></i>
-                  </a> -->
                 </div>
-              </div><!-- /.service-item -->
-            </div><!-- /.col-lg-4 -->
+              </div>
+            </div> -->
           <?php } ?>
+
+          <div class="carousel owl-carousel carousel-arrows" data-slide="4" data-slide-md="2" data-slide-sm="1" data-autoplay="true" data-nav="true" data-dots="false" data-space="20" data-loop="true" data-speed="800">
+            <!-- fancybox item #1 -->
+            <?php foreach ($organisasis as $organisasi) { ?>
+              <div class="fancybox-item">
+                <div class="fancybox__content">
+                  <div class="col-12 mx-auto">
+                    <div class="service-item">
+                      <div class="team-img" style="background-image: url('<?= \Yii::$app->request->baseUrl . "/uploads/organisasi/" . $organisasi->foto; ?>')">
+                      </div>
+                      <div class="service__content">
+                        <h4 class="service__title"><?= $organisasi->nama ?></h4>
+                        <h6><?= $organisasi->jabatan ?></h6>
+                        <p class="service__desc"><?= $organisasi->quotes ?></p>
+                      </div>
+                    </div><!-- /.service-item -->
+                  </div><!-- /.col-lg-4 -->
+                </div><!-- /.fancybox-content -->
+              </div><!-- /.fancybox-item -->
+            <?php } ?>
+          </div><!-- /.carousel -->
         </div><!-- /.row -->
 
       </div><!-- /.container -->
     </section><!-- /.Services -->
+    <!-- ========================= 
+            Testimonial #1
+    =========================  -->
+    <section id="testimonial" class="testimonial testimonial-1 text-center pt-80 pb-70">
+      <div class="bg-img"><img src="<?= \Yii::$app->request->BaseUrl ?>/template/assets/images/backgrounds/2.png" alt="background"></div>
+      <div class="container">
+        <div class="row">
+          <div class="col-sm-12 col-md-12 col-lg-6 offset-lg-3">
+            <div class="heading mb-50">
+              <span class="heading__subtitle">What Peoples Say!</span>
+              <h2 class="heading__title">Testimonials</h2>
+            </div><!-- /.heading -->
+          </div><!-- /.col-lg-6 -->
+        </div><!-- /.row -->
+        <div class="row">
+          <div class="col-sm-12 col-md-12 col-lg-10 offset-lg-1">
+            <div class="carousel owl-carousel carousel-arrows carousel-dots" data-slide="1" data-slide-md="1" data-slide-sm="1" data-autoplay="true" data-nav="true" data-dots="true" data-space="0" data-loop="true" data-speed="800">
+              <!-- Testimonial #1 -->
+              <?php foreach ($testimonials as $testi) { ?>
+                <div class=" testimonial-item">
+                  <div class="testimonial__thumb">
+                    <img src="<?= \Yii::$app->request->BaseUrl . "/uploads/testimonials/" . $testi->gambar ?>" alt="author thumb">
+                  </div><!-- /.testimonial-thumb -->
+                  <div class="testimonial__content">
+                    <p class="testimonial__desc"><?= $testi->isi ?></p>
+                  </div><!-- /.testimonial-content -->
+                  <div class="testimonial__meta">
+                    <p><?= $testi->nama ?></p>
+                    <p class="testimonial__meta-desc"><?= $testi->jabatan ?></p>
+                  </div><!-- /.testimonial-meta -->
+                </div><!-- /. testimonial-item -->
+              <?php } ?>
+            </div>
+          </div><!-- /.col-lg-12 -->
+        </div><!-- /.row -->
+      </div><!-- /.container -->
+    </section><!-- /.testimonial1 -->
     <!-- =========================== 
       fancybox Carousel
     ============================= -->
@@ -199,10 +257,10 @@
                               <div class="form-group">
                                 <?= $form->field($model, 'nama', [
                                   'template' => '
-            {label}
-            {input}
-            {error}
-        ',
+                                      {label}
+                                      {input}
+                                      {error}
+                                  ',
                                   'inputOptions' => [
                                     'class' => 'form-control'
                                   ],
@@ -217,10 +275,10 @@
                               <div class="form-group">
                                 <?= $form->field($model, 'nomor_hp', [
                                   'template' => '
-            {label}
-            {input}
-            {error}
-        ',
+                                      {label}
+                                      {input}
+                                      {error}
+                                  ',
                                   'inputOptions' => [
                                     'class' => 'form-control'
                                   ],
@@ -236,10 +294,10 @@
                                 <?= // generated by schmunk42\giiant\generators\crud\providers\core\RelationProvider::activeField
                                 $form->field($model, 'tema_hubungi_kami_id', [
                                   'template' => '
-      {label}
-      {input}
-      {error}
-  ',
+                                      {label}
+                                      {input}
+                                      {error}
+                                  ',
                                   'inputOptions' => [
                                     'class' => 'form-control'
                                   ],
@@ -285,45 +343,7 @@
         </div><!-- /.row -->
       </div><!-- /.container -->
     </section><!-- /.Request Quote Tabs -->
-
-    <!-- ========================= 
-            Testimonial #1
-    =========================  -->
-    <section id="testimonial" class="testimonial testimonial-1 text-center pt-80 pb-70">
-      <div class="bg-img"><img src="<?= \Yii::$app->request->BaseUrl ?>/template/assets/images/backgrounds/2.png" alt="background"></div>
-      <div class="container">
-        <div class="row">
-          <div class="col-sm-12 col-md-12 col-lg-6 offset-lg-3">
-            <div class="heading mb-50">
-              <span class="heading__subtitle">What Peoples Say!</span>
-              <h2 class="heading__title">Testimonials</h2>
-            </div><!-- /.heading -->
-          </div><!-- /.col-lg-6 -->
-        </div><!-- /.row -->
-        <div class="row">
-          <div class="col-sm-12 col-md-12 col-lg-10 offset-lg-1">
-            <div class="carousel owl-carousel carousel-arrows carousel-dots" data-slide="1" data-slide-md="1" data-slide-sm="1" data-autoplay="true" data-nav="true" data-dots="true" data-space="0" data-loop="true" data-speed="800">
-              <!-- Testimonial #1 -->
-              <?php foreach ($testimonials as $testi) { ?>
-                <div class=" testimonial-item">
-                  <div class="testimonial__thumb">
-                    <img src="<?= \Yii::$app->request->BaseUrl . "/uploads/testimonials/" . $testi->gambar ?>" alt="author thumb">
-                  </div><!-- /.testimonial-thumb -->
-                  <div class="testimonial__content">
-                    <p class="testimonial__desc"><?= $testi->isi ?></p>
-                  </div><!-- /.testimonial-content -->
-                  <div class="testimonial__meta">
-                    <p><?= $testi->nama ?></p>
-                    <p class="testimonial__meta-desc"><?= $testi->jabatan ?></p>
-                  </div><!-- /.testimonial-meta -->
-                </div><!-- /. testimonial-item -->
-              <?php } ?>
-            </div>
-          </div><!-- /.col-lg-12 -->
-        </div><!-- /.row -->
-      </div><!-- /.container -->
-    </section><!-- /.testimonial1 -->
-
+    
     <!-- =====================
        Clients 1
     ======================== -->
@@ -336,23 +356,6 @@
         </div><!-- /.row -->
       </div><!-- /.container -->
     </section><!-- /.clients 1 -->
-
-    <!-- ======================
-           banner 3
-      ========================= -->
-
-    <!-- ======================
-      Blog Grid
-    ========================= -->
-
-    <!-- ========================= 
-            contact 1
-      =========================  -->
-
-
-    <!-- ========================
-            Footer
-    ========================== -->
 
     <?= $this->render('component/footer') ?>
 
@@ -422,7 +425,7 @@
       // Menampilkan informasi pada masing-masing marker yang diklik
       function bindInfoWindow(marker, map, infoWindow, html) {
         google.maps.event.addListener(marker, 'click', function() {
-          if (map.getZoom() > 16) map.setZoom(16); 
+          if (map.getZoom() > 16) map.setZoom(16);
           infoWindow.setContent(html);
           infoWindow.open(map, marker);
         });
