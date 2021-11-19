@@ -2,6 +2,15 @@
  $setting = app\models\Setting::find()->one();
 $icons = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->logo;
 ?>
+<style>
+  .navbar .nav__item .nav__item-link {
+    color: #282828;
+    line-height: 30px !important;
+    padding-left: 15px;
+    margin-left:-10px;
+;
+}
+</style>
 <header id="header" class="header header-transparent">
       <nav class="navbar navbar-expand-lg sticky-navbar">
         <div class="container">
@@ -24,7 +33,7 @@ $icons = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->logo;
               <li class="nav__item">
                 <a href="<?=Yii::$app->request->baseUrl . "/program" ?>" class="nav__item-link active" style="color: black;">PROGRAM</a>
               </li><!-- /.nav-item -->
-              <li class="nav__item">
+                <li class="nav__item">
                 <a href="<?=Yii::$app->request->baseUrl . "/news" ?>" class="nav__item-link" style="color: black;">NEWS</a>
               </li><!-- /.nav-item -->
               <li class="nav__item">
