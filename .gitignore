@@ -2,3 +2,4 @@
 web/uploads
 web/assets
 config
+config/db.php
