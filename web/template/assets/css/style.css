@@ -1430,21 +1430,21 @@ h6 {
 .btn-program:active,
 .btn-program:focus,
 .btn-program:hover {
-    background-color: transparent;
+    background-color: #ff5e14;
     color: #121c45;
 }
 
-.btn-program.btn__hover2:active,
-.btn-program.btn__hover2:focus,
-.btn-program.btn__hover2:hover {
-    background-color: #ffffff;
+.btn-program.btn-hover2:active,
+.btn-program.btn-hover2:focus,
+.btn-program.btn-hover2:hover {
+    background-color: orange;
     color: #ff5e14;
     border-color: #ffffff;
 }
 
-.btn-program.btn__hover3:active,
-.btn-program.btn__hover3:focus,
-.btn-program.btn__hover3:hover {
+.btn-program.btn-hover3:active,
+.btn-program.btn-hover3:focus,
+.btn-program.btn-hover3:hover {
     background-color: #121c45;
     color: #ffffff;
     border-color: #121c45;
