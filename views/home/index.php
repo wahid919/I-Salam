@@ -11,6 +11,12 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,500,700%7cPoppins:400,600,700&display=swap">
   <link rel="stylesheet" href="<?= \Yii::$app->request->BaseUrl ?>/template/assets/css/libraries.css" />
   <link rel="stylesheet" href="<?= \Yii::$app->request->BaseUrl ?>/template/assets/css/style.css" />
+  <style>
+    .bg-overlay-gradient-secondary-2:before {
+      background-image: url(<?= $bg_login ?>);
+      background-position: center;
+    }
+  </style>
 </head>
 
 <body>

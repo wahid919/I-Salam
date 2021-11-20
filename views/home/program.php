@@ -11,6 +11,12 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,500,700%7cPoppins:400,600,700&display=swap">
   <link rel="stylesheet" href="<?= \Yii::$app->request->BaseUrl ?>/template/assets/css/libraries.css" />
   <link rel="stylesheet" href="<?= \Yii::$app->request->BaseUrl ?>/template/assets/css/style.css" />
+  <style>
+    .bg-overlay-gradient-secondary-2:before {
+      background-image: url(<?= $bg_login ?>);
+      background-position: center;
+    }
+  </style>
 </head>
 
 <body>
@@ -118,132 +124,8 @@
           ]); ?>
         </div>
 
-        <?php /* 
-        <div class="row">
-          <h2 class="heading__title color-black">Kategori Program</h2>
-          <div class="col-sm-12 col-md-12 col-lg-6 offset-lg-3">
-            <div class="heading text-left mb-40">
-              <!-- <span class="heading__subtitle">Our Features</span> -->
-              <!-- <h2 class="heading__title color-black">PROGRAM KAMI</h2> -->
-              <!-- <p class="heading__desc">We continue to pursue that same vision in today's complex, uncertain world,
-                working every day to earn our customers’ trust!</p> -->
-            </div><!-- /.heading -->
-          </div><!-- /.col-lg-6 -->
-        </div><!-- /.row -->
-        <div class="row">
-          <div class="col-sm-12 col-md-12 col-lg-12">
-            <div class="carousel owl-carousel carousel-arrows" data-slide="4" data-slide-md="2" data-slide-sm="1" data-autoplay="true" data-nav="true" data-dots="false" data-space="20" data-loop="true" data-speed="800">
-              <!-- fancybox item #1 -->
-              <?php foreach ($kategori_pendanaans as $kategori_pendanaan) { ?>
-                <div class="fancybox-item">
-                  <div class="fancybox__icon">
-
-                  </div><!-- /.fancybox-icon -->
-                  <div class="fancybox__content">
-                    <h4 class="fancybox__title" style=" border-style: solid;border-width: thin;"><?= $kategori_pendanaan->name ?></h4>
-                    <!-- <p class="fancybox__desc">International supply chains involves challenging regulations.</p> -->
-                  </div><!-- /.fancybox-content -->
-                </div><!-- /.fancybox-item -->
-              <?php } ?>
-            </div><!-- /.carousel -->
-          </div><!-- /.col-lg-12 -->
-        </div><!-- /.row -->
-*/ ?>
       </div><!-- /.container -->
     </section><!-- /.Services -->
-    <!-- =========================== 
-      fancybox Carousel
-    ============================= -->
-
-    <?php /*
-    <section id="projectsCarousel" class="projects-carousel">
-      <div class="container">
-        <div class="row">
-          <div class="col-sm-12 col-md-12 col-lg-6 offset-lg-3">
-            <div class="heading text-center mb-50">
-              <h4>Program Berlangsung</h4>
-              <p class="heading__desc">Program Kami Yang Sedang Berlangsung:</p>
-            </div><!-- /.heading -->
-          </div><!-- /.col-lg-6 -->
-        </div><!-- /.row -->
-        <div class="row">
-          <div class="col-sm-12 col-md-12 col-lg-12">
-            <div class="carousel owl-carousel carousel-dots" data-slide="3" data-slide-md="2" data-slide-sm="1" data-autoplay="true" data-nav="false" data-dots="true" data-space="30" data-loop="true" data-speed="800">
-              <?php foreach ($pendanaans as $pendanaan) {
-                $nominal = \app\models\Pembayaran::find()->where(['pendanaan_id' => $pendanaan->id, 'status_id' => 6])->sum('nominal');
-
-                $datetime1 =  new Datetime($pendanaan->pendanaan_berakhir);
-                $datetime2 =  new Datetime(date("Y-m-d H:i:s"));
-                $interval = $datetime1->diff($datetime2)->days;
-
-
-              ?>
-                <div class="project-item">
-                  <div class="project__img">
-                    <img src="<?= \Yii::$app->request->baseUrl . "/uploads/poster/" . $pendanaan->poster; ?>" alt="<?= $pendanaan->nama_pendanaan ?>">
-                    <!-- <div class="project__cat">
-                    <a href="#"><?= $pendanaan->nama_pendanaan ?></a>
-                  </div> -->
-                    <!-- /.project-cat -->
-                  </div><!-- /.project-img -->
-                  <div class="project__content">
-                    <h4 class="project__title"><a href="#"><?= $pendanaan->nama_pendanaan ?></a></h4>
-                    <table>
-                      <tr>
-                        <th>Sudah Terkumpul</th>
-                        <th>Durasi</th>
-                      </tr>
-                      <tr>
-                        <td><?= \app\components\Angka::toReadableHarga($nominal, false)  ?></td>
-                        <td><?= $interval ?> Hari</td>
-                      </tr>
-                    </table>
-                    <!-- <p class="project__desc">We understand that data is the greatest asset when it comes to
-                    analyzing and optimizing your supply chain performance.</p> -->
-                   
-                </div><!-- /.project-content -->
-                <div class="row">
-                    <div class="col-sm-12 col-md-12 col-lg-4">
-                            <a href="#" class="btn btn__primary" style="background-color:orange; border:orange;">Install Aplikasi For Donate</a>
-                        </div>
-                        <div class="col-sm-12 col-md-12 col-lg-2"></div>
-                        <div class="col-sm-12 col-md-12 col-lg-4">
-                        <a href="../unduh-file-uraian/<?php echo $pendanaan->id ?>" class="btn btn__primary" style="background-color:orange; border:orange;">Download prospektur</a>
-                        </div>
-                    </div>
-                  </div>
-                </div><!-- /.project-item -->
-              <?php } ?>
-            </div><!-- /.carousel -->
-          </div><!-- /.col-lg-12 -->
-        </div><!-- /.row -->
-      </div><!-- /.container -->
-    </section><!-- /.projects-carousel -->
-    */ ?>
-    <!-- ========================
-        Request Quote Tabs
-    =========================== -->
-
-    <!-- ========================= 
-            Testimonial #1
-    =========================  -->
-
-    <!-- =====================
-       Clients 1
-    ======================== -->
-
-    <!-- ======================
-           banner 3
-      ========================= -->
-
-    <!-- ======================
-      Blog Grid
-    ========================= -->
-
-    <!-- ========================= 
-            contact 1
-      =========================  -->
-
 
     <!-- ========================
             Footer

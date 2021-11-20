@@ -11,6 +11,12 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,500,700%7cPoppins:400,600,700&display=swap">
   <link rel="stylesheet" href="<?= \Yii::$app->request->BaseUrl ?>/template/assets/css/libraries.css" />
   <link rel="stylesheet" href="<?= \Yii::$app->request->BaseUrl ?>/template/assets/css/style.css" />
+  <style>
+    .bg-overlay-gradient-secondary-2:before {
+      background-image: url(<?= $bg_login ?>);
+      background-position: center;
+    }
+  </style>
 </head>
 
 <body>
@@ -23,29 +29,38 @@
     <!-- ============================
         Slider
     ============================== -->
-   
-  <hr>
+
+    <hr>
     <div class="mt-4 mb-4">
       <div class="container mt-4 mb-4">
-
-        <form action="<?= \Yii::$app->request->baseUrl . "/news" ?>" method="get">
-          <div class="input-group mb-4">
-            <input type="text" name="cari" class="form-control" placeholder="Cari Berita" aria-label="Cari Berita" aria-describedby="button-addon2">
-            <div class="input-group-append">
-              <button class="btn btn-outline-secondary text-white" type=submit" id="cari" style="background-color:orange; border:orange;">Cari</button>
-            </div>
-          </div>
-        </form>
         <div class="text-center mt-4 mb-4">
           <h3>Kategori Berita</h3>
-          <ul style="margin-left: auto;margin-right: auto; overflow: auto">
-            <ul class="list-group list-group-horizontal border-0 text-dark text-center">
-              <li class="list-group-item"><a href="<?=\Yii::$app->request->baseUrl . "/news"?>"> Semua </a></li>
-              <?php foreach ($categories as $kategori) {  ?>
-                <li class="list-group-item"><a href="<?=\Yii::$app->request->baseUrl . "/news?kategori=".$kategori->nama?>"><?= $kategori->nama ?> </a></li>
-              <?php } ?>
-            </ul>
-          </ul>
+          <div class="carousel owl-carousel carousel-arrows" data-slide="4" data-slide-md="2" data-slide-sm="1" data-autoplay="true" data-nav="true" data-dots="false" data-space="20" data-loop="true" data-speed="800">
+            <div class="fancybox-item">
+              <div class="team-img bg-category" style="background-image: url(<?= \Yii::$app->request->baseUrl . "/uploads/mosque.jpg" ?>);">
+                <div class="overlay">
+                  <a class="text-white vertical-center" href="<?= \Yii::$app->request->baseUrl . "/home/news" ?>" style="font-size: 2rem;">Semua </a>
+                </div>
+              </div>
+            </div><!-- /.fancybox-item -->
+            <?php foreach ($categories as $kategori) {  ?>
+              <div class="fancybox-item">
+                <div class="team-img bg-category" style="background-image: url(<?= \Yii::$app->request->baseUrl . "/uploads/mosque.jpg" ?>);">
+                  <div class="overlay">
+                    <a class="text-white vertical-center" href="<?= \Yii::$app->request->baseUrl . "/news?kategori=" . $kategori->nama ?>" style="font-size: 2rem;"><?= $kategori->nama ?> </a>
+                  </div>
+                </div>
+              </div><!-- /.fancybox-item -->
+            <?php } ?>
+          </div>
+          <form action="<?= \Yii::$app->request->baseUrl . "/news" ?>" method="get">
+            <div class="input-group mb-4">
+              <input type="text" name="cari" class="form-control" placeholder="Cari Berita" aria-label="Cari Berita" aria-describedby="button-addon2">
+              <div class="input-group-append">
+                <button class="btn btn-outline-secondary text-white" type=submit" id="cari" style="background-color:orange; border:orange;">Cari</button>
+              </div>
+            </div>
+          </form>
         </div>
 
         <div class="row">
@@ -284,7 +299,7 @@
       // Menampilkan informasi pada masing-masing marker yang diklik
       function bindInfoWindow(marker, map, infoWindow, html) {
         google.maps.event.addListener(marker, 'click', function() {
-          if (map.getZoom() > 16) map.setZoom(16); 
+          if (map.getZoom() > 16) map.setZoom(16);
           infoWindow.setContent(html);
           infoWindow.open(map, marker);
         });
