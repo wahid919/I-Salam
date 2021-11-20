@@ -23,89 +23,88 @@
     <!-- ============================
         Slider
     ============================== -->
-    
+
     <!-- ========================
         Services
     =========================== -->
     <hr>
     <section id="services" class="services pb-90" style="margin-top: -10%;">
       <div class="container">
-      <div class="text-center mt-4 mb-4">
+        <div class="text-center mt-4 mb-4">
           <h3>Kategori Program</h3>
-          <!-- <ul style="display: inline-block;margin-left: auto;margin-right: auto;overflow: auto"> -->
-          <ul style="margin-left: auto;margin-right: auto;overflow: auto">
-            <ul class="list-group list-group-horizontal border-0 text-dark text-center">
-              <li class="list-group-item"><a href="<?=\Yii::$app->request->baseUrl . "/home/program/"?>"> Semua </a></li>
-              <?php foreach ($kategori_pendanaans as $kategori_pendanaan) {  ?>
-                <li class="list-group-item"><a href="<?=\Yii::$app->request->baseUrl . "/home/program?kategori=".$kategori_pendanaan->id?>"><?= $kategori_pendanaan->name ?> </a></li>
-              <?php } ?>
-            </ul>
+          <ul class="list-group list-group-horizontal border-0 text-dark mx-auto" style="width: fit-content">
+            <li class="list-group-item font-weight-bold border-0"><a class="text-dark" href="<?= \Yii::$app->request->baseUrl . "/home/program/" ?>"> Semua </a></li>
+            <?php foreach ($kategori_pendanaans as $kategori_pendanaan) {  ?>
+              <li class="list-group-item font-weight-bold border-0"><a class="text-dark" href="<?= \Yii::$app->request->baseUrl . "/home/program?kategori=" . $kategori_pendanaan->id ?>"><?= $kategori_pendanaan->name ?> </a></li>
+            <?php } ?>
+          </ul>
           </ul>
         </div>
 
         <div class="row">
-          <?php foreach ($pendanaans as $pendanaan) { 
-            
+          <?php foreach ($pendanaans as $pendanaan) {
+
             $nominal = \app\models\Pembayaran::find()->where(['pendanaan_id' => $pendanaan->id, 'status_id' => 6])->sum('nominal');
             $datetime1 =  new Datetime($pendanaan->pendanaan_berakhir);
             $datetime2 =  new Datetime(date("Y-m-d H:i:s"));
             $interval = $datetime1->diff($datetime2)->days;
-            ?>
+            $target = $pendanaan->nominal;
+            $nilai_sekarang = ($nominal / $target) * 100;
+          ?>
             <div class="col-lg-4 col-md-4 mt-3">
               <!-- <a href="<?= \Yii::$app->request->baseUrl . "/home/detail-berita?id=" . $berita->slug ?>"> -->
-                <div class="card">
-                  <!-- <img src="" class="card-img-top" alt="..."> -->
-                  <div style="background-image: url(<?= \Yii::$app->request->baseUrl . "/uploads/" . $pendanaan->poster ?>);background-size: cover;height: 200px;">
-
+              <div class="card">
+                <!-- <img src="" class="card-img-top" alt="..."> -->
+                <div class="team-img" style="background-image: url(<?= \Yii::$app->request->baseUrl . "/uploads/" . $pendanaan->poster ?>);border-radius: 15px;">
+                </div>
+                <div class="card-body">
+                  <h6 class="card-title"><?= $pendanaan->nama_pendanaan ?></h6>
+                  <div class="row">
+                    <div class="col-12">
+                      <div class="progress border border-dark">
+                        <div class="progress-bar bg-warning" role="progressbar" style="width: <?=$nilai_sekarang?>%" aria-valuenow="<?=$nilai_sekarang?>" aria-valuemin="0" aria-valuemax="100"></div>
+                      </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-6 text-left">
+                      Sudah Terkumpul
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-6 text-right">
+                      Durasi
+                    </div>
                   </div>
-                  <div class="card-body">
-                    <h6 class="card-title"><?= $pendanaan->nama_pendanaan ?></h6>
-                    <div class="row">
-                      <div class="col-lg-6 col-md-6 col-6 text-left">
-                        Sudah Terkumpul
-                      </div>
-                      <div class="col-lg-6 col-md-6 col-6 text-right">
-                        Durasi
-                      </div>
+                  <div class="row">
+                    <div class="col-lg-6 col-md-6 col-6 text-left font-weight-bold" style="color: #ffa500;">
+                      <?= \app\components\Angka::toReadableHarga($nominal, false)  ?><br>
                     </div>
-                    <div class="row">
-                      <div class="col-lg-6 col-md-6 col-6 text-left">
-                      <?= \app\components\Angka::toReadableHarga($nominal, false)  ?>
-                      </div>
-                      <div class="col-lg-6 col-md-6 col-6 text-right">
-                      <?= $interval;?> Hari
-                      </div>
+                    <div class="col-lg-6 col-md-6 col-6 text-right font-weight-bold" style="color: #ffa500;">
+                      <?= $interval; ?> Hari
                     </div>
-                    <hr>
-                    <div class="row">
+                  </div>
+                  <hr>
+                  <div class="row">
                     <div class="col-sm-12 col-md-12 col-lg-12">
-                            <a href="#" class="btn btn__primary" style="background-color:orange; width:100%;height:100%; border:orange;">Install Aplikasi Untuk Donasi</a>
-                        </div>
-                    
+                      <a href="#" class="btn btn-sm btn-program btn-block">Install Aplikasi Untuk Donasi</a>
                     </div>
-                <hr>
-                    <div class="row">
-                    
-                        <div class="col-sm-12 col-md-12 col-lg-12">
-                        <a href="<?=Yii::$app->request->baseUrl . "/home/unduh-file-uraian/".$pendanaan->id ?>" class="btn btn__primary" style="background-color:orange;width:100%;height:100%;border:orange;">Download prospektur</a>
-                        </div>
+                    <div class="col-sm-12 col-md-12 col-lg-12 pt-2">
+                      <a class="btn btn-sm btn-program btn-block" href="<?= Yii::$app->request->baseUrl . "/home/unduh-file-uraian/" . $pendanaan->id ?>">Download prospektur</a>
                     </div>
                   </div>
                 </div>
+              </div>
               </a>
             </div>
-          <?php } 
+          <?php }
           ?>
 
         </div>
         <hr>
         <div class='d-flex justify-content-center'>
-        <?php echo \yii\widgets\LinkPager::widget([
+          <?php echo \yii\widgets\LinkPager::widget([
             'pagination' => $pagination,
-        ]); ?>
+          ]); ?>
         </div>
-        
-<?php /* 
+
+        <?php /* 
         <div class="row">
           <h2 class="heading__title color-black">Kategori Program</h2>
           <div class="col-sm-12 col-md-12 col-lg-6 offset-lg-3">
@@ -141,7 +140,7 @@
     <!-- =========================== 
       fancybox Carousel
     ============================= -->
-    
+
     <?php /*
     <section id="projectsCarousel" class="projects-carousel">
       <div class="container">
@@ -300,7 +299,7 @@
       // Menampilkan informasi pada masing-masing marker yang diklik
       function bindInfoWindow(marker, map, infoWindow, html) {
         google.maps.event.addListener(marker, 'click', function() {
-          if (map.getZoom() > 16) map.setZoom(16); 
+          if (map.getZoom() > 16) map.setZoom(16);
           infoWindow.setContent(html);
           infoWindow.open(map, marker);
         });

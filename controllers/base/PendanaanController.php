@@ -207,7 +207,7 @@ class PendanaanController extends Controller
                $extension = end($arr);
 
                # generate a unique posters name
-               $model->poster = "poster/".Yii::$app->security->generateRandomString() . ".{$extension}";
+               $model->poster = "pendanaan/poster/".Yii::$app->security->generateRandomString() . ".{$extension}";
 
                # the path to save posters
                // unlink(Yii::getAlias("@app/web/uploads/pengajuan/") . $oldFile);
@@ -428,7 +428,7 @@ class PendanaanController extends Controller
             $extension = end($arr);
 
             # generate a unique file name
-            $model->foto = Yii::$app->security->generateRandomString() . ".{$extension}";
+            $model->foto = "pendanaan/".Yii::$app->security->generateRandomString() . ".{$extension}";
 
             # the path to save file
             if (file_exists(Yii::getAlias("@app/web/uploads/")) == false) {
@@ -533,7 +533,7 @@ class PendanaanController extends Controller
             $extension = end($arr);
 
             # generate a unique file name
-            $model->poster = "poster/".Yii::$app->security->generateRandomString() . ".{$extension}";
+            $model->poster = "pendanaan/poster/".Yii::$app->security->generateRandomString() . ".{$extension}";
 
             # the path to save file
             if (file_exists(Yii::getAlias("@app/web/uploads/")) == false) {

@@ -101,21 +101,6 @@
 
         <h2 class="text-center" style="color:orange">Lebih Dekat Dengan Kami</h2>
         <div class="row text-center">
-          <?php foreach ($organisasis as $organisasi) { ?>
-            <!-- <div class="col-sm-6 col-md-4 col-lg-3 mx-auto">
-              <div class="service-item">
-                <div class="service__icon"><a class="navbar-brand" href="#">
-                    <img src="<?= \Yii::$app->request->baseUrl . "/uploads/organisasi/" . $organisasi->foto; ?>" class="logo-light" alt="foto" width="50%;"></a>
-                </div>
-                <div class="service__content">
-                  <h4 class="service__title"><?= $organisasi->nama ?></h4>
-                  <h6><?= $organisasi->jabatan ?></h6>
-                  <p class="service__desc"><?= $organisasi->quotes ?></p>
-                </div>
-              </div>
-            </div> -->
-          <?php } ?>
-
           <div class="carousel owl-carousel carousel-arrows" data-slide="4" data-slide-md="2" data-slide-sm="1" data-autoplay="true" data-nav="true" data-dots="false" data-space="20" data-loop="true" data-speed="800">
             <!-- fancybox item #1 -->
             <?php foreach ($organisasis as $organisasi) { ?>
@@ -149,7 +134,7 @@
         <div class="row">
           <div class="col-sm-12 col-md-12 col-lg-6 offset-lg-3">
             <div class="heading mb-50">
-              <span class="heading__subtitle">What Peoples Say!</span>
+              <span class="heading__subtitle">Apa Kata Mereka?</span>
               <h2 class="heading__title">Testimonials</h2>
             </div><!-- /.heading -->
           </div><!-- /.col-lg-6 -->

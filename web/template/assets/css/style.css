@@ -1488,6 +1488,38 @@ h6 {
   width: 100%;
 }
 
+.btn-program {
+  background-color: orange;
+    border: orange;
+    width: auto;
+    height: auto;
+    border-radius: 7px;
+    color: #fff;
+}
+
+.btn-program:active,
+.btn-program:focus,
+.btn-program:hover {
+  background-color: transparent;
+  color: #121c45;
+}
+
+.btn-program.btn__hover2:active,
+.btn-program.btn__hover2:focus,
+.btn-program.btn__hover2:hover {
+  background-color: #ffffff;
+  color: #ff5e14;
+  border-color: #ffffff;
+}
+
+.btn-program.btn__hover3:active,
+.btn-program.btn__hover3:focus,
+.btn-program.btn__hover3:hover {
+  background-color: #121c45;
+  color: #ffffff;
+  border-color: #121c45;
+}
+
 /* Button Primary */
 .btn__primary {
   background-color: #ff5e14;
