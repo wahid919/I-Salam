@@ -173,8 +173,6 @@
             <div class="heading text-center mb-40">
               <!-- <span class="heading__subtitle">Our Features</span> -->
               <h2 class="heading__title color-white">LEMBAGA PENERIMA WAKAF KAMI</h2>
-              <!-- <p class="heading__desc">We continue to pursue that same vision in today's complex, uncertain world,
-                working every day to earn our customers’ trust!</p> -->
             </div><!-- /.heading -->
           </div><!-- /.col-lg-6 -->
         </div><!-- /.row -->
@@ -187,12 +185,9 @@
                   <div class="fancybox__icon">
                     <a class="navbar-brand" href="#">
                       <img src="<?= \Yii::$app->request->baseUrl . "/uploads/lembaga_penerima/" . $lembaga->foto; ?>" class="logo-light" alt="foto">
-
                     </a>
                   </div><!-- /.fancybox-icon -->
                   <div class="fancybox__content">
-                    <!-- <h4 class="fancybox__title">Transparent Pricing</h4> -->
-                    <!-- <p class="fancybox__desc">International supply chains involves challenging regulations.</p> -->
                   </div><!-- /.fancybox-content -->
                 </div><!-- /.fancybox-item -->
               <?php } ?>
@@ -216,8 +211,6 @@
           <div class="col-sm-12 col-md-12 col-lg-12">
             <div class="request__form">
               <nav class="nav nav-tabs">
-                <!-- <a class="nav__link active" data-toggle="tab" href="#quote">Request A Quote</a>
-                <a class="nav__link" data-toggle="tab" href="#track">Track & Trace</a> -->
               </nav>
               <div class="tab-content">
                 <div class="tab-pane fade show active" id="quote">
@@ -328,7 +321,7 @@
         </div><!-- /.row -->
       </div><!-- /.container -->
     </section><!-- /.Request Quote Tabs -->
-    
+
     <!-- =====================
        Clients 1
     ======================== -->

@@ -28,19 +28,33 @@
         Services
     =========================== -->
     <hr>
-    <section id="services" class="services pb-90" style="margin-top: -10%;">
+    <section id="services" class="services pb-90" style="padding-top: 10px;">
       <div class="container">
         <div class="text-center mt-4 mb-4">
-          <h3>Kategori Program</h3>
-          <ul class="list-group list-group-horizontal border-0 text-dark mx-auto" style="width: fit-content">
-            <li class="list-group-item font-weight-bold border-0"><a class="text-dark" href="<?= \Yii::$app->request->baseUrl . "/home/program/" ?>"> Semua </a></li>
+          <h4>Kategori Program</h4>
+          <div class="carousel owl-carousel carousel-arrows" data-slide="4" data-slide-md="2" data-slide-sm="1" data-autoplay="true" data-nav="true" data-dots="false" data-space="20" data-loop="true" data-speed="800">
+            <div class="fancybox-item">
+              <div class="team-img bg-category" style="background-image: url(<?= \Yii::$app->request->baseUrl . "/uploads/mosque.jpg" ?>);">
+                <div class="overlay">
+                  <a class="text-white vertical-center" href="<?= \Yii::$app->request->baseUrl . "/home/program/" ?>" style="font-size: 2rem;">Semua </a>
+                </div>
+              </div>
+            </div><!-- /.fancybox-item -->
             <?php foreach ($kategori_pendanaans as $kategori_pendanaan) {  ?>
-              <li class="list-group-item font-weight-bold border-0"><a class="text-dark" href="<?= \Yii::$app->request->baseUrl . "/home/program?kategori=" . $kategori_pendanaan->id ?>"><?= $kategori_pendanaan->name ?> </a></li>
+              <div class="fancybox-item">
+                <div class="team-img bg-category" style="background-image: url(<?= \Yii::$app->request->baseUrl . "/uploads/mosque.jpg" ?>);">
+                  <div class="overlay">
+                    <a class="text-white vertical-center" href="<?= \Yii::$app->request->baseUrl . "/home/program?kategori=" . $kategori_pendanaan->id ?>" style="font-size: 2rem;"><?= $kategori_pendanaan->name ?> </a>
+                  </div>
+                </div>
+              </div><!-- /.fancybox-item -->
             <?php } ?>
-          </ul>
-          </ul>
+          </div><!-- /.carousel -->
         </div>
 
+        <div class="text-center">
+          <h4>Program Berlangsung</h4>
+        </div>
         <div class="row">
           <?php foreach ($pendanaans as $pendanaan) {
 
@@ -51,7 +65,7 @@
             $target = $pendanaan->nominal;
             $nilai_sekarang = ($nominal / $target) * 100;
           ?>
-            <div class="col-lg-4 col-md-4 mt-3">
+            <div class="col-lg-4 col-md-6 mt-3">
               <!-- <a href="<?= \Yii::$app->request->baseUrl . "/home/detail-berita?id=" . $berita->slug ?>"> -->
               <div class="card">
                 <!-- <img src="" class="card-img-top" alt="..."> -->
@@ -62,7 +76,7 @@
                   <div class="row">
                     <div class="col-12">
                       <div class="progress border border-dark">
-                        <div class="progress-bar bg-warning" role="progressbar" style="width: <?=$nilai_sekarang?>%" aria-valuenow="<?=$nilai_sekarang?>" aria-valuemin="0" aria-valuemax="100"></div>
+                        <div class="progress-bar bg-warning" role="progressbar" style="width: <?= $nilai_sekarang ?>%" aria-valuenow="<?= $nilai_sekarang ?>" aria-valuemin="0" aria-valuemax="100"></div>
                       </div>
                     </div>
                     <div class="col-lg-6 col-md-6 col-6 text-left">
