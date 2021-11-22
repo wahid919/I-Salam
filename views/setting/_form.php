@@ -233,22 +233,6 @@ use kartik\file\FileInput;
                 ])->textarea(['rows' => 4]) ?>
             </div>
             <div class="col-sm-12 col-md-12 col-lg-12">
-                <?= $form->field($model, 'tentang_kami', [
-                    'template' => '
-                        {label}
-                        {input}
-                        {error}
-                    ',
-                    'inputOptions' => [
-                        'class' => 'form-control'
-                    ],
-                    'labelOptions' => [
-                        'class' => 'control-label'
-                    ],
-                    'options' => ['tag' => false]
-                ])->textarea(['rows' => 8]) ?>
-            </div>
-            <div class="col-sm-12 col-md-12 col-lg-12">
                 <?= $form->field($model, 'foto_tentang_kami', [
                     'template' => '
                                 {label}
@@ -274,6 +258,22 @@ use kartik\file\FileInput;
                         'browseLabel' => 'Upload File',
                     ],
                 ]); ?>
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                <?= $form->field($model, 'tentang_kami', [
+                    'template' => '
+                        {label}
+                        {input}
+                        {error}
+                    ',
+                    'inputOptions' => [
+                        'class' => 'form-control'
+                    ],
+                    'labelOptions' => [
+                        'class' => 'control-label'
+                    ],
+                    'options' => ['tag' => false]
+                ])->textarea(['rows' => 8]) ?>
             </div>
         </div>
 
