@@ -11,12 +11,6 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,500,700%7cPoppins:400,600,700&display=swap">
   <link rel="stylesheet" href="<?= \Yii::$app->request->BaseUrl ?>/template/assets/css/libraries.css" />
   <link rel="stylesheet" href="<?= \Yii::$app->request->BaseUrl ?>/template/assets/css/style.css" />
-  <style>
-    .bg-overlay-gradient-secondary-2:before {
-      background-image: url(<?= $bg_login ?>);
-      background-position: center;
-    }
-  </style>
 </head>
 
 <body>
@@ -54,7 +48,7 @@
       </div><!-- /.carousel -->
     </section><!-- /.slider -->
 
-    <div class="container" style="margin-top: 5%;">
+    <div class="container pb-4" style="margin-top: 5%;">
       <div class="row">
         <div class="col-12 mx-auto">
           <div class="card" style="border: 1px solid rgb(0 0 0 / 80%);border-radius: 1.5rem;">
@@ -88,23 +82,26 @@
     <!-- ========================
         Services
     =========================== -->
+    <section class="fancybox-layout4 pt-4 mt-4" style="padding-bottom:1rem">
+      <div class="about-us" style="background-image: url('<?= $bg_login ?>');">
+        <div class="about-us-overlay"></div>
+      </div>
+      <div class="container">
+        <div class="row">
+          <div class="col-sm-12 col-md-12 col-lg-6 ">
+            <h3 class="heading__title mx-auto pb-3" style="color:orange;font-size:2rem;line-height: 1">Tentang Kami</h3>
+            <h5><?= $setting->judul_tentang_kami ?></h5>
+            <p class="heading__desc text-dark"><?= $setting->tentang_kami ?></p>
+          </div><!-- /.col-lg-6 -->
+          <div class="col-sm-12 col-md-12 col-lg-6 text-center d-none d-lg-block">
+            <img src="<?= \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->foto_tentang_kami ?>" class="logo" alt="logo" style="top: -12%;width: 50%;position: absolute;">
+          </div><!-- /.col-lg-5 -->
+        </div><!-- /.row -->
+      </div><!-- /.container -->
+    </section><!-- /.fancybox Carousel -->
+
     <section id="services" class="services pb-90">
       <div class="container">
-        <div class="row heading heading-2 mb-40 pr-4 pl-4">
-          <div class="col-sm-12 col-md-12 col-lg-12">
-          </div><!-- /.col-lg-12 -->
-          <h2 class="heading__title mx-auto pb-3" style="color:orange;font-size:3rem">Tentang Kami</h2>
-          <div class="row">
-            <div class="col-sm-12 col-md-12 col-lg-6 text-center">
-              <img src="<?= $icon ?>" class="logo" alt="logo" style="width:35%;">
-            </div><!-- /.col-lg-5 -->
-            <div class="col-sm-12 col-md-12 col-lg-6 ">
-              <p class="heading__desc"><?= $setting->tentang_kami ?></p>
-            </div><!-- /.col-lg-6 -->
-          </div>
-        </div><!-- /.row -->
-
-
         <h2 class="text-center" style="color:orange">Lebih Dekat Dengan Kami</h2>
         <div class="row text-center">
           <div class="carousel owl-carousel carousel-arrows" data-slide="4" data-slide-md="2" data-slide-sm="1" data-autoplay="true" data-nav="true" data-dots="false" data-space="20" data-loop="true" data-speed="800">
@@ -141,7 +138,7 @@
           <div class="col-sm-12 col-md-12 col-lg-6 offset-lg-3">
             <div class="heading mb-50">
               <span class="heading__subtitle">Apa Kata Mereka?</span>
-              <h2 class="heading__title">Testimonials</h2>
+              <h2 class="heading__title">Testimoni</h2>
             </div><!-- /.heading -->
           </div><!-- /.col-lg-6 -->
         </div><!-- /.row -->
@@ -171,8 +168,10 @@
     <!-- =========================== 
       fancybox Carousel
     ============================= -->
-    <section id="fancyboxCarousel" class="fancybox-layout4 fancybox-carousel bg-overlay bg-overlay-gradient-secondary-2">
-      <div class="bg-img"><img src="<?= \Yii::$app->request->BaseUrl ?>/template/assets/images/backgrounds/5.jpg" alt="background"></div>
+    <section id="fancyboxCarousel" class="fancybox-layout4 fancybox-carousel">
+      <div class="call-us" style="background-image: url('<?= $bg_login ?>');">
+        <div class="call-us-overlay"></div>
+      </div>
       <div class="container">
         <div class="row">
           <div class="col-sm-12 col-md-12 col-lg-6 offset-lg-3">
@@ -224,7 +223,7 @@
                     <div class="request__form-body">
                       <div class="row">
 
-                        <div class="contact-form" style="margin-left: 10px;margin-right:10px;">
+                        <div class="contact-form ml-3 mr-3">
 
                           <?php $form = ActiveForm::begin(
                             [
@@ -301,7 +300,7 @@
                             <?php echo $form->errorSummary($model); ?>
 
                             <div class="col-12 text-center">
-                              <?= Html::submitButton('<i class="fa fa-save"></i> Simpan', ['class' => 'btn btn-primary']); ?>
+                              <?= Html::submitButton('<i class="fa fa-save"></i> Simpan', ['class' => 'btn btn__primary']); ?>
                             </div>
                           </div>
 

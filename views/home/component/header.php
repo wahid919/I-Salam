@@ -30,10 +30,10 @@ $icons = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->logo;
                 <a href="<?=Yii::$app->request->baseUrl . "/program" ?>" class="nav__item-link" style="color: black;">PROGRAM</a>
               </li><!-- /.nav-item -->
               <li class="nav__item">
-                <a href="<?=Yii::$app->request->baseUrl . "/news" ?>" class="nav__item-link" style="color: black;">NEWS</a>
+                <a href="<?=Yii::$app->request->baseUrl . "/news" ?>" class="nav__item-link" style="color: black;">BERITA</a>
               </li><!-- /.nav-item -->
               <li class="nav__item">
-                <a href="<?=Yii::$app->request->baseUrl . "/about" ?>" class="nav__item-link" style="color: black;">ABOUT US</a>
+                <a href="<?=Yii::$app->request->baseUrl . "/about" ?>" class="nav__item-link" style="color: black;">TENTANG KAMI</a>
               </li><!-- /.nav-item -->
             </ul><!-- /.navbar-nav -->
           </div><!-- /.navbar-collapse -->

@@ -4095,9 +4095,9 @@ textarea.form-control {
 }
 
 .request-quote-tabs .request__form .widget-download:after {
-    bottom: -220px;
-    right: -120px;
-    font-size: 400px;
+    bottom: 1px;
+    right: -25px;
+    font-size: 13rem;
 }
 
 .request-quote-tabs .request__form .widget-download p {
@@ -7302,7 +7302,7 @@ textarea.form-control {
 }
 
 .widget-download::after {
-    content: "";
+    content: "🕌";
     font-family: "icomoon";
     position: absolute;
     bottom: -278px;
@@ -7788,6 +7788,26 @@ textarea.form-control {
     background-position: center;
 }
 
+.call-us {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background-position: center;
+}
+
+.call-us-overlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: rgb(0 0 0 / 34%);
+}
+
 .bg-category {
     border-radius: 15px;
     max-height: 15vh;
@@ -7809,6 +7829,26 @@ textarea.form-control {
 .carousel-arrows .owl-nav .owl-prev,
 .carousel-arrows .owl-nav .owl-next {
     top: 38%;
+}
+
+.about-us {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background-position: center;
+}
+
+.about-us-overlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: rgb(255 255 255 / 79%);
 }
 
 

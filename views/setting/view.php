@@ -93,7 +93,15 @@ $this->title = 'Setting ' . $model->nama_web;
         'judul_web',
         'alamat:ntext',
         'slogan_web:ntext',
+        'judul_tentang_kami',
         'tentang_kami:ntext',
+        [
+            'attribute' =>'foto_tentang_kami',
+            'format' =>'html',
+            'value' =>function($model) {
+               return Html::img(\Yii::$app->request->BaseUrl.'/uploads/setting/'.$model->foto_tentang_kami,['width'=>100]);
+             },
+         ],
         'visi:ntext',
         'misi:ntext',
         [

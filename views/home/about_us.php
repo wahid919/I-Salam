@@ -18,7 +18,7 @@
     <!-- =========================
         Header
     =========================== -->
-    <?= $this->render('component/header2') ?>
+    <?= $this->render('component/header') ?>
 
     <!-- ============================
         Slider

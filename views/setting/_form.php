@@ -134,7 +134,7 @@ use kartik\file\FileInput;
             </div>
         </div>
         <div class="row">
-            <div class="col-sm-12 col-md-6 col-lg-6">
+            <div class="col-sm-12 col-md-4 col-lg-4">
                 <?= $form->field($model, 'link_download_apk', [
                     'template' => '
                         {label}
@@ -150,8 +150,24 @@ use kartik\file\FileInput;
                     'options' => ['tag' => false]
                 ])->textInput(['maxlength' => true]) ?>
             </div>
-            <div class="col-sm-12 col-md-6 col-lg-6">
+            <div class="col-sm-12 col-md-4 col-lg-4">
                 <?= $form->field($model, 'link_download_apk_marketing', [
+                    'template' => '
+                        {label}
+                        {input}
+                        {error}
+                    ',
+                    'inputOptions' => [
+                        'class' => 'form-control'
+                    ],
+                    'labelOptions' => [
+                        'class' => 'control-label'
+                    ],
+                    'options' => ['tag' => false]
+                ])->textInput(['maxlength' => true]) ?>
+            </div>
+            <div class="col-sm-12 col-md-4 col-lg-4">
+                <?= $form->field($model, 'judul_tentang_kami', [
                     'template' => '
                         {label}
                         {input}
@@ -215,6 +231,33 @@ use kartik\file\FileInput;
                     ],
                     'options' => ['tag' => false]
                 ])->textarea(['rows' => 4]) ?>
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                <?= $form->field($model, 'foto_tentang_kami', [
+                    'template' => '
+                                {label}
+                                {input}
+                                {error}
+                            ',
+                    'inputOptions' => [
+                        'class' => 'form-control'
+                    ],
+                    'labelOptions' => [
+                        'class' => 'control-label'
+                    ],
+                    'options' => ['tag' => false]
+                ])->widget(FileInput::classname(), [
+                    'options' => ['accept' => 'file/*'],
+                    'pluginOptions' => [
+                        'allowedFileExtensions' => ['png', 'jpg', 'jpeg', 'pdf', 'doc', 'docx'],
+                        'maxFileSize' => 6500,
+                        'dropZoneEnabled' => false,
+                        'showCaption' => true,
+                        'showRemove' => false,
+                        'showUpload' => false,
+                        'browseLabel' => 'Upload File',
+                    ],
+                ]); ?>
             </div>
         </div>
 
