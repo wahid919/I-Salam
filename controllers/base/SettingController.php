@@ -145,6 +145,25 @@ class SettingController extends Controller
                     $path = Yii::getAlias("@app/web/uploads/setting/") . $model->bg_pin;
                     $bg_pins->saveAs($path);
                 }
+
+                $foto_tentang_kamis = UploadedFile::getInstance($model, 'foto_tentang_kami');
+                if ($foto_tentang_kamis != NULL) {
+                    # store the source foto_tentang_kamis name
+                    $model->foto_tentang_kami = $foto_tentang_kamis->name;
+                    $arr = explode(".", $foto_tentang_kamis->name);
+                    $extension = end($arr);
+
+                    # generate a unique foto_tentang_kamis name
+                    $model->foto_tentang_kami = Yii::$app->security->generateRandomString() . ".{$extension}";
+
+                    # the path to save foto_tentang_kamis
+                    // unlink(Yii::getAlias("@app/web/uploads/pengajuan/") . $oldFile);
+                    if (file_exists(Yii::getAlias("@app/web/uploads/setting/")) == false) {
+                        mkdir(Yii::getAlias("@app/web/uploads/setting/"), 0777, true);
+                    }
+                    $path = Yii::getAlias("@app/web/uploads/setting/") . $model->foto_tentang_kami;
+                    $foto_tentang_kamis->saveAs($path);
+                }
                 if ($model->save()) {
                     return $this->redirect(['view', 'id' => $model->id]);
                 }
@@ -171,6 +190,7 @@ class SettingController extends Controller
         $oldlogin = $model->bg_login;
         $oldpin = $model->bg_pin;
         $oldikut = $model->ikut_wakaf;
+        $oldftk = $model->foto_tentang_kami;
 
         if ($model->load($_POST)) {
             $logo = UploadedFile::getInstance($model, 'logo');
@@ -285,6 +305,32 @@ class SettingController extends Controller
                 }
             } else {
                 $model->bg_pin = $oldpin;
+            }
+
+            $foto_tentang_kami = UploadedFile::getInstance($model, 'foto_tentang_kami');
+            if ($foto_tentang_kami != NULL) {
+                # store the source file name
+                $model->foto_tentang_kami = $foto_tentang_kami->name;
+                $arr = explode(".", $foto_tentang_kami->name);
+                $extension = end($arr);
+
+                # generate a unique file name
+                $model->foto_tentang_kami = Yii::$app->security->generateRandomString() . ".{$extension}";
+
+                # the path to save file
+                if (file_exists(Yii::getAlias("@app/web/uploads/setting/")) == false) {
+                    mkdir(Yii::getAlias("@app/web/uploads/setting/"), 0777, true);
+                }
+                $path = Yii::getAlias("@app/web/uploads/setting/") . $model->foto_tentang_kami;
+                if ($oldftk != NULL) {
+
+                    $foto_tentang_kami->saveAs($path);
+                    unlink(Yii::$app->basePath . '/web/uploads/setting/' . $oldftk);
+                } else {
+                    $foto_tentang_kami->saveAs($path);
+                }
+            } else {
+                $model->foto_tentang_kami = $oldftk;
             }
 
             $model->save();
