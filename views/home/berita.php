@@ -204,7 +204,7 @@
                             <?php echo $form->errorSummary($model); ?>
 
                             <div class="col-12 text-center">
-                              <?= Html::submitButton('<i class="fa fa-save"></i> Simpan', ['class' => 'btn btn-primary']); ?>
+                              <?= Html::submitButton('<i class="fa fa-save"></i> Simpan', ['class' => 'btn btn__primary']); ?>
                             </div>
                           </div>
 
