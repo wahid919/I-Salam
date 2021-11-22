@@ -22,6 +22,22 @@ use kartik\file\FileInput;
         box-shadow: 0 8px 4px 5px #eee;
     }
 </style>
+<script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+<script>
+    tinymce.init({
+        selector: 'textarea#setting-tentang_kami',
+        height : '400',
+    });
+    tinymce.init({
+        selector: 'textarea#setting-visi',
+        height : '400',
+    });
+    tinymce.init({
+        selector: 'textarea#setting-misi',
+        height : '400',
+    });
+</script>
+
 <div class="box box-info">
     <div class="box-body">
         <?php $form = ActiveForm::begin(
@@ -184,7 +200,7 @@ use kartik\file\FileInput;
             </div>
         </div>
         <div class="row">
-            <div class="col-sm-12 col-md-4 col-lg-4">
+            <div class="col-sm-12 col-md-6 col-lg-6">
                 <?= $form->field($model, 'alamat', [
                     'template' => '
                         {label}
@@ -200,7 +216,7 @@ use kartik\file\FileInput;
                     'options' => ['tag' => false]
                 ])->textarea(['rows' => 4]) ?>
             </div>
-            <div class="col-sm-12 col-md-4 col-lg-4">
+            <div class="col-sm-12 col-md-6 col-lg-6">
                 <?= $form->field($model, 'slogan_web', [
                     'template' => '
                         {label}
@@ -216,7 +232,7 @@ use kartik\file\FileInput;
                     'options' => ['tag' => false]
                 ])->textarea(['rows' => 4]) ?>
             </div>
-            <div class="col-sm-12 col-md-4 col-lg-4">
+            <div class="col-sm-12 col-md-12 col-lg-12">
                 <?= $form->field($model, 'tentang_kami', [
                     'template' => '
                         {label}
@@ -230,7 +246,7 @@ use kartik\file\FileInput;
                         'class' => 'control-label'
                     ],
                     'options' => ['tag' => false]
-                ])->textarea(['rows' => 4]) ?>
+                ])->textarea(['rows' => 8]) ?>
             </div>
             <div class="col-sm-12 col-md-12 col-lg-12">
                 <?= $form->field($model, 'foto_tentang_kami', [
@@ -262,8 +278,8 @@ use kartik\file\FileInput;
         </div>
 
         <div class="row">
-            
-            <div class="col-sm-12 col-md-6 col-lg-6">
+
+            <div class="col-sm-12 col-md-12 col-lg-12">
                 <?= $form->field($model, 'visi', [
                     'template' => '
                         {label}
@@ -279,7 +295,7 @@ use kartik\file\FileInput;
                     'options' => ['tag' => false]
                 ])->textarea(['rows' => 6]) ?>
             </div>
-            <div class="col-sm-12 col-md-6 col-lg-6">
+            <div class="col-sm-12 col-md-12 col-lg-12">
                 <?= $form->field($model, 'misi', [
                     'template' => '
                         {label}
@@ -407,12 +423,12 @@ use kartik\file\FileInput;
                 ]); ?>
             </div>
             <div class="col-md-12 col-lg-12 mb-12">
-        <b>Cari Lokasi</b> : <input id="searchTextField" class="form-control" type="text" size="50" style="text-align: left;width:357px;direction: ltr;margin-bottom:1rem;">
-        <div id="map_canvas"></div>
-    </div>
-    <?= $form->field($model, 'longitude', \app\components\Constant::COLUMN(2, false))->textInput(['type' => 'hidden', 'maxlength' => true]) ?>
-    <?= $form->field($model, 'latitude', \app\components\Constant::COLUMN(2, false))->textInput(['type' => 'hidden', 'maxlength' => true]) ?>
-     <div class="clearfix"></div>
+                <b>Cari Lokasi</b> : <input id="searchTextField" class="form-control" type="text" size="50" style="text-align: left;width:357px;direction: ltr;margin-bottom:1rem;">
+                <div id="map_canvas"></div>
+            </div>
+            <?= $form->field($model, 'longitude', \app\components\Constant::COLUMN(2, false))->textInput(['type' => 'hidden', 'maxlength' => true]) ?>
+            <?= $form->field($model, 'latitude', \app\components\Constant::COLUMN(2, false))->textInput(['type' => 'hidden', 'maxlength' => true]) ?>
+            <div class="clearfix"></div>
         </div>
 
         <?php echo $form->errorSummary($model); ?>
