@@ -423,7 +423,7 @@ use kartik\file\FileInput;
                 ]); ?>
             </div>
             <div class="col-md-12 col-lg-12 mb-12">
-                <b>Cari Lokasi</b> : <input id="searchTextField" class="form-control" type="text" size="50" style="text-align: left;width:357px;direction: ltr;margin-bottom:1rem;">
+                <b>Cari Lokasi</b> : <input id="searchTextField" class="form-control" type="text" size="50" style="text-align: left;width:100%;direction: ltr;margin-bottom:1rem;">
                 <div id="map_canvas"></div>
             </div>
             <?= $form->field($model, 'longitude', \app\components\Constant::COLUMN(2, false))->textInput(['type' => 'hidden', 'maxlength' => true]) ?>
