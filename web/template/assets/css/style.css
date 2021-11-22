@@ -7851,6 +7851,16 @@ textarea.form-control {
     background: rgb(255 255 255 / 79%);
 }
 
+.about-us-img {
+    margin: 0;
+    position: inherit;
+    top: 50%;
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+    padding-left: 60 px;
+    max-height: 600px;
+}
+
 
 /* Mobile Phones and tablets */
 

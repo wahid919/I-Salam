@@ -94,7 +94,7 @@
             <p class="heading__desc text-dark"><?= $setting->tentang_kami ?></p>
           </div><!-- /.col-lg-6 -->
           <div class="col-sm-12 col-md-12 col-lg-6 text-center d-none d-lg-block">
-            <img src="<?= \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->foto_tentang_kami ?>" class="logo" alt="logo" style="top: -12%;width: 50%;position: absolute;">
+            <img src="<?= \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->foto_tentang_kami ?>" class="about-us-img" alt="logo">
           </div><!-- /.col-lg-5 -->
         </div><!-- /.row -->
       </div><!-- /.container -->
