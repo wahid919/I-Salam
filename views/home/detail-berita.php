@@ -28,7 +28,7 @@ use yii\bootstrap\Html;
         Slider
     ============================== -->
     
-
+    <hr class="mt-0">
     <div class="mt-4 mb-4">
       <div class="container mt-4 mb-4">
         <div class="card">

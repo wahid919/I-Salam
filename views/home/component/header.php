@@ -26,10 +26,10 @@ $kategori_pendanaans = app\models\KategoriPendanaan::find()->all();
       <div class="collapse navbar-collapse" id="mainNavigation">
         <ul class="navbar-nav ml-auto">
           <li class="nav__item">
-            <a href="<?= Yii::$app->request->baseUrl ?>" class="nav__item-link" style="color: orange;">HOME</a>
+            <a href="<?= Yii::$app->request->baseUrl ?>" class="nav__item-link">HOME</a>
           </li><!-- /.nav-item -->
           <li class="nav__item with-dropdown">
-            <a href="<?= \Yii::$app->request->baseUrl . "/home/news/" ?>" class="dropdown-toggle nav__item-link dropdown-icon">
+            <a href="<?= \Yii::$app->request->baseUrl . "/home/program/" ?>" class="dropdown-toggle nav__item-link dropdown-icon">
             <div class="d-none d-lg-block">
               PROGRAM <i class="fa fa-angle-down"></i>
             </div>

@@ -11,6 +11,7 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,500,700%7cPoppins:400,600,700&display=swap">
   <link rel="stylesheet" href="<?= \Yii::$app->request->BaseUrl ?>/template/assets/css/libraries.css" />
   <link rel="stylesheet" href="<?= \Yii::$app->request->BaseUrl ?>/template/assets/css/style.css" />
+  <link rel="stylesheet" href="<?= \Yii::$app->request->BaseUrl ?>/template/assets/css/sweetalert2.min.css" />
   <style>
     .bg-overlay-gradient-secondary-2:before {
       background-image: url(<?= $bg_login ?>);
@@ -30,7 +31,7 @@
         Slider
     ============================== -->
 
-    <hr>
+    <hr class="mt-0">
     <div class="mt-4 mb-4">
       <div class="container mt-4 mb-4">
         <div class="text-center mt-4 mb-4">
@@ -87,22 +88,6 @@
 
     <div class="container pt-4">
       <div class="row">
-        <div class="col-12">
-          <?php if (\Yii::$app->session->getFlash('error') !== null) : ?>
-            <div class="alert alert-primary text-center mb-45" role="alert">
-              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true" class="text-white">&times;</span></button>
-              <?= \Yii::$app->session->getFlash('error') ?>
-            </div>
-          <?php endif; ?>
-          <?php if (\Yii::$app->session->getFlash('success') !== null) : ?>
-            <div class="alert alert-primary text-center mb-45" role="alert">
-              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true" class="text-white">&times;</span></button>
-              <?= \Yii::$app->session->getFlash('success') ?>
-            </div>
-          <?php endif; ?>
-        </div>
         <div class="col-sm-12 col-md-12 col-lg-6 ">
           <h3 class="heading__title mx-auto pb-3" style="color:orange;font-size:2rem;line-height: 1">Hubungi Kami</h3>
           <p class="font-weight-bold" style="color:orange">Ingin Menyapa? Ingin tahu lebih banyak tentang kami? Hubungi kami atau kiriman email kepada kami, dari kami akan segera menghubungi Anda Kembali</p>
@@ -221,9 +206,21 @@
   <script src="<?= \Yii::$app->request->BaseUrl ?>/template/assets/js/jquery-3.3.1.min.js"></script>
   <script src="<?= \Yii::$app->request->BaseUrl ?>/template/assets/js/plugins.js"></script>
   <script src="<?= \Yii::$app->request->BaseUrl ?>/template/assets/js/main.js"></script>
+  <script src="<?= \Yii::$app->request->BaseUrl ?>/template/assets/js/sweetalert2.all.min.js"></script>
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCV6HOHjE9XM8IbEaL6ZMZdW8e0tavsOL8&libraries=places&region=id&language=en&sensor=false"></script>
 
   <script>
+    $(document).ready(function() {
+      var success = "<?= \Yii::$app->session->getFlash('success') ?>";
+      var error = "<?= \Yii::$app->session->getFlash('error') ?>";
+      if (error !== "") {
+        Swal.fire("Peringatan!", "<?= \Yii::$app->session->getFlash('error') ?>", "error");
+      } 
+      if (success !== "") {
+        Swal.fire("Peringatan!", "<?= \Yii::$app->session->getFlash('success') ?>", "success");
+      }
+    });
+
     var marker;
 
     function initialize() {
