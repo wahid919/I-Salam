@@ -23,6 +23,7 @@ use app\models\Testimonials;
 use yii\data\ActiveDataProvider;
 use yii\data\Pagination;
 use Midtrans\Snap;
+
 /**
  * This is the class for controller "BeritaController".
  */
@@ -33,21 +34,21 @@ class HomeController extends Controller
 
         $this->layout = false;
         $params = array(
-          'transaction_details' => array(
-              'order_id' => rand(),
-              'gross_amount' => 10000,
-          )
+            'transaction_details' => array(
+                'order_id' => rand(),
+                'gross_amount' => 10000,
+            )
         );
-        
+
         // $snapToken = Snap::getSnapToken($params);
         $setting = Setting::find()->one();
         $icon = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->logo;
         $bg_login = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->bg_login;
         $bg = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->bg_pin;
-        $organisasis = Organisasi::find()->where(['flag'=>1])->all();
-        $lembagas = LembagaPenerima::find()->where(['flag'=>1])->all();
+        $organisasis = Organisasi::find()->where(['flag' => 1])->all();
+        $lembagas = LembagaPenerima::find()->where(['flag' => 1])->all();
         $count_program = Pendanaan::find()->count();
-        $count_wakif = User::find()->where(['role_id'=>5])->count();
+        $count_wakif = User::find()->where(['role_id' => 5])->count();
         $model = new HubungiKami;
         $testimonials = Testimonials::find()->all();
 
@@ -56,11 +57,11 @@ class HomeController extends Controller
             $model->status = 0;
 
             if ($model->save()) {
-                Yii::$app->session->setFlash('success', "Data created successfully."); 
+                Yii::$app->session->setFlash('success', "Data berhasil disimpan."); 
             } else {
-                Yii::$app->session->setFlash('error', "Data not saved.");
+                Yii::$app->session->setFlash('error', "Data tidak berhasil disimpan.");
             }
-            return $this->redirect('home/index');
+            return $this->redirect(['home/index']);
         }
 
         return $this->render('index', [
@@ -83,21 +84,21 @@ class HomeController extends Controller
 
         $this->layout = false;
         $params = array(
-          'transaction_details' => array(
-              'order_id' => rand(),
-              'gross_amount' => 10000,
-          )
+            'transaction_details' => array(
+                'order_id' => rand(),
+                'gross_amount' => 10000,
+            )
         );
-        
+
         // $snapToken = Snap::getSnapToken($params);
         $setting = Setting::find()->one();
         $icon = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->logo;
         $bg_login = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->bg_login;
         $bg = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->bg_pin;
-        $organisasis = Organisasi::find()->where(['flag'=>1])->all();
-        $lembagas = LembagaPenerima::find()->where(['flag'=>1])->all();
+        $organisasis = Organisasi::find()->where(['flag' => 1])->all();
+        $lembagas = LembagaPenerima::find()->where(['flag' => 1])->all();
         $count_program = Pendanaan::find()->count();
-        $count_wakif = User::find()->where(['role_id'=>5])->count();
+        $count_wakif = User::find()->where(['role_id' => 5])->count();
         $model = new HubungiKami;
         $testimonials = Testimonials::find()->all();
 
@@ -131,44 +132,46 @@ class HomeController extends Controller
     public function actionNews()
     {
         $this->layout = false;
-        if(isset($_GET['cari'])){
+        if (isset($_GET['cari'])) {
             $cari = $_GET['cari'];
-            $news = Berita::find()->where(['like', 'judul',$cari])->all();
+            $news = Berita::find()->where(['like', 'judul', $cari])->all();
             // var_dump($news);die;
-        }else{
+        } else {
             $news = Berita::find()->all();
         }
-        if(isset($_GET['kategori'])){
+        if (isset($_GET['kategori'])) {
             $cat = $_GET['kategori'];
 
             $kategori = KategoriBerita::find()->where(['nama' => $cat])->one();
             $news = Berita::find()->where(['kategori_berita_id' => $kategori->id])->all();
             // var_dump($news);die;
-        }else{
+        } else {
             $news = Berita::find()->all();
         }
         $categories = KategoriBerita::find()->all();
         $setting = Setting::find()->one();
         $bg_login = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->bg_login;
+        $icon = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->logo;
         $model = new HubungiKami;
-        
+
 
         if ($model->load($_POST)) {
             $model->status = 0;
 
             if ($model->save()) {
-                Yii::$app->session->setFlash('success', "Data created successfully."); 
+                Yii::$app->session->setFlash('success', "Data berhasil disimpan.");
             } else {
-                Yii::$app->session->setFlash('error', "Data not saved.");
+                Yii::$app->session->setFlash('error', "Data tidak berhasil disimpan.");
             }
-            return $this->redirect('home/about_us');
+            return $this->redirect(['home/news']);
         }
-        return $this->render('berita',[
+        return $this->render('berita', [
             'setting' => $setting,
             'categories' => $categories,
             'news' => $news,
             'model' => $model,
-            'bg_login' => $bg_login
+            'bg_login' => $bg_login,
+            'icon' => $icon
         ]);
     }
 
@@ -179,7 +182,7 @@ class HomeController extends Controller
         $berita = Berita::find()->where(['slug' => $id])->one();
         $setting = Setting::find()->one();
         $bg_login = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->bg_login;
-        return $this->render('detail-berita',[
+        return $this->render('detail-berita', [
             'setting' => $setting,
             'berita' => $berita,
             'bg_login' => $bg_login
@@ -195,10 +198,10 @@ class HomeController extends Controller
         $icon = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->logo;
         $bg_login = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->bg_login;
         $bg = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->bg_pin;
-        $organisasis = Organisasi::find()->where(['flag'=>1])->all();
-        $lembagas = LembagaPenerima::find()->where(['flag'=>1])->all();
+        $organisasis = Organisasi::find()->where(['flag' => 1])->all();
+        $lembagas = LembagaPenerima::find()->where(['flag' => 1])->all();
         $count_program = Pendanaan::find()->count();
-        $count_wakif = User::find()->where(['role_id'=>5])->count();
+        $count_wakif = User::find()->where(['role_id' => 5])->count();
         $model = new HubungiKami;
 
 
@@ -206,11 +209,11 @@ class HomeController extends Controller
             $model->status = 0;
 
             if ($model->save()) {
-                Yii::$app->session->setFlash('success', "Data created successfully."); 
+                Yii::$app->session->setFlash('success', "Data berhasil disimpan.");
             } else {
-                Yii::$app->session->setFlash('error', "Data not saved.");
+                Yii::$app->session->setFlash('error', "Data tidak berhasil disimpan.");
             }
-            return $this->redirect('home/about_us');
+            return $this->redirect(['home/about']);
         }
 
         return $this->render('about_us', [
@@ -277,27 +280,27 @@ class HomeController extends Controller
         $bg = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->bg_pin;
 
 
-        if(isset($_GET['kategori'])){
+        if (isset($_GET['kategori'])) {
             $kategori = $_GET['kategori'];
-
-            $query = Pendanaan::find()->where(['status_id' => 2,'kategori_pendanaan_id'=>$kategori]);
+            $get_id = KategoriPendanaan::find()->where(['name' => $kategori])->one();
+            $query = Pendanaan::find()->where(['status_id' => 2, 'kategori_pendanaan_id' => $get_id]);
             $count = $query->count();
-            $pagination = new Pagination(['totalCount' => $count, 'pageSize'=>9]);
+            $pagination = new Pagination(['totalCount' => $count, 'pageSize' => 9]);
             $pendanaans = $query->offset($pagination->offset)
                 ->limit($pagination->limit)
                 ->all();
-        }else{
+        } else {
             $query = Pendanaan::find()->where(['status_id' => 2]);
             $count = $query->count();
-            $pagination = new Pagination(['totalCount' => $count, 'pageSize'=>9]);          
+            $pagination = new Pagination(['totalCount' => $count, 'pageSize' => 9]);
             $pendanaans = $query->offset($pagination->offset)
                 ->limit($pagination->limit)
                 ->all();
         }
-        $organisasis = Organisasi::find()->where(['flag'=>1])->all();
+        $organisasis = Organisasi::find()->where(['flag' => 1])->all();
         $kategori_pendanaans = KategoriPendanaan::find()->all();
         $count_program = Pendanaan::find()->count();
-        $count_wakif = User::find()->where(['role_id'=>5])->count();
+        $count_wakif = User::find()->where(['role_id' => 5])->count();
 
         return $this->render('program', [
             'setting' => $setting,
@@ -313,36 +316,36 @@ class HomeController extends Controller
         ]);
     }
     public function actionUnduhFileUraian($id)
-   {
-   $model = Pendanaan::findOne(['id'=>$id]);
-   $file = $model->file_uraian;
-   // $model->tanggal_received=date('Y-m-d H:i:s');
-   $path = Yii::getAlias("@app/web/uploads/") . $file;
-   $arr = explode(".", $file);
-   $extension = end($arr);
-   $nama_file= "File Uraian  ".$model->nama_pendanaan.".".$extension;
-   
-       if (file_exists($path)) {
-           return Yii::$app->response->sendFile($path, $nama_file);
-       } else {
-           throw new \yii\web\NotFoundHttpException("{$path} is not found!");
-       }
-   }
-   public function actionUnduhFileWakaf()
-   {
-   $model = Setting::find()->one();
-//    var_dump($model);die;
-   $file = $model->ikut_wakaf;
-   // $model->tanggal_received=date('Y-m-d H:i:s');
-   $path = Yii::getAlias("@app/web/uploads/setting/") . $file;
-   $arr = explode(".", $file);
-   $extension = end($arr);
-   $nama_file= "Cara Mengikuti Wakaf .".$extension;
-   
-       if (file_exists($path)) {
-           return Yii::$app->response->sendFile($path, $nama_file);
-       } else {
-           throw new \yii\web\NotFoundHttpException("{$path} is not found!");
-       }
-   }
+    {
+        $model = Pendanaan::findOne(['id' => $id]);
+        $file = $model->file_uraian;
+        // $model->tanggal_received=date('Y-m-d H:i:s');
+        $path = Yii::getAlias("@app/web/uploads/") . $file;
+        $arr = explode(".", $file);
+        $extension = end($arr);
+        $nama_file = "File Uraian  " . $model->nama_pendanaan . "." . $extension;
+
+        if (file_exists($path)) {
+            return Yii::$app->response->sendFile($path, $nama_file);
+        } else {
+            throw new \yii\web\NotFoundHttpException("{$path} is not found!");
+        }
+    }
+    public function actionUnduhFileWakaf()
+    {
+        $model = Setting::find()->one();
+        //    var_dump($model);die;
+        $file = $model->ikut_wakaf;
+        // $model->tanggal_received=date('Y-m-d H:i:s');
+        $path = Yii::getAlias("@app/web/uploads/setting/") . $file;
+        $arr = explode(".", $file);
+        $extension = end($arr);
+        $nama_file = "Cara Mengikuti Wakaf ." . $extension;
+
+        if (file_exists($path)) {
+            return Yii::$app->response->sendFile($path, $nama_file);
+        } else {
+            throw new \yii\web\NotFoundHttpException("{$path} is not found!");
+        }
+    }
 }

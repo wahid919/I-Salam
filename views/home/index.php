@@ -51,7 +51,7 @@
     <div class="container pb-4" style="margin-top: 5%;">
       <div class="row">
         <div class="col-12 mx-auto">
-          <div class="card" style="border: 1px solid rgb(0 0 0 / 80%);border-radius: 1.5rem;">
+          <div class="card" style="border: 0px solid rgb(0 0 0 / 80%);border-radius: 1.5rem;">
             <div class="card-body">
               <div class="row">
                 <div class="col-4 text-center text-dark">
@@ -128,6 +128,35 @@
 
       </div><!-- /.container -->
     </section><!-- /.Services -->
+
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-12 col-md-12 col-lg-6 offset-lg-3">
+          <div class="heading text-center mb-40">
+            <h3 class="heading__title mx-auto pb-3" style="color:orange;font-size:2rem;line-height: 1">LEMBAGA PENERIMA WAKAF KAMI</h3>
+          </div><!-- /.heading -->
+        </div><!-- /.col-lg-6 -->
+      </div><!-- /.row -->
+      <div class="row">
+        <div class="col-sm-12 col-md-12 col-lg-12">
+          <div class="carousel owl-carousel carousel-arrows" data-slide="4" data-slide-md="2" data-slide-sm="1" data-autoplay="true" data-nav="true" data-dots="false" data-space="20" data-loop="true" data-speed="800">
+            <!-- fancybox item #1 -->
+            <?php foreach ($lembagas as $lembaga) { ?>
+              <div class="fancybox-item">
+                <div class="fancybox__icon">
+                  <a class="navbar-brand" href="#">
+                    <img src="<?= \Yii::$app->request->baseUrl . "/uploads/lembaga_penerima/" . $lembaga->foto; ?>" class="logo-light" alt="foto">
+                  </a>
+                </div><!-- /.fancybox-icon -->
+                <div class="fancybox__content">
+                </div><!-- /.fancybox-content -->
+              </div><!-- /.fancybox-item -->
+            <?php } ?>
+          </div><!-- /.carousel -->
+        </div><!-- /.col-lg-12 -->
+      </div><!-- /.row -->
+    </div><!-- /.container -->
+
     <!-- ========================= 
             Testimonial #1
     =========================  -->
@@ -165,167 +194,124 @@
         </div><!-- /.row -->
       </div><!-- /.container -->
     </section><!-- /.testimonial1 -->
-    <!-- =========================== 
-      fancybox Carousel
-    ============================= -->
-    <section id="fancyboxCarousel" class="fancybox-layout4 fancybox-carousel">
-      <div class="call-us" style="background-image: url('<?= $bg_login ?>');">
-        <div class="call-us-overlay"></div>
-      </div>
-      <div class="container">
-        <div class="row">
-          <div class="col-sm-12 col-md-12 col-lg-6 offset-lg-3">
-            <div class="heading text-center mb-40">
-              <!-- <span class="heading__subtitle">Our Features</span> -->
-              <h2 class="heading__title color-white">LEMBAGA PENERIMA WAKAF KAMI</h2>
-            </div><!-- /.heading -->
-          </div><!-- /.col-lg-6 -->
-        </div><!-- /.row -->
-        <div class="row">
-          <div class="col-sm-12 col-md-12 col-lg-12">
-            <div class="carousel owl-carousel carousel-arrows" data-slide="4" data-slide-md="2" data-slide-sm="1" data-autoplay="true" data-nav="true" data-dots="false" data-space="20" data-loop="true" data-speed="800">
-              <!-- fancybox item #1 -->
-              <?php foreach ($lembagas as $lembaga) { ?>
-                <div class="fancybox-item">
-                  <div class="fancybox__icon">
-                    <a class="navbar-brand" href="#">
-                      <img src="<?= \Yii::$app->request->baseUrl . "/uploads/lembaga_penerima/" . $lembaga->foto; ?>" class="logo-light" alt="foto">
-                    </a>
-                  </div><!-- /.fancybox-icon -->
-                  <div class="fancybox__content">
-                  </div><!-- /.fancybox-content -->
-                </div><!-- /.fancybox-item -->
-              <?php } ?>
-            </div><!-- /.carousel -->
-          </div><!-- /.col-lg-12 -->
-        </div><!-- /.row -->
-      </div><!-- /.container -->
-    </section><!-- /.fancybox Carousel -->
 
-    <!-- ========================
-        Request Quote Tabs
-    =========================== -->
-    <?php
 
-    use yii\bootstrap\ActiveForm;
-    use yii\bootstrap\Html;
-    ?>
-    <section id="requestQuoteTabs" class="request-quote request-quote-tabs p-0">
-      <div class="container">
-        <div class="row">
-          <div class="col-sm-12 col-md-12 col-lg-12">
-            <div class="request__form">
-              <nav class="nav nav-tabs">
-              </nav>
-              <div class="tab-content">
-                <div class="tab-pane fade show active" id="quote">
-                  <div class="request-quote-panel">
-                    <div class="request__form-body">
-                      <div class="row">
+    <div class="container">
+      <div class="row">
+        <div class="col-12 pb-4">
+          <?php if (\Yii::$app->session->getFlash('error') !== null) : ?>
+            <div class="alert alert-primary text-center mb-45" role="alert">
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true" class="text-white">&times;</span></button>
+              <?= \Yii::$app->session->getFlash('error') ?>
+            </div>
+          <?php endif; ?>
+          <?php if (\Yii::$app->session->getFlash('success') !== null) : ?>
+            <div class="alert alert-primary text-center mb-45" role="alert">
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true" class="text-white">&times;</span></button>
+              <?= \Yii::$app->session->getFlash('success') ?>
+            </div>
+          <?php endif; ?>
+        </div>
+        <div class="col-sm-12 col-md-12 col-lg-6 ">
+          <h3 class="heading__title mx-auto pb-3" style="color:orange;font-size:2rem;line-height: 1">Hubungi Kami</h3>
+          <p class="font-weight-bold" style="color:orange">Ingin Menyapa? Ingin tahu lebih banyak tentang kami? Hubungi kami atau kiriman email kepada kami, dari kami akan segera menghubungi Anda Kembali</p>
+          <div class="contact-form" style="margin-left: 10px;margin-right:10px;">
 
-                        <div class="contact-form ml-3 mr-3">
+            <?php
 
-                          <?php $form = ActiveForm::begin(
-                            [
-                              'id' => 'HubungiKami',
-                              'layout' => 'horizontal',
-                              'enableClientValidation' => true,
-                              'errorSummaryCssClass' => 'error-summary alert alert-error'
-                            ]
-                          );
-                          ?>
-                          <div class="form-row">
+            use yii\bootstrap\ActiveForm;
+            use yii\bootstrap\Html;
+            ?>
+            <?php $form = ActiveForm::begin(
+              [
+                'id' => 'HubungiKami',
+                'layout' => 'horizontal',
+                'enableClientValidation' => true,
+                'errorSummaryCssClass' => 'error-summary alert alert-error'
+              ]
+            );
+            ?>
+            <div class="form-row">
 
-                            <div class="col-sm-12 col-md-4">
-                              <div class="form-group">
-                                <?= $form->field($model, 'nama', [
-                                  'template' => '
+              <div class="col-12 col-md-12">
+                <div class="form-group">
+                  <?= $form->field($model, 'nama', [
+                    'template' => '
                                       {label}
                                       {input}
                                       {error}
                                   ',
-                                  'inputOptions' => [
-                                    'class' => 'form-control'
-                                  ],
-                                  'labelOptions' => [
-                                    'class' => ''
-                                  ],
-                                  'options' => ['tag' => false]
-                                ])->textInput(['maxlength' => true, 'placeholder' => 'Nama']) ?>
-                              </div>
-                            </div>
-                            <div class="col-sm-12 col-md-4">
-                              <div class="form-group">
-                                <?= $form->field($model, 'nomor_hp', [
-                                  'template' => '
+                    'inputOptions' => [
+                      'class' => 'form-control'
+                    ],
+                    'labelOptions' => [
+                      'class' => ''
+                    ],
+                    'options' => ['tag' => false]
+                  ])->textInput(['maxlength' => true, 'placeholder' => 'Nama']) ?>
+                </div>
+              </div>
+              <div class="col-12 col-md-12">
+                <div class="form-group">
+                  <?= $form->field($model, 'nomor_hp', [
+                    'template' => '
                                       {label}
                                       {input}
                                       {error}
                                   ',
-                                  'inputOptions' => [
-                                    'class' => 'form-control'
-                                  ],
-                                  'labelOptions' => [
-                                    'class' => ''
-                                  ],
-                                  'options' => ['tag' => false]
-                                ])->textInput(['maxlength' => true, 'placeholder' => 'Nomor Handphone']) ?>
-                              </div>
-                            </div>
-                            <div class="col-sm-12 col-md-4">
-                              <div class="form-group">
-                                <?= // generated by schmunk42\giiant\generators\crud\providers\core\RelationProvider::activeField
-                                $form->field($model, 'tema_hubungi_kami_id', [
-                                  'template' => '
+                    'inputOptions' => [
+                      'class' => 'form-control'
+                    ],
+                    'labelOptions' => [
+                      'class' => ''
+                    ],
+                    'options' => ['tag' => false]
+                  ])->textInput(['maxlength' => true, 'placeholder' => 'Nomor Handphone']) ?>
+                </div>
+              </div>
+              <div class="col-12 col-md-12">
+                <div class="form-group">
+                  <?= // generated by schmunk42\giiant\generators\crud\providers\core\RelationProvider::activeField
+                  $form->field($model, 'tema_hubungi_kami_id', [
+                    'template' => '
                                       {label}
                                       {input}
                                       {error}
                                   ',
-                                  'inputOptions' => [
-                                    'class' => 'form-control'
-                                  ],
-                                  'labelOptions' => [
-                                    'class' => ''
-                                  ],
-                                  'options' => ['tag' => false]
-                                ])->dropDownList(
-                                  \yii\helpers\ArrayHelper::map(app\models\TemaHubungiKami::find()->all(), 'id', 'nama_tema'),
-                                  [
-                                    'prompt' => 'Select',
-                                    'disabled' => (isset($relAttributes) && isset($relAttributes['tema_hubungi_kami_id'])),
-                                  ]
-                                ); ?>
-                              </div>
-                            </div>
-                            <?php echo $form->errorSummary($model); ?>
+                    'inputOptions' => [
+                      'class' => 'form-control'
+                    ],
+                    'labelOptions' => [
+                      'class' => ''
+                    ],
+                    'options' => ['tag' => false]
+                  ])->dropDownList(
+                    \yii\helpers\ArrayHelper::map(app\models\TemaHubungiKami::find()->all(), 'id', 'nama_tema'),
+                    [
+                      'prompt' => 'Select',
+                      'disabled' => (isset($relAttributes) && isset($relAttributes['tema_hubungi_kami_id'])),
+                    ]
+                  ); ?>
+                </div>
+              </div>
+              <?php echo $form->errorSummary($model); ?>
 
-                            <div class="col-12 text-center">
-                              <?= Html::submitButton('<i class="fa fa-save"></i> Simpan', ['class' => 'btn btn__primary']); ?>
-                            </div>
-                          </div>
+              <div class="col-12 text-center">
+                <?= Html::submitButton('<i class="fa fa-save"></i> Simpan', ['class' => 'btn btn__primary mb-4']); ?>
+              </div>
+            </div>
 
-                          <?php ActiveForm::end(); ?>
-                          <div class="contact-form-result"></div>
-                        </div>
-                      </div>
-                    </div><!-- /.request__form-body -->
-                    <div class="widget widget-download bg-theme" style="background-color: orange !important;">
-                      <div class="widget__content">
-                        <h5>HUBUNGI KAMI</h5>
-                        <p>Ingin Menyapa?Ingin tahu lebih banyak tentang kami?Hubungi kami atau kiriman email kepada kami,dari kami akan segera menghubungi Anda Kembali</p>
-                        <!-- <a href="#" class="btn btn__secondary btn__hover2 btn__block">
-                          <span>Download 2019 Brochure</span><i class="icon-arrow-right"></i>
-                        </a> -->
-                      </div><!-- /.widget__content -->
-                    </div><!-- /.widget-download -->
-                  </div><!-- /.request-quote-panel-->
-                </div><!-- /.tab -->
-              </div><!-- /.tab-content -->
-            </div><!-- /.request-form -->
-          </div><!-- /.col-lg-12 -->
-        </div><!-- /.row -->
-      </div><!-- /.container -->
-    </section><!-- /.Request Quote Tabs -->
+            <?php ActiveForm::end(); ?>
+            <div class="contact-form-result"></div>
+          </div>
+        </div><!-- /.col-lg-6 -->
+        <div class="col-sm-12 col-md-12 col-lg-6 text-center d-none d-lg-block">
+          <img src="<?= \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->foto_tentang_kami ?>" class="about-us-img" alt="logo">
+        </div><!-- /.col-lg-5 -->
+      </div><!-- /.row -->
+    </div><!-- /.container -->
 
     <!-- =====================
        Clients 1

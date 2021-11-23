@@ -46,7 +46,7 @@
               <div class="fancybox-item">
                 <div class="team-img bg-category" style="background-image: url(<?= \Yii::$app->request->baseUrl . "/uploads/mosque.jpg" ?>);">
                   <div class="overlay">
-                    <a class="text-white vertical-center" href="<?= \Yii::$app->request->baseUrl . "/home/program?kategori=" . $kategori_pendanaan->id ?>" style="font-size: 2rem;"><?= $kategori_pendanaan->name ?> </a>
+                    <a class="text-white vertical-center" href="<?= \Yii::$app->request->baseUrl . "/home/program?kategori=" . $kategori_pendanaan->name ?>" style="font-size: 2rem;"><?= $kategori_pendanaan->name ?> </a>
                   </div>
                 </div>
               </div><!-- /.fancybox-item -->

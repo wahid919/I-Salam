@@ -7861,6 +7861,38 @@ textarea.form-control {
     max-height: 600px;
 }
 
+.title-img {
+    width: 30%;
+    height: 10vh;
+    background-size: cover;
+    background-position: center;
+    border-radius: 15px;
+}
+
+.title-overlay {
+    position: absolute;
+    width: 29.3%;
+    height: 10vh;
+    background: rgb(245 159 0 / 70%);
+    border-radius: 15px;
+}
+
+.text-title {
+    font-size: 2rem;
+    margin-left: 39%;
+    line-height: 2;
+}
+
+.text-title2 {
+    font-size: 2rem;
+    margin-left: 34%;
+    line-height: 2;
+}
+
+.text-footer-about {
+    color: orange;
+}
+
 
 /* Mobile Phones and tablets */
 
@@ -7877,6 +7909,25 @@ textarea.form-control {
     .carousel-arrows .owl-nav .owl-prev,
     .carousel-arrows .owl-nav .owl-next {
         top: 40%;
+    }
+    .title-img {
+        height: 50px;
+        width: 50%;
+    }
+    .title-overlay {
+        height: 50px;
+        width: 47%;
+    }
+    .text-title {
+        font-size: 2rem;
+        margin-left: 35%;
+        line-height: 1.5;
+    }
+    .text-footer-about {
+        margin-top: 1.5rem!important;
+    }
+    .text-title2 {
+        margin-left: 29%;
     }
 }
 
@@ -7901,6 +7952,23 @@ textarea.form-control {
     }
     .vertical-center {
         top: 35%;
+    }
+    .title-img {
+        height: 60px;
+    }
+    .title-overlay {
+        height: 60px;
+    }
+    .text-title {
+        margin-left: 35%;
+    }
+    .text-footer-about {
+        font-size: revert;
+        margin-top: auto!important;
+    }
+    .text-title2 {
+        margin-left: 26%;
+        line-height: 1.5;
     }
 }
 
