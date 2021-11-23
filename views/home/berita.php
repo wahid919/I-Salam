@@ -35,12 +35,16 @@
       <div class="container mt-4 mb-4">
         <div class="text-center mt-4 mb-4">
           <h3>Kategori Berita</h3>
-          <ul class="list-group list-group-horizontal text-dark font-weight-bold mx-auto pb-3 pt-3" style="width: fit-content;">
-            <li class="list-group-item border-0"><a class="text-dark" href="<?= \Yii::$app->request->baseUrl . "/home/news/" ?>"> Semua </a></li>
-            <?php foreach ($categories as $kategori) {  ?>
-              <li class="list-group-item border-0"><a class="text-dark" href="<?= \Yii::$app->request->baseUrl . "/home/news?kategori=" . $kategori->nama ?>"><?= $kategori->nama ?> </a></li>
-            <?php } ?>
-          </ul>
+          <div class="table-responsive">
+            <table class="table table-borderless">
+              <tr>
+                <td><a class="text-dark font-weight-bold" href="<?= \Yii::$app->request->baseUrl . "/home/news" ?>">Semua </a></td>
+              <?php foreach ($categories as $kategori) {  ?>
+                <td><a class="text-dark font-weight-bold" href="<?= \Yii::$app->request->baseUrl . "/home/news?kategori=" . $kategori->nama ?>"><?= $kategori->nama ?> </a></td>
+                <?php } ?>
+              </tr>
+            </table>
+          </div>
           <form action="<?= \Yii::$app->request->baseUrl . "/news" ?>" method="get">
             <div class="input-group mb-4">
               <input type="text" name="cari" class="form-control" placeholder="Cari Berita" aria-label="Cari Berita" aria-describedby="button-addon2">
