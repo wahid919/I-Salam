@@ -45,6 +45,7 @@ $this->title = 'Setting ' . $model->nama_web;
 
     <div class="box box-info">
         <div class="box-body">
+        <div class="table-responsive">
             <?php $this->beginBlock('app\models\Setting'); ?>
 
             <?= DetailView::widget([
@@ -152,6 +153,7 @@ $this->title = 'Setting ' . $model->nama_web;
                  ]
     );
     ?>
+        </div>
         </div>
     </div>
 </div>

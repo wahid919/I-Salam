@@ -22,7 +22,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="box-body">
 
         <?php \yii\widgets\Pjax::begin(['id' => 'pjax-main', 'enableReplaceState' => false, 'linkSelector' => '#pjax-main ul.pagination a, th a', 'clientOptions' => ['pjax:success' => 'function(){alert("yo")}']]) ?>
-
+        <div class="table-responsive">
         <?= GridView::widget([
             'layout' => '{summary}{pager}{items}{pager}',
             'dataProvider' => $dataProvider,
@@ -49,5 +49,6 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
         ]); ?>
         <?php \yii\widgets\Pjax::end() ?>
+        </div>
     </div>
 </div>
