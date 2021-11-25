@@ -60,7 +60,7 @@ class UserController extends \yii\rest\ActiveController
         if (empty($username) || empty($password)) {
             $result = [
                 'status' => 'error',
-                'message' => 'username & password tidak boleh kosong!',
+                'message' => 'Email & password tidak boleh kosong!',
                 'data' => ["username" => $username, "password" => $password],
             ];
         } else {
@@ -85,12 +85,12 @@ class UserController extends \yii\rest\ActiveController
                     }
                 } else {
                     $result["success"] = false;
-                    $result["message"] = "username tidak ada";
+                    $result["message"] = "email tidak ada";
                     $result["data"] = null;
                 }
             } catch (\Exception $e) {
                 $result["success"] = false;
-                $result["message"] = "username atau password salah";
+                $result["message"] = "email atau password salah";
                 $result["data"] = $e->getMessage();
             }
         }
@@ -174,7 +174,7 @@ class UserController extends \yii\rest\ActiveController
         }
 
         if (filter_var($user->username, FILTER_VALIDATE_EMAIL) == false) {
-            return ['success' => false, 'message' => 'Username anda tidak valid', 'data' => null];
+            return ['success' => false, 'message' => 'email anda tidak valid', 'data' => null];
         }
 
         $check = User::findOne(['nomor_handphone' => $user->nomor_handphone]);
@@ -191,7 +191,7 @@ class UserController extends \yii\rest\ActiveController
         if ($user->username) {
             $cek = User::find()->where(['username' => $user->username])->asArray()->one();
             if (isset($cek)) {
-                return ['success' => false, 'message' => 'Username telah digunakan', 'data' => null];
+                return ['success' => false, 'message' => 'Email telah digunakan', 'data' => null];
             }
         }
 
