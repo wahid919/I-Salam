@@ -22,13 +22,13 @@ use yii\bootstrap\Html;
     <!-- =========================
         Header
     =========================== -->
-    <?= $this->render('component/header2') ?>
+    <?= $this->render('component/header') ?>
 
     <!-- ============================
         Slider
     ============================== -->
     
-
+    <hr class="mt-0">
     <div class="mt-4 mb-4">
       <div class="container mt-4 mb-4">
         <div class="card">
@@ -38,7 +38,7 @@ use yii\bootstrap\Html;
         </div>
         <h2 class="heading__title mt-4 mb-2" style="color:orange;"><?= $berita->judul ?></h2>
         <hr>
-        <p style="color:orange;font-size:1.5rem"><?= date("d-m-Y", strtotime($berita->created_at)); ?></p>
+        <p style="color:orange;font-size:1.5rem"><?= date("d M Y", strtotime($berita->created_at)); ?></p>
         <p style="color:orange;"><?= $berita->user->name ?></p>
         <p class="mt-4 text-dark text-justify">
         <?= $berita->isi ?>

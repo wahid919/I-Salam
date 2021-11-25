@@ -29,7 +29,7 @@
     <!-- ========================
         Services
     =========================== -->
-    <hr>
+    <hr class="mt-0">
     <section id="services" class="services pb-90" style="padding-top: 10px;">
       <div class="container">
         <div class="text-center mt-4 mb-4">
@@ -46,7 +46,7 @@
               <div class="fancybox-item">
                 <div class="team-img bg-category" style="background-image: url(<?= \Yii::$app->request->baseUrl . "/uploads/mosque.jpg" ?>);">
                   <div class="overlay">
-                    <a class="text-white vertical-center" href="<?= \Yii::$app->request->baseUrl . "/home/program?kategori=" . $kategori_pendanaan->id ?>" style="font-size: 2rem;"><?= $kategori_pendanaan->name ?> </a>
+                    <a class="text-white vertical-center" href="<?= \Yii::$app->request->baseUrl . "/home/program?kategori=" . $kategori_pendanaan->name ?>" style="font-size: 2rem;"><?= $kategori_pendanaan->name ?> </a>
                   </div>
                 </div>
               </div><!-- /.fancybox-item -->
@@ -69,7 +69,7 @@
           ?>
             <div class="col-lg-4 col-md-6 mt-3">
               <!-- <a href="<?= \Yii::$app->request->baseUrl . "/home/detail-berita?id=" . $berita->slug ?>"> -->
-              <div class="card">
+              <div class="card" style="border-radius: 15px;">
                 <!-- <img src="" class="card-img-top" alt="..."> -->
                 <div class="team-img" style="background-image: url(<?= \Yii::$app->request->baseUrl . "/uploads/" . $pendanaan->poster ?>);border-radius: 15px;">
                 </div>

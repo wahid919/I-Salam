@@ -11,6 +11,7 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,500,700%7cPoppins:400,600,700&display=swap">
   <link rel="stylesheet" href="<?= \Yii::$app->request->BaseUrl ?>/template/assets/css/libraries.css" />
   <link rel="stylesheet" href="<?= \Yii::$app->request->BaseUrl ?>/template/assets/css/style.css" />
+  <link rel="stylesheet" href="<?= \Yii::$app->request->BaseUrl ?>/template/assets/css/sweetalert2.min.css" />
   <style>
     .bg-overlay-gradient-secondary-2:before {
       background-image: url(<?= $bg_login ?>);
@@ -30,28 +31,20 @@
         Slider
     ============================== -->
 
-    <hr>
+    <hr class="mt-0">
     <div class="mt-4 mb-4">
       <div class="container mt-4 mb-4">
         <div class="text-center mt-4 mb-4">
           <h3>Kategori Berita</h3>
-          <div class="carousel owl-carousel carousel-arrows" data-slide="4" data-slide-md="2" data-slide-sm="1" data-autoplay="true" data-nav="true" data-dots="false" data-space="20" data-loop="true" data-speed="800">
-            <div class="fancybox-item">
-              <div class="team-img bg-category" style="background-image: url(<?= \Yii::$app->request->baseUrl . "/uploads/mosque.jpg" ?>);">
-                <div class="overlay">
-                  <a class="text-white vertical-center" href="<?= \Yii::$app->request->baseUrl . "/home/news" ?>" style="font-size: 2rem;">Semua </a>
-                </div>
-              </div>
-            </div><!-- /.fancybox-item -->
-            <?php foreach ($categories as $kategori) {  ?>
-              <div class="fancybox-item">
-                <div class="team-img bg-category" style="background-image: url(<?= \Yii::$app->request->baseUrl . "/uploads/mosque.jpg" ?>);">
-                  <div class="overlay">
-                    <a class="text-white vertical-center" href="<?= \Yii::$app->request->baseUrl . "/news?kategori=" . $kategori->nama ?>" style="font-size: 2rem;"><?= $kategori->nama ?> </a>
-                  </div>
-                </div>
-              </div><!-- /.fancybox-item -->
-            <?php } ?>
+          <div class="table-responsive">
+            <table class="table table-borderless">
+              <tr>
+                <td><a class="text-dark font-weight-bold" href="<?= \Yii::$app->request->baseUrl . "/home/news" ?>">Semua </a></td>
+              <?php foreach ($categories as $kategori) {  ?>
+                <td><a class="text-dark font-weight-bold" href="<?= \Yii::$app->request->baseUrl . "/home/news?kategori=" . $kategori->nama ?>"><?= $kategori->nama ?> </a></td>
+                <?php } ?>
+              </tr>
+            </table>
           </div>
           <form action="<?= \Yii::$app->request->baseUrl . "/news" ?>" method="get">
             <div class="input-group mb-4">
@@ -77,7 +70,7 @@
                     <hr>
                     <div class="row">
                       <div class="col-lg-6 col-md-6 col-6 text-left">
-                        <?= date("d-m-Y", strtotime($berita->created_at)); ?>
+                        <?= date("d M Y", strtotime($berita->created_at)); ?>
                       </div>
                       <div class="col-lg-6 col-md-6 col-6 text-right">
                         Baca Selengkapnya
@@ -93,143 +86,106 @@
       </div>
     </div>
 
+    <div class="container pt-4">
+      <div class="row">
+        <div class="col-sm-12 col-md-12 col-lg-6 ">
+          <h3 class="heading__title mx-auto pb-3" style="color:orange;font-size:2rem;line-height: 1">Hubungi Kami</h3>
+          <p class="font-weight-bold" style="color:orange">Ingin Menyapa? Ingin tahu lebih banyak tentang kami? Hubungi kami atau kiriman email kepada kami, dari kami akan segera menghubungi Anda Kembali</p>
+          <div class="contact-form" style="margin-left: 10px;margin-right:10px;">
 
+            <?php
 
+            use yii\bootstrap\ActiveForm;
+            use yii\bootstrap\Html;
+            ?>
+            <?php $form = ActiveForm::begin(
+              [
+                'id' => 'HubungiKami',
+                'layout' => 'horizontal',
+                'enableClientValidation' => true,
+                'errorSummaryCssClass' => 'error-summary alert alert-error'
+              ]
+            );
+            ?>
+            <div class="form-row">
 
-    <!-- =========================== 
-      fancybox Carousel
-    ============================= -->
-    <section id="fancyboxCarousel" class="fancybox-layout4 fancybox-carousel bg-overlay bg-overlay-gradient-secondary-2">
-      <div class="bg-img"><img src="<?= \Yii::$app->request->BaseUrl ?>/template/assets/images/backgrounds/5.jpg" alt="background"></div>
+              <div class="col-12 col-md-12">
+                <div class="form-group">
+                  <?= $form->field($model, 'nama', [
+                    'template' => '
+                                      {label}
+                                      {input}
+                                      {error}
+                                  ',
+                    'inputOptions' => [
+                      'class' => 'form-control'
+                    ],
+                    'labelOptions' => [
+                      'class' => ''
+                    ],
+                    'options' => ['tag' => false]
+                  ])->textInput(['maxlength' => true, 'placeholder' => 'Nama']) ?>
+                </div>
+              </div>
+              <div class="col-12 col-md-12">
+                <div class="form-group">
+                  <?= $form->field($model, 'nomor_hp', [
+                    'template' => '
+                                      {label}
+                                      {input}
+                                      {error}
+                                  ',
+                    'inputOptions' => [
+                      'class' => 'form-control'
+                    ],
+                    'labelOptions' => [
+                      'class' => ''
+                    ],
+                    'options' => ['tag' => false]
+                  ])->textInput(['maxlength' => true, 'placeholder' => 'Nomor Handphone']) ?>
+                </div>
+              </div>
+              <div class="col-12 col-md-12">
+                <div class="form-group">
+                  <?= // generated by schmunk42\giiant\generators\crud\providers\core\RelationProvider::activeField
+                  $form->field($model, 'tema_hubungi_kami_id', [
+                    'template' => '
+                                      {label}
+                                      {input}
+                                      {error}
+                                  ',
+                    'inputOptions' => [
+                      'class' => 'form-control'
+                    ],
+                    'labelOptions' => [
+                      'class' => ''
+                    ],
+                    'options' => ['tag' => false]
+                  ])->dropDownList(
+                    \yii\helpers\ArrayHelper::map(app\models\TemaHubungiKami::find()->all(), 'id', 'nama_tema'),
+                    [
+                      'prompt' => 'Select',
+                      'disabled' => (isset($relAttributes) && isset($relAttributes['tema_hubungi_kami_id'])),
+                    ]
+                  ); ?>
+                </div>
+              </div>
+              <?php echo $form->errorSummary($model); ?>
 
-    </section><!-- /.fancybox Carousel -->
+              <div class="col-12 text-center">
+                <?= Html::submitButton('<i class="fa fa-save"></i> Simpan', ['class' => 'btn btn__primary']); ?>
+              </div>
+            </div>
 
-    <!-- ========================
-        Request Quote Tabs
-    =========================== -->
-    <?php
-
-    use yii\bootstrap\ActiveForm;
-    use yii\bootstrap\Html;
-    ?>
-    <section id="requestQuoteTabs" class="request-quote request-quote-tabs p-0">
-      <div class="container">
-        <div class="row">
-          <div class="col-sm-12 col-md-12 col-lg-12">
-            <div class="request__form">
-              <nav class="nav nav-tabs">
-                <!-- <a class="nav__link active" data-toggle="tab" href="#quote">Request A Quote</a>
-                <a class="nav__link" data-toggle="tab" href="#track">Track & Trace</a> -->
-              </nav>
-              <div class="tab-content">
-                <div class="tab-pane fade show active" id="quote">
-                  <div class="request-quote-panel">
-                    <div class="request__form-body">
-                      <div class="row">
-
-                        <div class="contact-form" style="margin-left: 10px;margin-right:10px;">
-
-                          <?php $form = ActiveForm::begin(
-                            [
-                              'id' => 'HubungiKami',
-                              'layout' => 'horizontal',
-                              'enableClientValidation' => true,
-                              'errorSummaryCssClass' => 'error-summary alert alert-error'
-                            ]
-                          );
-                          ?>
-                          <div class="form-row">
-
-                            <div class="col-12 col-md-4">
-                              <div class="form-group">
-                                <?= $form->field($model, 'nama', [
-                                  'template' => '
-            {label}
-            {input}
-            {error}
-        ',
-                                  'inputOptions' => [
-                                    'class' => 'form-control'
-                                  ],
-                                  'labelOptions' => [
-                                    'class' => 'text-white'
-                                  ],
-                                  'options' => ['tag' => false]
-                                ])->textInput(['maxlength' => true, 'placeholder' => 'Nama']) ?>
-                              </div>
-                            </div>
-                            <div class="col-12 col-md-4">
-                              <div class="form-group">
-                                <?= $form->field($model, 'nomor_hp', [
-                                  'template' => '
-            {label}
-            {input}
-            {error}
-        ',
-                                  'inputOptions' => [
-                                    'class' => 'form-control'
-                                  ],
-                                  'labelOptions' => [
-                                    'class' => 'text-white'
-                                  ],
-                                  'options' => ['tag' => false]
-                                ])->textInput(['maxlength' => true, 'placeholder' => 'Nomor Handphone']) ?>
-                              </div>
-                            </div>
-                            <div class="col-12 col-md-4">
-                              <div class="form-group">
-                                <?= // generated by schmunk42\giiant\generators\crud\providers\core\RelationProvider::activeField
-                                $form->field($model, 'tema_hubungi_kami_id', [
-                                  'template' => '
-      {label}
-      {input}
-      {error}
-  ',
-                                  'inputOptions' => [
-                                    'class' => 'form-control'
-                                  ],
-                                  'labelOptions' => [
-                                    'class' => 'text-white'
-                                  ],
-                                  'options' => ['tag' => false]
-                                ])->dropDownList(
-                                  \yii\helpers\ArrayHelper::map(app\models\TemaHubungiKami::find()->all(), 'id', 'nama_tema'),
-                                  [
-                                    'prompt' => 'Select',
-                                    'disabled' => (isset($relAttributes) && isset($relAttributes['tema_hubungi_kami_id'])),
-                                  ]
-                                ); ?>
-                              </div>
-                            </div>
-                            <?php echo $form->errorSummary($model); ?>
-
-                            <div class="col-12 text-center">
-                              <?= Html::submitButton('<i class="fa fa-save"></i> Simpan', ['class' => 'btn btn__primary']); ?>
-                            </div>
-                          </div>
-
-                          <?php ActiveForm::end(); ?>
-                          <div class="contact-form-result"></div>
-                        </div>
-                      </div>
-                    </div><!-- /.request__form-body -->
-                    <div class="widget widget-download bg-theme" style="background-color: orange !important;">
-                      <div class="widget__content">
-                        <h5>HUBUNGI KAMI</h5>
-                        <p>Ingin Menyapa?Ingin tahu lebih banyak tentang kami?Hubungi kami atau kiriman email kepada kami,dari kami akan segera menghubungi Anda Kembali</p>
-                        <!-- <a href="#" class="btn btn__secondary btn__hover2 btn__block">
-                          <span>Download 2019 Brochure</span><i class="icon-arrow-right"></i>
-                        </a> -->
-                      </div><!-- /.widget__content -->
-                    </div><!-- /.widget-download -->
-                  </div><!-- /.request-quote-panel-->
-                </div><!-- /.tab -->
-              </div><!-- /.tab-content -->
-            </div><!-- /.request-form -->
-          </div><!-- /.col-lg-12 -->
-        </div><!-- /.row -->
-      </div><!-- /.container -->
-    </section><!-- /.Request Quote Tabs -->
+            <?php ActiveForm::end(); ?>
+            <div class="contact-form-result"></div>
+          </div>
+        </div><!-- /.col-lg-6 -->
+        <div class="col-sm-12 col-md-12 col-lg-6 text-center d-none d-lg-block">
+          <img src="<?= \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->foto_tentang_kami ?>" class="about-us-img" alt="logo">
+        </div><!-- /.col-lg-5 -->
+      </div><!-- /.row -->
+    </div><!-- /.container -->
     <!-- ========================
             Footer
     ========================== -->
@@ -250,9 +206,21 @@
   <script src="<?= \Yii::$app->request->BaseUrl ?>/template/assets/js/jquery-3.3.1.min.js"></script>
   <script src="<?= \Yii::$app->request->BaseUrl ?>/template/assets/js/plugins.js"></script>
   <script src="<?= \Yii::$app->request->BaseUrl ?>/template/assets/js/main.js"></script>
+  <script src="<?= \Yii::$app->request->BaseUrl ?>/template/assets/js/sweetalert2.all.min.js"></script>
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCV6HOHjE9XM8IbEaL6ZMZdW8e0tavsOL8&libraries=places&region=id&language=en&sensor=false"></script>
 
   <script>
+    $(document).ready(function() {
+      var success = "<?= \Yii::$app->session->getFlash('success') ?>";
+      var error = "<?= \Yii::$app->session->getFlash('error') ?>";
+      if (error !== "") {
+        Swal.fire("Peringatan!", "<?= \Yii::$app->session->getFlash('error') ?>", "error");
+      } 
+      if (success !== "") {
+        Swal.fire("Peringatan!", "<?= \Yii::$app->session->getFlash('success') ?>", "success");
+      }
+    });
+
     var marker;
 
     function initialize() {
