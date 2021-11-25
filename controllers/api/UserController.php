@@ -5,6 +5,7 @@ namespace app\controllers\api;
 /**
  * This is the class for REST controller "UserController".
  */
+
 use yii\base\Security;
 use app\models\User;
 use app\models\Otp;
@@ -19,24 +20,25 @@ use yii\web\HttpException;
 class UserController extends \yii\rest\ActiveController
 {
     public $modelClass = 'app\models\User';
-    public function behaviors(){
+    public function behaviors()
+    {
         $parent = parent::behaviors();
         $parent['authentication'] = [
             "class" => "\app\components\CustomAuth",
             "only" => ["user-view",],
         ];
-    
+
         return $parent;
     }
     protected function verbs()
     {
-       return [
-        'user-view' => ['GET'],
-           'login' => ['POST'],
-           'register' => ['POST'],
-           'check-otp' => ['POST'],
-           'refresh-otp' => ['POST'],
-       ];
+        return [
+            'user-view' => ['GET'],
+            'login' => ['POST'],
+            'register' => ['POST'],
+            'check-otp' => ['POST'],
+            'refresh-otp' => ['POST'],
+        ];
     }
     public function actions()
     {
@@ -48,35 +50,35 @@ class UserController extends \yii\rest\ActiveController
         unset($actions['delete']);
         return $actions;
     }
-    
+
     public function actionLogin()
     {
-        $username = !empty($_POST['username'])?$_POST['username']:'';
-        $password = !empty($_POST['password'])?$_POST['password']:'';
+        $username = !empty($_POST['username']) ? $_POST['username'] : '';
+        $password = !empty($_POST['password']) ? $_POST['password'] : '';
         $result = [];
         // validasi jika kosong
-        if(empty($username) || empty($password)){
-          $result = [
-            'status' => 'error',
-            'message' => 'username & password tidak boleh kosong!',
-            'data' => '',
-          ];
-        }else{
+        if (empty($username) || empty($password)) {
+            $result = [
+                'status' => 'error',
+                'message' => 'username & password tidak boleh kosong!',
+                'data' => ["username" => $username, "password" => $password],
+            ];
+        } else {
             try {
-                $user= User::findByUsername([
+                $user = User::findByUsername([
                     "username" => $username,
                     // "password" => $this->validatePassword($user->password,$_POST['password']),
                 ]);
                 if (isset($user)) {
-                    if($user->validatePassword($password)){
+                    if ($user->validatePassword($password)) {
                         $generate_random_string = SSOToken::generateToken();
                         $user->secret_token = $generate_random_string;
                         $user->save();
-                    $result['success'] = true;
-                    $result['message'] = "success login";
-                    unset($user->password); // remove password from response
-                    $result["data"] = $user;
-                    }else{
+                        $result['success'] = true;
+                        $result['message'] = "success login";
+                        unset($user->password); // remove password from response
+                        $result["data"] = $user;
+                    } else {
                         $result["success"] = false;
                         $result["message"] = "password salah";
                         $result["data"] = null;
@@ -89,10 +91,10 @@ class UserController extends \yii\rest\ActiveController
             } catch (\Exception $e) {
                 $result["success"] = false;
                 $result["message"] = "username atau password salah";
-                $result["data"] = null;
+                $result["data"] = $e->getMessage();
             }
         }
-    
+
         return $result;
     }
 
@@ -100,10 +102,11 @@ class UserController extends \yii\rest\ActiveController
     {
         $result = [];
         try {
-            $user = User::findOne(['id' => \Yii::$app->user->identity->id
+            $user = User::findOne([
+                'id' => \Yii::$app->user->identity->id
             ]);
-            $marketing=MarketingDataUser::findOne(['user_id' => \Yii::$app->user->identity->id]);
-            
+            $marketing = MarketingDataUser::findOne(['user_id' => \Yii::$app->user->identity->id]);
+
             if (isset($user)) {
                 $result['success'] = true;
                 $result['message'] = "success";
@@ -130,16 +133,16 @@ class UserController extends \yii\rest\ActiveController
     {
         \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         $val = \yii::$app->request->post();
-        
-        $rolee =  2; 
-        if($val['role'] == "pewakaf"){
+
+        $rolee =  2;
+        if ($val['role'] == "pewakaf") {
             $rolee = 5;
         }
-        
+
         $user = new User();
         // $user->name = $val['name'];
         $user->username = $val['username'];
-        $user->password =Yii::$app->security->generatePasswordHash($val['confirm_password']);
+        $user->password = Yii::$app->security->generatePasswordHash($val['confirm_password']);
         $user->name = $val['name'];
         $user->role_id = $rolee;
         $user->confirm = 0;
@@ -149,9 +152,9 @@ class UserController extends \yii\rest\ActiveController
         $user->nomor_handphone = ($val['no_hp']) ?? '';
         // $user->address = $val['address'];
 
-        if ( $val['confirm_password'] != $val['password']) {
+        if ($val['confirm_password'] != $val['password']) {
             return ['success' => false, 'message' => 'Password tidak sama', 'data' => null];
-                        }
+        }
         if ($user->nomor_handphone == '') {
             return ['success' => false, 'message' => 'No Telp tidak boleh kosong', 'data' => null];
         }
@@ -161,7 +164,7 @@ class UserController extends \yii\rest\ActiveController
         // }
 
         if (strlen($val['password']) < 3) {
-            return ['success' => false, 'message' => 'Password minimal 4 karakter', 'data' =>null];
+            return ['success' => false, 'message' => 'Password minimal 4 karakter', 'data' => null];
         }
         if (strlen($val['pin']) < 3) {
             return ['success' => false, 'message' => 'Pin minimal 3 karakter', 'data' => null];
@@ -208,11 +211,11 @@ class UserController extends \yii\rest\ActiveController
             \nKode akan Kadaluarsa dalam 5 Menit
             ";
             Yii::$app->mailer->compose()
-             ->setTo($user->username)
-                     ->setFrom(['adminIsalam@gmail.com'=>'Isalam'])
-                     ->setSubject('Kode OTP')
-                     ->setTextBody($text)
-                     ->send();
+                ->setTo($user->username)
+                ->setFrom(['Inisiatorsalam@gmail.com'])
+                ->setSubject('Kode OTP')
+                ->setTextBody($text)
+                ->send();
 
 
 
@@ -223,12 +226,12 @@ class UserController extends \yii\rest\ActiveController
             return ['success' => false, 'message' => 'gagal', 'data' => $user->getErrors()];
         }
     }
-    
+
     public function actionCheckOtp()
     {
         $kode_otp = $_POST['kode_otp'];
         $user_id = $_POST['user_id'];
-        $otp = Otp::findOne(['kode_otp' => $kode_otp,'id_user'=>$user_id, 'is_used' => 0]);
+        $otp = Otp::findOne(['kode_otp' => $kode_otp, 'id_user' => $user_id, 'is_used' => 0]);
         if ($otp) {
             $now = time();
             $validasi = strtotime($otp->created_at) + (60 * 5);
@@ -236,7 +239,7 @@ class UserController extends \yii\rest\ActiveController
             if ($now < $validasi) {
                 $otp->is_used = 1;
                 $otp->save();
-                $user = User::findOne(['id'=>$otp->id_user]);
+                $user = User::findOne(['id' => $otp->id_user]);
                 $user->confirm = 1;
                 $user->status = 1;
                 $user->save();
@@ -250,7 +253,6 @@ class UserController extends \yii\rest\ActiveController
                     ],
                 ];
             }
-
         }
 
         return [
@@ -261,56 +263,51 @@ class UserController extends \yii\rest\ActiveController
     public function actionRefreshOtp()
     {
         $user_id = $_POST['user_id'];
-        $otp = Otp::findOne(['id_user'=>$user_id, 'is_used' => 0]);
-        
+        $otp = Otp::findOne(['id_user' => $user_id, 'is_used' => 0]);
+
 
         if ($otp) {
-            
-        $now = time();
-        $validasi = strtotime($otp->created_at) + 60;
-        if($now > $validasi){
-            $otp->kode_otp = (string) random_int(1000, 9999);
-            $otp->save();
-            $text = "
+
+            $now = time();
+            $validasi = strtotime($otp->created_at) + 60;
+            if ($now > $validasi) {
+                $otp->kode_otp = (string) random_int(1000, 9999);
+                $otp->save();
+                $text = "
         Hay,\nini adalah kode OTP untuk Login anda.\n
         {$otp->kode_otp}
         \nJangan bagikan kode ini dengan siapapun.
         \nKode akan Kadaluarsa dalam 5 Menit
         ";
-        $user = User::findOne(['id'=>$user_id]);
-        Yii::$app->mailer->compose()
-         ->setTo($user->username)
-                 ->setFrom(['adminIsalam@gmail.com'=>'Isalam'])
-                 ->setSubject('Kode OTP')
-                 ->setTextBody($text)
-                 ->send();
+                $user = User::findOne(['id' => $user_id]);
+                Yii::$app->mailer->compose()
+                    ->setTo($user->username)
+                    ->setFrom(['adminIsalam@gmail.com' => 'Isalam'])
+                    ->setSubject('Kode OTP')
+                    ->setTextBody($text)
+                    ->send();
 
-            return [
-                "success" => true,
-                "message" => "OTP Berhasil Terkirim",
-                "data" => [
-                    "user" => $otp->user->name,
-                    "kode_otp" => $otp->kode_otp,
-                ],
-            ];
-        
-        }else{
-            return [
-                "success" => false,
-                "message" => "OTP gagal terkirim",
-                "data"=>"Mohon Tunggu 1 menit",
-            ];
-        }
-                
-
+                return [
+                    "success" => true,
+                    "message" => "OTP Berhasil Terkirim",
+                    "data" => [
+                        "user" => $otp->user->name,
+                        "kode_otp" => $otp->kode_otp,
+                    ],
+                ];
+            } else {
+                return [
+                    "success" => false,
+                    "message" => "OTP gagal terkirim",
+                    "data" => "Mohon Tunggu 1 menit",
+                ];
+            }
         }
 
         return [
             "success" => false,
             "message" => "OTP gagal terkirim",
-            "data"=>[],
+            "data" => [],
         ];
     }
-   
-    
 }
