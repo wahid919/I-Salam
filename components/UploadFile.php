@@ -36,7 +36,7 @@ trait UploadFile
             $new_width = $width * $percent;
             $new_height = $height * $percent;
             // patenkan width
-            $new_width = 400;
+            $new_width = 500;
             $new_height = $width == 0 ? 0 : $height * $new_width / $width;
 
             // buat gambar baru
@@ -84,7 +84,8 @@ trait UploadFile
 
             return (object) [
                 "success" => true,
-                "filename" => "{$uploadTo}/{$namaFile}",
+                "filename" => "{$namaFile}",
+                // "filename" => "{$uploadTo}/{$namaFile}",
             ];
         } else {
             // return static::uploadFile($file, $uploadTo);
@@ -108,7 +109,8 @@ trait UploadFile
         $file->saveAs("{$realpath_dir}/{$namaFile}");
         return (object) [
             "success" => true,
-            "filename" => "{$uploadTo}/{$namaFile}",
+            "filename" => "{$namaFile}",
+            // "filename" => "{$uploadTo}/{$namaFile}",
         ];
     }
 

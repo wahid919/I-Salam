@@ -4,6 +4,7 @@
 
 namespace app\controllers\base;
 
+use app\components\UploadFile;
 use app\models\Berita;
 use app\models\search\BeritaSearch;
 use yii\web\Controller;
@@ -20,7 +21,7 @@ use yii\web\UploadedFile;
  */
 class BeritaController extends Controller
 {
-
+use UploadFile;
 
     /**
      * @var boolean whether to enable CSRF validation for the actions in this controller.
@@ -86,23 +87,30 @@ class BeritaController extends Controller
                 $slug = str_replace(' ', '-', $model->judul);
                 $model->slug = $slug.date('Y-m-d');
                 $gambar = UploadedFile::getInstance($model, 'gambar');
-                if ($gambar != NULL) {
-                    # store the source gambars name
-                    $model->gambar = $gambar->name;
-                    $arr = explode(".", $gambar->name);
-                    $extension = end($arr);
-
-                    # generate a unique gambars name
-                    $model->gambar = Yii::$app->security->generateRandomString() . ".{$extension}";
-
-                    # the path to save gambars
-                    // unlink(Yii::getAlias("@app/web/uploads/pengajuan/") . $oldFile);
-                    if (file_exists(Yii::getAlias("@app/web/uploads/berita/")) == false) {
-                        mkdir(Yii::getAlias("@app/web/uploads/berita/"), 0777, true);
-                    }
-                    $path = Yii::getAlias("@app/web/uploads/berita/") . $model->gambar;
-                    $gambar->saveAs($path);
+                $response = $this->uploadFile($gambar,'berita');
+                if ($response->success == false) {
+                    Yii::$app->session->setFlash('danger', 'Gagal Upload Foto');
+                    // goto end;
+                    return $this->render('create', ['model' => $model]);
                 }
+                $model->gambar = $response->filename;
+                // if ($gambar != NULL) {
+                //     # store the source gambars name
+                //     $model->gambar = $gambar->name;
+                //     $arr = explode(".", $gambar->name);
+                //     $extension = end($arr);
+
+                //     # generate a unique gambars name
+                //     $model->gambar = Yii::$app->security->generateRandomString() . ".{$extension}";
+
+                //     # the path to save gambars
+                //     // unlink(Yii::getAlias("@app/web/uploads/pengajuan/") . $oldFile);
+                //     if (file_exists(Yii::getAlias("@app/web/uploads/berita/")) == false) {
+                //         mkdir(Yii::getAlias("@app/web/uploads/berita/"), 0777, true);
+                //     }
+                //     $path = Yii::getAlias("@app/web/uploads/berita/") . $model->gambar;
+                //     $gambar->saveAs($path);
+                // }
                 if ($model->save()) {
                     return $this->redirect(['view', 'id' => $model->id]);
                 }
