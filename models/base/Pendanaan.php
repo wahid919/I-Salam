@@ -7,6 +7,8 @@ namespace app\models\base;
 use Yii;
 use app\models\AgendaPendanaan;
 use app\models\PartnerPendanaan;
+use DateTime;
+
 /**
  * This is the base-model class for table "pendanaan".
  *
@@ -127,7 +129,7 @@ abstract class Pendanaan extends \yii\db\ActiveRecord
             $parent['file_uraian'] = function ($model) {
                 $file = $model->file_uraian;
                 // $model->tanggal_received=date('Y-m-d H:i:s');
-                return $path = "http://117.53.45.118/isalam/web/uploads/" . $file;
+                return $path = "http://i-salam.id/web/uploads/" . $file;
             };
             
         }
@@ -139,9 +141,30 @@ abstract class Pendanaan extends \yii\db\ActiveRecord
             $parent['poster'] = function ($model) {
                 $file = $model->poster;
                 // $model->tanggal_received=date('Y-m-d H:i:s');
-                return $path = "http://117.53.45.118/isalam/web/uploads/" . $file;
+                return $path = "http://i-salam.id/web/uploads/" . $file;
             };
             
+        }
+        if (!isset($parent['total_pewakaf'])) {
+            unset($parent['total_pewakaf']);
+            // $parent['_total_pewakaf'] = function ($model) {
+            //     return $model->total_pewakaf;
+            // };
+            $parent['total_pewakaf'] = function ($model) {
+                $pembayar =  \app\models\Pembayaran::find()->where(['pendanaan_id'=>$model->id,'status_id'=>6])->count();
+                return $pembayar;
+            };
+            
+        }
+        if(!isset($parent['berakhir_dalam'])){
+            unset($parent['berakhir_dalam']);
+
+            $parent['berakhir_dalam'] = function ($model){
+            $datetime1 =  new DateTime($model->pendanaan_berakhir);
+            $datetime2 =  new Datetime(date("Y-m-d H:i:s"));
+            $interval = $datetime1->diff($datetime2)->days;
+            return $interval." Hari";
+            };
         }
         // $file = $model->file_uraian;
         // // $model->tanggal_received=date('Y-m-d H:i:s');
