@@ -59,7 +59,7 @@ class HomeController extends Controller
             $model->status = 0;
 
             if ($model->save()) {
-                Yii::$app->session->setFlash('success', "Data berhasil disimpan."); 
+                Yii::$app->session->setFlash('success', "Data berhasil disimpan.");
             } else {
                 Yii::$app->session->setFlash('error', "Data tidak berhasil disimpan.");
             }
@@ -277,6 +277,7 @@ class HomeController extends Controller
     {
 
         $this->layout = false;
+        // $this->title = "Isalam - Program";
 
         $setting = Setting::find()->one();
         $icon = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->logo;
@@ -293,6 +294,10 @@ class HomeController extends Controller
             $pendanaans = $query->offset($pagination->offset)
                 ->limit($pagination->limit)
                 ->all();
+            $start = $pagination->offset;
+            $end = $pagination->offset + $pagination->limit;
+            $end = ($end > $count) ? $count : $end;
+            $summary = "Menampilkan $start-$end dari total $count data ";
         } else {
             $query = Pendanaan::find()->where(['status_id' => 2]);
             $count = $query->count();
@@ -300,6 +305,10 @@ class HomeController extends Controller
             $pendanaans = $query->offset($pagination->offset)
                 ->limit($pagination->limit)
                 ->all();
+            $start = $pagination->offset + 1;
+            $end = ($count < $pagination->limit) ? $count : $pagination->offset + $pagination->limit;
+            $end = ($end > $count) ? $count : $end;
+            $summary = "Menampilkan $start-$end dari total $count data ";
         }
         $organisasis = Organisasi::find()->where(['flag' => 1])->all();
         $kategori_pendanaans = KategoriPendanaan::find()->all();
@@ -316,7 +325,8 @@ class HomeController extends Controller
             'icon' => $icon,
             'bg_login' => $bg_login,
             'bg' => $bg,
-            'pagination' => $pagination
+            'pagination' => $pagination,
+            'summary' => $summary,
         ]);
     }
     public function actionUnduhFileUraian($id)

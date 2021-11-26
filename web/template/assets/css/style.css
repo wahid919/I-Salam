@@ -57,7 +57,7 @@ body {
 
 body {
     background-color: #ffffff;
-    font-family: "Roboto", sans-serif;
+    font-family: "Poppins", sans-serif;
     font-size: 15px;
     font-weight: 400;
     color: #9b9b9b;
@@ -71,7 +71,7 @@ body {
 }
 
 a {
-    color: #ff5e14;
+    color: #000;
     transition: color 0.3s ease;
     -webkit-transition: color 0.3s ease;
     -moz-transition: color 0.3s ease;
@@ -1071,38 +1071,62 @@ h6 {
     text-transform: capitalize;
     font-weight: 600;
     line-height: 1.1;
-    margin-bottom: 23px;
+    margin-bottom: 10px;
 }
 
 p {
-    font-size: 15px;
+    font-size: 1rem;
     line-height: 25px;
     font-weight: 400;
     margin-bottom: 15px;
 }
 
 h1 {
-    font-size: 52px;
+    font-size: 36px;
 }
 
 h2 {
-    font-size: 42px;
+    font-size: 30px;
 }
 
 h3 {
-    font-size: 38px;
+    font-size: 27px;
 }
 
 h4 {
-    font-size: 32px;
+    font-size: 25px;
 }
 
 h5 {
-    font-size: 24px;
+    font-size: 21px;
 }
 
 h6 {
     font-size: 18px;
+}
+
+.font-size-08 {
+    font-size: .8rem;
+}
+
+.font-size-1 {
+    font-size: 1rem;
+}
+
+.font-size-2 {
+    font-size: 2rem;
+}
+
+.font-size-3 {
+    font-size: 3rem;
+}
+
+.font-weight-600 {
+    font-weight: 600 !important;
+}
+
+.text-justify {
+    text-align: justify;
 }
 
 .heading__subtitle {
@@ -1426,13 +1450,14 @@ h6 {
     height: auto;
     border-radius: 7px;
     color: #fff;
+    padding: 10px !important;
 }
 
 .btn-program:active,
 .btn-program:focus,
 .btn-program:hover {
     background-color: #ff5e14;
-    color: #121c45;
+    color: #fff;
 }
 
 .btn-program.btn-hover2:active,
@@ -1732,7 +1757,8 @@ label {
     font-weight: 700;
     line-height: 1;
     margin-bottom: 15px;
-    color: #121c45;
+    color: #2a2a2a;
+    ;
 }
 
 .form-group {
@@ -1944,7 +1970,7 @@ textarea.form-control {
 
 .social__icons a {
     margin-right: 20px;
-    color: #121c45;
+    color: #fff;
     -webkit-transition: all 0.3s linear;
     -moz-transition: all 0.3s linear;
     -ms-transition: all 0.3s linear;
@@ -1986,6 +2012,15 @@ textarea.form-control {
 
 .pagination li {
     margin-right: 10px;
+    border-radius: 10px;
+}
+
+.pagination .active {
+    background-color: #fea400;
+}
+
+.pagination .active a {
+    color: #fff;
 }
 
 .pagination li:last-child {
@@ -1993,6 +2028,35 @@ textarea.form-control {
 }
 
 .pagination li a {
+    font-family: "Poppins", sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    display: block;
+    width: 50px;
+    height: 50px;
+    line-height: 48px;
+    background-color: transparent;
+    color: #898989;
+    text-align: center;
+    border: 1px solid #eaeaea;
+    border-radius: 10px;
+    -webkit-transition: all 0.3s linear;
+    -moz-transition: all 0.3s linear;
+    -ms-transition: all 0.3s linear;
+    -o-transition: all 0.3s linear;
+    transition: all 0.3s linear;
+}
+
+.pagination li span:hover,
+.pagination li span.current {
+    background-color: #ffa500;
+    ;
+    border-color: #ffa500;
+    ;
+    color: #ffffff;
+}
+
+.pagination li span {
     font-family: "Poppins", sans-serif;
     font-size: 18px;
     font-weight: 700;
@@ -2012,10 +2076,12 @@ textarea.form-control {
     transition: all 0.3s linear;
 }
 
-.pagination li a:hover,
-.pagination li a.current {
-    background-color: #121c45;
-    border-color: #121c45;
+.pagination li span:hover,
+.pagination li span.current {
+    background-color: #ffa500;
+    ;
+    border-color: #ffa500;
+    ;
     color: #ffffff;
 }
 
@@ -3862,9 +3928,10 @@ textarea.form-control {
     width: 50px;
     height: 50px;
     line-height: 48px;
-    border-radius: 2px;
+    border-radius: 50%;
     text-align: center;
     margin-right: 5px;
+    background-color: #efa503;
 }
 
 .footer-newsletter .social__icons a:last-of-type {
@@ -3890,7 +3957,7 @@ textarea.form-control {
     font-size: 18px;
     border-radius: 4px;
     color: #ffffff;
-    background-color: #121c45;
+    background-color: #f0a502;
     overflow: hidden;
     -webkit-transition: all 0.3s ease-in-out;
     -moz-transition: all 0.3s ease-in-out;
@@ -7803,7 +7870,7 @@ textarea.form-control {
 }
 
 .count-program {
-    border: 1px solid rgb(104 104 104);
+    border: 1px solid rgba(0, 0, 0, .125);
     border-radius: 10px;
     padding: 20px;
 }
@@ -7934,12 +8001,23 @@ textarea.form-control {
     line-height: 1;
 }
 
+.text-category {
+    text-align: right !important;
+}
+
 .shadow-r2 {
-    box-shadow: 2px 0px grey;
+    box-shadow: 2px 0px #ebebeb;
+    ;
 }
 
 .shadow-b2 {
-    box-shadow: 0px 2px grey;
+    box-shadow: 0px 2px #ebebeb;
+    ;
+}
+
+.shadow-br2 {
+    box-shadow: 2px 2px #ebebeb;
+    ;
 }
 
 .border-r5 {
@@ -7957,12 +8035,32 @@ textarea.form-control {
 .img-mitra {
     border: 1px solid rgb(183 153 153);
     border-radius: 10px;
-    height: 10vh;
+    min-height: 13vh;
     padding: 10px;
 }
 
 .text-mari-wakaf {
     color: orange;
+}
+
+.text-summary {
+    font-size: 1rem;
+    color: #b9a4a4;
+}
+
+.margin-wakaf {
+    margin-right: 115px;
+}
+
+.logo-header {
+    width: 65px;
+    margin-left: 7px;
+}
+
+.select-category {
+    height: calc(1.5em + .75rem + 2px);
+    border: 1px solid #c3c3c3;
+    width: 200px;
 }
 
 
@@ -8004,12 +8102,46 @@ textarea.form-control {
     .text-banner {
         font-size: 1rem;
     }
-    .img-mitra {
+    /* .img-mitra {
         height: 100%;
-    }
+    } */
     .text-mari-wakaf {
         color: orange;
-        padding-top: 10px;
+        padding-top: 1rem;
+    }
+    .text-category {
+        text-align: left !important;
+    }
+    .text-summary {
+        font-size: .8rem;
+    }
+    p {
+        font-size: .8rem;
+    }
+    h1 {
+        font-size: 32px;
+    }
+    h2 {
+        font-size: 28px;
+    }
+    h3 {
+        font-size: 26px;
+    }
+    h4 {
+        font-size: 24px;
+    }
+    h5 {
+        font-size: 20px;
+    }
+    .margin-wakaf {
+        margin: 20px;
+    }
+    .logo-header {
+        width: 30px;
+        margin-left: 15px;
+    }
+    .select-category {
+        width: 100%;
     }
 }
 
@@ -8051,6 +8183,13 @@ textarea.form-control {
     .text-title2 {
         margin-left: 26%;
         line-height: 1.5;
+    }
+    .margin-wakaf {
+        margin: 20px;
+    }
+    .logo-header {
+        width: 30px;
+        margin-left: 15px;
     }
 }
 

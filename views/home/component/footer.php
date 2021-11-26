@@ -11,29 +11,29 @@ $icons = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->logo;
 
             <ul class="list-unstyled">
               <li class="media">
-                <img src="<?= $icons ?>" class="mr-3" alt="ISALAM" width="30%">
+                <img src="<?= $icons ?>" class="mr-3" alt="ISALAM" width="50px">
                 <div class="media-body">
                   <h5 class="mt-0 mb-1 text-footer-about"><?= $setting->judul_web ?></h5>
                 </div>
               </li>
             </ul>
-            <p style="text-align: justify;">
+            <p style="margin-right: 30px;" class="pt-3 text-justify">
               <?= $setting->slogan_web ?>
             </p>
           </div>
         </div><!-- /.col-lg-4 -->
         <div class="col-12 col-sm-12 col-md-5 col-lg-4 footer__widget footer__widget-about">
           <div class="footer__widget-content">
-            <h2 class="heading__title" style="color:orange;font-size: 1.5rem;">Lebih Dekat dengan Kami</h2>
+            <h5 class="mt-0 mb-1 text-footer-about" style="color:orange;">Lebih Dekat dengan Kami</h5>
             <p>Ikuti Sosial Media Kami untuk Informasi lebih update dan Terbaru.</p>
             <ul class="contact__list list-unstyled">
               <center>
 
                 <div class="social__icons">
-                  <a href="<?= $setting->facebook ?>" target="_blank"><i class="fab fa-facebook-square"></i></a>
-                  <a href="<?= $setting->twitter ?>" target="_blank"><i class="fab fa-twitter-square"></i></a>
-                  <a href="<?= $setting->instagram ?>" target="_blank"><i class="fab fa-instagram-square"></i></a>
-                  <a href="https://t.me/isalamkarim" target="_blank"><i class="fab fa-telegram-plane"></i></a>
+                  <a href="<?= $setting->facebook ?>" target="_blank"><i class="fab fa-facebook-f fa-lg"></i></a>
+                  <a href="<?= $setting->twitter ?>" target="_blank"><i class="fab fa-twitter fa-lg"></i></a>
+                  <a href="<?= $setting->instagram ?>" target="_blank"><i class="fab fa-instagram fa-lg"></i></a>
+                  <a href="<?= $setting->telegram ?>" target="_blank"><i class="fab fa-telegram-plane fa-lg"></i></a>
                 </div><!-- /.col-xl-2 -->
               </center>
             </ul>
@@ -45,9 +45,6 @@ $icons = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->logo;
             <div id="map-canvas" style="height: 200px; width: 100%"></div>
           </div>
         </div>
-
-
-
       </div><!-- /.row -->
     </div><!-- /.container -->
   </div><!-- /.footer-top -->

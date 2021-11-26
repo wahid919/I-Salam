@@ -1,19 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-  <meta name="description" content="<?= $setting->nama_web ?>">
-  <link href="<?= $icon ?>" rel="icon">
-  <title><?= $setting->nama_web ?></title>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,500,700%7cPoppins:400,600,700&display=swap">
-  <link rel="stylesheet" href="<?= \Yii::$app->request->BaseUrl ?>/template/assets/css/libraries.css" />
-  <link rel="stylesheet" href="<?= \Yii::$app->request->BaseUrl ?>/template/assets/css/style.css" />
-  <link rel="stylesheet" href="<?= \Yii::$app->request->BaseUrl ?>/template/assets/css/sweetalert2.min.css" />
-  <link rel="stylesheet" href="<?= \Yii::$app->request->BaseUrl ?>/template/assets/fontawesome/css/all.css" />
-</head>
+<?= $this->render('component/head') ?>
 
 <body>
   <div class="wrapper">
@@ -31,13 +16,13 @@
       <div class="">
         <div class="row">
           <div class="col-sm-12 col-md-12 col-lg-6 offset-lg-6">
-            <div class="header-panel-wrap" style="margin: 20px;">
+            <div class="header-panel-wrap margin-wakaf">
               <ul class="nav nav-tabs pb-4" id="isalam" role="tablist">
                 <li class="nav-item text-center" style="width: 50%;">
-                  <a class="nav-link active" id="infaq-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true"><i class="fas fa-hand-holding-usd"></i> Infaq</a>
+                  <a class="nav-link font-weight-bold active" id="Wakaf-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true"><i class="fas fa-hand-holding-usd"></i> Wakaf</a>
                 </li>
                 <li class="nav-item text-center" style="width: 50%;">
-                  <a class="nav-link" id="wakaf-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false"><i class="fas fa-money-bill-alt"></i> Wakaf</a>
+                  <a class="nav-link font-weight-bold" id="wakaf-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false"><i class="fas fa-money-bill-alt"></i> Infak</a>
                 </li>
               </ul>
               <div class="tab-content" id="myTabContent">
@@ -46,7 +31,7 @@
                     <div class="form-group">
                       <div class="row">
                         <div class="col-lg-6 col-md-6 col-sm-12 col-12">
-                          <label for="Infaq" style="font-size: 1.4rem;color:#2a2a2a;">Ayo Mulai Infaq</label>
+                          <label for="Wakaf" style="font-size: 1.4rem;color: #f1a502;margin-top: 10px;">Ayo Mulai Wakaf</label>
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-12 col-12">
                           <select class="form-control select-wakaf border-r5 shadow-r2" id="">
@@ -58,35 +43,35 @@
                           </select>
                         </div>
                         <div class="col-lg-8 col-md-8 col-sm-12 col-12 pt-4">
-                          <p style="font-size: 1.2rem;color: #2a2a2a;" class="font-weight-bold">Silahkan Isi Jumlah Infaqmu, Insyaallah Semua Berkah</p>
+                          <p style="color: #2a2a2a;" class="font-weight-bold pt-4">Silahkan Isi Jumlah Wakafmu, Insyaallah Semua Berkah</p>
                         </div>
-                        <div class="col-12">
+                        <div class="col-12 pt-4">
                           <div class="form-group">
-                            <label for="">Isi Nominal Infaq Anda</label>
+                            <label for="">Isi Nominal Wakaf Anda</label>
                             <div class="input-group mb-2">
                               <div class="input-group-prepend mr-2" style="height:calc(1.5em + .75rem + 2px);">
-                                <div class="input-group-text bg-white border-r5">Rp</div>
+                                <div class="input-group-text bg-white border-r5 font-weight-bold" style="color: #afafaf;">Rp</div>
                               </div>
-                              <input type="text" class="form-control select-wakaf border-r5" id="" placeholder="Minimal Infaq Rp. 10.000">
+                              <input type="text" class="form-control select-wakaf border-r5" id="" placeholder="Minimal Wakaf Rp. 10.000">
                             </div>
                           </div>
                         </div>
                         <div class="col-12">
-                          <button type="submit" class="btn-sm btn-block btn-warning text-white font-weight-bold" style="height: 3rem;">Wakaf Sekarang</button>
+                          <button type="submit" class="btn-sm btn-block text-white font-weight-bold" style="height: 3rem;background-color: #f1a502;">Wakaf Sekarang</button>
                         </div>
                       </div>
                     </div>
                   </form>
                 </div>
                 <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                  <form>
+                <form>
                     <div class="form-group">
                       <div class="row">
                         <div class="col-lg-6 col-md-6 col-sm-12 col-12">
-                          <label for="wakaf" style="font-size: 1.4rem;color:#2a2a2a;">Ayo Mulai Wakaf</label>
+                          <label for="Infak" style="font-size: 1.4rem;color: #f1a502;margin-top: 10px;">Ayo Mulai Infak</label>
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-12 col-12">
-                          <select class="form-control select-wakaf" id="exampleFormControlSelect1">
+                          <select class="form-control select-wakaf border-r5 shadow-r2" id="">
                             <option>1</option>
                             <option>2</option>
                             <option>3</option>
@@ -95,21 +80,21 @@
                           </select>
                         </div>
                         <div class="col-lg-8 col-md-8 col-sm-12 col-12 pt-4">
-                          <p style="font-size: 1.2rem;color: #2a2a2a;" class="font-weight-bold">Silahkan Isi Jumlah Wakafmu, Insyaallah Semua Berkah</p>
+                          <p style="color: #2a2a2a;" class="font-weight-bold pt-4">Silahkan Isi Jumlah Infakmu, Insyaallah Semua Berkah</p>
                         </div>
-                        <div class="col-12">
+                        <div class="col-12 pt-4">
                           <div class="form-group">
-                            <label for="">Isi Nominal Wakaf Anda</label>
+                            <label for="">Isi Nominal Infak Anda</label>
                             <div class="input-group mb-2">
                               <div class="input-group-prepend mr-2" style="height:calc(1.5em + .75rem + 2px);">
-                                <div class="input-group-text bg-white border-r5">Rp</div>
+                                <div class="input-group-text bg-white border-r5 font-weight-bold" style="color: #afafaf;">Rp</div>
                               </div>
-                              <input type="text" class="form-control select-wakaf border-r5" id="" placeholder="Minimal Wakaf Rp. 10.000">
+                              <input type="text" class="form-control select-wakaf border-r5" id="" placeholder="Minimal Infak Rp. 10.000">
                             </div>
                           </div>
                         </div>
                         <div class="col-12">
-                          <button type="submit" class="btn-sm btn-block btn-warning text-white font-weight-bold" style="height: 3rem;">Wakaf Sekarang</button>
+                          <button type="submit" class="btn-sm btn-block text-white font-weight-bold" style="height: 3rem;background-color: #f1a502;">Infak Sekarang</button>
                         </div>
                       </div>
                     </div>
@@ -125,7 +110,7 @@
     <div class="container">
 
       <div class="col-12 mt-4">
-        <div class="count-program shadow-b2">
+        <div class="count-program shadow-br2">
           <div class="row">
             <div class="col-4 text-center text-dark">
 
@@ -136,7 +121,7 @@
                   <path d="M202.732,446.918a4.3,4.3,0,1,0,0,8.6h.012a4.3,4.3,0,1,0-.012-8.6Z" transform="translate(-113.074 -264.147)" fill="#e2681d" stroke="#e2681d" stroke-width="3" />
                 </g>
               </svg>
-              <p class="pt-3" style="font-size: 2rem;"><?= $count_program ?></p>
+              <p class="pt-3 font-weight-bold" style="font-size: 2rem;"><?= $count_program ?></p>
               <p class="font-weight-bold" style="font-size: 1rem;color: #e2681d;">Jumlah Program
               <p>
             </div>
@@ -155,7 +140,7 @@
                   </g>
                 </g>
               </svg>
-              <p class="pt-3" style="font-size: 2rem;">4</p>
+              <p class="pt-3 font-weight-bold" style="font-size: 2rem;">4</p>
               <p class="font-weight-bold" style="font-size: 1rem;color: #e2681d;">Jumlah Penerima Wakaf
               <p>
             </div>
@@ -169,7 +154,7 @@
                   </g>
                 </g>
               </svg>
-              <p class="pt-3" style="font-size: 2rem;"><?= $count_wakif ?></p>
+              <p class="pt-3 font-weight-bold" style="font-size: 2rem;"><?= $count_wakif ?></p>
               <p class="font-weight-bold" style="font-size: 1rem;color: #e2681d;">Jumlah Wakaf
               <p>
             </div>
@@ -177,7 +162,7 @@
         </div>
       </div>
 
-      <section class="fancybox-layout4 pt-4 mt-4" style="padding-bottom:1rem">
+      <!-- <section class="fancybox-layout4 pt-4 mt-4" style="padding-bottom:1rem">
         <div class="col-12">
           <div class="team-img bg-banner" style="background-image: url(<?= $bg_login ?>);">
             <div class="overlay-banner text-right p-5">
@@ -190,7 +175,9 @@
             </div>
           </div>
         </div>
-      </section><!-- /.fancybox Carousel -->
+      </section> -->
+
+      <img src="<?= \Yii::$app->request->BaseUrl ?>/uploads/Group77.png" class="pt-4">
 
       <div class="col-12">
         <hr>
@@ -199,7 +186,7 @@
       <section id="services" class="services pb-90">
         <div class="">
           <h2 class="text-center" style="color:orange">Ayo Mulai Berwakaf</h2>
-          <p class="text-center font-weight-bold" style="font-size: 1.5rem;">Pilih program wakaf terbaik kami, Insyaallah memberi manfaat untuk kita semua.</p>
+          <p class="text-center font-weight-bold">Pilih program wakaf terbaik kami, Insyaallah memberi manfaat untuk kita semua.</p>
           <div class="row">
             <?php foreach ($pendanaans as $pendanaan) {
               $nominal = \app\models\Pembayaran::find()->where(['pendanaan_id' => $pendanaan->id, 'status_id' => 6])->sum('nominal');
@@ -211,7 +198,7 @@
             ?>
               <div class="col-lg-4 col-md-6 mt-3">
                 <!-- <a href="<?= \Yii::$app->request->baseUrl . "/home/detail-berita?id=" . $berita->slug ?>"> -->
-                <div class="card shadow-b2" style="border-radius: 15px;">
+                <div class="card shadow-br2" style="border-radius: 15px;">
                   <!-- <img src="" class="card-img-top" alt="..."> -->
                   <div class="team-img" style="background-image: url(<?= \Yii::$app->request->baseUrl . "/uploads/" . $pendanaan->poster ?>);border-radius: 15px;">
                   </div>
@@ -219,22 +206,22 @@
                     <h6 class="card-title"><?= $pendanaan->nama_pendanaan ?></h6>
                     <div class="row">
                       <div class="col-12">
-                        <div class="progress border border-dark">
+                        <div class="progress">
                           <div class="progress-bar bg-warning" role="progressbar" style="width: <?= $nilai_sekarang ?>%" aria-valuenow="<?= $nilai_sekarang ?>" aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
                       </div>
-                      <div class="col-lg-6 col-md-6 col-6 text-left">
+                      <div class="col-lg-6 col-md-6 col-6 text-left pt-4 font-weight-bold font-size-08">
                         Sudah Terkumpul
                       </div>
-                      <div class="col-lg-6 col-md-6 col-6 text-right">
+                      <div class="col-lg-6 col-md-6 col-6 text-right pt-4 font-weight-bold font-size-08">
                         Durasi
                       </div>
                     </div>
                     <div class="row">
-                      <div class="col-lg-6 col-md-6 col-6 text-left font-weight-bold" style="color: #ffa500;">
+                      <div class="col-lg-8 col-md-8 col-8 text-left font-weight-bold" style="color: #ffa500;font-size: 1.3rem;">
                         <?= \app\components\Angka::toReadableHarga($nominal, false)  ?><br>
                       </div>
-                      <div class="col-lg-6 col-md-6 col-6 text-right font-weight-bold" style="color: #ffa500;">
+                      <div class="col-lg-4 col-md-4 col-4 text-right font-weight-bold" style="color: #ffa500;font-size: 1.3rem;">
                         <?= $interval; ?> Hari
                       </div>
                     </div>
@@ -261,12 +248,12 @@
       <section id="services" class="services pb-50">
         <div class="">
           <h2 class="text-center" style="color:orange">Informasi & Berita</h2>
-          <p class="text-center font-weight-bold" style="font-size: 1.5rem;">Update Informasi seputar wakaf dan kegiatan yayasan Inisiator Isalam</p>
+          <p class="text-center font-weight-bold">Update Informasi seputar wakaf dan kegiatan yayasan Inisiator Isalam</p>
           <div class="row">
             <?php foreach ($news as $berita) { ?>
               <div class="col-lg-4 col-md-4 mt-3">
                 <a href="<?= \Yii::$app->request->baseUrl . "/detail-berita?id=" . $berita->slug ?>">
-                  <div class="card border-r15 shadow-b2">
+                  <div class="card border-r15 shadow-br2">
                     <div class="border-r15" style="background-image: url(<?= \Yii::$app->request->baseUrl . "/uploads/berita/" . $berita->gambar ?>);background-size: cover;height: 200px;">
 
                     </div>
@@ -274,10 +261,10 @@
                       <h6 class="card-title"><?= $berita->judul ?></h6>
                       <hr>
                       <div class="row">
-                        <div class="col-lg-6 col-md-6 col-6 text-left">
+                        <div class="col-lg-6 col-md-6 col-4 text-left font-weight-bold font-size-08">
                           <?= date("d M Y", strtotime($berita->created_at)); ?>
                         </div>
-                        <div class="col-lg-6 col-md-6 col-6 text-right">
+                        <div class="col-lg-6 col-md-6 col-8 text-right font-weight-bold font-size-08">
                           Baca Selengkapnya
                         </div>
                       </div>
@@ -302,7 +289,7 @@
         </div>
         <div class="col-lg-6 col-md-6 col-sm-12 col-12">
           <h3 class="text-mari-wakaf">Mari Berwakaf</h3>
-          <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Obcaecati quasi asperiores, animi sapiente necessitatibus repellendus non blanditiis. Assumenda deleniti sed voluptatem accusamus, ex ad enim beatae repellat officia veritatis nulla.</p>
+          <p class="text-justify">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Obcaecati quasi asperiores, animi sapiente necessitatibus repellendus non blanditiis. Assumenda deleniti sed voluptatem accusamus, ex ad enim beatae repellat officia veritatis nulla.</p>
         </div>
       </div>
 
@@ -310,12 +297,12 @@
         <hr>
       </div>
 
-      <div class="col-sm-12 col-md-12 col-lg-12">
+      <div class="col-sm-12 col-md-12 col-lg-12 pb-4">
         <h2 class="text-center" style="color:orange">Mitra Yayasan I-salam</h2>
         <div class="carousel owl-carousel" data-slide="6" data-slide-md="4" data-slide-sm="2" data-autoplay="true" data-nav="false" data-dots="false" data-space="20" data-loop="true" data-speed="700">
           <?php foreach ($lembagas as $lembaga) { ?>
-            <div class="client">
-              <a href="#"><img class="img-mitra" src="<?= \Yii::$app->request->baseUrl . "/uploads/lembaga_penerima/" . $lembaga->foto; ?>" alt="client"></a>
+            <div class="client img-mitra">
+              <a href="#"><img class="mx-auto" src="<?= \Yii::$app->request->baseUrl . "/uploads/lembaga_penerima/" . $lembaga->foto; ?>" alt="client"></a>
             </div><!-- /.client -->
           <?php } ?>
         </div><!-- /.carousel -->
@@ -328,10 +315,7 @@
   <button id="scrollTopBtn"><i class="fas fa-chevron-circle-up"></i></button>
   </div><!-- /.wrapper -->
 
-  <script src="<?= \Yii::$app->request->BaseUrl ?>/template/assets/js/jquery-3.3.1.min.js"></script>
-  <script src="<?= \Yii::$app->request->BaseUrl ?>/template/assets/js/plugins.js"></script>
-  <script src="<?= \Yii::$app->request->BaseUrl ?>/template/assets/js/main.js"></script>
-  <script src="<?= \Yii::$app->request->BaseUrl ?>/template/assets/js/sweetalert2.all.min.js"></script>
+  <?= $this->render('component/js') ?>
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCV6HOHjE9XM8IbEaL6ZMZdW8e0tavsOL8&libraries=places&region=id&language=en&sensor=false"></script>
 
   <script>
