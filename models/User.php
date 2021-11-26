@@ -29,6 +29,11 @@ class User extends \app\models\base\User implements \yii\web\IdentityInterface
      */
     public static function findByUsername($username)
     {
+        return User::find()->where(["username"=>$username])->one();
+    }
+
+    public static function findByUsernameAndStatus($username)
+    {
         return User::find()->where(["username"=>$username,'status'=>1,'confirm'=>1])->one();
     }
 
