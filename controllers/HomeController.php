@@ -51,6 +51,8 @@ class HomeController extends Controller
         $count_wakif = User::find()->where(['role_id' => 5])->count();
         $model = new HubungiKami;
         $testimonials = Testimonials::find()->all();
+        $pendanaans = Pendanaan::find()->where(['status_id' => 2])->limit(6)->all();
+        $news = Berita::find()->limit(6)->all();
 
 
         if ($model->load($_POST)) {
@@ -75,7 +77,9 @@ class HomeController extends Controller
             'bg_login' => $bg_login,
             'bg' => $bg,
             'testimonials' => $testimonials,
-            'model' => $model
+            'model' => $model,
+            'pendanaans' => $pendanaans,
+            'news' => $news
         ]);
     }
 
