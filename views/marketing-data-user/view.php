@@ -42,7 +42,7 @@ $this->params['breadcrumbs'][] = 'View';
     <div class="box box-info">
         <div class="box-body">
             <?php $this->beginBlock('app\models\MarketingDataUser'); ?>
-
+            <div class="table-responsive">
             <?= DetailView::widget([
             'model' => $model,
             'attributes' => [
@@ -90,6 +90,7 @@ $this->params['breadcrumbs'][] = 'View';
                  ]
     );
     ?>
+            </div>
         </div>
     </div>
 </div>

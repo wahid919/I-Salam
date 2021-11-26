@@ -82,8 +82,22 @@ $this->params['breadcrumbs'][] = 'View';
                         'attribute' => 'isi',
                         'format' => 'html',
                     ],
-                    'created_at',
-                    'updated_at',
+                    [
+                        'attribute' => 'created_at',
+                        'format' => 'raw',
+                        'filter' => false,
+                        'value' => function ($model) {
+                            return \app\components\Tanggal::toReadableDate($model->created_at);
+                        }
+                    ],
+                    [
+                        'attribute' => 'updated_at',
+                        'format' => 'raw',
+                        'filter' => false,
+                        'value' => function ($model) {
+                            return \app\components\Tanggal::toReadableDate($model->updated_at);
+                        }
+                    ],
                 ],
             ]); ?>
 

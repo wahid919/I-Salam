@@ -42,7 +42,7 @@ abstract class Setting extends \yii\db\ActiveRecord
             [['pin'], 'integer'],
             [['nama_web','judul_web', 'alamat', 'slogan_web'], 'required'],
             [['alamat', 'slogan_web','foto_tentang_kami','tentang_kami','visi','misi','ikut_wakaf'], 'string'],
-            [['judul_tentang_kami', 'logo', 'bg_login', 'bg_pin', 'link_download_apk', 'link_download_apk_marketing', 'nama_web','latitude','longitude','facebook','twitter','instagram'], 'string', 'max' => 255]
+            [['judul_tentang_kami', 'logo', 'bg_login', 'bg_pin', 'link_download_apk', 'link_download_apk_marketing', 'nama_web','latitude','longitude','facebook','twitter','instagram','telegram'], 'string', 'max' => 255]
         ];
     }
 
@@ -65,6 +65,7 @@ abstract class Setting extends \yii\db\ActiveRecord
             'alamat' => 'Alamat',
             'facebook' => 'Facebook',
             'twitter' => 'Twitter',
+            'telegram' => 'Telegram',
             'visi' => 'Visi',
             'misi' => 'Misi',
             'instagram' => 'Instagran',

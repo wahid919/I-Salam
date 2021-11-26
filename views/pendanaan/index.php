@@ -78,9 +78,11 @@ $this->params['breadcrumbs'][] = $this->title;
                 }
             ],
             [
-                'attribute'=>'pendanaan_berakhir',
-                'value' => function($model){
-                    return $model->pendanaan_berakhir;
+                'attribute' => 'pendanaan_berakhir',
+                'format' => 'raw',
+                'filter' => false,
+                'value' => function ($model) {
+                    return \app\components\Tanggal::toReadableDate($model->pendanaan_berakhir);
                 }
             ],
             
