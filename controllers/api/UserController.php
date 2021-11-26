@@ -294,6 +294,13 @@ class UserController extends \yii\rest\ActiveController
         $user = User::findOne([
             'id' => \Yii::$app->user->identity->id
         ]);
+        $old = $user->password;
+        $old_phone = $user->nomor_handphone;
+        $old_name = $user->name;
+        // $new = Yii::$app->security->generatePasswordHash($val['old_password']);
+        $password = $val['old_password'];
+        $p = $user->validatePassword($password);
+        // var_dump($old_name);die;
         $photo_url = $user->photo_url;
         $image = UploadedFile::getInstanceByName("photo_url");
         if ($image) {
@@ -305,31 +312,49 @@ class UserController extends \yii\rest\ActiveController
         } else {
             $user->photo_url = $photo_url;
         }
-        $user->password = Yii::$app->security->generatePasswordHash($val['confirm_password']);
-        $user->name = $val['name'];
-        $user->nomor_handphone = ($val['no_hp']) ?? '';
-        // $user->address = $val['address'];
-        if($val['confirm_password'] != null || $val['password'] != null){
-            if ($val['confirm_password'] != $val['password']) {
-                return ['success' => false, 'message' => 'Password tidak sama', 'data' => null];
-            }
+        if($val['name'] == null){
+            $user->name = $old_name;
+        }else{
+            $user->name = $val['name'];
         }
+        // var_dump($user->name);die;
+        if($val['confirm_password'] == null && $val['new_password'] == null){
+            $user->password = $old;
+        }else{
+            $user->password = Yii::$app->security->generatePasswordHash($val['confirm_password']);
 
-        if (strlen($val['password']) < 3) {
-            return ['success' => false, 'message' => 'Password minimal 4 karakter', 'data' => null];
         }
-
-        $check = User::findOne(['nomor_handphone' => $user->nomor_handphone]);
-        if ($check != null) {
+        // $user->name = $val['name'];
+        if($val['no_hp'] != null){
+            $check = User::findOne(['nomor_handphone' => $val['no_hp']]);
+            if ($check != null) {
             return ['success' => false, 'message' => 'No Telp telah digunakan', 'data' => null];
         }
-    
+            $user->nomor_handphone = $val['no_hp'];
+
+        }else{
+            
+            $user->nomor_handphone = $old_phone;
+        }
+        // $user->address = $val['address'];
+        
+        if($val['confirm_password'] != null || $val['new_password'] != null){
+            if($p == false){
+
+                return ['success' => false, 'message' => 'Password lama yang anda masukkan tidak sama', 'data' => null];
+            }
+            if ($val['confirm_password'] != $val['new_password']) {
+                return ['success' => false, 'message' => 'Password tidak sama', 'data' => null];
+            }
+            if (strlen($val['new_password']) < 3 || strlen($val['confirm_password']) < 3) {
+                return ['success' => false, 'message' => 'Password minimal 4 karakter', 'data' => null];
+            }
+        }
         if ($user->validate()) {
             $user->save();
             
             return ['success' => true, 'message' => 'Berhasil Update  Profile', 'data' => $user];
         } else {
-            $user->rollback();
             return ['success' => false, 'message' => 'Gagal Update Profile', 'data' => $user->getErrors()];
         }
     }
