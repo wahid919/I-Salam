@@ -249,7 +249,7 @@ class UserController extends \yii\rest\ActiveController
         ]);
         // $user->name = $val['name'];
         // $user->username = $val['username'];
-        $pass = (string) random_int(1000, 9999);
+        $pass = (string) random_int(100000, 999999);
         $user->password = Yii::$app->security->generatePasswordHash($pass);
        
         // $user->address = $val['address'];
