@@ -25,7 +25,7 @@ class UserController extends \yii\rest\ActiveController
         $parent = parent::behaviors();
         $parent['authentication'] = [
             "class" => "\app\components\CustomAuth",
-            "only" => ["user-view",],
+            "only" => ["user-view","lupa-password","update-profile"],
         ];
 
         return $parent;
@@ -38,6 +38,8 @@ class UserController extends \yii\rest\ActiveController
             'register' => ['POST'],
             'check-otp' => ['POST'],
             'refresh-otp' => ['POST'],
+            'lupa-password' => ['POST'],
+            'update-profile' => ['POST'],
         ];
     }
     public function actions()
@@ -71,6 +73,13 @@ class UserController extends \yii\rest\ActiveController
                 ]);
                 if (isset($user)) {
                     if ($user->validatePassword($password)) {
+                        
+                    if($user->confirm == 0 && $user->status == 0){
+                        $result["success"] = false;
+                        $result["message"] = "Akun anda belum aktif,Masukkan Kode OTP Anda terlebih dahulu untuk mengaktifkan";
+                        unset($user->password); // remove password from response
+                        $result["data"] = $user;
+                    }else{
                         $generate_random_string = SSOToken::generateToken();
                         $user->secret_token = $generate_random_string;
                         $user->save();
@@ -78,6 +87,8 @@ class UserController extends \yii\rest\ActiveController
                         $result['message'] = "success login";
                         unset($user->password); // remove password from response
                         $result["data"] = $user;
+                    }
+                       
                     } else {
                         $result["success"] = false;
                         $result["message"] = "password salah";
@@ -214,6 +225,49 @@ class UserController extends \yii\rest\ActiveController
                 ->setTo($user->username)
                 ->setFrom(['Inisiatorsalam@gmail.com'])
                 ->setSubject('Kode OTP')
+                ->setTextBody($text)
+                ->send();
+
+
+
+            unset($user->password);
+            return ['success' => true, 'message' => 'success', 'data' => $user];
+        } else {
+            $user->rollback();
+            return ['success' => false, 'message' => 'gagal', 'data' => $user->getErrors()];
+        }
+    }
+
+    public function actionLupaPassword()
+    {
+        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        // $val = \yii::$app->request->post();
+
+
+        $user = User::findOne([
+            'id' => \Yii::$app->user->identity->id
+        ]);
+        // $user->name = $val['name'];
+        // $user->username = $val['username'];
+        $pass = (string) random_int(1000, 9999);
+        $user->password = Yii::$app->security->generatePasswordHash($pass);
+       
+        // $user->address = $val['address'];
+
+        
+
+        if ($user->save()) {
+            // $user->save();
+            
+            $text = "
+            Hay,\nini adalah password anda untuk Login anda.\n
+            {$pass}
+            \nJangan bagikan password ini dengan siapapun.
+            ";
+            Yii::$app->mailer->compose()
+                ->setTo($user->username)
+                ->setFrom(['Inisiatorsalam@gmail.com'])
+                ->setSubject('Lupa Password')
                 ->setTextBody($text)
                 ->send();
 
