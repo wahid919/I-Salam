@@ -31,10 +31,14 @@ use yii\bootstrap\Html;
     <hr class="mt-0">
     <div class="mt-4 mb-4">
       <div class="container mt-4 mb-4">
+        <img src="<?= \Yii::$app->request->baseUrl . "/uploads/berita/". $berita->gambar ?>" alt="" style="width: 25%; height:25%;  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;">
         <div class="card">
-          <div class="card-body" style="background-image: url(<?= \Yii::$app->request->baseUrl . "/uploads/berita/". $berita->gambar ?>);background-size: cover;background-position-y: center;height: 400px;">
+          <!-- <div class="card-body" style="background-image: url(<?= \Yii::$app->request->baseUrl . "/uploads/berita/". $berita->gambar ?>);background-size: cover;background-position-y: center;height: 400px;"> -->
           <!-- <img src="" class="card-img-top" alt="..."> -->
-          </div>
+          <!-- </div> -->
         </div>
         <h2 class="heading__title mt-4 mb-2" style="color:orange;"><?= $berita->judul ?></h2>
         <hr>
