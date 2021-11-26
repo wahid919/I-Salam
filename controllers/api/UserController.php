@@ -6,6 +6,7 @@ namespace app\controllers\api;
  * This is the class for REST controller "UserController".
  */
 
+use app\components\UploadFile;
 use yii\base\Security;
 use app\models\User;
 use app\models\Otp;
@@ -19,6 +20,8 @@ use yii\web\HttpException;
 
 class UserController extends \yii\rest\ActiveController
 {
+
+    use UploadFile;
     public $modelClass = 'app\models\User';
     public function behaviors()
     {
@@ -75,7 +78,8 @@ class UserController extends \yii\rest\ActiveController
                     if ($user->validatePassword($password)) {
                         
                     if($user->confirm == 0 && $user->status == 0){
-                        $result["success"] = false;
+                        
+                        $result["success"] = true;
                         $result["message"] = "Akun anda belum aktif,Masukkan Kode OTP Anda terlebih dahulu untuk mengaktifkan";
                         unset($user->password); // remove password from response
                         $result["data"] = $user;
@@ -83,6 +87,7 @@ class UserController extends \yii\rest\ActiveController
                         $generate_random_string = SSOToken::generateToken();
                         $user->secret_token = $generate_random_string;
                         $user->save();
+                        
                         $result['success'] = true;
                         $result['message'] = "success login";
                         unset($user->password); // remove password from response
@@ -281,6 +286,54 @@ class UserController extends \yii\rest\ActiveController
         }
     }
 
+    public function actionUpdateProfile()
+    {
+        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $val = \yii::$app->request->post();
+
+        $user = User::findOne([
+            'id' => \Yii::$app->user->identity->id
+        ]);
+        $photo_url = $user->photo_url;
+        $image = UploadedFile::getInstanceByName("photo_url");
+        if ($image) {
+            $response = $this->uploadImage($image, "user");
+            if ($response->success == false) {
+                throw new HttpException(419, "Gambar gagal diunggah");
+            }
+            $user->photo_url = $response->filename;
+        } else {
+            $user->photo_url = $photo_url;
+        }
+        $user->password = Yii::$app->security->generatePasswordHash($val['confirm_password']);
+        $user->name = $val['name'];
+        $user->nomor_handphone = ($val['no_hp']) ?? '';
+        // $user->address = $val['address'];
+        if($val['confirm_password'] != null || $val['password'] != null){
+            if ($val['confirm_password'] != $val['password']) {
+                return ['success' => false, 'message' => 'Password tidak sama', 'data' => null];
+            }
+        }
+
+        if (strlen($val['password']) < 3) {
+            return ['success' => false, 'message' => 'Password minimal 4 karakter', 'data' => null];
+        }
+
+        $check = User::findOne(['nomor_handphone' => $user->nomor_handphone]);
+        if ($check != null) {
+            return ['success' => false, 'message' => 'No Telp telah digunakan', 'data' => null];
+        }
+    
+        if ($user->validate()) {
+            $user->save();
+            
+            return ['success' => true, 'message' => 'Berhasil Update  Profile', 'data' => $user];
+        } else {
+            $user->rollback();
+            return ['success' => false, 'message' => 'Gagal Update Profile', 'data' => $user->getErrors()];
+        }
+    }
+
     public function actionCheckOtp()
     {
         $kode_otp = $_POST['kode_otp'];
@@ -352,7 +405,7 @@ class UserController extends \yii\rest\ActiveController
             } else {
                 return [
                     "success" => false,
-                    "message" => "OTP gagal terkirim",
+                    "message" => "OTP gagal terkirim,Mohon Tunggu 1 menit",
                     "data" => "Mohon Tunggu 1 menit",
                 ];
             }
