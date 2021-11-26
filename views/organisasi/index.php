@@ -40,7 +40,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 			'nama',
 			'jabatan',
-			'quotes:ntext',
+			// 'quotes:ntext',
 			[
                 'attribute' => 'Status',
                 'format' => 'html',

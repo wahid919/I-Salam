@@ -54,9 +54,9 @@ $config = [
                 'useFileTransport' => false,
                 'transport' => [
                     'class' => 'Swift_SmtpTransport',
-                    'host' => 'mail.schoolfund.my.id',
-                    'username' => 'admin@schoolfund.my.id',
-                    'password' => 'e)$@8R),v7)g',
+                    'host' => 'smtp.gmail.com',
+                    'username' => 'Inisiatorsalam@gmail.com',
+                    'password' => 'Adminsalam701',
                     'port' => '587',
                     'encryption' => 'tls'
                 ],

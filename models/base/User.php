@@ -43,6 +43,17 @@ class User extends \yii\db\ActiveRecord
                 return Yii::getAlias("@file/$model->photo_url");
             };
         }
+        if(!isset($parent['aktif'])){
+            unset($parent['aktif']);
+            $parent['aktif'] = function($model){
+                if($model->confirm == 0 && $model->status == 0){
+                    return false;
+                }else{
+                    return true;
+                }
+            };
+        }
+
 
         // if (isset($parent['last_login'])) {
         //     unset($parent['last_login']);

@@ -45,6 +45,7 @@ $this->title = 'Setting ' . $model->nama_web;
 
     <div class="box box-info">
         <div class="box-body">
+        <div class="table-responsive">
             <?php $this->beginBlock('app\models\Setting'); ?>
 
             <?= DetailView::widget([
@@ -94,7 +95,10 @@ $this->title = 'Setting ' . $model->nama_web;
         'alamat:ntext',
         'slogan_web:ntext',
         'judul_tentang_kami',
-        'tentang_kami:ntext',
+        [
+            'attribute' => 'tentang_kami',
+            'format' => 'html',
+        ],
         [
             'attribute' =>'foto_tentang_kami',
             'format' =>'html',
@@ -102,8 +106,14 @@ $this->title = 'Setting ' . $model->nama_web;
                return Html::img(\Yii::$app->request->BaseUrl.'/uploads/setting/'.$model->foto_tentang_kami,['width'=>100]);
              },
          ],
-        'visi:ntext',
-        'misi:ntext',
+        [
+            'attribute' => 'visi',
+            'format' => 'html',
+        ],
+        [
+            'attribute' => 'misi',
+            'format' => 'html',
+        ],
         [
             'attribute' =>'instagram',
             'format' =>'html',
@@ -123,6 +133,13 @@ $this->title = 'Setting ' . $model->nama_web;
             'format' =>'html',
             'value' =>function($model) {
                 return Html::a('Twitter', $model->twitter, ['target'=>'_blank']);
+             },
+         ],
+         [
+            'attribute' =>'telegram',
+            'format' =>'html',
+            'value' =>function($model) {
+                return Html::a('Telegram', $model->telegram, ['target'=>'_blank']);
              },
          ],
             ],
@@ -152,6 +169,7 @@ $this->title = 'Setting ' . $model->nama_web;
                  ]
     );
     ?>
+        </div>
         </div>
     </div>
 </div>
