@@ -299,7 +299,10 @@ class UserController extends \yii\rest\ActiveController
         $old_name = $user->name;
         // $new = Yii::$app->security->generatePasswordHash($val['old_password']);
         $password = $val['old_password'];
-        $p = $user->validatePassword($password);
+        if($password != null){
+            $p = $user->validatePassword($password);
+
+        }
         // var_dump($old_name);die;
         $photo_url = $user->photo_url;
         $image = UploadedFile::getInstanceByName("photo_url");
@@ -318,7 +321,7 @@ class UserController extends \yii\rest\ActiveController
             $user->name = $val['name'];
         }
         // var_dump($user->name);die;
-        if($val['confirm_password'] == null && $val['new_password'] == null){
+        if($val['confirm_password'] == null && $val['new_password'] == null && $password == null){
             $user->password = $old;
         }else{
             $user->password = Yii::$app->security->generatePasswordHash($val['confirm_password']);
