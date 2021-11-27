@@ -8416,6 +8416,186 @@ textarea.form-control {
 }
 
 
+/* berita */
+
+ ::-webkit-scrollbar {
+    width: 5px;
+}
+
+
+/* Track */
+
+ ::-webkit-scrollbar-track {
+    background: #FFF;
+}
+
+
+/* Handle */
+
+ ::-webkit-scrollbar-thumb {
+    background: #F1A527;
+}
+
+
+/* Handle on hover */
+
+ ::-webkit-scrollbar-thumb:hover {
+    background: #F1A527;
+}
+
+.search-input {
+    border: 1px solid #ccc;
+    margin-right: 1rem;
+    border-radius: .6rem !important;
+    padding: .5rem 2rem
+}
+
+.btn-search-input {
+    background-color: white;
+    border: 1px solid #ccc;
+    color: orange;
+    width: auto;
+    padding: 0 1.5rem;
+    border-radius: .6rem;
+    font-size: 1.2rem
+}
+
+.header-list_kategori {
+    text-align: center;
+    overflow-x: auto;
+    margin: 0 3rem;
+    padding-bottom: .4rem;
+    white-space: nowrap;
+    flex: 1
+}
+
+.header-list_kategori li {
+    display: inline-block;
+    padding: .4rem;
+    color: #aaa;
+}
+
+.header-list_kategori li a {
+    color: #666;
+}
+
+.header-list_kategori li.active {
+    border-bottom: 2px solid #F1A527;
+    color: #F1A527;
+}
+
+.header-list_kategori li.active a {
+    color: #F1A527;
+}
+
+.header-sort {
+    display: block;
+    width: 100%;
+    padding: .3rem .5rem;
+    border-radius: .4rem;
+    border: 1px solid #ccc;
+}
+
+.text-primary {
+    color: #F1A527 !important;
+}
+
+
+/* width */
+
+.header-list_kategori::-webkit-scrollbar-button {
+    width: 0;
+}
+
+
+/* Track */
+
+.header-list_kategori::-webkit-scrollbar-track {
+    background: #FFF;
+    border-radius: 10px;
+}
+
+
+/* Handle */
+
+.header-list_kategori::-webkit-scrollbar-thumb {
+    background: #F1A527;
+    border-radius: 10px;
+}
+
+
+/* Handle on hover */
+
+.header-list_kategori::-webkit-scrollbar-thumb:hover {
+    background: #F1A527;
+    border-radius: 10px;
+}
+
+.content-berita__info {
+    color: #F1A527;
+    font-size: .6rem;
+    position: absolute;
+    bottom: 0;
+    left: 1.25rem;
+    right: 1.25rem;
+    padding-bottom: .5rem;
+}
+
+.card_berita {
+    border-radius: .7rem;
+    box-shadow: 0 0 3px 0px #dedede;
+}
+
+.card-title {
+    font-size: 1.1rem;
+    color: #666;
+    margin-bottom: 3rem;
+}
+
+.owl-nav {
+    position: absolute;
+    top: 45%;
+    left: -1.5rem;
+    right: -1.5rem;
+    display: flex;
+    justify-content: space-between;
+    overflow: hidden;
+}
+
+.owl-nav .owl-prev,
+.owl-nav .owl-next {
+    font-size: 1rem;
+    padding: 0 .5rem;
+    margin: 0 1rem;
+    border-radius: 100%;
+    background: #fff;
+    box-shadow: 0 0 3px 0 #ccc;
+    color: #aaa;
+}
+
+.owl-stage,
+.owl-item {
+    overflow: hidden;
+    border-radius: 1rem;
+}
+
+.owl-dots,
+.owl-thumbs {
+    display: none;
+}
+
+.item {
+    border-radius: 1rem;
+    margin-bottom: 2rem;
+    overflow: hidden
+}
+
+.item-content {
+    width: 100vw;
+    height: 30vw;
+}
+
+
 /* Mobile Phones and tablets */
 
 @media only screen and (min-width: 320px) and (max-width: 767px) {
@@ -8628,6 +8808,6 @@ textarea.form-control {
 .pagination li.disabled,
 .pagination li.disabled span {
     color: #000;
-    background-color: #e0960b ;
-    border-color: #e0960b ;
+    background-color: #e0960b;
+    border-color: #e0960b;
 }

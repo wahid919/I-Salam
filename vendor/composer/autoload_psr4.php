@@ -15,6 +15,7 @@ return array(
     'yii\\bootstrap\\' => array($vendorDir . '/yiisoft/yii2-bootstrap/src'),
     'yii\\' => array($vendorDir . '/yiisoft/yii2'),
     'wbraganca\\dynamicform\\' => array($vendorDir . '/wbraganca/yii2-dynamicform'),
+    'richardfan\\widget\\' => array($vendorDir . '/richardfan1126/yii2-js-register'),
     'setasign\\Fpdi\\' => array($vendorDir . '/setasign/fpdi/src'),
     'schmunk42\\giiant\\' => array($vendorDir . '/schmunk42/yii2-giiant/src'),
     'rmrevin\\yii\\fontawesome\\' => array($vendorDir . '/rmrevin/yii2-fontawesome'),
