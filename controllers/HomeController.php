@@ -460,6 +460,28 @@ class HomeController extends Controller
     //         'model' => $model
     //     ]);
     // }
+    public function actionLaporanWakaf()
+    {
+        $setting = Setting::find()->one();
+        $icon = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->logo;
+
+        return $this->render('laporan-wakaf', [
+            'setting' => $setting,
+            'icon' => $icon,
+        ]);
+    }
+
+    public function actionNotifikasi()
+    {
+        $setting = Setting::find()->one();
+        $icon = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->logo;
+
+        return $this->render('notifikasi', [
+            'setting' => $setting,
+            'icon' => $icon,
+        ]);
+    }
+
     public function actionProfile()
     {
         $setting = Setting::find()->one();

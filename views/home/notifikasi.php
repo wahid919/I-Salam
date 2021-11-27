@@ -5,7 +5,7 @@
             <?= $this->render('component/sidemenu-profile') ?>
         </div>
         <div class="col-lg-8 col-md-6 col-sm-12 col-12">
-            <h3 class="text-isalam-1 font-weight-bold text-detail-program">Transaksi</h3>
+            <h3 class="text-isalam-1 font-weight-bold text-detail-program">Notifikasi</h3>
             <div class="row">
                 <div class="col-lg-6 col-md-6 col-sm-8 col-8 text-left border-bottom-3">
                     <p class="font-weight-bold">Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
