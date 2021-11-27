@@ -24,6 +24,9 @@ $config = [
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
+        'formatter' => [
+            'class' => \app\formatter\CustomFormatter::class,
+        ],
         'i18n' => [
             'translations' => [
                 '*' => [
@@ -36,7 +39,7 @@ $config = [
                 ],
             ],
         ],
-/*        'mailer' => [
+        /*        'mailer' => [
              'class' => 'yii\swiftmailer\Mailer',
              'useFileTransport' => false,
              'transport' => [
@@ -49,18 +52,18 @@ $config = [
              ],
          ],
 */
-            'mailer' => [
-                'class' => 'yii\swiftmailer\Mailer',
-                'useFileTransport' => false,
-                'transport' => [
-                    'class' => 'Swift_SmtpTransport',
-                    'host' => 'smtp.gmail.com',
-                    'username' => 'Inisiatorsalam@gmail.com',
-                    'password' => 'Adminsalam701',
-                    'port' => '587',
-                    'encryption' => 'tls'
-                ],
+        'mailer' => [
+            'class' => 'yii\swiftmailer\Mailer',
+            'useFileTransport' => false,
+            'transport' => [
+                'class' => 'Swift_SmtpTransport',
+                'host' => 'smtp.gmail.com',
+                'username' => 'Inisiatorsalam@gmail.com',
+                'password' => 'Adminsalam701',
+                'port' => '587',
+                'encryption' => 'tls'
             ],
+        ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
             'targets' => [
@@ -84,20 +87,20 @@ $config = [
                 'user/check-otp' => '/user/check-otp',
                 'user/refresh-otp' => '/user/refresh-otp',
 
-                
+
                 //pembayaran
                 'marketing-data-user/all' => '/marketing-data-user/all',
                 'marketing-data-user/validate-pendanaan' => '/marketing/validate-pendanaan',
-                
+
                 //bank
                 'bank/all' => '/bank/all',
-                
+
                 //pendanaan
-                
+
                 // 'pendanaan/show-pendanaan/<id:[\w\_\-]+>/<id:\d+>' => 'pendanaan/show-pendanaan',
-                
+
                 'pendanaan/show-pendanaan/<unique_id:[\w\_\-]+>' => 'pendanaan/show-pendanaan',
-                
+
                 'pendanaan/approve-pendanaan' => 'pendanaan/approve-pendanaan',
                 'pendanaan/pendanaan-cair' => 'pendanaan/pendanaan-cair',
                 'pendanaan/pendanaan-selesai' => 'pendanaan/pendanaan-selesai',
@@ -107,7 +110,7 @@ $config = [
                 'pendanaan/pendanan-wakaf/<unique_id:[\w\_\-]+>' => 'pendanaan/pendanan-wakaf',
                 // 'pendanaan/all' => '/pendanaan/all',
 
-                
+
                 'program' => 'home/program',
                 'news' => 'home/news',
                 'about' => 'home/about',
@@ -121,7 +124,7 @@ $config = [
                 'pembayaran/upload-file' => 'pembayaran/upload-file',
                 'pembayaran/informasi/<unique_id:[\w\_\-]+>' => 'pembayaran/informasi',
                 'pembayaran/detail-wakaf/<unique_id:[\w\_\-]+>' => 'pembayaran/detail-wakaf',
-                
+
                 //kategori pendanaans
                 // 'kategori-pendanaan/all' => 'kategori-pendanaan/all',
 
@@ -130,19 +133,19 @@ $config = [
                 'agenda-pendanaan/add-agenda' => 'agenda-pendanaan/add-agenda',
                 'agenda-pendanaan/deleted' => 'agenda-pendanaan/deleted',
                 'agenda-pendanaan/by-pendanaan/<unique_id:[\w\_\-]+>' => 'agenda-pendanaan/by-pendanaan',
-                
+
                 //pencairan
                 'pencairan/all' => 'pencairan/all',
                 'pencairan/add-pencairan' => 'pencairan/add-pencairan',
 
-                
+
                 //partner-pendanaan
                 'partner-pendanaan/all' => 'partner-pendanaan/all',
                 'partner-pendanaan/add-partner' => 'partner-pendanaan/add-partner',
                 'partner-pendanaan/deleted' => 'partner-pendanaan/deleted',
                 'partner-pendanaan/by-pendanaan/<unique_id:[\w\_\-]+>' => 'partner-pendanaan/by-pendanaan',
 
-                
+
                 //notifikasi
                 'notifikasi/all' => 'notifikasi/all',
                 'notifikasi/detail/<unique_id:[\w\_\-]+>' => 'notifikasi/detail',
@@ -166,17 +169,17 @@ $config = [
     ],
     'modules' => [
         'gridview' =>  [
-             'class' => '\kartik\grid\Module'
-             // enter optional module parameters below - only if you need to  
-             // use your own export download action or custom translation 
-             // message source
-             // 'downloadAction' => 'gridview/export/download',
-             // 'i18n' => []
+            'class' => '\kartik\grid\Module'
+            // enter optional module parameters below - only if you need to  
+            // use your own export download action or custom translation 
+            // message source
+            // 'downloadAction' => 'gridview/export/download',
+            // 'i18n' => []
         ],
         'datecontrol' =>  [
             'class' => '\kartik\datecontrol\Module'
         ]
-        ],
+    ],
     'params' => $params,
     'defaultRoute' => "home",
 ];

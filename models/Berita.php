@@ -31,4 +31,20 @@ class Berita extends BaseBerita
             ]
         );
     }
+
+    public static function getBanner()
+    {
+        $berita = Berita::find()
+            ->limit(4)
+            ->orderBy(new \yii\db\Expression('rand()'))
+            ->all();
+
+        return $berita;
+    }
+
+    public function getShowTitle()
+    {
+        if (strlen($this->judul) <= 75) return $this->judul;
+        return substr($this->judul, 0, 75) . "...";
+    }
 }

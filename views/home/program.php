@@ -59,7 +59,7 @@
                   <hr>
                   <div class="row">
                     <div class="col-sm-12 col-md-12 col-lg-12">
-                      <a href="#" class="btn btn-sm btn-program btn-block">Mulai Wakaf</a>
+                      <a href="<?= \Yii::$app->request->baseUrl . "/home/detail-program/" ?>" class="btn btn-sm btn-program btn-block">Mulai Wakaf</a>
                     </div>
                   </div>
                 </div>
