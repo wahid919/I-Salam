@@ -119,7 +119,14 @@ return $this->render('update', [
 public function actionDelete($id)
 {
 try {
-$this->findModel($id)->delete();
+
+    $model = $this->findModel($id);
+    if($model->flag == 0){
+        $model->flag = 1;
+    }else{
+        $model->flag = 0;
+    }
+    $model->save();
 } catch (\Exception $e) {
 $msg = (isset($e->errorInfo[2]))?$e->errorInfo[2]:$e->getMessage();
 \Yii::$app->getSession()->addFlash('error', $msg);

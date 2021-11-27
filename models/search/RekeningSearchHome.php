@@ -10,7 +10,7 @@ use app\models\Rekening;
 /**
 * RekeningSearch represents the model behind the search form about `app\models\Rekening`.
 */
-class RekeningSearch extends Rekening
+class RekeningSearchHome extends Rekening
 {
 /**
 * @inheritdoc
@@ -41,7 +41,7 @@ return Model::scenarios();
 */
 public function search($params)
 {
-$query = Rekening::find();
+$query = Rekening::find()->where(['flag' => 1]);
 
 $dataProvider = new ActiveDataProvider([
 'query' => $query,

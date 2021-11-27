@@ -7,10 +7,10 @@ use yii\grid\GridView;
 /**
 * @var yii\web\View $this
 * @var yii\data\ActiveDataProvider $dataProvider
-* @var app\models\search\LembagaPenerimaSearch $searchModel
+* @var app\models\search\RekeningSearch $searchModel
 */
 
-$this->title = 'Lembaga Penerima';
+$this->title = 'Rekening';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
@@ -38,8 +38,10 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 \app\components\ActionButton::getButtons2(),
 
-                'nama',
-                'deskripsi:ntext',
+			'jenis_bank',
+			'nomor_rekening',
+			'nama_rekening',
+			'jenis_rekening',
 			[
                 'attribute' => 'Status',
                 'format' => 'html',

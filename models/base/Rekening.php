@@ -11,9 +11,9 @@ use Yii;
  *
  * @property integer $id
  * @property string $jenis_bank
- * @property string $nomor_rekenig
+ * @property string $nomor_rekening
  * @property string $nama_rekening
- * @property string $jenis_rekeing
+ * @property string $jenis_rekening
  * @property integer $flag
  * @property string $aliasModel
  */
@@ -36,11 +36,11 @@ abstract class Rekening extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['jenis_bank', 'nomor_rekenig', 'nama_rekening', 'jenis_rekeing'], 'required'],
+            [['jenis_bank', 'nomor_rekening', 'nama_rekening', 'jenis_rekening'], 'required'],
             [['flag'], 'integer'],
             [['jenis_bank'], 'string', 'max' => 255],
-            [['nomor_rekenig'], 'string', 'max' => 20],
-            [['nama_rekening', 'jenis_rekeing'], 'string', 'max' => 100]
+            [['nomor_rekening'], 'string', 'max' => 20],
+            [['nama_rekening', 'jenis_rekening'], 'string', 'max' => 100]
         ];
     }
 
@@ -51,11 +51,11 @@ abstract class Rekening extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'jenis_bank' => 'Jenis Bank',
-            'nomor_rekenig' => 'Nomor Rekenig',
+            'jenis_bank' => 'Bank Rekening',
+            'nomor_rekening' => 'Nomor Rekening',
             'nama_rekening' => 'Nama Rekening',
-            'jenis_rekeing' => 'Jenis Rekeing',
-            'flag' => 'Flag',
+            'jenis_rekening' => 'Jenis Rekening',
+            'flag' => 'Status',
         ];
     }
 

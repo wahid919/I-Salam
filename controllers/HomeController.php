@@ -19,6 +19,8 @@ use app\models\LembagaPenerima;
 use app\models\Pendanaan;
 use app\models\User;
 use app\models\KategoriPendanaan;
+use app\models\Rekening;
+use app\models\search\RekeningSearchHome;
 use app\models\Testimonials;
 use yii\data\ActiveDataProvider;
 use yii\data\Pagination;
@@ -241,13 +243,16 @@ class HomeController extends Controller
     {
 
         $this->layout = false;
-
+        $searchModel  = new RekeningSearchHome;
+        $dataProvider = $searchModel->search($_GET);
+        $dataProvider->setPagination(['pageSize' => 20]);
         $setting = Setting::find()->one();
         $icon = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->logo;
         $bg_login = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->bg_login;
         $bg = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->bg_pin;
         $organisasis = Organisasi::find()->where(['flag' => 1])->all();
         $lembagas = LembagaPenerima::find()->where(['flag' => 1])->all();
+        $rekenings = Rekening::find()->where(['flag' => 1])->all();
         $count_program = Pendanaan::find()->count();
         $count_wakif = User::find()->where(['role_id' => 5])->count();
        
@@ -260,7 +265,10 @@ class HomeController extends Controller
             'count_program' => $count_program,
             'count_wakif' => $count_wakif,
             'organisasis' => $organisasis,
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
             'lembagas' => $lembagas,
+            'rekenings'  => $rekenings,
             'icon' => $icon,
             'bg_login' => $bg_login,
             'bg' => $bg

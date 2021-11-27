@@ -9,15 +9,15 @@ use dmstr\bootstrap\Tabs;
 
 /**
 * @var yii\web\View $this
-* @var app\models\LembagaPenerima $model
+* @var app\models\Rekening $model
 */
 
-$this->title =$model->nama;
-$this->params['breadcrumbs'][] = ['label' => 'Lembaga Penerima', 'url' => ['index']];
+$this->title = 'Rekening ' . $model->jenis_bank;
+$this->params['breadcrumbs'][] = ['label' => 'Rekening', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => (string)$model->id, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = 'View';
 ?>
-<div class="giiant-crud lembaga-penerima-view">
+<div class="giiant-crud rekening-view">
 
     <!-- menu buttons -->
     <p class='pull-left'>
@@ -25,7 +25,7 @@ $this->params['breadcrumbs'][] = 'View';
         <?= Html::a('<span class="glyphicon glyphicon-plus"></span> ' . 'Tambah Baru', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
     <p class="pull-right">
-        <?= Html::a('<span class="glyphicon glyphicon-list"></span> ' . 'Daftar Lembaga Penerima', ['index'], ['class'=>'btn btn-default']) ?>
+        <?= Html::a('<span class="glyphicon glyphicon-list"></span> ' . 'Daftar Rekening', ['index'], ['class'=>'btn btn-default']) ?>
     </p>
 
     <div class="clearfix"></div>
@@ -41,21 +41,16 @@ $this->params['breadcrumbs'][] = 'View';
 
     <div class="box box-info">
         <div class="box-body">
-            <?php $this->beginBlock('app\models\LembagaPenerima'); ?>
+            <?php $this->beginBlock('app\models\Rekening'); ?>
 
             <?= DetailView::widget([
             'model' => $model,
             'attributes' => [
-            
-        'nama',
+        'jenis_bank',
+        'nomor_rekening',
+        'nama_rekening',
+        'jenis_rekening',
         [
-            'attribute' =>'foto',
-            'format' =>'html',
-            'value' =>function($model) {
-               return Html::img(\Yii::$app->request->BaseUrl.'/uploads/lembaga_penerima/'.$model->foto,['width'=>250]);
-             },
-         ],
-         [
             'attribute' => 'Status',
             'format' => 'html',
             'value' => function ($model) {
@@ -66,7 +61,6 @@ $this->params['breadcrumbs'][] = 'View';
               }
             }
         ],
-        'deskripsi:ntext',
             ],
             ]); ?>
 
@@ -99,7 +93,7 @@ $this->params['breadcrumbs'][] = 'View';
                      'encodeLabels' => false,
                      'items' => [ [
     'label'   => '<b class=""># '.$model->id.'</b>',
-    'content' => $this->blocks['app\models\LembagaPenerima'],
+    'content' => $this->blocks['app\models\Rekening'],
     'active'  => true,
 ], ]
                  ]
