@@ -216,12 +216,26 @@ class HomeController extends Controller
         // var_dump($id);die;
         $this->layout = false;
         $berita = Berita::find()->where(['slug' => $id])->one();
+        if ($berita == null) throw new HttpException(404);
+        $news = Berita::find()->where(['kategori_berita_id' => $berita->kategori_berita_id])->limit(3)->all();
         $setting = Setting::find()->one();
         $bg_login = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->bg_login;
+
+        $already_view = Yii::$app->session->get('viewberita');
+        if (is_array($already_view) == false) $already_view = [];
+        if (in_array($berita->id, $already_view) == false) {
+            $berita->view_count++;
+            $berita->save(false);
+            array_push($already_view, $berita->id);
+        }
+
+        Yii::$app->session->set('viewberita', $already_view);
+
         return $this->render('detail-berita', [
             'setting' => $setting,
             'berita' => $berita,
-            'bg_login' => $bg_login
+            'bg_login' => $bg_login,
+            'news' => $news,
         ]);
     }
 
