@@ -145,8 +145,6 @@ class HomeController extends Controller
 
     public function actionNews()
     {
-        $this->layout = false;
-
         $query = Berita::find();
         // find condition
         if (isset($_GET['cari'])) {

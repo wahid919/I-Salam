@@ -23,7 +23,7 @@ use yii\helpers\Html;
     <link href="<?= $icon ?>" rel="icon">
     <?= Html::csrfMetaTags() ?>
     <title><?= Html::encode($setting->judul_web) ?></title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">    
     <?php \app\assets\HomeAsset::register($this); ?>
     <script>
         var baseUrl = "<?= Yii::$app->urlManager->baseUrl ?>";
@@ -49,8 +49,8 @@ use yii\helpers\Html;
     <button id="scrollTopBtn"><i class="fas fa-chevron-circle-up"></i></button>
 
     <?php $this->endBody() ?>
+    <?php $this->registerJsFile("https://maps.googleapis.com/maps/api/js?key=AIzaSyCV6HOHjE9XM8IbEaL6ZMZdW8e0tavsOL8&libraries=places&region=id&language=en&sensor=false"); ?>
 </body>
-<?php $this->registerJsFile("https://maps.googleapis.com/maps/api/js?key=AIzaSyCV6HOHjE9XM8IbEaL6ZMZdW8e0tavsOL8&libraries=places&region=id&language=en&sensor=false"); ?>
 <script>
     var marker;
 
