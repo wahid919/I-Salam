@@ -2,6 +2,7 @@
 
 namespace app\components;
 
+use app\models\Setting;
 use app\models\WebProfile;
 use Yii;
 
@@ -159,7 +160,7 @@ class Constant
 
     public static function setting($attribute)
     {
-        $model = WebProfile::findOne(['id' => 1]);
+        $model = Setting::findOne(['id' => 3]);
         if ($model == null) return null;
         return $model->$attribute;
     }
