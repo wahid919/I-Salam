@@ -32,38 +32,38 @@
               <table class="table table-borderless">
                 <thead>
                   <tr>
-                    <th class="text-isalam-1" scope="col">Kategori</th>
-                    <th class="text-isalam-1" scope="col">Tempat</th>
-                    <th class="text-isalam-1" scope="col">Penerima Wakaf</th>
+                    <th style="color:#787878" scope="col">Kategori</th>
+                    <th style="color:#787878" scope="col">Tempat</th>
+                    <th style="color:#787878" scope="col">Penerima Wakaf</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
-                    <td class="font-size-08">Sosial & Kemanusiaan</td>
-                    <td class="font-size-08">Kota Jakarta Pusat</td>
-                    <td class="font-size-08">Ahmad Salim</td>
+                    <td class="font-weight-bold text-isalam-1 font-size-08">Sosial & Kemanusiaan</td>
+                    <td class="font-weight-bold text-isalam-1 font-size-08">Kota Jakarta Pusat</td>
+                    <td class="font-weight-bold text-isalam-1 font-size-08">Ahmad Salim</td>
                   </tr>
                 </tbody>
               </table>
             </div>
-            <div class="table-responsive d-none d-block d-sm-block d-md-block">
+            <div class="table-responsive d-none d-block d-sm-block d-md-block d-lg-none">
               <table class="table table-borderless">
                 <thead>
                   <tr>
-                    <th class="text-isalam-1">Kategori</th>
-                    <th class="text-isalam-1">Tempat</th>
+                    <th style="color:#787878">Kategori</th>
+                    <th style="color:#787878">Tempat</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
-                    <td class="font-size-08">Sosial & Kemanusiaan</td>
-                    <td class="font-size-08">Kota Jakarta Pusat</td>
+                    <td class="font-weight-bold text-isalam-1 font-size-08">Sosial & Kemanusiaan</td>
+                    <td class="font-weight-bold text-isalam-1 font-size-08">Kota Jakarta Pusat</td>
                   </tr>
                   <tr>
-                    <th colspan="2" class="text-isalam-1">Penerima Wakaf</th>
+                    <th colspan="2" style="color:#787878">Penerima Wakaf</th>
                   </tr>
                   <tr>
-                    <td colspan="2" class="font-size-08">Ahmad Salim</td>
+                    <td colspan="2" class="font-weight-bold text-isalam-1 font-size-08">Ahmad Salim</td>
                   </tr>
                 </tbody>
               </table>
@@ -215,7 +215,7 @@
           <div class="card-body">
             <div class="row">
               <div class="col-4">
-                <img class="border-r10 shadow-br3" src="<?= \Yii::$app->request->BaseUrl ?>/uploads/setting/2ljOpiwGXzWru9X5vzqrRwYVX3N4cF6F.png" width="100px">
+                <img class="border-r10 shadow-br3" src="<?= \Yii::$app->request->BaseUrl ?>/uploads/logo.png" width="100px">
               </div>
               <div class="col-8">
                 <p class="text-isalam-1 font-weight-bold" style="padding-top: 12%;">Yayasan dan Lembaga Inisiator Salam</p>
