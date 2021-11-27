@@ -125,7 +125,7 @@
       <div class="modal-dialog modal-dialog-scrollable" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="mulaiwakaf">Modal title</h5>
+            <h5 class="modal-title" id="mulaiwakaf">Pembayaran</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
@@ -144,29 +144,29 @@
                 <p class="font-size-08">Anda akan berwakaf dengan nominal sebesar :</p>
                 <div class="row">
                   <div class="col-6">
-                    <a href="#" class="btn btn-block btn-nilai-wakaf btn-outline-bayar border-r5 mt-2" role="button" aria-pressed="true">Rp. 100.000 ></a>
+                    <a href="#" class="btn btn-block btn-nilai-wakaf btn-outline-bayar border-r5 mt-2" role="button" aria-pressed="true" onclick="return theFunction(100000);">Rp. 100.000 ></a>
                   </div>
                   <div class="col-6">
-                    <a href="#" class="btn btn-block btn-nilai-wakaf btn-outline-bayar border-r5 mt-2" role="button" aria-pressed="true">Rp. 200.000 ></a>
+                    <a href="#" class="btn btn-block btn-nilai-wakaf btn-outline-bayar border-r5 mt-2" role="button" aria-pressed="true" onclick="return theFunction(200000);">Rp. 200.000 ></a>
                   </div>
                   <div class="col-6">
-                    <a href="#" class="btn btn-block btn-nilai-wakaf btn-outline-bayar border-r5 mt-2" role="button" aria-pressed="true">Rp. 300.000 ></a>
+                    <a href="#" class="btn btn-block btn-nilai-wakaf btn-outline-bayar border-r5 mt-2" role="button" aria-pressed="true" onclick="return theFunction(300000);">Rp. 300.000 ></a>
                   </div>
                   <div class="col-6">
-                    <a href="#" class="btn btn-block btn-nilai-wakaf btn-outline-bayar border-r5 mt-2" role="button" aria-pressed="true">Rp. 400.000 ></a>
+                    <a href="#" class="btn btn-block btn-nilai-wakaf btn-outline-bayar border-r5 mt-2" role="button" aria-pressed="true" onclick="return theFunction(400000);">Rp. 400.000 ></a>
                   </div>
                   <div class="col-6">
-                    <a href="#" class="btn btn-block btn-nilai-wakaf btn-outline-bayar border-r5 mt-2" role="button" aria-pressed="true">Rp. 500.000 ></a>
+                    <a href="#" class="btn btn-block btn-nilai-wakaf btn-outline-bayar border-r5 mt-2" role="button" aria-pressed="true" onclick="return theFunction(500000);">Rp. 500.000 ></a>
                   </div>
                   <div class="col-6">
-                    <a href="#" class="btn btn-block btn-nilai-wakaf btn-outline-bayar border-r5 mt-2" role="button" aria-pressed="true">Rp. 600.000 ></a>
+                    <a href="#" class="btn btn-block btn-nilai-wakaf btn-outline-bayar border-r5 mt-2" role="button" aria-pressed="true" onclick="return theFunction(600000);">Rp. 600.000 ></a>
                   </div>
                   <div class="col-12 mt-2">
                     <div class="input-group mb-2">
                       <div class="input-group-prepend mr-2" style="height:calc(1.5em + .75rem + 2px);">
                         <div class="input-group-text bg-white border-r5 font-weight-bold" style="color: #afafaf;border-color: #787878;">Rp</div>
                       </div>
-                      <input type="text" class="form-control select-wakaf border-r5" id="" style="border-color: #787878;" placeholder="Minimal Wakaf Rp. 10.000">
+                      <input type="number" class="form-control select-wakaf border-r5" id="nominal" style="border-color: #787878;" placeholder="Minimal Wakaf Rp. 10.000" required>
                     </div>
                   </div>
                 </div>
@@ -186,13 +186,13 @@
       <div class="modal-dialog modal-dialog-scrollable" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalScrollableTitle">Modal title</h5>
+            <h5 class="modal-title" id="exampleModalScrollableTitle">Pembayaran</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
           <div class="modal-body">
-            ...
+            Apakah Anda Yakin Ingin Wakaf sebesar <h3 id="nom"></h3>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -319,3 +319,22 @@
     </div><!-- /.row -->
   </div><!-- /.container -->
 </section><!-- /.blog Single -->
+<script type="text/javascript">
+    function theFunction (i) {
+      var a = document.getElementById("nominal").value = i;
+      
+      var	number_string = i.toString(),
+      sisa 	= number_string.length % 3,
+      rupiah 	= number_string.substr(0, sisa),
+      ribuan 	= number_string.substr(sisa).match(/\d{3}/g);
+      
+      if (ribuan) {
+        separator = sisa ? '.' : '';
+        rupiah += separator + ribuan.join('.');
+      }
+      var b = document.getElementById("nom").innerHTML = "Rp. "+rupiah;
+      // console.log(rupiah);
+        // return true or false, depending on whether you want to allow the `href` property to follow through or not
+    }
+    
+</script>

@@ -73,7 +73,6 @@
               </div>
               <div class="col-12">
                 <p class="heading__desc pt-4">
-                  <!-- <img src="<?= Yii::$app->formatter->asMyImage("setting/" . \app\components\Constant::setting('logo'), false) ?>" alt="" class="img img-fluid" style="width: 200px;display:inline-block"> -->
                   <?= $setting->tentang_kami ?>
                 </p>
               </div>

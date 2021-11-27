@@ -75,6 +75,7 @@ use yii\helpers\Url;
     <button id="scrollTopBtn"><i class="fas fa-chevron-circle-up"></i></button>
 
     <?php $this->endBody() ?>
+    <?php $this->registerJsFile("https://maps.googleapis.com/maps/api/js?key=AIzaSyCV6HOHjE9XM8IbEaL6ZMZdW8e0tavsOL8&libraries=places&region=id&language=en&sensor=false"); ?>
 </body>
 
 <?php
@@ -85,8 +86,6 @@ use yii\helpers\Url;
 ?>
 <div id="modal-body"></div>
 <?php \app\components\Modal::end() ?>
-
-<?php $this->registerJsFile("https://maps.googleapis.com/maps/api/js?key=AIzaSyCV6HOHjE9XM8IbEaL6ZMZdW8e0tavsOL8&libraries=places&region=id&language=en&sensor=false"); ?>
 <script>
     var marker;
 

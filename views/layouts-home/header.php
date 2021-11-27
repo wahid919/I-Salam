@@ -63,11 +63,31 @@ $kategori_pendanaans = app\models\KategoriPendanaan::find()->all();
               <?php } ?>
             </ul><!-- /.dropdown-menu -->
           </li>
+          <li class="nav__item with-dropdown">
+            <a href="<?= \Yii::$app->request->baseUrl . "/home#" ?>" class="dropdown-toggle nav__item-link">
+              <div class="d-none d-lg-block">
+                LAYANAN <i class="fa fa-angle-down"></i>
+              </div>
+              <div class="d-none d-md-block d-sm-block d-block d-lg-none">
+                LAYANAN</i>
+              </div>
+            </a>
+            <i class="fa fa-angle-right" data-toggle="dropdown"></i>
+            <ul class="dropdown-menu">
+              <li class="nav__item"><a href="<?= \Yii::$app->request->baseUrl . "/home/rekening" ?>" class="nav__item-link text-dark">Daftar Rekening</a></li>
+
+              <li class="nav__item"><a href="<?= \Yii::$app->request->baseUrl . "/home/report" ?>" class="nav__item-link text-dark">Anual Report</a></li>
+
+            </ul><!-- /.dropdown-menu -->
+          </li>
           <li class="nav__item">
             <a href="<?= Yii::$app->request->baseUrl . "/about" ?>" class="nav__item-link" style="color: black;">TENTANG KAMI</a>
           </li><!-- /.nav-item -->
           <li class="nav__item">
             <a id="btn-registrasi" class="nav__item-link" style="color: black;">Daftar</a>
+          </li>
+          <li class="nav__item">
+            <a href="<?= Yii::$app->request->baseUrl . "home/profile" ?>" class="nav__item-link" style="color: black;">AKUN SAYA</a>
           </li><!-- /.nav-item -->
         </ul><!-- /.navbar-nav -->
       </div><!-- /.navbar-collapse -->
