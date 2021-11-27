@@ -65,10 +65,10 @@ $kategori_pendanaans = app\models\KategoriPendanaan::find()->all();
           <li class="nav__item with-dropdown">
             <a href="<?= \Yii::$app->request->baseUrl . "/home#" ?>" class="dropdown-toggle nav__item-link">
             <div class="d-none d-lg-block">
-              Layanan <i class="fa fa-angle-down"></i>
+              LAYANAN <i class="fa fa-angle-down"></i>
             </div>
             <div class="d-none d-md-block d-sm-block d-block d-lg-none">
-              Layanan</i>
+              LAYANAN</i>
             </div>
           </a>
             <i class="fa fa-angle-right" data-toggle="dropdown"></i>
