@@ -1,15 +1,3 @@
-<?= $this->render('component/head') ?>
-
-<body>
-  <div class="wrapper">
-    <!-- =========================
-        Header
-    =========================== -->
-    <?= $this->render('component/header') ?>
-
-    <!-- ========================
-        Services
-    =========================== -->
     <hr class="mt-0">
     <section id="services" class="services pb-90" style="padding-top: 10px;">
       <div class="container">
@@ -17,7 +5,7 @@
           <div class="col-lg-6 col-md-6 col-sm-12 col-12">
             <div class="text-left">
               <h2 style="color: #ffa500;">Program</h>
-              <p class="font-weight-bold text-summary"><?= $summary ?></p>
+                <p class="font-weight-bold text-summary"><?= $summary ?></p>
             </div>
           </div>
           <div class="col-lg-6 col-md-6 col-sm-12 col-12 text-category">
@@ -90,96 +78,4 @@
 
       </div><!-- /.container -->
     </section><!-- /.Services -->
-
-    <!-- ========================
-            Footer
-    ========================== -->
-    <?= $this->render('component/footer') ?>
-
-    <div class="module__search-container">
-      <i class="fa fa-times close-search"></i>
-      <form class="module__search-form">
-        <input type="text" class="search__input" placeholder="Type Words Then Enter">
-        <button class="module__search-btn"><i class="fa fa-search"></i></button>
-      </form>
-    </div><!-- /.module-search-container -->
-
-    <button id="scrollTopBtn"><i class="fa fa-long-arrow-up"></i></button>
-  </div><!-- /.wrapper -->
-
-  <?= $this->render('component/js') ?>
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCV6HOHjE9XM8IbEaL6ZMZdW8e0tavsOL8&libraries=places&region=id&language=en&sensor=false"></script>
-
-  <script>
-    $(document).ready(function() {
-      $("#select-category").change(function() {
-        var $option = $(this).find(':selected');
-        var url = $option.val();
-        if (url != "") {
-          // url += "?text=" + encodeURIComponent($option.text());
-          // Show URL rather than redirect
-          // $("#output").text(url);
-          console.log(url);
-          window.location.href = url;
-        }
-      });
-    });
-
-    var marker;
-
-    function initialize() {
-
-      // Variabel untuk menyimpan informasi (desc)
-      var infoWindow = new google.maps.InfoWindow;
-
-      //  Variabel untuk menyimpan peta Roadmap
-      var mapOptions = {
-        mapTypeId: google.maps.MapTypeId.ROADMAP
-      }
-
-      // Pembuatan petanya
-      var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
-
-      // Variabel untuk menyimpan batas kordinat
-      var bounds = new google.maps.LatLngBounds();
-
-      // Pengambilan data dari database
-      <?php
-
-      $nama = $setting->nama_web;
-      $lat = $setting->latitude;
-      $lon = $setting->longitude;
-
-      echo ("addMarker($lat, $lon, '<b>$nama</b>');\n");
-
-      ?>
-
-      // Proses membuat marker 
-      function addMarker(lat, lng, info) {
-        var lokasi = new google.maps.LatLng(lat, lng);
-        bounds.extend(lokasi);
-        var marker = new google.maps.Marker({
-          map: map,
-          position: lokasi
-        });
-        // map.fitBounds(bounds);
-        map.setCenter(bounds.getCenter());
-        map.setZoom(16);
-        bindInfoWindow(marker, map, infoWindow, info);
-      }
-
-      // Menampilkan informasi pada masing-masing marker yang diklik
-      function bindInfoWindow(marker, map, infoWindow, html) {
-        google.maps.event.addListener(marker, 'click', function() {
-          if (map.getZoom() > 16) map.setZoom(16);
-          infoWindow.setContent(html);
-          infoWindow.open(map, marker);
-        });
-      }
-
-    }
-    google.maps.event.addDomListener(window, 'load', initialize);
-  </script>
-</body>
-
-</html>
+ 

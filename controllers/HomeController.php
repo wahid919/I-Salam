@@ -281,7 +281,7 @@ class HomeController extends Controller
     public function actionProgram()
     {
 
-        $this->layout = false;
+        // $this->layout = false;
         // $this->title = "Isalam - Program";
 
         $setting = Setting::find()->one();
