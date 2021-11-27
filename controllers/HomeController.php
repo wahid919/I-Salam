@@ -29,10 +29,15 @@ use Midtrans\Snap;
  */
 class HomeController extends Controller
 {
+    public function beforeAction($action)
+    {
+        $this->enableCsrfValidation = false;
+        $this->layout = '@app/views/layouts-home/main';
+        return parent::beforeAction($action);
+    }
+
     public function actionIndex()
     {
-
-        $this->layout = false;
         $params = array(
             'transaction_details' => array(
                 'order_id' => rand(),
