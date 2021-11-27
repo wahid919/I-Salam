@@ -20,6 +20,8 @@ use app\models\LembagaPenerima;
 use app\models\Pendanaan;
 use app\models\User;
 use app\models\KategoriPendanaan;
+use app\models\Pembayaran;
+use app\models\Penyaluran;
 use app\models\Rekening;
 use app\models\search\RekeningSearchHome;
 use app\models\Testimonials;
@@ -303,6 +305,80 @@ class HomeController extends Controller
 
         return $this->render('rekening', [
             'setting' => $setting,
+            'count_program' => $count_program,
+            'count_wakif' => $count_wakif,
+            'organisasis' => $organisasis,
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+            'lembagas' => $lembagas,
+            'rekenings'  => $rekenings,
+            'icon' => $icon,
+            'bg_login' => $bg_login,
+            'bg' => $bg
+        ]);
+    }
+    public function actionReport()
+    {
+
+        $this->layout = false;
+        $searchModel  = new RekeningSearchHome;
+        $dataProvider = $searchModel->search($_GET);
+        $dataProvider->setPagination(['pageSize' => 20]);
+        $setting = Setting::find()->one();
+        $penghimpunan = Pembayaran::find()->where(['status_id' => 6])->sum('nominal');
+        $penyaluran = Penyaluran::find()->sum('nominal');
+        // var_dump($penyaluran);die;
+        $icon = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->logo;
+        $bg_login = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->bg_login;
+        $bg = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->bg_pin;
+        $organisasis = Organisasi::find()->where(['flag' => 1])->all();
+        $lembagas = LembagaPenerima::find()->where(['flag' => 1])->all();
+        $rekenings = Rekening::find()->where(['flag' => 1])->all();
+        $count_program = Pendanaan::find()->count();
+        $count_wakif = User::find()->where(['role_id' => 5])->count();
+
+        $rows_himpunans = (new \yii\db\Query())
+        ->select(['sum(nominal) as nominal', 'month(tanggal_konfirmasi) as bulan','year(tanggal_konfirmasi) as tahun'])
+        ->from('pembayaran')
+        ->where(['status_id' => 6])
+        // ->andWhere(['<>', 'State', null])
+        ->andWhere(['not', ['tanggal_konfirmasi' => null]])
+        ->groupBy('bulan,tahun')
+        ->orderBy([
+            'tahun' => SORT_ASC
+        ])
+        ->all();
+
+        $rows_penyalurans = (new \yii\db\Query())
+        ->select(['sum(nominal) as nominal', 'month(tanggal_penyaluran) as bulan','year(tanggal_penyaluran) as tahun'])
+        ->from('penyaluran')
+        // ->andWhere(['<>', 'State', null])
+        ->andWhere(['not', ['tanggal_penyaluran' => null]])
+        ->groupBy('bulan,tahun')
+        ->orderBy([
+            'tahun' => SORT_ASC
+        ])
+        ->all();
+        //     $a=[];
+        // for ($m=1; $m<=12; $m++) {
+        //     $month = date('m', mktime(0,0,0,$m));
+        //     $a[$m] = $month;
+        //     // $month = date('F', mktime(0,0,0,$m, 1, date('Y')));
+        //     // echo $month. '<br>';
+        //     }
+        // var_dump($rows->createCommand()->sql);die;
+        // var_dump($rows_penyalurans);die;
+       
+
+
+        
+
+        return $this->render('report', [
+            'setting' => $setting,
+            'rows_himpunans' => $rows_himpunans,
+            'rows_penyalurans' => $rows_penyalurans,
+            'penghimpunan' => $penghimpunan,
+            'penyaluran' => $penyaluran,
             'count_program' => $count_program,
             'count_wakif' => $count_wakif,
             'organisasis' => $organisasis,

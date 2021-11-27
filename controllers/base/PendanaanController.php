@@ -19,6 +19,7 @@ use yii\helpers\Url;
 use yii\filters\AccessControl;
 use dmstr\bootstrap\Tabs;
 use app\models\Action;
+use app\models\Penyaluran;
 use app\models\User;
 use kartik\mpdf\Pdf;
 use yii\db\Query;
@@ -286,15 +287,7 @@ class PendanaanController extends Controller
                'danger',
                'Nominal Pencairan Melebihi Nominal Pendanaan !'
             );
-            $pembayar = Pembayaran::find()->where(['pendanaan_id'=>$model->id,'status_id'=>6])->all();
-            foreach($pembayar as $value){
-               $notifikasi = new Notifikasi;
-               $notifikasi->message = "Pendanaan ".$model->nama_pendanaan." Telah di cairkan";
-               $notifikasi->user_id = $value->user_id;
-               $notifikasi->flag = 1;
-               $notifikasi->date=date('Y-m-d H:i:s');
-               $notifikasi->save();
-            }
+            
             return $this->render('pendanaan-cair', [
                'model' => $model,
                'cair' => $cair,
@@ -304,6 +297,15 @@ class PendanaanController extends Controller
             $cair->tanggal = date('Y-m-d');
             $cair->save();
             if ($model->save()) {
+               $pembayar = Pembayaran::find()->where(['pendanaan_id'=>$model->id,'status_id'=>6])->all();
+            foreach($pembayar as $value){
+               $notifikasi = new Notifikasi;
+               $notifikasi->message = "Pendanaan ".$model->nama_pendanaan." Telah di cairkan";
+               $notifikasi->user_id = $value->user_id;
+               $notifikasi->flag = 1;
+               $notifikasi->date=date('Y-m-d H:i:s');
+               $notifikasi->save();
+            }
                $notifikasi2 = new Notifikasi;
             $notifikasi2->message = "Pendanaan ".$model->nama_pendanaan." Telah Anda Cairkan";
             $notifikasi2->user_id = $model->user_id;
@@ -326,6 +328,53 @@ class PendanaanController extends Controller
             'cair' => $cair,
          ]);
       }
+   }
+
+   public function actionPendanaanPenyaluran($id)
+   {
+      $model = $this->findModel($id);
+      $cair = new Penyaluran;
+      // $model->tanggal_received=date('Y-m-d H:i:s');
+      $model->status_id = 11;
+         
+         if ($model->save()) {
+            $pencair = Pencairan::findOne(['pendanaan_id'=>$model->id]);
+               $cair->id_pendanaan = $model->id;
+               $cair->nominal = $pencair->nominal;
+               $cair->tanggal_penyaluran = date('Y-m-d H:i:s');
+               $cair->save();
+               $pembayar = Pembayaran::find()->where(['pendanaan_id'=>$model->id,'status_id'=>6])->all();
+            foreach($pembayar as $value){
+               $notifikasi = new Notifikasi;
+               $notifikasi->message = "Uang Pendanaan ".$model->nama_pendanaan." Telah di Disalurkan";
+               $notifikasi->user_id = $value->user_id;
+               $notifikasi->flag = 1;
+               $notifikasi->date=date('Y-m-d H:i:s');
+               $notifikasi->save();
+            }
+               $notifikasi2 = new Notifikasi;
+            $notifikasi2->message = "Uang Pendanaan ".$model->nama_pendanaan." Telah Anda Salurkan";
+            $notifikasi2->user_id = $model->user_id;
+            $notifikasi2->flag = 1;
+            $notifikasi2->date=date('Y-m-d H:i:s');
+            $notifikasi2->save();
+               \Yii::$app->getSession()->setFlash(
+                  'success',
+                  'Pendanaan Telah Disalurkan!'
+               );
+
+               return $this->redirect(['index']);
+            
+         }else {
+            \Yii::$app->getSession()->setFlash(
+               'danger',
+               'Pendanaan gagal Disalurkan!'
+            );
+            return $this->redirect(['index']);
+         }
+
+         // return $this->redirect(Url::previous());
+      
    }
 
    public function actionPendanaanSelesai($id)

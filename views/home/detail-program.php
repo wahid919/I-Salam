@@ -112,11 +112,92 @@
             <hr>
             <div class="row">
               <div class="col-sm-12 col-md-12 col-lg-12">
-                <a href="#" class="btn btn-sm btn-program btn-block">Mulai Wakaf</a>
+                <a href="#" class="btn btn-sm btn-program btn-block" data-toggle="modal" data-target="#mulaiwakaf">Mulai Wakaf</a>
               </div>
             </div>
           </div>
           <!-- End program Info -->
+        </div>
+      </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="mulaiwakaf" tabindex="-1" role="dialog" aria-labelledby="mulaiwakaf" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="mulaiwakaf">Modal title</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-4">
+                <img class="border-r10 shadow-br3" src="<?= \Yii::$app->request->BaseUrl ?>/uploads/detail-program.jpeg" width="200px">
+              </div>
+              <div class="col-8">
+                <p class="font-size-08">Anda akan berwakaf untuk project :</p>
+                <p class="font-weight-bold">Mari Ikut Wakaf Masjid Di Indonesia</p>
+              </div>
+              <div class="col-12 pt-3">
+                <h3 style="color: #404040;">Nominal Wakaf</h3>
+                <p class="font-size-08">Anda akan berwakaf dengan nominal sebesar :</p>
+                <div class="row">
+                  <div class="col-6">
+                    <a href="#" class="btn btn-block btn-nilai-wakaf btn-outline-bayar border-r5 mt-2" role="button" aria-pressed="true">Rp. 100.000 ></a>
+                  </div>
+                  <div class="col-6">
+                    <a href="#" class="btn btn-block btn-nilai-wakaf btn-outline-bayar border-r5 mt-2" role="button" aria-pressed="true">Rp. 200.000 ></a>
+                  </div>
+                  <div class="col-6">
+                    <a href="#" class="btn btn-block btn-nilai-wakaf btn-outline-bayar border-r5 mt-2" role="button" aria-pressed="true">Rp. 300.000 ></a>
+                  </div>
+                  <div class="col-6">
+                    <a href="#" class="btn btn-block btn-nilai-wakaf btn-outline-bayar border-r5 mt-2" role="button" aria-pressed="true">Rp. 400.000 ></a>
+                  </div>
+                  <div class="col-6">
+                    <a href="#" class="btn btn-block btn-nilai-wakaf btn-outline-bayar border-r5 mt-2" role="button" aria-pressed="true">Rp. 500.000 ></a>
+                  </div>
+                  <div class="col-6">
+                    <a href="#" class="btn btn-block btn-nilai-wakaf btn-outline-bayar border-r5 mt-2" role="button" aria-pressed="true">Rp. 600.000 ></a>
+                  </div>
+                  <div class="col-12 mt-2">
+                    <div class="input-group mb-2">
+                      <div class="input-group-prepend mr-2" style="height:calc(1.5em + .75rem + 2px);">
+                        <div class="input-group-text bg-white border-r5 font-weight-bold" style="color: #afafaf;border-color: #787878;">Rp</div>
+                      </div>
+                      <input type="text" class="form-control select-wakaf border-r5" id="" style="border-color: #787878;" placeholder="Minimal Wakaf Rp. 10.000">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-sm btn-batal" data-dismiss="modal">Batal</button>
+            <button type="button" class="btn btn-sm btn-program" data-toggle="modal" data-target="#exampleModalScrollable">Bayar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModalScrollable" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalScrollableTitle">Modal title</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            ...
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Save changes</button>
+          </div>
         </div>
       </div>
     </div>
