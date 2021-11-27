@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\components\Constant;
 use Yii;
 use yii\web\Controller;
 use yii\web\HttpException;
@@ -141,28 +142,52 @@ class HomeController extends Controller
     public function actionNews()
     {
         $this->layout = false;
+
+        $query = Berita::find();
+        // find condition
         if (isset($_GET['cari'])) {
-            $cari = $_GET['cari'];
-            $news = Berita::find()->where(['like', 'judul', $cari])->all();
-            // var_dump($news);die;
-        } else {
-            $news = Berita::find()->all();
+            $query->andWhere(['like', 'judul', $_GET['cari']]);
         }
         if (isset($_GET['kategori'])) {
-            $cat = $_GET['kategori'];
-
-            $kategori = KategoriBerita::find()->where(['nama' => $cat])->one();
-            $news = Berita::find()->where(['kategori_berita_id' => $kategori->id])->all();
-            // var_dump($news);die;
-        } else {
-            $news = Berita::find()->all();
+            $kategori = KategoriBerita::find()->where(['nama' => $_GET['kategori']])->one();
+            $query->andWhere(['kategori_berita_id' => $kategori->id]);
         }
+        if (isset($_GET['sort'])) {
+            switch (intval($_GET['sort'])) {
+                case 1:
+                    $query->orderBy(['created_at' => SORT_DESC]);
+                    break;
+                case 2:
+                    $query->orderBy(['updated_at' => SORT_DESC]);
+                    break;
+                case 3:
+                    $query->andWhere(['kategori_berita_id' => $kategori->id]);
+                    break;
+                case 4:
+                    $query->orderBy(['created_at' => SORT_DESC]);
+                    break;
+            }
+        }
+
+        // generate pagination
+        $cloned = clone $query;
+        $count = $cloned->count();
+        $pagination = new Pagination([
+            "totalCount" => $count,
+            "pageSize" => 9
+        ]);
+        $news = $query->offset($pagination->offset)
+            ->limit($pagination->limit)
+            ->all();
+
+        // generate pagination summary
+        $summary = Constant::getPaginationSummary($pagination, $count);
+
         $categories = KategoriBerita::find()->all();
         $setting = Setting::find()->one();
         $bg_login = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->bg_login;
         $icon = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->logo;
         $model = new HubungiKami;
-
 
         if ($model->load($_POST)) {
             $model->status = 0;
@@ -179,6 +204,8 @@ class HomeController extends Controller
             'categories' => $categories,
             'news' => $news,
             'model' => $model,
+            'summary' => $summary,
+            'pagination' => $pagination,
             'bg_login' => $bg_login,
             'icon' => $icon
         ]);
@@ -299,10 +326,6 @@ class HomeController extends Controller
             $pendanaans = $query->offset($pagination->offset)
                 ->limit($pagination->limit)
                 ->all();
-            $start = $pagination->offset;
-            $end = $pagination->offset + $pagination->limit;
-            $end = ($end > $count) ? $count : $end;
-            $summary = "Menampilkan $start-$end dari total $count data ";
         } else {
             $query = Pendanaan::find()->where(['status_id' => 2]);
             $count = $query->count();
@@ -310,11 +333,10 @@ class HomeController extends Controller
             $pendanaans = $query->offset($pagination->offset)
                 ->limit($pagination->limit)
                 ->all();
-            $start = $pagination->offset + 1;
-            $end = ($count < $pagination->limit) ? $count : $pagination->offset + $pagination->limit;
-            $end = ($end > $count) ? $count : $end;
-            $summary = "Menampilkan $start-$end dari total $count data ";
         }
+
+        $summary = Constant::getPaginationSummary($pagination, $count);
+
         $organisasis = Organisasi::find()->where(['flag' => 1])->all();
         $kategori_pendanaans = KategoriPendanaan::find()->all();
         $count_program = Pendanaan::find()->count();

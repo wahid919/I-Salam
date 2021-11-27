@@ -12,10 +12,175 @@
   <link rel="stylesheet" href="<?= \Yii::$app->request->BaseUrl ?>/template/assets/css/libraries.css" />
   <link rel="stylesheet" href="<?= \Yii::$app->request->BaseUrl ?>/template/assets/css/style.css" />
   <link rel="stylesheet" href="<?= \Yii::$app->request->BaseUrl ?>/template/assets/css/sweetalert2.min.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js" integrity="sha512-bPs7Ae6pVvhOSiIcyUClR7/q2OAsRiovw4vAkX+zJbw3ShAeeqezq50RIIcIURq7Oa20rW2n2q+fyXBNcU9lrw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <style>
+    /* width */
+    ::-webkit-scrollbar {
+      width: 5px;
+    }
+
+    /* Track */
+    ::-webkit-scrollbar-track {
+      background: #FFF;
+    }
+
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+      background: #F1A527;
+    }
+
+    /* Handle on hover */
+    ::-webkit-scrollbar-thumb:hover {
+      background: #F1A527;
+    }
+
     .bg-overlay-gradient-secondary-2:before {
       background-image: url(<?= $bg_login ?>);
       background-position: center;
+    }
+
+    .search-input {
+      border: 1px solid #ccc;
+      margin-right: 1rem;
+      border-radius: .6rem !important;
+      padding: .5rem 2rem
+    }
+
+    .btn-search-input {
+      background-color: white;
+      border: 1px solid #ccc;
+      color: orange;
+      width: auto;
+      padding: 0 1.5rem;
+      border-radius: .6rem;
+      font-size: 1.2rem
+    }
+
+    .header-list_kategori {
+      text-align: center;
+      overflow-x: auto;
+      margin: 0 3rem;
+      padding-bottom: .4rem;
+      white-space: nowrap;
+      flex: 1
+    }
+
+    .header-list_kategori li {
+      display: inline-block;
+      padding: .4rem;
+      color: #aaa;
+    }
+
+    .header-list_kategori li a {
+      color: #666;
+    }
+
+    .header-list_kategori li.active {
+      border-bottom: 2px solid #F1A527;
+      color: #F1A527;
+    }
+
+    .header-list_kategori li.active a {
+      color: #F1A527;
+    }
+
+    .header-sort {
+      display: block;
+      width: 100%;
+      padding: .3rem .5rem;
+      border-radius: .4rem;
+      border: 1px solid #ccc;
+    }
+
+    .text-primary {
+      color: #F1A527 !important;
+    }
+
+    /* width */
+    .header-list_kategori::-webkit-scrollbar-button {
+      width: 0;
+    }
+
+    /* Track */
+    .header-list_kategori::-webkit-scrollbar-track {
+      background: #FFF;
+      border-radius: 10px;
+    }
+
+    /* Handle */
+    .header-list_kategori::-webkit-scrollbar-thumb {
+      background: #F1A527;
+      border-radius: 10px;
+    }
+
+    /* Handle on hover */
+    .header-list_kategori::-webkit-scrollbar-thumb:hover {
+      background: #F1A527;
+      border-radius: 10px;
+    }
+
+    .content-berita__info {
+      color: #F1A527;
+      font-size: .6rem;
+      position: absolute;
+      bottom: 0;
+      left: 1.25rem;
+      right: 1.25rem;
+      padding-bottom: .5rem;
+    }
+
+    .card_berita {
+      border-radius: .7rem;
+      box-shadow: 0 0 3px 0px #dedede;
+    }
+
+    .card-title {
+      font-size: 1.1rem;
+      color: #666;
+      margin-bottom: 3rem;
+    }
+
+    .owl-nav {
+      position: absolute;
+      top: 45%;
+      left: -1.5rem;
+      right: -1.5rem;
+      display: flex;
+      justify-content: space-between;
+      overflow: hidden;
+    }
+
+    .owl-nav .owl-prev,
+    .owl-nav .owl-next {
+      font-size: 1rem;
+      padding: 0 .5rem;
+      margin: 0 1rem;
+      border-radius: 100%;
+      background: #fff;
+      box-shadow: 0 0 3px 0 #ccc;
+      color: #aaa;
+    }
+
+    .owl-stage,
+    .owl-item {
+      overflow: hidden;
+      border-radius: 1rem;
+    }
+
+    .owl-dots,
+    .owl-thumbs {
+      display: none;
+    }
+
+    .item {
+      border-radius: 1rem;
+      margin-bottom: 2rem;
+      overflow: hidden
+    }
+
+    .item-content {
+      width: 100vw;
+      height: 30vw;
     }
   </style>
 </head>
@@ -34,46 +199,90 @@
     <hr class="mt-0">
     <div class="mt-4 mb-4">
       <div class="container mt-4 mb-4">
-        <div class="text-center mt-4 mb-4">
-          <h3>Kategori Berita</h3>
-          <div class="table-responsive">
-            <table class="table table-borderless">
-              <tr>
-                <td><a class="text-dark font-weight-bold" href="<?= \Yii::$app->request->baseUrl . "/home/news" ?>">Semua </a></td>
-              <?php foreach ($categories as $kategori) {  ?>
-                <td><a class="text-dark font-weight-bold" href="<?= \Yii::$app->request->baseUrl . "/home/news?kategori=" . $kategori->nama ?>"><?= $kategori->nama ?> </a></td>
-                <?php } ?>
-              </tr>
-            </table>
+
+        <?= $this->render('component/banner', [
+          "banner" => \app\models\Berita::getbanner()
+        ])
+        ?>
+
+        <form action="<?= \Yii::$app->request->baseUrl . "/news" ?>" method="get">
+          <div class="input-group mb-4">
+            <?php
+
+            use yii\helpers\Url;
+
+            if (Yii::$app->request->queryParams) :
+              foreach (Yii::$app->request->queryParams as $key => $item) :
+                if ($key == "kategori") : ?>
+                  <input type="hidden" name="<?= $key ?>" value="<?= $item ?>">
+            <?php endif;
+              endforeach;
+            endif ?>
+            <input type="text" name="cari" class="form-control search-input" placeholder="Cari Berita" aria-label="Cari Berita" aria-describedby="button-addon2" value="<?= Yii::$app->request->queryParams['cari'] ?>">
+            <button class="btn btn-search-input" type=submit" id="cari">
+              <i class="fa fa-search"></i>
+            </button>
           </div>
-          <form action="<?= \Yii::$app->request->baseUrl . "/news" ?>" method="get">
-            <div class="input-group mb-4">
-              <input type="text" name="cari" class="form-control" placeholder="Cari Berita" aria-label="Cari Berita" aria-describedby="button-addon2">
-              <div class="input-group-append">
-                <button class="btn btn-outline-secondary text-white" type=submit" id="cari" style="background-color:orange; border:orange;">Cari</button>
-              </div>
+        </form>
+
+        <div class="text-center mt-5 mb-4">
+          <div class="row">
+            <div class="col-lg-2 col-md-12  mt-1">
+              <h3 class="text-primary text-left"><?= Yii::t("cruds", "Berita") ?></h3>
             </div>
-          </form>
+            <div class="col-lg-7 col-md-12  mt-1">
+              <ul class="header-list_kategori d-lg-block d-none">
+                <li class="<?= $_GET['kategori'] == null ? "active" : "" ?>"><a class="font-weight-bold" href="<?= \Yii::$app->request->baseUrl . "/home/news" ?>"><?= Yii::t("cruds", "Semua") ?></a></td>
+                  <?php foreach ($categories as $kategori) {  ?>
+                <li class="<?= $_GET['kategori'] == $kategori->nama ? "active" : "" ?>"><a class="font-weight-bold" href="<?= \Yii::$app->request->baseUrl . "/home/news?kategori=" . $kategori->nama ?>"><?= $kategori->nama ?> </a></td>
+                <?php } ?>
+              </ul>
+              <select class="header-sort d-lg-none d-block" name="filter_kategori" id="filter_kategori">
+                <option value="" <?= $_GET['kategori'] == "" ? "selected" : "" ?>><?= Yii::t("cruds", "Pilih kategori Berita") ?></option>
+                <?php foreach ($categories as $kategori) {  ?>
+                  <option value=" <?= $kategori->nama ?>" <?= $_GET['kategori'] == $kategori->nama ? "selected" : "" ?>><?= $kategori->nama ?> </option>
+                <?php } ?>
+              </select>
+            </div>
+            <div class="col-lg-3 col-md-12 text-left mt-1">
+              <select class="header-sort" name="_sort" id="_sort">
+                <option value="" <?= $_GET['_sort'] == null ? "selected" : "" ?>><?= Yii::t("cruds", "Pilih Pengurutan Berita") ?></option>
+                <option value="1" <?= $_GET['_sort'] == 1 ? "selected" : "" ?>><?= Yii::t("cruds", "Terbaru dibuat") ?></option>
+                <option value="2" <?= $_GET['_sort'] == 2 ? "selected" : "" ?>><?= Yii::t("cruds", "Terbaru Diubah") ?></option>
+                <option value="3" <?= $_GET['_sort'] == 3 ? "selected" : "" ?>><?= Yii::t("cruds", "Paling Banyak dilihat") ?></option>
+                <option value="4" <?= $_GET['_sort'] == 4 ? "selected" : "" ?>><?= Yii::t("cruds", "Paling Lama") ?></option>
+              </select>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <p style="font-size: .8rem;">
+                <?= $summary ?>
+              </p>
+            </div>
+          </div>
         </div>
 
-        <div class="row">
+        <div class="row mt-2">
           <?php foreach ($news as $berita) { ?>
-            <div class="col-lg-4 col-md-4 mt-3">
+            <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12 mt-3">
               <a href="<?= \Yii::$app->request->baseUrl . "/detail-berita?id=" . $berita->slug ?>">
-                <div class="card">
+                <div class="card h-100 card_berita">
                   <!-- <img src="" class="card-img-top" alt="..."> -->
-                  <div style="background-image: url(<?= \Yii::$app->request->baseUrl . "/uploads/berita/" . $berita->gambar ?>);background-size: cover;height: 200px;">
+                  <div style="border-radius: .7rem;background-image: url(<?= \Yii::$app->request->baseUrl . "/uploads/berita/" . $berita->gambar ?>);background-size: cover;height: 200px;">
 
                   </div>
                   <div class="card-body">
-                    <h6 class="card-title"><?= $berita->judul ?></h6>
-                    <hr>
-                    <div class="row">
-                      <div class="col-lg-6 col-md-6 col-6 text-left">
-                        <?= date("d M Y", strtotime($berita->created_at)); ?>
-                      </div>
-                      <div class="col-lg-6 col-md-6 col-6 text-right">
-                        Baca Selengkapnya
+                    <h6 class="card-title"><?= $berita->getShowTitle() ?></h6>
+                    <div class="content-berita__info">
+                      <hr>
+                      <div class="row">
+                        <div class="col-lg-6 col-md-6 col-6 text-left">
+                          <?= date("d M Y", strtotime($berita->created_at)); ?>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-6 text-right">
+                          <?= $berita->kategoriBerita->nama ?>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -81,111 +290,20 @@
               </a>
             </div>
           <?php } ?>
-
+        </div>
+        <div class="row mt-4 mb-4 text-center">
+          <div class="col-md-12">
+            <div class='d-flex justify-content-center'>
+              <?php echo \yii\widgets\LinkPager::widget([
+                'pagination' => $pagination,
+                'maxButtonCount' => 5
+              ]); ?>
+            </div>
+          </div>
         </div>
       </div>
     </div>
 
-    <div class="container pt-4">
-      <div class="row">
-        <div class="col-sm-12 col-md-12 col-lg-6 ">
-          <h3 class="heading__title mx-auto pb-3" style="color:orange;font-size:2rem;line-height: 1">Hubungi Kami</h3>
-          <p class="font-weight-bold" style="color:orange">Ingin Menyapa? Ingin tahu lebih banyak tentang kami? Hubungi kami atau kiriman email kepada kami, dari kami akan segera menghubungi Anda Kembali</p>
-          <div class="contact-form" style="margin-left: 10px;margin-right:10px;">
-
-            <?php
-
-            use yii\bootstrap\ActiveForm;
-            use yii\bootstrap\Html;
-            ?>
-            <?php $form = ActiveForm::begin(
-              [
-                'id' => 'HubungiKami',
-                'layout' => 'horizontal',
-                'enableClientValidation' => true,
-                'errorSummaryCssClass' => 'error-summary alert alert-error'
-              ]
-            );
-            ?>
-            <div class="form-row">
-
-              <div class="col-12 col-md-12">
-                <div class="form-group">
-                  <?= $form->field($model, 'nama', [
-                    'template' => '
-                                      {label}
-                                      {input}
-                                      {error}
-                                  ',
-                    'inputOptions' => [
-                      'class' => 'form-control'
-                    ],
-                    'labelOptions' => [
-                      'class' => ''
-                    ],
-                    'options' => ['tag' => false]
-                  ])->textInput(['maxlength' => true, 'placeholder' => 'Nama']) ?>
-                </div>
-              </div>
-              <div class="col-12 col-md-12">
-                <div class="form-group">
-                  <?= $form->field($model, 'nomor_hp', [
-                    'template' => '
-                                      {label}
-                                      {input}
-                                      {error}
-                                  ',
-                    'inputOptions' => [
-                      'class' => 'form-control'
-                    ],
-                    'labelOptions' => [
-                      'class' => ''
-                    ],
-                    'options' => ['tag' => false]
-                  ])->textInput(['maxlength' => true, 'placeholder' => 'Nomor Handphone']) ?>
-                </div>
-              </div>
-              <div class="col-12 col-md-12">
-                <div class="form-group">
-                  <?= // generated by schmunk42\giiant\generators\crud\providers\core\RelationProvider::activeField
-                  $form->field($model, 'tema_hubungi_kami_id', [
-                    'template' => '
-                                      {label}
-                                      {input}
-                                      {error}
-                                  ',
-                    'inputOptions' => [
-                      'class' => 'form-control'
-                    ],
-                    'labelOptions' => [
-                      'class' => ''
-                    ],
-                    'options' => ['tag' => false]
-                  ])->dropDownList(
-                    \yii\helpers\ArrayHelper::map(app\models\TemaHubungiKami::find()->all(), 'id', 'nama_tema'),
-                    [
-                      'prompt' => 'Select',
-                      'disabled' => (isset($relAttributes) && isset($relAttributes['tema_hubungi_kami_id'])),
-                    ]
-                  ); ?>
-                </div>
-              </div>
-              <?php echo $form->errorSummary($model); ?>
-
-              <div class="col-12 text-center">
-                <?= Html::submitButton('<i class="fa fa-save"></i> Simpan', ['class' => 'btn btn__primary']); ?>
-              </div>
-            </div>
-
-            <?php ActiveForm::end(); ?>
-            <div class="contact-form-result"></div>
-          </div>
-        </div><!-- /.col-lg-6 -->
-        <div class="col-sm-12 col-md-12 col-lg-6 text-center d-none d-lg-block">
-          <img src="<?= \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->foto_tentang_kami ?>" class="about-us-img" alt="logo">
-        </div><!-- /.col-lg-5 -->
-      </div><!-- /.row -->
-    </div><!-- /.container -->
     <!-- ========================
             Footer
     ========================== -->
@@ -210,12 +328,53 @@
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCV6HOHjE9XM8IbEaL6ZMZdW8e0tavsOL8&libraries=places&region=id&language=en&sensor=false"></script>
 
   <script>
+    $("#_sort").on("change", (event) => {
+      let params = <?= json_encode((Yii::$app->request->queryParams)) ?>;
+      if (event.target.value == "") {
+        delete params["_sort"];
+      } else {
+        params["_sort"] = event.target.value;
+      }
+      const url = new URL(`<?= Url::to(['/home/news'], true) ?>`);
+      url.search = new URLSearchParams(params);
+      console.log(url)
+      window.location.href = url;
+    })
+    $("#filter_kategori").on("change", (event) => {
+      let params = <?= json_encode((Yii::$app->request->queryParams)) ?>;
+      if (event.target.value == "") {
+        delete params["filter_kategori"];
+      } else {
+        params["filter_kategori"] = event.target.value;
+      }
+      const url = new URL(`<?= Url::to(['/home/news'], true) ?>`);
+      url.search = new URLSearchParams(params);
+      console.log(url)
+      window.location.href = url;
+    })
+    $('.owl-carousel').owlCarousel({
+      loop: true,
+      margin: 10,
+      nav: true,
+      navText: ["<i class='fa fa-angle-double-left'></i>", "<i class='fa fa-angle-double-right'></i>"],
+      responsive: {
+        0: {
+          items: 1
+        },
+        600: {
+          items: 1
+        },
+        1000: {
+          items: 1
+        }
+      }
+    })
     $(document).ready(function() {
       var success = "<?= \Yii::$app->session->getFlash('success') ?>";
       var error = "<?= \Yii::$app->session->getFlash('error') ?>";
       if (error !== "") {
         Swal.fire("Peringatan!", "<?= \Yii::$app->session->getFlash('error') ?>", "error");
-      } 
+      }
       if (success !== "") {
         Swal.fire("Peringatan!", "<?= \Yii::$app->session->getFlash('success') ?>", "success");
       }
