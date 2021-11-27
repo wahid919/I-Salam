@@ -18,7 +18,7 @@ use yii\helpers\Html;
         {
             return [
                 'class' => 'yii\grid\ActionColumn',
-                'template' => '{approve-pendanaan} {cancel} {pendanaan-selesai} {pendanaan-cair} {export}',
+                'template' => '{approve-pendanaan} {cancel} {pendanaan-selesai} {pendanaan-cair} {export} {penyaluran_pendanaan}',
                 'header' => 'Pendanaan',
                 'visible'=>\Yii::$app->user->identity->role_id ==1,
                 'buttons' => [
@@ -60,12 +60,21 @@ use yii\helpers\Html;
                     }
                   },
                   'export' => function ($url, $model, $key) {
-                    if($model->status_id ==3){
+                    if($model->status_id ==11){
                       return Html::a("<i class='fa fa-file-excel-o'></i>", ["export", "id"=>$model->id], [
                           "class"=>"btn btn-success",
                           'target'=>'_blank',
                           "title"=>"Export Pendanaan",
                           "data-confirm" => "Apakah Anda yakin ingin Export Data Pendanaan ini ?",
+                      ]);
+                    }
+                  },
+                  'penyaluran_pendanaan' => function ($url, $model, $key) {
+                    if($model->status_id ==3){
+                      return Html::a("<i class='fa fa-check'></i>", ["pendanaan-penyaluran", "id"=>$model->id], [
+                          "class"=>"btn btn-success",
+                          "title"=>"Approve Penyaluran",
+                          "data-confirm" => "Apakah Anda Uang Pendanaan ini sudah disalurkan ?",
                       ]);
                     }
                   },
