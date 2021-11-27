@@ -178,6 +178,10 @@ hr {
     width: auto !important;
 }
 
+.w-10 {
+    width: 10%;
+}
+
 .fz-16 {
     font-size: 16px;
 }

@@ -428,6 +428,16 @@ class HomeController extends Controller
     //         'model' => $model
     //     ]);
     // }
+    public function actionProfile()
+    {
+        $setting = Setting::find()->one();
+        $icon = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->logo;
+
+        return $this->render('profile', [
+            'setting' => $setting,
+            'icon' => $icon,
+        ]);
+    }
 
     public function actionDetailProgram()
     {

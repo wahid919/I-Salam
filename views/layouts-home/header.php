@@ -82,6 +82,9 @@ $kategori_pendanaans = app\models\KategoriPendanaan::find()->all();
           <li class="nav__item">
             <a href="<?= Yii::$app->request->baseUrl . "/about" ?>" class="nav__item-link" style="color: black;">TENTANG KAMI</a>
           </li><!-- /.nav-item -->
+          <li class="nav__item">
+            <a href="<?= Yii::$app->request->baseUrl . "home/profile" ?>" class="nav__item-link" style="color: black;">AKUN SAYA</a>
+          </li><!-- /.nav-item -->
         </ul><!-- /.navbar-nav -->
       </div><!-- /.navbar-collapse -->
     </div><!-- /.container -->
