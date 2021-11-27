@@ -43,10 +43,33 @@ class HomeController extends Controller
 
     public function actionRegistrasi()
     {
-        // dd(Yii::$app->request->referrer);
+        $model = new User();
         if (Yii::$app->request->isAjax) {
-            $model = new User();
             return $this->renderAjax("registrasi", compact("model"));
+        }
+        if ($model->load($_POST)) {
+            $model->role_id = 5; // Pewakaf
+            $model->nomor_handphone = Constant::purifyPhone($model->nomor_handphone);
+            if ($model->validate()) {
+                if ($model->pin != $model->konfirmasi_pin) {
+                    Yii::$app->session->setFlash("error", "Pendaftaran gagal. Pin anda tidak sama");
+                    return $this->redirect(Yii::$app->request->referrer);
+                } else if ($model->password != $model->konfirmasi_password) {
+                    Yii::$app->session->setFlash("error", "Pendaftaran gagal. Pin anda tidak sama");
+                    return $this->redirect(Yii::$app->request->referrer);
+                }
+
+                $model->password = Yii::$app->security->generatePasswordHash($model->password);
+
+                $model->save();
+                Yii::$app->session->setFlash("success", "Pendaftaran berhasil. Silahkan login");
+                return $this->redirect(Yii::$app->request->referrer);
+            }
+            Yii::$app->session->setFlash("error", "Pendaftaran gagal. Validasi data tidak valid : " . Constant::flattenError($model->getErrors()));
+            return $this->redirect(Yii::$app->request->referrer);
+        } else {
+            Yii::$app->session->setFlash("error", "Pendaftaran gagal");
+            return $this->redirect(Yii::$app->request->referrer);
         }
     }
 

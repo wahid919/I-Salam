@@ -1,16 +1,19 @@
 <?php
 
 namespace app\models;
+
 use Yii;
+
 class User extends \app\models\base\User implements \yii\web\IdentityInterface
 {
+    public $konfirmasi_password, $konfirmasi_pin;
 
     /**
      * @inheritdoc
      */
     public static function findIdentity($id)
     {
-        return User::find()->where(["id"=>$id,'status'=>1,'confirm'=>1])->one();
+        return User::find()->where(["id" => $id, 'status' => 1, 'confirm' => 1])->one();
     }
 
     /**
@@ -29,12 +32,12 @@ class User extends \app\models\base\User implements \yii\web\IdentityInterface
      */
     public static function findByUsername($username)
     {
-        return User::find()->where(["username"=>$username])->one();
+        return User::find()->where(["username" => $username])->one();
     }
 
     public static function findByUsernameAndStatus($username)
     {
-        return User::find()->where(["username"=>$username,'status'=>1,'confirm'=>1])->one();
+        return User::find()->where(["username" => $username, 'status' => 1, 'confirm' => 1])->one();
     }
 
     /**
@@ -73,7 +76,8 @@ class User extends \app\models\base\User implements \yii\web\IdentityInterface
         return Yii::$app->security->validatePassword($password, $this->password);
     }
 
-    public function getPelatihanPesertas(){
+    public function getPelatihanPesertas()
+    {
         return $this->hasMany(\app\models\PelatihanPeserta::class, ['user_id' => 'id']);
     }
 }

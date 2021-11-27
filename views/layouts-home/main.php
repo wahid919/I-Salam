@@ -55,6 +55,7 @@ use yii\helpers\Url;
         .modal-body {
             background: whitesmoke;
             border-radius: 2rem;
+            margin-bottom: 2rem;
         }
     </style>
 
@@ -161,7 +162,11 @@ use yii\helpers\Url;
         try {
 
             $('#btn-registrasi').on('click', async () => {
-                let response = await fetch("<?= Url::to(['/registrasi'], false) ?>");
+                let response = await fetch("<?= Url::to(['/registrasi'], false) ?>", {
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                });
                 response = await response.text();
                 console.log(response)
                 document.getElementById("modal-body").innerHTML = response;
