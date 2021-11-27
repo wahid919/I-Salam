@@ -1,4 +1,5 @@
 <?php
+
 namespace app\components;
 
 use app\models\WebProfile;
@@ -113,8 +114,8 @@ class Constant
     {
         $flatten = [];
 
-        foreach ($errors as $errorAttr):
-            foreach ($errorAttr as $error):
+        foreach ($errors as $errorAttr) :
+            foreach ($errorAttr as $error) :
                 $flatten[] = "$error";
             endforeach;
         endforeach;
@@ -156,10 +157,19 @@ class Constant
     }
 
 
-    public static function setting($attribute){
-        $model = WebProfile::findOne(['id'=>1]);
-        if($model==null) return null;
+    public static function setting($attribute)
+    {
+        $model = WebProfile::findOne(['id' => 1]);
+        if ($model == null) return null;
         return $model->$attribute;
     }
 
+    public static function getPaginationSummary($pagination, $count)
+    {
+        if ($count == 0) return "Menampilkan $count dari total $count data ";
+        $start = $pagination->offset + 1;
+        $end = ($count < $pagination->limit) ? $count : $pagination->offset + $pagination->limit;
+        $end = ($end > $count) ? $count : $end;
+        return "Menampilkan $start-$end dari total $count data ";
+    }
 }

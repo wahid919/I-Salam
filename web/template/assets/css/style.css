@@ -8619,3 +8619,15 @@ textarea.form-control {
         height: 300px;
     }
 }
+
+.pagination li {
+    overflow: hidden;
+}
+
+.pagination li.disabled:hover,
+.pagination li.disabled,
+.pagination li.disabled span {
+    color: #000;
+    background-color: #e0960b ;
+    border-color: #e0960b ;
+}
