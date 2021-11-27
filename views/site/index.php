@@ -137,17 +137,17 @@ for ($i = 1; $i <= $tgl_akhir; $i++) {
                   <tr>
                     <th><?= \app\components\Angka::toReadableHarga($pembayaran_diterima) ?></th>
                   </tr>
-                  <tr>
+                  <!-- <tr>
                     <th>Penyaluran Aktif Saat Ini</th>
                   </tr>
                   <tr>
                     <th>Rp 784.000.000</th>
-                  </tr>
+                  </tr> -->
                   <tr>
                     <th>Total Wakaf yang telah dibagikan</th>
                   </tr>
                   <tr>
-                    <th><?= \app\components\Angka::toReadableHarga($pendanaan_cair) ?></th>
+                    <th><?= \app\components\Angka::toReadableHarga($penyaluran) ?></th>
                   </tr>
                 </table>
               </div>
