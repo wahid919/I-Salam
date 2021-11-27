@@ -36,7 +36,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'headerRowOptions' => ['class'=>'x'],
                 'columns' => [
 
-                \app\components\ActionButton::getButtons(),
+                \app\components\ActionButton::getButtons2(),
 
                 'nama',
                 'deskripsi:ntext',

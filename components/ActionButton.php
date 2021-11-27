@@ -42,6 +42,45 @@ class ActionButton
             'contentOptions' => ['nowrap'=>'nowrap', 'style'=>"text-align:center"]
         ];
     }
+    public static function getButtons2()
+    {
+        $btn = [
+            'view' => function ($url, $model, $key) {
+                return Html::a("<i class='fa fa-eye'></i>", ["view", "id"=>$model->id], ["class"=>"btn btn-success", "title"=>"Lihat Data"]);
+            },
+            'update' => function ($url, $model, $key) {
+                return Html::a("<i class='fa fa-pencil'></i>", ["update", "id"=>$model->id], ["class"=>"btn btn-warning", "title"=>"Edit Data"]);
+            },
+            'delete' => function ($url, $model, $key) {
+                if($model->flag == 0){
+                    return Html::a("<i class='fa fa-check'></i>", ["delete", "id"=>$model->id], [
+                        "class"=>"btn btn-success",
+                        "title"=>"Hapus Data",
+                        "data-confirm" => "Apakah Anda yakin ingin menghapus data ini ?",
+                        //"data-method" => "GET"
+                    ]);
+
+                }else{
+                    return Html::a("<i class='fa fa-times'></i>", ["delete", "id"=>$model->id], [
+                        "class"=>"btn btn-danger",
+                        "title"=>"Aktifkan Data",
+                        "data-confirm" => "Apakah Anda yakin ingin Mengaktifkan data ini ?",
+                        //"data-method" => "GET"
+                    ]);
+                }
+            },
+        ];
+        $template = '{view} {update} {delete}';
+        $width = "120px";
+
+
+        return [
+            'class' => 'yii\grid\ActionColumn',
+            'template' => $template,
+            'buttons' => $btn,
+            'contentOptions' => ['nowrap'=>'nowrap', 'style'=>"text-align:center"]
+        ];
+    }
     public static function getButtonsPengajuan()
         {
             return [
