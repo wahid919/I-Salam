@@ -41,6 +41,15 @@ class HomeController extends Controller
         return parent::beforeAction($action);
     }
 
+    public function actionRegistrasi()
+    {
+        // dd(Yii::$app->request->referrer);
+        if (Yii::$app->request->isAjax) {
+            $model = new User();
+            return $this->renderAjax("registrasi", compact("model"));
+        }
+    }
+
     public function actionIndex()
     {
         $params = array(
@@ -298,10 +307,10 @@ class HomeController extends Controller
         $rekenings = Rekening::find()->where(['flag' => 1])->all();
         $count_program = Pendanaan::find()->count();
         $count_wakif = User::find()->where(['role_id' => 5])->count();
-       
 
 
-        
+
+
 
         return $this->render('rekening', [
             'setting' => $setting,
@@ -338,27 +347,27 @@ class HomeController extends Controller
         $count_wakif = User::find()->where(['role_id' => 5])->count();
 
         $rows_himpunans = (new \yii\db\Query())
-        ->select(['sum(nominal) as nominal', 'month(tanggal_konfirmasi) as bulan','year(tanggal_konfirmasi) as tahun'])
-        ->from('pembayaran')
-        ->where(['status_id' => 6])
-        // ->andWhere(['<>', 'State', null])
-        ->andWhere(['not', ['tanggal_konfirmasi' => null]])
-        ->groupBy('bulan,tahun')
-        ->orderBy([
-            'tahun' => SORT_ASC
-        ])
-        ->all();
+            ->select(['sum(nominal) as nominal', 'month(tanggal_konfirmasi) as bulan', 'year(tanggal_konfirmasi) as tahun'])
+            ->from('pembayaran')
+            ->where(['status_id' => 6])
+            // ->andWhere(['<>', 'State', null])
+            ->andWhere(['not', ['tanggal_konfirmasi' => null]])
+            ->groupBy('bulan,tahun')
+            ->orderBy([
+                'tahun' => SORT_ASC
+            ])
+            ->all();
 
         $rows_penyalurans = (new \yii\db\Query())
-        ->select(['sum(nominal) as nominal', 'month(tanggal_penyaluran) as bulan','year(tanggal_penyaluran) as tahun'])
-        ->from('penyaluran')
-        // ->andWhere(['<>', 'State', null])
-        ->andWhere(['not', ['tanggal_penyaluran' => null]])
-        ->groupBy('bulan,tahun')
-        ->orderBy([
-            'tahun' => SORT_ASC
-        ])
-        ->all();
+            ->select(['sum(nominal) as nominal', 'month(tanggal_penyaluran) as bulan', 'year(tanggal_penyaluran) as tahun'])
+            ->from('penyaluran')
+            // ->andWhere(['<>', 'State', null])
+            ->andWhere(['not', ['tanggal_penyaluran' => null]])
+            ->groupBy('bulan,tahun')
+            ->orderBy([
+                'tahun' => SORT_ASC
+            ])
+            ->all();
         //     $a=[];
         // for ($m=1; $m<=12; $m++) {
         //     $month = date('m', mktime(0,0,0,$m));
@@ -368,10 +377,10 @@ class HomeController extends Controller
         //     }
         // var_dump($rows->createCommand()->sql);die;
         // var_dump($rows_penyalurans);die;
-       
 
 
-        
+
+
 
         return $this->render('report', [
             'setting' => $setting,

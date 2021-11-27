@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\Url;
 
 /* @var $this \yii\web\View */
 /* @var $content string */
@@ -29,13 +30,38 @@ use yii\helpers\Html;
         var baseUrl = "<?= Yii::$app->urlManager->baseUrl ?>";
     </script>
     <?php $this->head() ?>
+    <style>
+        .modal-header .close {
+            padding: 0;
+            margin: 0;
+        }
 
+        #modal-registrasi {
+            background: rgba(0, 0, 0, .65);
+        }
+
+        .modal-content,
+        .modal-header {
+            background: transparent;
+            border: 0;
+            border-radius: 0;
+        }
+
+        .modal-header,
+        .modal-header h2 {
+            color: #fff;
+        }
+
+        .modal-body {
+            background: whitesmoke;
+            border-radius: 2rem;
+        }
+    </style>
 
 </head>
 
 <body>
     <?php $this->beginBody() ?>
-
     <div class="wrapper">
         <?= $this->render('header') ?>
         <?= $this->render(
@@ -50,6 +76,16 @@ use yii\helpers\Html;
 
     <?php $this->endBody() ?>
 </body>
+
+<?php
+\app\components\Modal::begin([
+    'id' => 'modal-registrasi',
+    'header' => '<div style=\'text-align:center;width:100%\'><h2>Mendaftar</h2> <p>Silahkan mengisi Data anda untuk mendaftar</p></div>'
+]);
+?>
+<div id="modal-body"></div>
+<?php \app\components\Modal::end() ?>
+
 <?php $this->registerJsFile("https://maps.googleapis.com/maps/api/js?key=AIzaSyCV6HOHjE9XM8IbEaL6ZMZdW8e0tavsOL8&libraries=places&region=id&language=en&sensor=false"); ?>
 <script>
     var marker;
@@ -119,6 +155,24 @@ use yii\helpers\Html;
             Swal.fire("Peringatan!", "<?= \Yii::$app->session->getFlash('success') ?>", "success");
         }
     });
+</script>
+
+<script>
+    $(document).ready(() => {
+        try {
+
+            $('#btn-registrasi').on('click', async () => {
+                let response = await fetch("<?= Url::to(['/registrasi'], false) ?>");
+                response = await response.text();
+                console.log(response)
+                document.getElementById("modal-body").innerHTML = response;
+                console.log($("#modal-registrasi"));
+                $("#modal-registrasi").modal('show')
+            });
+        } catch (error) {
+            console.log(error)
+        }
+    })
 </script>
 
 </html>
