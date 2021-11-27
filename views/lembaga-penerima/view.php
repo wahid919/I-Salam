@@ -72,12 +72,23 @@ $this->params['breadcrumbs'][] = 'View';
 
             <hr/>
 
-            <?= Html::a('<span class="glyphicon glyphicon-trash"></span> ' . 'Delete', ['delete', 'id' => $model->id],
+            <?php
+            if($model->flag == 1){
+                echo Html::a('<span class="glyphicon glyphicon-remove"></span> ' . 'Non Aktif', ['delete', 'id' => $model->id],
             [
             'class' => 'btn btn-danger',
-            'data-confirm' => '' . 'Are you sure to delete this item?' . '',
+            'data-confirm' => '' . 'Apakah Anda Yakin Menonaktifkan Data ini?' . '',
             'data-method' => 'post',
-            ]); ?>
+            ]);
+            }else{
+                echo Html::a('<span class="glyphicon glyphicon-ok"></span> ' . 'Aktifkan Data', ['delete', 'id' => $model->id],
+            [
+            'class' => 'btn btn-success',
+            'data-confirm' => '' . 'Apakah Anda Yakin Mengaktifkan Data ini?' . '',
+            'data-method' => 'post',
+            ]);
+            }
+             ?>
             <?php $this->endBlock(); ?>
 
 
