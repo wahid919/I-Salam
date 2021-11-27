@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta http-equiv="X-UA-Compatible" content="ie=edge" />
   <meta name="description" content="<?= $setting->nama_web ?>">
   <link href="<?= $icon ?>" rel="icon">
@@ -12,6 +12,43 @@
   <link rel="stylesheet" href="<?= \Yii::$app->request->BaseUrl ?>/template/assets/css/libraries.css" />
   <link rel="stylesheet" href="<?= \Yii::$app->request->BaseUrl ?>/template/assets/css/style.css" />
   <link rel="stylesheet" href="<?= \Yii::$app->request->BaseUrl ?>/template/assets/css/sweetalert2.min.css" />
+  <style>
+    .title-img {
+      border-radius: .3rem;
+      display: inline-block;
+      min-width: 30vw;
+      height: auto;
+      width: auto;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .title-overlay-ku {
+      padding: 0;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgb(194, 150, 55, .7);
+    }
+
+    .title_about {
+      z-index: 999;
+      position: relative;
+      text-align: center;
+      font-size: 1.2rem;
+      font-weight: 600;
+      padding: 1rem 4rem;
+      margin: 0;
+    }
+
+    @media only screen and (max-width: 768px) {
+      .title-img {
+        width: 90vw;
+      }
+    }
+  </style>
 </head>
 
 <body>
@@ -21,14 +58,37 @@
     =========================== -->
     <?= $this->render('component/header') ?>
     <hr class="mt-0">
-    <section id="services" class="services pb-90">
-      <h2 class="heading__title mx-auto text-center pb-3" style="color:orange;font-size:3rem;line-height: 1">Tentang Kami</h2>
+
+    <section id="services" class="services pb-30 pt-30">
+      <div class="container">
+        <div class="row heading heading-2 mb-40">
+          <div class="col-sm-12 col-md-12 col-lg-12">
+            <div class="row">
+              <div class="col-12">
+                <div class="title-img" style="background-image: url(<?= \Yii::$app->request->baseUrl . "/uploads/mosque.jpg" ?>);">
+                  <div class="text-white title_about"><?= Yii::t("cruds", "TENTANG KAMI") ?></div>
+                  <div class="title-overlay-ku">
+                  </div>
+                </div>
+              </div>
+              <div class="col-12">
+                <p class="heading__desc pt-4">
+                  <!-- <img src="<?= Yii::$app->formatter->asMyImage("setting/" . \app\components\Constant::setting('logo'), false) ?>" alt="" class="img img-fluid" style="width: 200px;display:inline-block"> -->
+                  <?= $setting->tentang_kami ?>
+                </p>
+              </div>
+            </div>
+          </div><!-- /.col-lg-5 -->
+        </div><!-- /.row -->
+      </div><!-- /.container -->
+    </section><!-- /.Services -->
+    <section id="services" class="services pb-30">
       <div class="container">
         <div class="row heading heading-2 mb-40">
           <div class="col-sm-12 col-md-12 col-lg-12">
             <div class="title-img" style="background-image: url(<?= \Yii::$app->request->baseUrl . "/uploads/mosque.jpg" ?>);">
-              <div class="title-overlay">
-                <p class="text-white text-title">Visi</p>
+              <div class="text-white title_about">Visi</div>
+              <div class="title-overlay-ku">
               </div>
             </div>
             <p class="heading__desc pt-4"><?= $setting->visi ?></p>
@@ -36,15 +96,15 @@
         </div><!-- /.row -->
       </div><!-- /.container -->
     </section><!-- /.Services -->
-    <section id="services" class="services pb-90" style="margin-top: -15%;">
+    <section id="services" class="services pb-30">
       <div class="container">
         <div class="row heading heading-2 mb-40">
           <div class="col-sm-12 col-md-12 col-lg-12">
             <div class="row">
               <div class="col-12">
                 <div class="title-img" style="background-image: url(<?= \Yii::$app->request->baseUrl . "/uploads/mosque.jpg" ?>);">
-                  <div class="title-overlay">
-                    <p class="text-white text-title">Misi</p>
+                  <div class="text-white title_about">Misi</div>
+                  <div class="title-overlay-ku">
                   </div>
                 </div>
               </div>
@@ -56,133 +116,6 @@
         </div><!-- /.row -->
       </div><!-- /.container -->
     </section><!-- /.Services -->
-
-    <section id="services" class="services pb-90" style="margin-top: -15%;">
-      <div class="container">
-        <div class="row heading heading-2 mb-40">
-          <div class="col-sm-12 col-md-12 col-lg-12">
-            <div class="row">
-              <div class="col-12">
-                <div class="title-img" style="background-image: url(<?= \Yii::$app->request->baseUrl . "/uploads/mosque.jpg" ?>);">
-                  <div class="title-overlay">
-                    <p class="text-white text-title2">Isalam</p>
-                  </div>
-                </div>
-              </div>
-              <div class="col-12">
-                <p class="heading__desc pt-4"><?= $setting->tentang_kami ?></p>
-              </div>
-            </div>
-          </div><!-- /.col-lg-5 -->
-        </div><!-- /.row -->
-      </div><!-- /.container -->
-    </section><!-- /.Services -->
-
-    <!-- ========================
-        Request Quote Tabs
-    =========================== -->
-
-    <div class="container">
-      <div class="row">
-        <div class="col-sm-12 col-md-12 col-lg-6 ">
-          <h3 class="heading__title mx-auto pb-3" style="color:orange;font-size:2rem;line-height: 1">Hubungi Kami</h3>
-          <p class="font-weight-bold" style="color:orange">Ingin Menyapa? Ingin tahu lebih banyak tentang kami? Hubungi kami atau kiriman email kepada kami, dari kami akan segera menghubungi Anda Kembali</p>
-          <div class="contact-form" style="margin-left: 10px;margin-right:10px;">
-
-            <?php
-
-            use yii\bootstrap\ActiveForm;
-            use yii\bootstrap\Html;
-            ?>
-            <?php $form = ActiveForm::begin(
-              [
-                'id' => 'HubungiKami',
-                'layout' => 'horizontal',
-                'enableClientValidation' => true,
-                'errorSummaryCssClass' => 'error-summary alert alert-error'
-              ]
-            );
-            ?>
-            <div class="form-row">
-
-              <div class="col-12 col-md-12">
-                <div class="form-group">
-                  <?= $form->field($model, 'nama', [
-                    'template' => '
-                                      {label}
-                                      {input}
-                                      {error}
-                                  ',
-                    'inputOptions' => [
-                      'class' => 'form-control'
-                    ],
-                    'labelOptions' => [
-                      'class' => ''
-                    ],
-                    'options' => ['tag' => false]
-                  ])->textInput(['maxlength' => true, 'placeholder' => 'Nama']) ?>
-                </div>
-              </div>
-              <div class="col-12 col-md-12">
-                <div class="form-group">
-                  <?= $form->field($model, 'nomor_hp', [
-                    'template' => '
-                                      {label}
-                                      {input}
-                                      {error}
-                                  ',
-                    'inputOptions' => [
-                      'class' => 'form-control'
-                    ],
-                    'labelOptions' => [
-                      'class' => ''
-                    ],
-                    'options' => ['tag' => false]
-                  ])->textInput(['maxlength' => true, 'placeholder' => 'Nomor Handphone']) ?>
-                </div>
-              </div>
-              <div class="col-12 col-md-12">
-                <div class="form-group">
-                  <?= // generated by schmunk42\giiant\generators\crud\providers\core\RelationProvider::activeField
-                  $form->field($model, 'tema_hubungi_kami_id', [
-                    'template' => '
-                                      {label}
-                                      {input}
-                                      {error}
-                                  ',
-                    'inputOptions' => [
-                      'class' => 'form-control'
-                    ],
-                    'labelOptions' => [
-                      'class' => ''
-                    ],
-                    'options' => ['tag' => false]
-                  ])->dropDownList(
-                    \yii\helpers\ArrayHelper::map(app\models\TemaHubungiKami::find()->all(), 'id', 'nama_tema'),
-                    [
-                      'prompt' => 'Select',
-                      'disabled' => (isset($relAttributes) && isset($relAttributes['tema_hubungi_kami_id'])),
-                    ]
-                  ); ?>
-                </div>
-              </div>
-              <?php echo $form->errorSummary($model); ?>
-
-              <div class="col-12 text-center">
-                <?= Html::submitButton('<i class="fa fa-save"></i> Simpan', ['class' => 'btn btn__primary mb-4']); ?>
-              </div>
-            </div>
-
-            <?php ActiveForm::end(); ?>
-            <div class="contact-form-result"></div>
-          </div>
-        </div><!-- /.col-lg-6 -->
-        <div class="col-sm-12 col-md-12 col-lg-6 text-center d-none d-lg-block">
-          <img src="<?= \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->foto_tentang_kami ?>" class="about-us-img" alt="logo">
-        </div><!-- /.col-lg-5 -->
-      </div><!-- /.row -->
-    </div><!-- /.container -->
-
     <!-- ========================
             Footer
     ========================== -->
@@ -212,7 +145,7 @@
       var error = "<?= \Yii::$app->session->getFlash('error') ?>";
       if (error !== "") {
         Swal.fire("Peringatan!", "<?= \Yii::$app->session->getFlash('error') ?>", "error");
-      } 
+      }
       if (success !== "") {
         Swal.fire("Peringatan!", "<?= \Yii::$app->session->getFlash('success') ?>", "success");
       }
