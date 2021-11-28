@@ -89,6 +89,12 @@ class SettingController extends Controller
 
         try {
             if ($model->load($_POST)) {
+                $url = 'https://www.youtube.com/watch?v=oVT78QcRQtU';
+                $embeded_url = $this->getYoutubeEmbedUrl($url);
+
+                echo $embeded_url;
+                die;
+
                 $logos = UploadedFile::getInstance($model, 'logo');
                 if ($logos != NULL) {
                     # store the source logos name
@@ -146,23 +152,23 @@ class SettingController extends Controller
                     $bg_pins->saveAs($path);
                 }
 
-                $foto_tentang_kamis = UploadedFile::getInstance($model, 'foto_tentang_kami');
-                if ($foto_tentang_kamis != NULL) {
-                    # store the source foto_tentang_kamis name
-                    $model->foto_tentang_kami = $foto_tentang_kamis->name;
-                    $arr = explode(".", $foto_tentang_kamis->name);
+                $banners = UploadedFile::getInstance($model, 'banner');
+                if ($banners != NULL) {
+                    # store the source banners name
+                    $model->banner = $banners->name;
+                    $arr = explode(".", $banners->name);
                     $extension = end($arr);
 
-                    # generate a unique foto_tentang_kamis name
-                    $model->foto_tentang_kami = Yii::$app->security->generateRandomString() . ".{$extension}";
+                    # generate a unique banners name
+                    $model->banner = Yii::$app->security->generateRandomString() . ".{$extension}";
 
-                    # the path to save foto_tentang_kamis
+                    # the path to save banners
                     // unlink(Yii::getAlias("@app/web/uploads/pengajuan/") . $oldFile);
                     if (file_exists(Yii::getAlias("@app/web/uploads/setting/")) == false) {
                         mkdir(Yii::getAlias("@app/web/uploads/setting/"), 0777, true);
                     }
-                    $path = Yii::getAlias("@app/web/uploads/setting/") . $model->foto_tentang_kami;
-                    $foto_tentang_kamis->saveAs($path);
+                    $path = Yii::getAlias("@app/web/uploads/setting/") . $model->banner;
+                    $banners->saveAs($path);
                 }
                 if ($model->save()) {
                     return $this->redirect(['view', 'id' => $model->id]);
@@ -190,9 +196,12 @@ class SettingController extends Controller
         $oldlogin = $model->bg_login;
         $oldpin = $model->bg_pin;
         $oldikut = $model->ikut_wakaf;
-        $oldftk = $model->foto_tentang_kami;
+        $oldftk = $model->banner;
 
         if ($model->load($_POST)) {
+            $url = $model->youtube_link;
+            $embeded_url = $this->getYoutubeEmbedUrl($url);
+            $model->youtube_link = $embeded_url;
             $logo = UploadedFile::getInstance($model, 'logo');
             if ($logo != NULL) {
                 # store the source file name
@@ -251,7 +260,7 @@ class SettingController extends Controller
                     throw new HttpException(419, "Gambar gagal diunggah");
                 }
                 $model->ikut_wakaf = $response->filename;
-            }else{
+            } else {
                 $model->ikut_wakaf = $oldikut;
             }
 
@@ -307,30 +316,30 @@ class SettingController extends Controller
                 $model->bg_pin = $oldpin;
             }
 
-            $foto_tentang_kami = UploadedFile::getInstance($model, 'foto_tentang_kami');
-            if ($foto_tentang_kami != NULL) {
+            $banner = UploadedFile::getInstance($model, 'banner');
+            if ($banner != NULL) {
                 # store the source file name
-                $model->foto_tentang_kami = $foto_tentang_kami->name;
-                $arr = explode(".", $foto_tentang_kami->name);
+                $model->banner = $banner->name;
+                $arr = explode(".", $banner->name);
                 $extension = end($arr);
 
                 # generate a unique file name
-                $model->foto_tentang_kami = Yii::$app->security->generateRandomString() . ".{$extension}";
+                $model->banner = Yii::$app->security->generateRandomString() . ".{$extension}";
 
                 # the path to save file
                 if (file_exists(Yii::getAlias("@app/web/uploads/setting/")) == false) {
                     mkdir(Yii::getAlias("@app/web/uploads/setting/"), 0777, true);
                 }
-                $path = Yii::getAlias("@app/web/uploads/setting/") . $model->foto_tentang_kami;
+                $path = Yii::getAlias("@app/web/uploads/setting/") . $model->banner;
                 if ($oldftk != NULL) {
 
-                    $foto_tentang_kami->saveAs($path);
+                    $banner->saveAs($path);
                     unlink(Yii::$app->basePath . '/web/uploads/setting/' . $oldftk);
                 } else {
-                    $foto_tentang_kami->saveAs($path);
+                    $banner->saveAs($path);
                 }
             } else {
-                $model->foto_tentang_kami = $oldftk;
+                $model->banner = $oldftk;
             }
 
             $model->save();
@@ -342,6 +351,20 @@ class SettingController extends Controller
         }
     }
 
+    function getYoutubeEmbedUrl($url)
+    {
+        $shortUrlRegex = '/youtu.be\/([a-zA-Z0-9_]+)\??/i';
+        $longUrlRegex = '/youtube.com\/((?:embed)|(?:watch))((?:\?v\=)|(?:\/))(\w+)/i';
+
+        if (preg_match($longUrlRegex, $url, $matches)) {
+            $youtube_id = $matches[count($matches) - 1];
+        }
+
+        if (preg_match($shortUrlRegex, $url, $matches)) {
+            $youtube_id = $matches[count($matches) - 1];
+        }
+        return 'https://www.youtube.com/embed/' . $youtube_id;
+    }
     /**
      * Deletes an existing Setting model.
      * If deletion is successful, the browser will be redirected to the 'index' page.

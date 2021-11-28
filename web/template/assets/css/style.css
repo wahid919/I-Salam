@@ -8555,38 +8555,6 @@ textarea.form-control {
     margin-bottom: 3rem;
 }
 
-.owl-nav {
-    position: absolute;
-    top: 45%;
-    left: -1.5rem;
-    right: -1.5rem;
-    display: flex;
-    justify-content: space-between;
-    overflow: hidden;
-}
-
-.owl-nav .owl-prev,
-.owl-nav .owl-next {
-    font-size: 1rem;
-    padding: 0 .5rem;
-    margin: 0 1rem;
-    border-radius: 100%;
-    background: #fff;
-    box-shadow: 0 0 3px 0 #ccc;
-    color: #aaa;
-}
-
-.owl-stage,
-.owl-item {
-    overflow: hidden;
-    border-radius: 1rem;
-}
-
-.owl-dots,
-.owl-thumbs {
-    display: none;
-}
-
 .item {
     border-radius: 1rem;
     margin-bottom: 2rem;
