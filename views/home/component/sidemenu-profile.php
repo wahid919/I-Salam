@@ -2,10 +2,17 @@
     <div class="card-body">
         <div class="row">
             <div class="col-4">
-                <img class="border-r10 shadow-br3" src="<?= \Yii::$app->request->BaseUrl ?>/uploads/logo.png" width="100px">
+                <?php
+                $foto = Yii::$app->user->identity->photo_url;
+                if ($foto == null) {
+                ?>
+                    <img class="border-r10 shadow-br3" src="<?= \Yii::$app->request->BaseUrl ?>/uploads/default.png" width="100px">
+                <?php } else { ?>
+                    <img class="border-r10 shadow-br3" src="<?= \Yii::$app->request->BaseUrl .'/uploads/'.$foto ?>" width="100px">
+                <?php } ?>
             </div>
             <div class="col-8">
-                <p class="font-weight-bold" style="padding-top: 12%;">Ahmad Supriyadi</p>
+                <p class="font-weight-bold" style="padding-top: 12%;"><?= Yii::$app->user->identity->name ?></p>
                 <p class="font-weight-bold"><a href="<?= \Yii::$app->request->BaseUrl ?>/home/edit-profile"><i class="fas fa-edit"></i> Edit</a></p>
             </div>
             <hr>

@@ -33,12 +33,16 @@ use Midtrans\Snap;
 use Midtrans\Config;
 use yii\filters\VerbFilter;
 use yii\web\Response;
+use app\components\UploadFile;
+use yii\web\UploadedFile;
 
 /**
  * This is the class for controller "BeritaController".
  */
 class HomeController extends Controller
 {
+    use UploadFile;
+
     public function beforeAction($action)
     {
         $this->enableCsrfValidation = false;
@@ -60,7 +64,7 @@ class HomeController extends Controller
                 // 'only' => ['logout', 'design-bangunan'],
                 'rules' => [
                     [
-                        'actions' => ['login', 'error', 'index', 'news', 'detail-berita', 'about', 'rekening', 'report', 'ziswaf', 'program','detail-program', 'unduh-file-uraian','unduh-file-wakaf'],
+                        'actions' => ['login', 'registrasi', 'error', 'index', 'news', 'detail-berita', 'about', 'rekening', 'report', 'ziswaf', 'program','detail-program', 'unduh-file-uraian','unduh-file-wakaf'],
                         'allow' => true,
                     ],
                     [
@@ -164,15 +168,7 @@ class HomeController extends Controller
 
     }
     public function actionBayar($id){
-        // $this->layout = false;
-       
-        // $pendanaan = Pendanaan::findOne(['pendanaan_id'=>$id]);
 
-        // return $this->render('bayar', [
-        //     'pembayaran' => $pembayaran,
-        //     'pendanaan' => $pendanaan,
-            
-        // ]);
         $pembayaran = Pembayaran::findOne(['id'=>$id]);
         $setting = Setting::find()->one();
         $icon = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->logo;
@@ -337,18 +333,6 @@ class HomeController extends Controller
         $count_wakif = User::find()->where(['role_id' => 5])->count();
         $model = new HubungiKami;
         $testimonials = Testimonials::find()->all();
-
-
-        // if ($model->load($_POST)) {
-        //     $model->status = 0;
-
-        //     if ($model->save()) {
-        //         Yii::$app->session->setFlash('success', "Data created successfully."); 
-        //     } else {
-        //         Yii::$app->session->setFlash('error', "Data not saved.");
-        //     }
-        //     return $this->redirect('home/checkout');
-        // }
 
         return $this->render('checkout', [
             'setting' => $setting,
@@ -572,19 +556,6 @@ class HomeController extends Controller
                 'tahun' => SORT_ASC
             ])
             ->all();
-        //     $a=[];
-        // for ($m=1; $m<=12; $m++) {
-        //     $month = date('m', mktime(0,0,0,$m));
-        //     $a[$m] = $month;
-        //     // $month = date('F', mktime(0,0,0,$m, 1, date('Y')));
-        //     // echo $month. '<br>';
-        //     }
-        // var_dump($rows->createCommand()->sql);die;
-        // var_dump($rows_penyalurans);die;
-
-
-
-
 
         return $this->render('report', [
             'setting' => $setting,
@@ -604,45 +575,7 @@ class HomeController extends Controller
             'bg' => $bg
         ]);
     }
-    // public function actionNews()
-    // {
-
-    //     $this->layout = false;
-
-    //     $setting = Setting::find()->one();
-    //     $icon = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->logo;
-    //     $bg_login = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->bg_login;
-    //     $bg = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->bg_pin;
-    //     $organisasis = Organisasi::find()->where(['flag'=>1])->all();
-    //     $lembagas = LembagaPenerima::find()->where(['flag'=>1])->all();
-    //     $count_program = Pendanaan::find()->count();
-    //     $count_wakif = User::find()->where(['role_id'=>5])->count();
-    //     $model = new HubungiKami;
-
-
-    //     if ($model->load($_POST)) {
-    //         $model->status = 0;
-
-    //         if ($model->save()) {
-    //             Yii::$app->session->setFlash('success', "Data created successfully."); 
-    //         } else {
-    //             Yii::$app->session->setFlash('error', "Data not saved.");
-    //         }
-    //         return $this->redirect('home/news');
-    //     }
-
-    //     return $this->render('news', [
-    //         'setting' => $setting,
-    //         'count_program' => $count_program,
-    //         'count_wakif' => $count_wakif,
-    //         'organisasis' => $organisasis,
-    //         'lembagas' => $lembagas,
-    //         'icon' => $icon,
-    //         'bg_login' => $bg_login,
-    //         'bg' => $bg,
-    //         'model' => $model
-    //     ]);
-    // }
+   
     public function actionZiswaf()
     {
         $setting = Setting::find()->one();
@@ -689,10 +622,54 @@ class HomeController extends Controller
 
     public function actionEditProfile()
     {
+        $model = User::find()->where(["id" => Yii::$app->user->id])->one();
         $setting = Setting::find()->one();
         $icon = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->logo;
 
+        $oldMd5Password = $model->password;
+        $model->password = "";
+        $oldPhotoUrl = $model->photo_url;
+
+        if ($model->load($_POST)) {
+            //password
+            if ($model->password != "") {
+                $model->password = \Yii::$app->security->generatePasswordHash($model->password);
+            } else {
+                $model->password = $oldMd5Password;
+            }
+
+            # get the uploaded file instance
+            $image = UploadedFile::getInstance($model, 'photo_url');
+            if ($image != null) {
+                $response = $this->uploadImage($image, "user_image");
+
+                // dd($response);
+                if ($response->success == false) {
+                    Yii::$app->session->setFlash("error", "Gambar Tidak Dapat Diunggah");
+                    goto end;
+                }
+                $model->photo_url = $response->filename;
+                if ($model->photo_url != null) {
+                    unlink(Yii::getAlias("@app/web/uploads/") . $oldPhotoUrl);
+                }
+                $this->deleteOne($oldPhotoUrl);
+            } else {
+                $model->photo_url = $oldPhotoUrl;
+            }
+
+            // if ($model->validate()) {
+            if ($model->save(false)) {
+                Yii::$app->session->setFlash("success", "Profile berhasil diubah");
+                // }
+            } else {
+                Yii::$app->session->setFlash("error", "Profile gagal diubah");
+            }
+            return $this->redirect(["profile"]);
+        }
+        end:
+        $model->password = "";
         return $this->render('edit-profile', [
+            'model' => $model,
             'setting' => $setting,
             'icon' => $icon,
         ]);
