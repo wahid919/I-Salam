@@ -31,7 +31,7 @@ use yii\helpers\Url;
     </script>
     <?php $this->head() ?>
     <style>
-        .modal-header .close {
+        #modal-registrasi .modal-header .close {
             padding: 0;
             margin: 0;
         }
@@ -40,19 +40,19 @@ use yii\helpers\Url;
             background: rgba(0, 0, 0, .65);
         }
 
-        .modal-content,
-        .modal-header {
+        #modal-registrasi .modal-content,
+        #modal-registrasi .modal-header {
             background: transparent;
             border: 0;
             border-radius: 0;
         }
 
-        .modal-header,
-        .modal-header h2 {
+        #modal-registrasi .modal-header,
+        #modal-registrasi .modal-header h2 {
             color: #fff;
         }
 
-        .modal-body {
+        #modal-registrasi .modal-body {
             background: whitesmoke;
             border-radius: 2rem;
             margin-bottom: 2rem;
