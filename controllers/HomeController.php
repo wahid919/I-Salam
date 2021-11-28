@@ -28,6 +28,8 @@ use app\models\Testimonials;
 use yii\data\ActiveDataProvider;
 use yii\data\Pagination;
 use Midtrans\Snap;
+use Midtrans\Config;
+use yii\web\Response;
 
 /**
  * This is the class for controller "BeritaController".
@@ -39,6 +41,116 @@ class HomeController extends Controller
         $this->enableCsrfValidation = false;
         $this->layout = '@app/views/layouts-home/main';
         return parent::beforeAction($action);
+    }
+
+    public function actionPembayaran($id, $nominal)
+    {
+        $pendanaan = \app\models\Pendanaan::find()
+            ->where(['id' => $id])->one();
+        // Required
+        if ($nominal) {
+            // $name = \Yii::$app->user->identity->name;
+            $name = "Tes";
+            $model = new Pembayaran();
+
+            $order_id_midtrans = rand();
+            $model->pendanaan_id = $pendanaan->id;
+            // $model->kode_transaksi = Yii::$app->security->generateRandomString(10) . date('dmYHis');
+            $model->kode_transaksi = $order_id_midtrans;
+
+            $transaction_details = array(
+                'order_id' => $order_id_midtrans,
+                'gross_amount' => 10000, // no decimal allowed for creditcard
+            );
+
+
+
+            // $model->nama = Yii::$app->user->identity->name;
+            $model->nama = "Hamba Tuhan";
+
+
+
+            $model->jumlah_lembaran = 0;
+            $model->nominal = (int)$nominal;
+
+            // Optional
+            $item1_details = array(
+                'id' => '1',
+                'price' => (int)$nominal,
+                'quantity' => 1,
+                'name' => $pendanaan->nama_pendanaan . "(Non Lembaran)"
+            );
+
+
+            // $model->jenis_pembayaran_id = $val['jenis_pembayaran_id'] ?? '';
+            // $model->user_id = \Yii::$app->user->identity->id;
+            $model->user_id = 49;
+            $model->status_id = 5;
+
+            $shipping_address = array(
+                'first_name'    => $pendanaan->nama_nasabah,
+                'last_name'     => "(" . $pendanaan->nama_perusahaan . ")",
+                // 'address'       => "Batu",
+                //     'city'          => "Jakarta",
+                //     'postal_code'   => "16602",
+                //     'phone'         => "081122334455",
+                'country_code'  => 'IDN'
+            );
+
+            $customer_details = array(
+                'first_name'    => $name,
+                'last_name'     => "(" . $name . ")",
+                'email'         => "fachruwildan1@gmail.com",
+                'phone'         => "089658798162",
+                'billing_address'  => $shipping_address,
+                'shipping_address' => $shipping_address
+            );
+
+            $hasil_code = \app\components\ActionMidtrans::toReadableOrder($item1_details, $transaction_details, $customer_details);
+            $model->code = $hasil_code;
+            $hasil = 'https://app.sandbox.midtrans.com/snap/v2/vtweb/' . $hasil_code;
+
+            // var_dump($hasil_code);
+            // die;
+            if ($model->validate()) {
+                $model->save();
+                // $this->layout= false;
+                return $this->redirect(['bayar', 'id' => $model->id]);
+                // return ['success' => true, 'message' => 'success', 'data' => $model, 'code' => $hasil_code,'url'=>$hasil];
+            } else {
+
+                return $this->redirect(['detail_program', 'id' => $pendanaan->id]);
+                // return ['success' => false, 'message' => 'gagal', 'data' => $model->getErrors()];
+            }
+        }
+
+        return $this->redirect(['detail_program', 'id' => $pendanaan->id]);
+        // return ["success" => false, "message" => "Nominal belum diatur"];
+
+
+
+    }
+    public function actionBayar($id){
+        $this->layout = false;
+        $pembayaran = Pembayaran::findOne(['id'=>$id]);
+
+        return $this->render('bayar', [
+            'pembayaran' => $pembayaran,
+            
+        ]);
+
+    }
+    function printExampleWarningMessage()
+    {
+        if (strpos(Config::$serverKey, 'your ') != false) {
+            echo "<code>";
+            echo "<h4>Please set your server key from sandbox</h4>";
+            echo "In file: " . __FILE__;
+            echo "<br>";
+            echo "<br>";
+            echo htmlspecialchars('Config::$serverKey = \'<your server key>\';');
+            die();
+        }
     }
 
     public function actionIndex()
@@ -296,10 +408,10 @@ class HomeController extends Controller
         $rekenings = Rekening::find()->where(['flag' => 1])->all();
         $count_program = Pendanaan::find()->count();
         $count_wakif = User::find()->where(['role_id' => 5])->count();
-       
 
 
-        
+
+
 
         return $this->render('rekening', [
             'setting' => $setting,
@@ -336,27 +448,27 @@ class HomeController extends Controller
         $count_wakif = User::find()->where(['role_id' => 5])->count();
 
         $rows_himpunans = (new \yii\db\Query())
-        ->select(['sum(nominal) as nominal', 'month(tanggal_konfirmasi) as bulan','year(tanggal_konfirmasi) as tahun'])
-        ->from('pembayaran')
-        ->where(['status_id' => 6])
-        // ->andWhere(['<>', 'State', null])
-        ->andWhere(['not', ['tanggal_konfirmasi' => null]])
-        ->groupBy('bulan,tahun')
-        ->orderBy([
-            'tahun' => SORT_ASC
-        ])
-        ->all();
+            ->select(['sum(nominal) as nominal', 'month(tanggal_konfirmasi) as bulan', 'year(tanggal_konfirmasi) as tahun'])
+            ->from('pembayaran')
+            ->where(['status_id' => 6])
+            // ->andWhere(['<>', 'State', null])
+            ->andWhere(['not', ['tanggal_konfirmasi' => null]])
+            ->groupBy('bulan,tahun')
+            ->orderBy([
+                'tahun' => SORT_ASC
+            ])
+            ->all();
 
         $rows_penyalurans = (new \yii\db\Query())
-        ->select(['sum(nominal) as nominal', 'month(tanggal_penyaluran) as bulan','year(tanggal_penyaluran) as tahun'])
-        ->from('penyaluran')
-        // ->andWhere(['<>', 'State', null])
-        ->andWhere(['not', ['tanggal_penyaluran' => null]])
-        ->groupBy('bulan,tahun')
-        ->orderBy([
-            'tahun' => SORT_ASC
-        ])
-        ->all();
+            ->select(['sum(nominal) as nominal', 'month(tanggal_penyaluran) as bulan', 'year(tanggal_penyaluran) as tahun'])
+            ->from('penyaluran')
+            // ->andWhere(['<>', 'State', null])
+            ->andWhere(['not', ['tanggal_penyaluran' => null]])
+            ->groupBy('bulan,tahun')
+            ->orderBy([
+                'tahun' => SORT_ASC
+            ])
+            ->all();
         //     $a=[];
         // for ($m=1; $m<=12; $m++) {
         //     $month = date('m', mktime(0,0,0,$m));
@@ -366,10 +478,10 @@ class HomeController extends Controller
         //     }
         // var_dump($rows->createCommand()->sql);die;
         // var_dump($rows_penyalurans);die;
-       
 
 
-        
+
+
 
         return $this->render('report', [
             'setting' => $setting,
@@ -429,14 +541,17 @@ class HomeController extends Controller
     //     ]);
     // }
 
-    public function actionDetailProgram()
+    public function actionDetailProgram($id)
     {
         $setting = Setting::find()->one();
         $icon = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->logo;
+        $pendanaan = Pendanaan::findOne($id);
+        if ($pendanaan == null) throw new HttpException(404);
 
         return $this->render('detail-program', [
             'setting' => $setting,
             'icon' => $icon,
+            'pendanaan' => $pendanaan,
         ]);
     }
 

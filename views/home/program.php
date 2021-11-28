@@ -12,7 +12,11 @@
         <label class="font-weight-600 font-size-1" for="wakaf" style="color:#a5a4a4;">Pilih Kategori Wakaf</label>
         <select class="form-control select-category ml-auto" id="select-category">
           <option class="font-weight-bold" value="<?= \Yii::$app->request->baseUrl . "/home/program/" ?>">Semua Kategori</option>
-          <?php foreach ($kategori_pendanaans as $kategori_pendanaan) {  ?>
+          <?php
+
+          use yii\helpers\Url;
+
+          foreach ($kategori_pendanaans as $kategori_pendanaan) {  ?>
             <option class="font-weight-bold" value="<?= \Yii::$app->request->baseUrl . "/home/program?kategori=" . $kategori_pendanaan->name ?>"><?= $kategori_pendanaan->name ?></option>
           <?php } ?>
         </select>
@@ -59,7 +63,7 @@
               <hr>
               <div class="row">
                 <div class="col-sm-12 col-md-12 col-lg-12">
-                  <a href="<?= \Yii::$app->request->baseUrl . "/home/detail-program/" ?>" class="btn btn-sm btn-program btn-block">Mulai Wakaf</a>
+                  <a href="<?= Url::to(["detail-program", "id" => $pendanaan->id]) ?>" class="btn btn-sm btn-program btn-block">Mulai Wakaf</a>
                 </div>
               </div>
             </div>
@@ -89,4 +93,3 @@ $(document).ready(function () {
 JS;
 $this->registerJs($script);
 ?>
-

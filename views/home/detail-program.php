@@ -1,3 +1,12 @@
+<?php
+// This is just for very basic implementation reference, in production, you should validate the incoming requests and implement your backend more securely.
+// Please refer to this docs for snap popup:
+// https://docs.midtrans.com/en/snap/integration-guide?id=integration-steps-overview
+
+// namespace Midtrans;
+
+use yii\helpers\Url;
+?>
 <hr class="mt-0">
 <section id="blogSingle" class="blog blog-single pt-50 pb-50">
   <div class="container">
@@ -166,7 +175,7 @@
                       <div class="input-group-prepend mr-2" style="height:calc(1.5em + .75rem + 2px);">
                         <div class="input-group-text bg-white border-r5 font-weight-bold" style="color: #afafaf;border-color: #787878;">Rp</div>
                       </div>
-                      <input type="number" class="form-control select-wakaf border-r5" id="nominal" style="border-color: #787878;" placeholder="Minimal Wakaf Rp. 10.000" required>
+                      <input type="number" class="form-control select-wakaf border-r5" id="nominal" name="nominal" style="border-color: #787878;" placeholder="Minimal Wakaf Rp. 10.000" required>
                     </div>
                   </div>
                 </div>
@@ -175,28 +184,106 @@
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-sm btn-batal" data-dismiss="modal">Batal</button>
-            <button type="button" class="btn btn-sm btn-program" data-toggle="modal" data-target="#exampleModalScrollable">Bayar</button>
+            <!-- <button type="button" class="btn btn-sm btn-program" data-toggle="modal" data-target="#exampleModalScrollable" id="bayarkan">Bayar</button> -->
+            <button type="button" class="btn btn-sm btn-program" id="bayarkan">Bayar</button>
           </div>
         </div>
       </div>
     </div>
 
+    <script type="text/javascript">
+      var global = "Global Variable"; //Define global variable outside of function
+
+      function setGlobal() {
+        global = "Hello World!";
+      };
+      setGlobal();
+      var data = 0;
+      var coba;
+      theFunction(data);
+
+      document.querySelector("#bayarkan").addEventListener("click", () => {
+        let nominal = document.querySelector("#nominal").getAttribute("value");
+        window.location.href = `<?= Url::to(['/home/pembayaran', 'id' => $pendanaan->id]) ?>?nominal=${nominal}`;
+      });
+
+      function theFunction(i) {
+
+        var rupiah;
+        var php_var = "<?php $php_var; ?>";
+        document.querySelector("#nominal").setAttribute("value", i);
+        var a = document.getElementById("nominal").value = i;
+        let num = 15;
+        let n = num.toString();
+        coba = i;
+        php_var += a;
+        var number_string = i.toString(),
+          sisa = number_string.length % 3,
+          rupiah = number_string.substr(0, sisa),
+          ribuan = number_string.substr(sisa).match(/\d{3}/g);
+
+        if (ribuan) {
+          separator = sisa ? '.' : '';
+          rupiah += separator + ribuan.join('.');
+        }
+        // var b = document.getElementById("nom").innerHTML = "Rp. " + rupiah;
+        // coba = "Rp. " + rupiah;
+        // var p1 = document.getElementById("nom").value;
+        // console.log(php_var);
+        return i;
+        // console.log(a);
+        // data = a;
+        // return true or false, depending on whether you want to allow the `href` property to follow through or not
+      }
+      // console.log(data);
+    </script>
     <!-- Modal -->
     <div class="modal fade" id="exampleModalScrollable" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
       <div class="modal-dialog modal-dialog-scrollable" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalScrollableTitle">Pembayaran</h5>
+            <h5 class="modal-title" id="exampleModalScrollableTitle">Pembayaran<?php var_dump($php_var); ?></h5>
+
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
           <div class="modal-body">
-            Apakah Anda Yakin Ingin Wakaf sebesar <h3 id="nom"></h3>
+            <?php  ?> Apakah Anda Yakin Ingin Wakaf sebesar <h3 id="nom"></h3>
+            <script>
+
+            </script>
+
+            <?php
+            echo "<script>document.writeln(global);</script>";
+            ?>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary">Save changes</button>
+            <button id="pay-button" type="button" class="btn btn-primary">Save changes</button>
+            <!-- <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="SB-Mid-client-lrPe45BCGoT9yG2O"></script>
+            <script type="text/javascript">
+              document.getElementById('pay-button').onclick = function() {
+                // SnapToken acquired from previous step
+                snap.pay('<?= $snap_token ?>', {
+                  // Optional
+                  onSuccess: function(result) {
+                    /* You may add your own js here, this is just example */
+                    document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
+                  },
+                  // Optional
+                  onPending: function(result) {
+                    /* You may add your own js here, this is just example */
+                    document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
+                  },
+                  // Optional
+                  onError: function(result) {
+                    /* You may add your own js here, this is just example */
+                    document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
+                  }
+                });
+              };
+            </script> -->
           </div>
         </div>
       </div>
@@ -319,22 +406,3 @@
     </div><!-- /.row -->
   </div><!-- /.container -->
 </section><!-- /.blog Single -->
-<script type="text/javascript">
-    function theFunction (i) {
-      var a = document.getElementById("nominal").value = i;
-      
-      var	number_string = i.toString(),
-      sisa 	= number_string.length % 3,
-      rupiah 	= number_string.substr(0, sisa),
-      ribuan 	= number_string.substr(sisa).match(/\d{3}/g);
-      
-      if (ribuan) {
-        separator = sisa ? '.' : '';
-        rupiah += separator + ribuan.join('.');
-      }
-      var b = document.getElementById("nom").innerHTML = "Rp. "+rupiah;
-      // console.log(rupiah);
-        // return true or false, depending on whether you want to allow the `href` property to follow through or not
-    }
-    
-</script>
