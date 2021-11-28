@@ -497,6 +497,17 @@ class HomeController extends Controller
         ]);
     }
 
+    public function actionEditProfile()
+    {
+        $setting = Setting::find()->one();
+        $icon = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->logo;
+
+        return $this->render('edit-profile', [
+            'setting' => $setting,
+            'icon' => $icon,
+        ]);
+    }
+
     public function actionDetailProgram()
     {
         $setting = Setting::find()->one();

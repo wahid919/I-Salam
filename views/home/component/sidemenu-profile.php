@@ -6,7 +6,7 @@
             </div>
             <div class="col-8">
                 <p class="font-weight-bold" style="padding-top: 12%;">Ahmad Supriyadi</p>
-                <p class="font-weight-bold"><i class="fas fa-edit"></i> Edit</p>
+                <p class="font-weight-bold"><a href="<?= \Yii::$app->request->BaseUrl ?>/home/edit-profile"><i class="fas fa-edit"></i> Edit</a></p>
             </div>
             <hr>
             <div class="col-12 text-right border-top-2 mt-4 pt-4">
