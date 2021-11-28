@@ -28,7 +28,7 @@ class UserController extends \yii\rest\ActiveController
         $parent = parent::behaviors();
         $parent['authentication'] = [
             "class" => "\app\components\CustomAuth",
-            "only" => ["user-view","lupa-password","update-profile"],
+            "only" => ["user-view","update-profile"],
         ];
 
         return $parent;
@@ -242,7 +242,7 @@ class UserController extends \yii\rest\ActiveController
             return ['success' => false, 'message' => 'gagal', 'data' => $user->getErrors()];
         }
     }
-    public function actionSendOtp(){
+    public function actionCheckEmail(){
         \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         $val = \yii::$app->request->post();
         $cek = User::find()->where(['username' => $val['username']])->one();
@@ -322,31 +322,37 @@ class UserController extends \yii\rest\ActiveController
         $val = \yii::$app->request->post();
         
         $otp = Otp::findOne(['kode_otp' => $val['kode_otp'], 'is_used' => 0]);
-
-        $user = User::findOne([
-            'id' => $otp->id_user
-        ]);
-        if($user){
-            if ($val['confirm_password'] != $val['password']) {
-                return ['success' => false, 'message' => 'Password tidak sama', 'data' => null];
-            }
-            // $user->name = $val['name'];
-            // $user->username = $val['username'];
-            $pass = $val['confirm_password'];
-            $user->password = Yii::$app->security->generatePasswordHash($pass);
-            // $user->address = $val['address'];
-            if ($user->save()) {
-                // $user->save();
-                unset($user->password);
-                return ['success' => true, 'message' => 'success', 'data' => $user];
-            } else {
-                // $user->rollback();
-                return ['success' => false, 'message' => 'gagal', 'data' => $user->getErrors()];
+        if($otp){
+            $user = User::findOne([
+                'id' => $otp->id_user
+            ]);
+            if($user){
+                if ($val['confirm_password'] != $val['password']) {
+                    return ['success' => false, 'message' => 'Password tidak sama', 'data' => null];
+                }
+                // $user->name = $val['name'];
+                // $user->username = $val['username'];
+                $pass = $val['confirm_password'];
+                $user->password = Yii::$app->security->generatePasswordHash($pass);
+                // $user->address = $val['address'];
+                if ($user->save()) {
+                    // $user->save();
+                    unset($user->password);
+                    return ['success' => true, 'message' => 'success', 'data' => $user];
+                } else {
+                    // $user->rollback();
+                    return ['success' => false, 'message' => 'gagal', 'data' => $user->getErrors()];
+                }
+            }else{
+    
+                return ['success' => false, 'message' => 'Email Tidak Terdaftar', 'data' => []];
             }
         }else{
 
-            return ['success' => false, 'message' => 'Email Tidak Terdaftar', 'data' => []];
+            return ['success' => false, 'message' => 'Kode Otp tidak terdeteksi', 'data' => []];
         }
+
+        
        
     }
 
