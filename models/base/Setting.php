@@ -41,8 +41,8 @@ abstract class Setting extends \yii\db\ActiveRecord
         return [
             [['pin'], 'integer'],
             [['nama_web','judul_web', 'alamat', 'slogan_web'], 'required'],
-            [['alamat', 'slogan_web','foto_tentang_kami','tentang_kami','visi','misi','ikut_wakaf'], 'string'],
-            [['judul_tentang_kami', 'logo', 'bg_login', 'bg_pin', 'link_download_apk', 'link_download_apk_marketing', 'nama_web','latitude','longitude','facebook','twitter','instagram','telegram'], 'string', 'max' => 255]
+            [['alamat', 'slogan_web','banner','tentang_kami','visi','misi','ikut_wakaf', 'youtube_link','judul_video','deskripsi_video'], 'string'],
+            [['logo', 'bg_login', 'bg_pin', 'link_download_apk', 'link_download_apk_marketing', 'nama_web','latitude','longitude','facebook','twitter','instagram','telegram'], 'string', 'max' => 255]
         ];
     }
 
@@ -69,10 +69,12 @@ abstract class Setting extends \yii\db\ActiveRecord
             'visi' => 'Visi',
             'misi' => 'Misi',
             'instagram' => 'Instagran',
-            'judul_tentang_kami' => 'Judul Tentang Kami',
-            'foto_tentang_kami' => 'Foto Tentang Kami',
+            'banner' => 'Banner',
             'tentang_kami' => 'Tentang Kami',
             'slogan_web' => 'Slogan Web',
+            'youtube_link' => 'Link Youtube',
+            'judul_video' => 'Judul Video',
+            'deskripsi_video' => 'Deskripsi Video',
         ];
     }
 

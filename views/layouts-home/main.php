@@ -21,7 +21,7 @@ use yii\helpers\Url;
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <meta name="description" content="<?= $setting->nama_web ?>">
-    <link href="<?= $icon ?>" rel="icon">
+    <link href="<?= Yii::$app->urlManager->baseUrl .'/uploads/setting/'.$setting->logo ?>" rel="icon">
     <?= Html::csrfMetaTags() ?>
     <title><?= Html::encode($setting->judul_web) ?></title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">

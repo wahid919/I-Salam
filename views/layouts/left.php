@@ -8,7 +8,7 @@ use yii\helpers\Html;
         <!-- Sidebar user panel -->
         <div class="user-panel">
             <div class="pull-left image">
-                <?= Html::img(["uploads/".Yii::$app->user->identity->photo_url], ["class"=>"img-circle"]) ?>
+                <?= Html::img(["uploads/user_image/".Yii::$app->user->identity->photo_url], ["class"=>"img-circle"]) ?>
             </div>
             <div class="pull-left info">
                 <p><?= Yii::$app->user->identity->name; ?></p>

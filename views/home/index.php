@@ -95,7 +95,6 @@
 </section>
 
 <div class="container">
-
   <div class="col-12 mt-4">
     <div class="count-program shadow-br2">
       <div class="row">
@@ -164,7 +163,7 @@
         </div>
       </section> -->
 
-  <img src="<?= \Yii::$app->request->BaseUrl ?>/uploads/Group77.png" class="pt-4">
+  <img src="<?= \Yii::$app->request->BaseUrl. "/uploads/setting/" . $setting->banner ?>" class="pt-4">
 
   <div class="col-12">
     <hr>
@@ -271,12 +270,12 @@
   <div class="row">
     <div class="col-lg-6 col-md-6 col-sm-12 col-12">
       <div class="embed-responsive embed-responsive-16by9">
-        <iframe class="embed-responsive-item border-r15" width="560" height="315" src="https://www.youtube.com/embed/JJEyjE5S6h8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <iframe class="embed-responsive-item border-r15" width="560" height="315" src="<?= $setting->youtube_link ?>" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
       </div>
     </div>
     <div class="col-lg-6 col-md-6 col-sm-12 col-12">
-      <h3 class="text-mari-wakaf">Mari Berwakaf</h3>
-      <p class="text-justify">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Obcaecati quasi asperiores, animi sapiente necessitatibus repellendus non blanditiis. Assumenda deleniti sed voluptatem accusamus, ex ad enim beatae repellat officia veritatis nulla.</p>
+      <h3 class="text-mari-wakaf"><?= $setting->judul_video?></h3>
+      <p class="text-justify"><?= $setting->deskripsi_video ?></p>
     </div>
   </div>
 

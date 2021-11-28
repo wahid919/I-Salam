@@ -36,6 +36,10 @@ use kartik\file\FileInput;
         selector: 'textarea#setting-misi',
         height : '400',
     });
+    tinymce.init({
+        selector: 'textarea#setting-deskripsi_video',
+        height : '400',
+    });
 </script>
 
 <div class="box box-info">
@@ -166,7 +170,7 @@ use kartik\file\FileInput;
             </div>
         </div>
         <div class="row">
-            <div class="col-sm-12 col-md-4 col-lg-4">
+            <div class="col-sm-12 col-md-6 col-lg-6">
                 <?= $form->field($model, 'link_download_apk', [
                     'template' => '
                         {label}
@@ -182,24 +186,8 @@ use kartik\file\FileInput;
                     'options' => ['tag' => false]
                 ])->textInput(['maxlength' => true]) ?>
             </div>
-            <div class="col-sm-12 col-md-4 col-lg-4">
+            <div class="col-sm-12 col-md-6 col-lg-6">
                 <?= $form->field($model, 'link_download_apk_marketing', [
-                    'template' => '
-                        {label}
-                        {input}
-                        {error}
-                    ',
-                    'inputOptions' => [
-                        'class' => 'form-control'
-                    ],
-                    'labelOptions' => [
-                        'class' => 'control-label'
-                    ],
-                    'options' => ['tag' => false]
-                ])->textInput(['maxlength' => true]) ?>
-            </div>
-            <div class="col-sm-12 col-md-4 col-lg-4">
-                <?= $form->field($model, 'judul_tentang_kami', [
                     'template' => '
                         {label}
                         {input}
@@ -248,13 +236,13 @@ use kartik\file\FileInput;
                     'options' => ['tag' => false]
                 ])->textarea(['rows' => 4]) ?>
             </div>
-            <div class="col-sm-12 col-md-12 col-lg-12">
-                <?= $form->field($model, 'foto_tentang_kami', [
+            <div class="col-sm-12 col-md-6 col-lg-6">
+                <?= $form->field($model, 'youtube_link', [
                     'template' => '
-                                {label}
-                                {input}
-                                {error}
-                            ',
+                        {label}
+                        {input}
+                        {error}
+                    ',
                     'inputOptions' => [
                         'class' => 'form-control'
                     ],
@@ -262,18 +250,39 @@ use kartik\file\FileInput;
                         'class' => 'control-label'
                     ],
                     'options' => ['tag' => false]
-                ])->widget(FileInput::classname(), [
-                    'options' => ['accept' => 'file/*'],
-                    'pluginOptions' => [
-                        'allowedFileExtensions' => ['png', 'jpg', 'jpeg', 'pdf', 'doc', 'docx'],
-                        'maxFileSize' => 6500,
-                        'dropZoneEnabled' => false,
-                        'showCaption' => true,
-                        'showRemove' => false,
-                        'showUpload' => false,
-                        'browseLabel' => 'Upload File',
+                ])->textInput(['maxlength' => true]) ?>
+            </div>
+            <div class="col-sm-12 col-md-6 col-lg-6">
+                <?= $form->field($model, 'judul_video', [
+                    'template' => '
+                        {label}
+                        {input}
+                        {error}
+                    ',
+                    'inputOptions' => [
+                        'class' => 'form-control'
                     ],
-                ]); ?>
+                    'labelOptions' => [
+                        'class' => 'control-label'
+                    ],
+                    'options' => ['tag' => false]
+                ])->textInput(['maxlength' => true]) ?>
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                <?= $form->field($model, 'deskripsi_video', [
+                    'template' => '
+                        {label}
+                        {input}
+                        {error}
+                    ',
+                    'inputOptions' => [
+                        'class' => 'form-control'
+                    ],
+                    'labelOptions' => [
+                        'class' => 'control-label'
+                    ],
+                    'options' => ['tag' => false]
+                ])->textarea(['rows' => 8]) ?>
             </div>
             <div class="col-sm-12 col-md-12 col-lg-12">
                 <?= $form->field($model, 'tentang_kami', [
@@ -330,7 +339,7 @@ use kartik\file\FileInput;
         </div>
 
         <div class="row">
-            <div class="col-sm-12 col-md-6 col-lg-3">
+            <div class="col-sm-12 col-md-6 col-lg-4">
                 <?= $form->field($model, 'logo', [
                     'template' => '
                                 {label}
@@ -357,7 +366,7 @@ use kartik\file\FileInput;
                     ],
                 ]); ?>
             </div>
-            <div class="col-sm-12 col-md-6 col-lg-3">
+            <div class="col-sm-12 col-md-6 col-lg-4">
                 <?= $form->field($model, 'bg_login', [
                     'template' => '
                                 {label}
@@ -384,7 +393,7 @@ use kartik\file\FileInput;
                     ],
                 ]); ?>
             </div>
-            <div class="col-sm-12 col-md-6 col-lg-3">
+            <div class="col-sm-12 col-md-6 col-lg-4">
                 <?= $form->field($model, 'bg_pin', [
                     'template' => '
                                 {label}
@@ -411,7 +420,34 @@ use kartik\file\FileInput;
                     ],
                 ]); ?>
             </div>
-            <div class="col-sm-12 col-md-6 col-lg-3">
+            <div class="col-sm-12 col-md-6 col-lg-6">
+                <?= $form->field($model, 'banner', [
+                    'template' => '
+                                {label}
+                                {input}
+                                {error}
+                            ',
+                    'inputOptions' => [
+                        'class' => 'form-control'
+                    ],
+                    'labelOptions' => [
+                        'class' => 'control-label'
+                    ],
+                    'options' => ['tag' => false]
+                ])->widget(FileInput::classname(), [
+                    'options' => ['accept' => 'file/*'],
+                    'pluginOptions' => [
+                        'allowedFileExtensions' => ['png', 'jpg', 'jpeg'],
+                        'maxFileSize' => 6500,
+                        'dropZoneEnabled' => false,
+                        'showCaption' => true,
+                        'showRemove' => false,
+                        'showUpload' => false,
+                        'browseLabel' => 'Upload File',
+                    ],
+                ]); ?>
+            </div>
+            <div class="col-sm-12 col-md-6 col-lg-6">
                 <?= $form->field($model, 'ikut_wakaf', [
                     'template' => '
                                 {label}

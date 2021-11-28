@@ -10,6 +10,7 @@ use yii\helpers\Url;
 use yii\filters\AccessControl;
 use dmstr\bootstrap\Tabs;
 use app\models\Action;
+use app\models\AgendaPendanaan;
 use app\models\Berita;
 use app\models\HubungiKami;
 use app\models\KategoriBerita;
@@ -25,22 +26,60 @@ use app\models\Penyaluran;
 use app\models\Rekening;
 use app\models\search\RekeningSearchHome;
 use app\models\Testimonials;
+use DateTime;
 use yii\data\ActiveDataProvider;
 use yii\data\Pagination;
 use Midtrans\Snap;
 use Midtrans\Config;
+use yii\filters\VerbFilter;
 use yii\web\Response;
+use app\components\UploadFile;
+use app\models\KegiatanPendanaan;
+use app\models\Notifikasi;
+use yii\web\UploadedFile;
 
 /**
  * This is the class for controller "BeritaController".
  */
 class HomeController extends Controller
 {
+    use UploadFile;
+
     public function beforeAction($action)
     {
         $this->enableCsrfValidation = false;
         $this->layout = '@app/views/layouts-home/main';
         return parent::beforeAction($action);
+    }
+
+    public function behaviors()
+    {
+        return [
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'logout' => ['post'],
+                ],
+            ],
+            'access' => [
+                'class' => AccessControl::className(),
+                // 'only' => ['logout', 'design-bangunan'],
+                'rules' => [
+                    [
+                        'actions' => ['login', 'registrasi', 'error', 'index', 'news', 'detail-berita', 'about', 'rekening', 'report', 'ziswaf', 'program', 'detail-program', 'unduh-file-uraian', 'unduh-file-wakaf'],
+                        'allow' => true,
+                    ],
+                    [
+                        'actions' => ['logout', 'index', 'profile', 'edit-profile', 'bayar', 'chechkout', 'laporan-wakaf', 'notifikasi', ''], // add all actions to take guest to login page
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+
+                ],
+
+            ],
+
+        ];
     }
 
     public function actionPembayaran($id, $nominal)
@@ -130,15 +169,52 @@ class HomeController extends Controller
 
 
     }
-    public function actionBayar($id){
-        $this->layout = false;
-        $pembayaran = Pembayaran::findOne(['id'=>$id]);
+    public function actionBayar($id)
+    {
+
+        $pembayaran = Pembayaran::findOne(['id' => $id]);
+        $setting = Setting::find()->one();
+        $icon = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->logo;
+        $bg_login = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->bg_login;
+        $bg = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->bg_pin;
+        $organisasis = Organisasi::find()->where(['flag' => 1])->all();
+        $lembagas = LembagaPenerima::find()->where(['flag' => 1])->all();
+        $count_program = Pendanaan::find()->count();
+        $count_wakif = User::find()->where(['role_id' => 5])->count();
+        $model = new HubungiKami;
+        $testimonials = Testimonials::find()->all();
+        $pendanaans = Pendanaan::find()->where(['status_id' => 2])->limit(6)->all();
+
+        $news = Berita::find()->limit(6)->all();
+
+
+        if ($model->load($_POST)) {
+            $model->status = 0;
+
+            if ($model->save()) {
+                Yii::$app->session->setFlash('success', "Data berhasil disimpan.");
+            } else {
+                Yii::$app->session->setFlash('error', "Data tidak berhasil disimpan.");
+            }
+            return $this->redirect(['home/index']);
+        }
 
         return $this->render('bayar', [
             'pembayaran' => $pembayaran,
-            
+            'setting' => $setting,
+            // 'snapToken' => $snapToken,
+            'count_program' => $count_program,
+            'count_wakif' => $count_wakif,
+            'organisasis' => $organisasis,
+            'lembagas' => $lembagas,
+            'icon' => $icon,
+            'bg_login' => $bg_login,
+            'bg' => $bg,
+            'testimonials' => $testimonials,
+            'model' => $model,
+            'pendanaans' => $pendanaans,
+            'news' => $news,
         ]);
-
     }
     function printExampleWarningMessage()
     {
@@ -259,18 +335,6 @@ class HomeController extends Controller
         $count_wakif = User::find()->where(['role_id' => 5])->count();
         $model = new HubungiKami;
         $testimonials = Testimonials::find()->all();
-
-
-        // if ($model->load($_POST)) {
-        //     $model->status = 0;
-
-        //     if ($model->save()) {
-        //         Yii::$app->session->setFlash('success', "Data created successfully."); 
-        //     } else {
-        //         Yii::$app->session->setFlash('error', "Data not saved.");
-        //     }
-        //     return $this->redirect('home/checkout');
-        // }
 
         return $this->render('checkout', [
             'setting' => $setting,
@@ -494,19 +558,6 @@ class HomeController extends Controller
                 'tahun' => SORT_ASC
             ])
             ->all();
-        //     $a=[];
-        // for ($m=1; $m<=12; $m++) {
-        //     $month = date('m', mktime(0,0,0,$m));
-        //     $a[$m] = $month;
-        //     // $month = date('F', mktime(0,0,0,$m, 1, date('Y')));
-        //     // echo $month. '<br>';
-        //     }
-        // var_dump($rows->createCommand()->sql);die;
-        // var_dump($rows_penyalurans);die;
-
-
-
-
 
         return $this->render('report', [
             'setting' => $setting,
@@ -526,45 +577,7 @@ class HomeController extends Controller
             'bg' => $bg
         ]);
     }
-    // public function actionNews()
-    // {
 
-    //     $this->layout = false;
-
-    //     $setting = Setting::find()->one();
-    //     $icon = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->logo;
-    //     $bg_login = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->bg_login;
-    //     $bg = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->bg_pin;
-    //     $organisasis = Organisasi::find()->where(['flag'=>1])->all();
-    //     $lembagas = LembagaPenerima::find()->where(['flag'=>1])->all();
-    //     $count_program = Pendanaan::find()->count();
-    //     $count_wakif = User::find()->where(['role_id'=>5])->count();
-    //     $model = new HubungiKami;
-
-
-    //     if ($model->load($_POST)) {
-    //         $model->status = 0;
-
-    //         if ($model->save()) {
-    //             Yii::$app->session->setFlash('success', "Data created successfully."); 
-    //         } else {
-    //             Yii::$app->session->setFlash('error', "Data not saved.");
-    //         }
-    //         return $this->redirect('home/news');
-    //     }
-
-    //     return $this->render('news', [
-    //         'setting' => $setting,
-    //         'count_program' => $count_program,
-    //         'count_wakif' => $count_wakif,
-    //         'organisasis' => $organisasis,
-    //         'lembagas' => $lembagas,
-    //         'icon' => $icon,
-    //         'bg_login' => $bg_login,
-    //         'bg' => $bg,
-    //         'model' => $model
-    //     ]);
-    // }
     public function actionZiswaf()
     {
         $setting = Setting::find()->one();
@@ -580,20 +593,39 @@ class HomeController extends Controller
     {
         $setting = Setting::find()->one();
         $icon = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->logo;
+        $jumlah_pembayaran = Pembayaran::find()->where(['user_id' => Yii::$app->user->identity->id])->andWhere(['status_id' => 6])->sum('nominal');
+        $pembayaran_sukses = Pembayaran::find()->where(['user_id' => Yii::$app->user->identity->id])->andWhere(['status_id' => 6])->count('status_id');
+        $proyek_didanai = Pembayaran::find()->where(['user_id' => Yii::$app->user->identity->id])->andWhere(['status_id' => 6])->groupBy('pendanaan_id')->all();
 
+        $query = Pembayaran::find()->where(['user_id' => Yii::$app->user->identity->id]);
+        $count = $query->count();
+        $pagination = new Pagination(['totalCount' => $count, 'pageSize' => 6]);
+        $pembayarans = $query->offset($pagination->offset)
+            ->limit($pagination->limit)
+            ->all();
         return $this->render('laporan-wakaf', [
             'setting' => $setting,
             'icon' => $icon,
+            'jumlah_pembayaran' => $jumlah_pembayaran,
+            'pembayaran_sukses' => $pembayaran_sukses,
+            'pagination' => $pagination,
+            'pembayarans' => $pembayarans,
+            'proyek_didanai' => $proyek_didanai
         ]);
     }
 
     public function actionNotifikasi()
     {
+        $user = Yii::$app->user->identity->id;
         $setting = Setting::find()->one();
+        $pembayaran = Pembayaran::find()->where(['user_id'=>$user])->limit(4)->orderBy(['id'=>SORT_DESC])->all();
+        $notifs = Notifikasi::find()->where(['user_id'=>$user])->limit(6)->orderBy(['id'=>SORT_DESC])->all();
         $icon = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->logo;
 
         return $this->render('notifikasi', [
             'setting' => $setting,
+            'notifs' => $notifs,
+            'pembayaran' => $pembayaran,
             'icon' => $icon,
         ]);
     }
@@ -602,19 +634,73 @@ class HomeController extends Controller
     {
         $setting = Setting::find()->one();
         $icon = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->logo;
+        // $pembayarans = Pembayaran::find()->where(['user_id' => Yii::$app->user->identity->id])->all();
+
+        $query = Pembayaran::find()->where(['user_id' => Yii::$app->user->identity->id]);
+        $count = $query->count();
+        $pagination = new Pagination(['totalCount' => $count, 'pageSize' => 6]);
+        $pembayarans = $query->offset($pagination->offset)
+            ->limit($pagination->limit)
+            ->all();
 
         return $this->render('profile', [
             'setting' => $setting,
             'icon' => $icon,
+            'pagination' => $pagination,
+            'pembayarans' => $pembayarans
         ]);
     }
 
     public function actionEditProfile()
     {
+        $model = User::find()->where(["id" => Yii::$app->user->id])->one();
         $setting = Setting::find()->one();
         $icon = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->logo;
 
+        $oldMd5Password = $model->password;
+        $model->password = "";
+        $oldPhotoUrl = $model->photo_url;
+
+        if ($model->load($_POST)) {
+            //password
+            if ($model->password != "") {
+                $model->password = \Yii::$app->security->generatePasswordHash($model->password);
+            } else {
+                $model->password = $oldMd5Password;
+            }
+
+            # get the uploaded file instance
+            $image = UploadedFile::getInstance($model, 'photo_url');
+            if ($image != null) {
+                $response = $this->uploadImage($image, "user_image");
+
+                // dd($response);
+                if ($response->success == false) {
+                    Yii::$app->session->setFlash("error", "Gambar Tidak Dapat Diunggah");
+                    goto end;
+                }
+                $model->photo_url = $response->filename;
+                if ($model->photo_url != null) {
+                    unlink(Yii::getAlias("@app/web/uploads/") . $oldPhotoUrl);
+                }
+                $this->deleteOne($oldPhotoUrl);
+            } else {
+                $model->photo_url = $oldPhotoUrl;
+            }
+
+            // if ($model->validate()) {
+            if ($model->save(false)) {
+                Yii::$app->session->setFlash("success", "Profile berhasil diubah");
+                // }
+            } else {
+                Yii::$app->session->setFlash("error", "Profile gagal diubah");
+            }
+            return $this->redirect(["profile"]);
+        }
+        end:
+        $model->password = "";
         return $this->render('edit-profile', [
+            'model' => $model,
             'setting' => $setting,
             'icon' => $icon,
         ]);
@@ -625,10 +711,25 @@ class HomeController extends Controller
         $setting = Setting::find()->one();
         $icon = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->logo;
         $pendanaan = Pendanaan::findOne($id);
+        $dana = Pembayaran::find()->where(['status_id' => 6, 'pendanaan_id' => $id])->sum('nominal');
+        $agenda = AgendaPendanaan::find()->where(['pendanaan_id' => $id])->all();
+        $kegiatans = KegiatanPendanaan::find()->where(['pendanaan_id' =>$id])->orderBy(['id'=>SORT_DESC])->one();
+        $donatur = Pembayaran::find()->where(['status_id'=>6,'pendanaan_id' => $id])->all();
+        $persen = $dana / $pendanaan->nominal * 100 ;
+        $datetime1 =  new DateTime($pendanaan->pendanaan_berakhir);
+        $datetime2 =  new Datetime(date("Y-m-d H:i:s"));
+        $interval = $datetime1->diff($datetime2)->days;
+
         if ($pendanaan == null) throw new HttpException(404);
 
         return $this->render('detail-program', [
             'setting' => $setting,
+            'kegiatans' => $kegiatans,
+            'donatur' => $donatur,
+            'dana' => $dana,
+            'agenda' => $agenda,
+            'persen' => $persen,
+            'interval' => $interval,
             'icon' => $icon,
             'pendanaan' => $pendanaan,
         ]);

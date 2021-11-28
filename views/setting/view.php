@@ -73,6 +73,13 @@ $this->title = 'Setting ' . $model->nama_web;
              },
          ],
          [
+            'attribute' =>'banner',
+            'format' =>'html',
+            'value' =>function($model) {
+               return Html::img(\Yii::$app->request->BaseUrl.'/uploads/setting/'.$model->banner,['width'=>100]);
+             },
+         ],
+         [
             'attribute' => 'ikut_wakaf',
             'header'=> 'Download Cara Ikut Wakaf',
             'format' =>'raw',
@@ -94,18 +101,13 @@ $this->title = 'Setting ' . $model->nama_web;
         'judul_web',
         'alamat:ntext',
         'slogan_web:ntext',
-        'judul_tentang_kami',
+        'youtube_link',
+        'judul_video',
+        'deskripsi_video:ntext',
         [
             'attribute' => 'tentang_kami',
             'format' => 'html',
         ],
-        [
-            'attribute' =>'foto_tentang_kami',
-            'format' =>'html',
-            'value' =>function($model) {
-               return Html::img(\Yii::$app->request->BaseUrl.'/uploads/setting/'.$model->foto_tentang_kami,['width'=>100]);
-             },
-         ],
         [
             'attribute' => 'visi',
             'format' => 'html',

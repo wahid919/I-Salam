@@ -39,7 +39,7 @@
                                             <div class="input-group-text bg-white border-r5 font-weight-bold" style="color: #afafaf;">Rp</div>
                                         </div>
                                         <input type="text" class="form-control select-wakaf border-r5 mr-1" id="" placeholder="Minimal Wakaf Rp. 10.000">
-                                        <button type="submit" class="btn-sm text-white btn-wakaf font-weight-bold">Wakaf Sekarang</button>
+                                        <button type="submit" class="btn-sm text-white btn-program font-weight-bold">Wakaf Sekarang</button>
                                     </div>
                                 </div>
                             </div>
@@ -72,7 +72,7 @@
                                             <div class="input-group-text bg-white border-r5 font-weight-bold" style="color: #afafaf;">Rp</div>
                                         </div>
                                         <input type="text" class="form-control select-wakaf border-r5 mr-1" id="" placeholder="Minimal infak Rp. 10.000">
-                                        <button type="submit" class="btn-sm text-white btn-wakaf font-weight-bold" style="background-color: #f1a502;height:calc(1.5em + .75rem + 2px);">Wakaf Sekarang</button>
+                                        <button type="submit" class="btn-sm text-white btn-program font-weight-bold" style="background-color: #f1a502;height:calc(1.5em + .75rem + 2px);">Wakaf Sekarang</button>
                                     </div>
                                 </div>
                             </div>
