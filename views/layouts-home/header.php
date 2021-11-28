@@ -27,15 +27,18 @@ $kategori_pendanaans = app\models\KategoriPendanaan::find()->all();
       <div class="collapse navbar-collapse" id="mainNavigation">
         <ul class="navbar-nav ml-auto">
           <li class="nav__item">
-            <a href="<?= Yii::$app->request->baseUrl ?>" class="nav__item-link">HOME</a>
+            <a href="<?= Yii::$app->request->baseUrl ?>" class="nav__item-link">Home</a>
+          </li><!-- /.nav-item -->
+          <li class="nav__item">
+            <a href="<?= Yii::$app->request->baseUrl ."/home/ziswaf" ?>" class="nav__item-link">Ziswaf</a>
           </li><!-- /.nav-item -->
           <li class="nav__item with-dropdown">
             <a href="<?= \Yii::$app->request->baseUrl . "/home/program/" ?>" class="dropdown-toggle nav__item-link dropdown-icon">
               <div class="d-none d-lg-block">
-                PROGRAM <i class="fa fa-angle-down"></i>
+                Program <i class="fa fa-angle-down"></i>
               </div>
               <div class="d-none d-md-block d-sm-block d-block d-lg-none">
-                PROGRAM</i>
+                Program</i>
               </div>
             </a>
             <i class="fa fa-angle-right" data-toggle="dropdown"></i>
@@ -49,10 +52,10 @@ $kategori_pendanaans = app\models\KategoriPendanaan::find()->all();
           <li class="nav__item with-dropdown">
             <a href="<?= \Yii::$app->request->baseUrl . "/home/news/" ?>" class="dropdown-toggle nav__item-link">
               <div class="d-none d-lg-block">
-                BERITA <i class="fa fa-angle-down"></i>
+                Berita <i class="fa fa-angle-down"></i>
               </div>
               <div class="d-none d-md-block d-sm-block d-block d-lg-none">
-                BERITA</i>
+                Berita</i>
               </div>
             </a>
             <i class="fa fa-angle-right" data-toggle="dropdown"></i>
@@ -66,10 +69,10 @@ $kategori_pendanaans = app\models\KategoriPendanaan::find()->all();
           <li class="nav__item with-dropdown">
             <a href="<?= \Yii::$app->request->baseUrl . "/home#" ?>" class="dropdown-toggle nav__item-link">
               <div class="d-none d-lg-block">
-                LAYANAN <i class="fa fa-angle-down"></i>
+                Layanan <i class="fa fa-angle-down"></i>
               </div>
               <div class="d-none d-md-block d-sm-block d-block d-lg-none">
-                LAYANAN</i>
+                Layanan</i>
               </div>
             </a>
             <i class="fa fa-angle-right" data-toggle="dropdown"></i>
@@ -81,13 +84,13 @@ $kategori_pendanaans = app\models\KategoriPendanaan::find()->all();
             </ul><!-- /.dropdown-menu -->
           </li>
           <li class="nav__item">
-            <a href="<?= Yii::$app->request->baseUrl . "/about" ?>" class="nav__item-link" style="color: black;">TENTANG KAMI</a>
+            <a href="<?= Yii::$app->request->baseUrl . "/about" ?>" class="nav__item-link" style="color: black;">Tentang Kami</a>
           </li><!-- /.nav-item -->
           <li class="nav__item">
-            <a id="btn-registrasi" class="nav__item-link" style="color: black;">DAFTAR</a>
+            <a id="btn-registrasi" class="nav__item-link" style="color: black;">Daftar</a>
           </li>
           <li class="nav__item">
-            <a href="<?= Yii::$app->request->baseUrl . "/home/profile" ?>" class="nav__item-link" style="color: black;">AKUN SAYA</a>
+            <a href="<?= Yii::$app->request->baseUrl . "/home/profile" ?>" class="nav__item-link" style="color: black;">Akun Saya</a>
           </li><!-- /.nav-item -->
         </ul><!-- /.navbar-nav -->
       </div><!-- /.navbar-collapse -->
