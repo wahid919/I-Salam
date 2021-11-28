@@ -1,9 +1,34 @@
-<style>
-  .bg-overlay-gradient-secondary-2:before {
-    background-image: url(<?= $bg_login ?>);
-    background-position: center;
-  }
-</style>
+<?php $this->registerCss(".owl-nav {
+    position: absolute;
+    top: 45%;
+    left: -1.5rem;
+    right: -1.5rem;
+    display: flex;
+    justify-content: space-between;
+    overflow: hidden;
+}
+
+.owl-nav .owl-prev,
+.owl-nav .owl-next {
+    font-size: 1rem;
+    padding: 0 .5rem;
+    margin: 0 1rem;
+    border-radius: 100%;
+    background: #fff;
+    box-shadow: 0 0 3px 0 #ccc;
+    color: #aaa;
+}
+
+.owl-stage,
+.owl-item {
+    overflow: hidden;
+    border-radius: 1rem;
+}
+
+.owl-dots,
+.owl-thumbs {
+    display: none;
+}") ?>
 <hr class="mt-0">
 <div class="mt-4 mb-4">
   <div class="container mt-4 mb-4">
