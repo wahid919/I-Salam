@@ -94,7 +94,7 @@ for ($i = 1; $i <= 12; $i++) {
   </div><!-- /.container -->
 </section><!-- /.Services -->
 
-<?php $this->registerJs(\Yii::$app->request->BaseUrl . '/chart/chart.js') ?>
+<?php $this->registerJsFile(\Yii::$app->request->BaseUrl . '/chart/chart.js') ?>
 <?php JSRegister::begin(); ?>
 <script>
   var ctx = document.getElementById("myChart").getContext("2d");
