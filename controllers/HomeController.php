@@ -297,6 +297,7 @@ class HomeController extends Controller
         $testimonials = Testimonials::find()->all();
         $pendanaans = Pendanaan::find()->where(['status_id' => 2])->limit(6)->all();
 
+        $list_pendanaans = Pendanaan::find()->where(['status_id' => 2])->all();
         $news = Berita::find()->limit(6)->all();
 
 
@@ -325,6 +326,7 @@ class HomeController extends Controller
             'testimonials' => $testimonials,
             'model' => $model,
             'pendanaans' => $pendanaans,
+            'list_pendanaans' => $list_pendanaans,
             'news' => $news,
         ]);
     }
@@ -394,6 +396,8 @@ class HomeController extends Controller
         $model = new HubungiKami;
         $testimonials = Testimonials::find()->all();
         $pendanaans = Pendanaan::find()->where(['status_id' => 2])->limit(6)->all();
+
+        $list_pendanaans = Pendanaan::find()->where(['status_id' => 2])->all();
         $news = Berita::find()->limit(6)->all();
 
 
@@ -421,6 +425,7 @@ class HomeController extends Controller
             'testimonials' => $testimonials,
             'model' => $model,
             'pendanaans' => $pendanaans,
+            'list_pendanaans' => $list_pendanaans,
             'news' => $news
         ]);
     }

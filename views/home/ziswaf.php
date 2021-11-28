@@ -27,7 +27,6 @@
                                 <option class="font-weight-bold" disabled selected>Silahkan Pilih Program</option>
                                     <?php
 
-                                    use yii\helpers\Url;
 
 foreach($pendanaans as $pendanaan){ ?>
                                         <option class="font-weight-bold" value="<?= $pendanaan->id ?>"><?= $pendanaan->nama_pendanaan ?></option>
