@@ -35,6 +35,7 @@ use yii\filters\VerbFilter;
 use yii\web\Response;
 use app\components\UploadFile;
 use app\models\KegiatanPendanaan;
+use app\models\Notifikasi;
 use yii\web\UploadedFile;
 
 /**
@@ -618,10 +619,12 @@ class HomeController extends Controller
         $user = Yii::$app->user->identity->id;
         $setting = Setting::find()->one();
         $pembayaran = Pembayaran::find()->where(['user_id'=>$user])->limit(4)->orderBy(['id'=>SORT_DESC])->all();
+        $notifs = Notifikasi::find()->where(['user_id'=>$user])->limit(6)->orderBy(['id'=>SORT_DESC])->all();
         $icon = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->logo;
 
         return $this->render('notifikasi', [
             'setting' => $setting,
+            'notifs' => $notifs,
             'pembayaran' => $pembayaran,
             'icon' => $icon,
         ]);
