@@ -8,7 +8,7 @@
                 ?>
                     <img class="border-r10 shadow-br3" src="<?= \Yii::$app->request->BaseUrl ?>/uploads/default.png" width="100px">
                 <?php } else { ?>
-                    <img class="border-r10 shadow-br3" src="<?= \Yii::$app->request->BaseUrl .'/uploads/'.$foto ?>" width="100px">
+                    <img class="border-r10 shadow-br3" src="<?= \Yii::$app->request->BaseUrl .'/uploads/user_image/'.$foto ?>" width="100px">
                 <?php } ?>
             </div>
             <div class="col-8">

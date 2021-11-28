@@ -92,7 +92,7 @@ class UserController extends Controller
                     $model->photo_url = Yii::$app->security->generateRandomString() . ".{$extension}";
 
                     # the path to save file
-                    $path = Yii::getAlias("@app/web/uploads/") . $model->photo_url;
+                    $path = Yii::getAlias("@app/web/uploads/user_image/") . $model->photo_url;
                     $image->saveAs($path);
                 }else{
                     $model->photo_url = "default.png";
@@ -151,7 +151,7 @@ class UserController extends Controller
                 $model->photo_url = Yii::$app->security->generateRandomString() . ".{$extension}";
 
                 # the path to save file
-                $path = Yii::getAlias("@app/web/uploads/") . $model->photo_url;
+                $path = Yii::getAlias("@app/web/uploads/user_image/") . $model->photo_url;
                 $image->saveAs($path);
             }else{
                 $model->photo_url = $oldPhotoUrl;
