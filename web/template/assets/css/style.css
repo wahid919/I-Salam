@@ -1501,7 +1501,6 @@ h6 {
     height: auto;
     border-radius: 7px;
     color: #fff;
-    padding: 10px !important;
 }
 
 .btn-program:active,
@@ -2560,7 +2559,7 @@ textarea.form-control {
     text-transform: capitalize;
     display: block;
     position: relative;
-    color: #333333;
+    color: #787878;
     line-height: 100px;
     letter-spacing: 0.4px;
 }
@@ -2573,7 +2572,7 @@ textarea.form-control {
     width: 0;
     height: 2px;
     display: block;
-    background-color: #333333;
+    background-color: #787878!important;
     -webkit-transition: 0.5s ease;
     -moz-transition: 0.5s ease;
     -ms-transition: 0.5s ease;
@@ -8599,6 +8598,15 @@ textarea.form-control {
     height: 30vw;
 }
 
+.profile-section {
+    margin-top: 0px;
+}
+
+.btn-wakaf {
+    background-color: #f1a502;
+    height: calc(1.5em + .75rem + 2px);
+}
+
 
 /* Mobile Phones and tablets */
 
@@ -8710,6 +8718,15 @@ textarea.form-control {
     }
     .program__text {
         margin-bottom: 0px;
+    }
+    .profile-section {
+        margin-top: 30px;
+    }
+    .btn-wakaf {
+        background-color: #f1a502;
+        height: calc(1.5em + .75rem + 2px);
+        width: 100%;
+        margin-top: 1rem;
     }
 }
 

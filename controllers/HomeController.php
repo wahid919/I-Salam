@@ -428,6 +428,17 @@ class HomeController extends Controller
     //         'model' => $model
     //     ]);
     // }
+    public function actionZiswaf()
+    {
+        $setting = Setting::find()->one();
+        $icon = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->logo;
+
+        return $this->render('ziswaf', [
+            'setting' => $setting,
+            'icon' => $icon,
+        ]);
+    }
+
     public function actionLaporanWakaf()
     {
         $setting = Setting::find()->one();
