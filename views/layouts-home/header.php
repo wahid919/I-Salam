@@ -86,12 +86,18 @@ $kategori_pendanaans = app\models\KategoriPendanaan::find()->all();
           <li class="nav__item">
             <a href="<?= Yii::$app->request->baseUrl . "/about" ?>" class="nav__item-link" style="color: black;">Tentang Kami</a>
           </li><!-- /.nav-item -->
+          <?php if(Yii::$app->user->identity->id == null) {?>
+            <li class="nav__item">
+            <a href="<?= Yii::$app->request->baseUrl . "/site/login" ?>" class="nav__item-link" style="color: black;">Login</a>
+          </li><!-- /.nav-item -->
           <li class="nav__item">
-            <a id="btn-registrasi" class="nav__item-link" style="color: black;">Login/Daftar</a>
+            <a id="btn-registrasi" class="nav__item-link" style="color: black;">Daftar</a>
           </li>
+          <?php } else { ?>
           <li class="nav__item">
             <a href="<?= Yii::$app->request->baseUrl . "/home/profile" ?>" class="nav__item-link" style="color: black;">Akun Saya</a>
           </li><!-- /.nav-item -->
+          <?php } ?>
         </ul><!-- /.navbar-nav -->
       </div><!-- /.navbar-collapse -->
     </div><!-- /.container -->
