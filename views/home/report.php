@@ -38,6 +38,11 @@ for ($i = 1; $i <= 12; $i++) {
 }
 // var_dump($daftartanggal);die;
 ?>
+<style>
+    .table-responsive {
+      overflow: auto; 
+    }
+</style>
 <hr class="mt-0">
 <section id="services" class="services pb-90" style="margin-left: 2rem;margin-bottom:-25rem">
   <div class="container">
@@ -49,7 +54,7 @@ for ($i = 1; $i <= 12; $i++) {
           <div class="row">
             <div class="col-sm-3">
 
-              <h2 class="text-left pb-3" style="color:#f1a527;font-size:1rem;line-height: 1.3;">GRAFIK <br />PENGHIMPUNAN <br /> DAN PENYALURAN</h2>
+              <h2 class="text-left pb-3" style="color:#f1a527;font-size:1.2rem;line-height: 1.3;margin-top:1.5rem">GRAFIK <br />PENGHIMPUNAN <br /> DAN PENYALURAN</h2>
               <style>
                 table {
                   display: inline-table;
@@ -60,7 +65,7 @@ for ($i = 1; $i <= 12; $i++) {
               <table>
                 <tr>
                   <th>
-                    <h4 style="color:#f1a527;font-size:1rem;line-height: 1.3;">Total Keseluruhan</h4>
+                    <h4 style="color:#f1a527;font-size:1.3rem;line-height: 1.3;">Total Keseluruhan</h4>
                   </th>
                 </tr>
                 <tr>
@@ -68,7 +73,7 @@ for ($i = 1; $i <= 12; $i++) {
                 </tr>
                 <tr>
                   <th>
-                    <h4 style="color:#f1a527;font-size:1rem;line-height: 1.3;"><?= \app\components\Angka::toReadableHarga($penghimpunan); ?></h4>
+                    <h4 style="color:#f1a527;font-size:1.3rem;line-height: 1.3;"><?= \app\components\Angka::toReadableHarga($penghimpunan); ?></h4>
                   </th>
                 </tr>
                 <tr>
@@ -76,14 +81,14 @@ for ($i = 1; $i <= 12; $i++) {
                 </tr>
                 <tr>
                   <th>
-                    <h4 style="color:#f1a527;font-size:1rem;line-height: 1.3;"><?= \app\components\Angka::toReadableHarga($penyaluran); ?></h4>
+                    <h4 style="color:#f1a527;font-size:1.3rem;line-height: 1.3;"><?= \app\components\Angka::toReadableHarga($penyaluran); ?></h4>
                   </th>
                 </tr>
               </table>
             </div>
             <div class="col-sm-9">
               <!-- <canvas id='myChart' width='400' height='150'></canvas> -->
-              <div class="chart-container" style="position: relative; height: 750px !important; width: 750px  !important;">
+              <div class="chart-container" style="position: relative; height: 750px !important; width: 825px  !important;">
                 <canvas id="myChart"></canvas>
               </div>
             </div>
