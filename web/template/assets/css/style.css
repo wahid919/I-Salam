@@ -2559,7 +2559,7 @@ textarea.form-control {
     text-transform: capitalize;
     display: block;
     position: relative;
-    color: #787878;
+    color: #787878 !important;
     line-height: 100px;
     letter-spacing: 0.4px;
 }
@@ -8605,6 +8605,42 @@ textarea.form-control {
 .btn-wakaf {
     background-color: #f1a502;
     height: calc(1.5em + .75rem + 2px);
+}
+
+.title-img {
+    border-radius: .3rem;
+    display: inline-block;
+    min-width: 30vw;
+    height: auto;
+    width: auto;
+    overflow: hidden;
+    position: relative;
+}
+
+.title-overlay-ku {
+    padding: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgb(194, 150, 55, .7);
+}
+
+.title_about {
+    z-index: 999;
+    position: relative;
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: 600;
+    padding: 1rem 4rem;
+    margin: 0;
+}
+
+@media only screen and (max-width: 768px) {
+    .title-img {
+        width: 90vw;
+    }
 }
 
 

@@ -275,9 +275,6 @@ class HomeController extends Controller
 
     public function actionAbout()
     {
-
-        $this->layout = false;
-
         $setting = Setting::find()->one();
         $icon = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->logo;
         $bg_login = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->bg_login;
@@ -314,8 +311,6 @@ class HomeController extends Controller
     }
     public function actionRekening()
     {
-
-        $this->layout = false;
         $searchModel  = new RekeningSearchHome;
         $dataProvider = $searchModel->search($_GET);
         $dataProvider->setPagination(['pageSize' => 20]);
@@ -349,8 +344,6 @@ class HomeController extends Controller
     }
     public function actionReport()
     {
-
-        $this->layout = false;
         $searchModel  = new RekeningSearchHome;
         $dataProvider = $searchModel->search($_GET);
         $dataProvider->setPagination(['pageSize' => 20]);
