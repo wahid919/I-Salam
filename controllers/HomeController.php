@@ -31,6 +31,7 @@ use yii\data\ActiveDataProvider;
 use yii\data\Pagination;
 use Midtrans\Snap;
 use Midtrans\Config;
+use yii\filters\VerbFilter;
 use yii\web\Response;
 
 /**
@@ -43,6 +44,36 @@ class HomeController extends Controller
         $this->enableCsrfValidation = false;
         $this->layout = '@app/views/layouts-home/main';
         return parent::beforeAction($action);
+    }
+
+    public function behaviors()
+    {
+        return [
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'logout' => ['post'],
+                ],
+            ],
+            'access' => [
+                'class' => AccessControl::className(),
+                // 'only' => ['logout', 'design-bangunan'],
+                'rules' => [
+                    [
+                        'actions' => ['login', 'error', 'index', 'news', 'detail-berita', 'about', 'rekening', 'report', 'ziswaf', 'program','detail-program', 'unduh-file-uraian','unduh-file-wakaf'],
+                        'allow' => true,
+                    ],
+                    [
+                        'actions' => ['logout', 'index', 'profile', 'edit-profile', 'bayar', 'chechkout', 'laporan-wakaf', 'notifikasi', ''], // add all actions to take guest to login page
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+
+                ],
+
+            ],
+
+        ];
     }
 
     public function actionPembayaran($id, $nominal)
