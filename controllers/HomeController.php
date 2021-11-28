@@ -601,11 +601,14 @@ class HomeController extends Controller
 
     public function actionNotifikasi()
     {
+        $user = Yii::$app->user->identity->id;
         $setting = Setting::find()->one();
+        $pembayaran = Pembayaran::find()->where(['user_id'=>$user])->limit(4)->orderBy(['id'=>SORT_DESC])->all();
         $icon = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->logo;
 
         return $this->render('notifikasi', [
             'setting' => $setting,
+            'pembayaran' => $pembayaran,
             'icon' => $icon,
         ]);
     }
