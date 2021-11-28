@@ -70,7 +70,7 @@ class HomeController extends Controller
                         'allow' => true,
                     ],
                     [
-                        'actions' => ['logout', 'index', 'profile', 'edit-profile', 'bayar', 'chechkout', 'laporan-wakaf', 'notifikasi', ''], // add all actions to take guest to login page
+                        'actions' => ['logout', 'index', 'profile', 'edit-profile', 'bayar','pembayaran','pembayarans', 'chechkout', 'laporan-wakaf', 'notifikasi', ''], // add all actions to take guest to login page
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -87,85 +87,197 @@ class HomeController extends Controller
         $pendanaan = \app\models\Pendanaan::find()
             ->where(['id' => $id])->one();
         // Required
-        if ($nominal) {
-            // $name = \Yii::$app->user->identity->name;
-            $name = "Tes";
-            $model = new Pembayaran();
-
-            $order_id_midtrans = rand();
-            $model->pendanaan_id = $pendanaan->id;
-            // $model->kode_transaksi = Yii::$app->security->generateRandomString(10) . date('dmYHis');
-            $model->kode_transaksi = $order_id_midtrans;
-
-            $transaction_details = array(
-                'order_id' => $order_id_midtrans,
-                'gross_amount' => 10000, // no decimal allowed for creditcard
-            );
-
-
-
-            // $model->nama = Yii::$app->user->identity->name;
-            $model->nama = "Hamba Tuhan";
-
-
-
-            $model->jumlah_lembaran = 0;
-            $model->nominal = (int)$nominal;
-
-            // Optional
-            $item1_details = array(
-                'id' => '1',
-                'price' => (int)$nominal,
-                'quantity' => 1,
-                'name' => $pendanaan->nama_pendanaan . "(Non Lembaran)"
-            );
-
-
-            // $model->jenis_pembayaran_id = $val['jenis_pembayaran_id'] ?? '';
-            // $model->user_id = \Yii::$app->user->identity->id;
-            $model->user_id = 49;
-            $model->status_id = 5;
-
-            $shipping_address = array(
-                'first_name'    => $pendanaan->nama_nasabah,
-                'last_name'     => "(" . $pendanaan->nama_perusahaan . ")",
-                // 'address'       => "Batu",
-                //     'city'          => "Jakarta",
-                //     'postal_code'   => "16602",
-                //     'phone'         => "081122334455",
-                'country_code'  => 'IDN'
-            );
-
-            $customer_details = array(
-                'first_name'    => $name,
-                'last_name'     => "(" . $name . ")",
-                'email'         => "fachruwildan1@gmail.com",
-                'phone'         => "089658798162",
-                'billing_address'  => $shipping_address,
-                'shipping_address' => $shipping_address
-            );
-
-            $hasil_code = \app\components\ActionMidtrans::toReadableOrder($item1_details, $transaction_details, $customer_details);
-            $model->code = $hasil_code;
-            $hasil = 'https://app.sandbox.midtrans.com/snap/v2/vtweb/' . $hasil_code;
-
-            // var_dump($hasil_code);
-            // die;
-            if ($model->validate()) {
-                $model->save();
-                // $this->layout= false;
-                return $this->redirect(['bayar', 'id' => $model->id]);
-                // return ['success' => true, 'message' => 'success', 'data' => $model, 'code' => $hasil_code,'url'=>$hasil];
-            } else {
-
-                return $this->redirect(['detail_program', 'id' => $pendanaan->id]);
-                // return ['success' => false, 'message' => 'gagal', 'data' => $model->getErrors()];
+        if($pendanaan != null){
+            if ($nominal) {
+                $name = \Yii::$app->user->identity->name;
+                // $name = "Tes";
+                $model = new Pembayaran();
+    
+                $order_id_midtrans = rand();
+                $model->pendanaan_id = $pendanaan->id;
+                // $model->kode_transaksi = Yii::$app->security->generateRandomString(10) . date('dmYHis');
+                $model->kode_transaksi = $order_id_midtrans;
+    
+                $transaction_details = array(
+                    'order_id' => $order_id_midtrans,
+                    'gross_amount' => (int)$nominal, // no decimal allowed for creditcard
+                );
+    
+    
+    
+                // $model->nama = Yii::$app->user->identity->name;
+                $model->nama = $name;
+    
+    
+    
+                $model->jumlah_lembaran = 0;
+                $model->nominal = (int)$nominal;
+    
+                // Optional
+                $item1_details = array(
+                    'id' => '1',
+                    'price' => (int)$nominal,
+                    'quantity' => 1,
+                    'name' => $pendanaan->nama_pendanaan . "(Non Lembaran)"
+                );
+    
+    
+                // $model->jenis_pembayaran_id = $val['jenis_pembayaran_id'] ?? '';
+                // $model->user_id = \Yii::$app->user->identity->id;
+                $model->user_id = \Yii::$app->user->identity->id;;
+                $model->status_id = 5;
+    
+                $shipping_address = array(
+                    'first_name'    => $pendanaan->nama_nasabah,
+                    'last_name'     => "(" . $pendanaan->nama_perusahaan . ")",
+                    // 'address'       => "Batu",
+                    //     'city'          => "Jakarta",
+                    //     'postal_code'   => "16602",
+                    //     'phone'         => "081122334455",
+                    'country_code'  => 'IDN'
+                );
+                $email = Yii::$app->user->identity->username;
+                $nomor_handphone = Yii::$app->user->identity->nomor_handphone;
+                $customer_details = array(
+                    'first_name'    => $name,
+                    'last_name'     => "(" . $name . ")",
+                    'email'         => $email,
+                    'phone'         => $nomor_handphone,
+                    'billing_address'  => $shipping_address,
+                    'shipping_address' => $shipping_address
+                );
+    
+                $hasil_code = \app\components\ActionMidtrans::toReadableOrder($item1_details, $transaction_details, $customer_details);
+                $model->code = $hasil_code;
+                $hasil = 'https://app.sandbox.midtrans.com/snap/v2/vtweb/' . $hasil_code;
+    
+                // var_dump($hasil_code);
+                // die;
+                if ($model->validate()) {
+                    $model->save();
+                    // $this->layout= false;
+                    return $this->redirect(['bayar', 'id' => $model->id]);
+                    // return ['success' => true, 'message' => 'success', 'data' => $model, 'code' => $hasil_code,'url'=>$hasil];
+                } else {
+    
+                    return $this->redirect(['detail_program', 'id' => $pendanaan->id]);
+                    // return ['success' => false, 'message' => 'gagal', 'data' => $model->getErrors()];
+                }
             }
+    
+            return $this->redirect(['detail_program', 'id' => $pendanaan->id]);
+            // return ["success" => false, "message" => "Nominal belum diatur"];
+    
+        }else{
+            return $this->redirect('program');
         }
+        
 
-        return $this->redirect(['detail_program', 'id' => $pendanaan->id]);
-        // return ["success" => false, "message" => "Nominal belum diatur"];
 
+    }
+    public function actionPembayarans($id, $nominal,$keterangan)
+    {
+        $pendanaan = \app\models\Pendanaan::find()
+            ->where(['id' => $id])->one();
+        // Required
+        if($pendanaan != null){
+            if ($nominal) {
+                $name = \Yii::$app->user->identity->name;
+                // $name = "Tes";
+                $model = new Pembayaran();
+    
+                $order_id_midtrans = rand();
+                $model->pendanaan_id = $pendanaan->id;
+                // $model->kode_transaksi = Yii::$app->security->generateRandomString(10) . date('dmYHis');
+                $model->kode_transaksi = $order_id_midtrans;
+    
+                $transaction_details = array(
+                    'order_id' => $order_id_midtrans,
+                    'gross_amount' => (int)$nominal, // no decimal allowed for creditcard
+                );
+    
+    
+    
+                // $model->nama = Yii::$app->user->identity->name;
+                $model->nama = $name;
+    
+    
+    
+                $model->jumlah_lembaran = 0;
+                $model->nominal = (int)$nominal;
+    
+                // Optional
+                if($keterangan == "infak"){
+                    $item1_details = array(
+                        'id' => '1',
+                        'price' => (int)$nominal,
+                        'quantity' => 1,
+                        'name' => $pendanaan->nama_pendanaan . "(Infak)"
+                    );
+                }elseif ($keterangan == "wakaf") {
+                    $item1_details = array(
+                        'id' => '1',
+                        'price' => (int)$nominal,
+                        'quantity' => 1,
+                        'name' => $pendanaan->nama_pendanaan . "(Wakaf)"
+                    );    
+                }else{
+
+            return $this->redirect('ziswaf');
+                }
+                
+    
+    
+                // $model->jenis_pembayaran_id = $val['jenis_pembayaran_id'] ?? '';
+                // $model->user_id = \Yii::$app->user->identity->id;
+                $model->user_id = \Yii::$app->user->identity->id;;
+                $model->status_id = 5;
+    
+                $shipping_address = array(
+                    'first_name'    => $pendanaan->nama_nasabah,
+                    'last_name'     => "(" . $pendanaan->nama_perusahaan . ")",
+                    // 'address'       => "Batu",
+                    //     'city'          => "Jakarta",
+                    //     'postal_code'   => "16602",
+                    //     'phone'         => "081122334455",
+                    'country_code'  => 'IDN'
+                );
+                $email = Yii::$app->user->identity->username;
+                $nomor_handphone = Yii::$app->user->identity->nomor_handphone;
+                $customer_details = array(
+                    'first_name'    => $name,
+                    'last_name'     => "(" . $name . ")",
+                    'email'         => $email,
+                    'phone'         => $nomor_handphone,
+                    'billing_address'  => $shipping_address,
+                    'shipping_address' => $shipping_address
+                );
+    
+                $hasil_code = \app\components\ActionMidtrans::toReadableOrder($item1_details, $transaction_details, $customer_details);
+                $model->code = $hasil_code;
+                $hasil = 'https://app.sandbox.midtrans.com/snap/v2/vtweb/' . $hasil_code;
+    
+                // var_dump($hasil_code);
+                // die;
+                if ($model->validate()) {
+                    $model->save();
+                    // $this->layout= false;
+                    return $this->redirect(['bayar', 'id' => $model->id]);
+                    // return ['success' => true, 'message' => 'success', 'data' => $model, 'code' => $hasil_code,'url'=>$hasil];
+                } else {
+    
+                    return $this->redirect(['detail_program', 'id' => $pendanaan->id]);
+                    // return ['success' => false, 'message' => 'gagal', 'data' => $model->getErrors()];
+                }
+            }
+    
+            return $this->redirect(['detail_program', 'id' => $pendanaan->id]);
+            // return ["success" => false, "message" => "Nominal belum diatur"];
+    
+        }else{
+            return $this->redirect('ziswaf');
+        }
+        
 
 
     }
@@ -581,9 +693,11 @@ class HomeController extends Controller
     public function actionZiswaf()
     {
         $setting = Setting::find()->one();
+        $pendanaans = Pendanaan::find()->where(['status_id' => 2])->all();
         $icon = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->logo;
 
         return $this->render('ziswaf', [
+            'pendanaans' => $pendanaans,
             'setting' => $setting,
             'icon' => $icon,
         ]);
