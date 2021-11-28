@@ -218,6 +218,7 @@ class PendanaanController extends Controller
                $path = Yii::getAlias("@app/web/uploads/") . $model->poster;
                $posters->saveAs($path);
             }
+            $model->created_at = date('Y-m-d H:i:s');
             if ($model->save()) {
                return $this->redirect(['view', 'id' => $model->id]);
             }

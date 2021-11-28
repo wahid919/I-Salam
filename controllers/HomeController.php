@@ -10,6 +10,7 @@ use yii\helpers\Url;
 use yii\filters\AccessControl;
 use dmstr\bootstrap\Tabs;
 use app\models\Action;
+use app\models\AgendaPendanaan;
 use app\models\Berita;
 use app\models\HubungiKami;
 use app\models\KategoriBerita;
@@ -25,6 +26,7 @@ use app\models\Penyaluran;
 use app\models\Rekening;
 use app\models\search\RekeningSearchHome;
 use app\models\Testimonials;
+use DateTime;
 use yii\data\ActiveDataProvider;
 use yii\data\Pagination;
 use Midtrans\Snap;
@@ -677,10 +679,23 @@ class HomeController extends Controller
         $setting = Setting::find()->one();
         $icon = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->logo;
         $pendanaan = Pendanaan::findOne($id);
+        $dana = Pembayaran::find()->where(['status_id'=>6,'pendanaan_id' => $id])->sum('nominal');
+        $agenda = AgendaPendanaan::find()->where(['pendanaan_id' => $id])->all();
+        $donatur = Pembayaran::find()->where(['status_id'=>6,'pendanaan_id' => $id])->all();
+        $persen = $dana / $pendanaan->nominal * 100 ;
+        $datetime1 =  new DateTime($pendanaan->pendanaan_berakhir);
+        $datetime2 =  new Datetime(date("Y-m-d H:i:s"));
+        $interval = $datetime1->diff($datetime2)->days;
+
         if ($pendanaan == null) throw new HttpException(404);
 
         return $this->render('detail-program', [
             'setting' => $setting,
+            'donatur' => $donatur,
+            'dana' => $dana,
+            'agenda' => $agenda,
+            'persen' => $persen,
+            'interval' => $interval,
             'icon' => $icon,
             'pendanaan' => $pendanaan,
         ]);

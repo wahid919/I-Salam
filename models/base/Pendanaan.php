@@ -166,6 +166,13 @@ abstract class Pendanaan extends \yii\db\ActiveRecord
             return $interval." Hari";
             };
         }
+        if(isset($parent['created_at'])){
+            unset($parent['created_at']);
+
+            $parent['created_at'] = function ($model){
+               return \app\components\Tanggal::toReadableDate($model->created_at);
+            };
+        }
         // $file = $model->file_uraian;
         // // $model->tanggal_received=date('Y-m-d H:i:s');
         // $path = Yii::getAlias("@app/web/uploads/uraian/") . $file;
@@ -203,7 +210,7 @@ abstract class Pendanaan extends \yii\db\ActiveRecord
         return [
             [['uraian','deskripsi'], 'string'],
             [['user_id', 'kategori_pendanaan_id', 'status_id','bank_id','noms','nomor_rekening','status_lembaran','jumlah_lembaran'], 'integer'],
-            [['pendanaan_berakhir'], 'safe'],
+            [['pendanaan_berakhir','created_at'], 'safe'],
             [['user_id', 'kategori_pendanaan_id', 'status_id'], 'required'],
             [['nama_pendanaan', 'foto','nama_nasabah','nama_perusahaan','foto_ktp','foto_kk','file_uraian','poster','nominal','nominal_lembaran'], 'string', 'max' => 255],
             [['kategori_pendanaan_id'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\KategoriPendanaan::className(), 'targetAttribute' => ['kategori_pendanaan_id' => 'id']],
@@ -240,6 +247,7 @@ abstract class Pendanaan extends \yii\db\ActiveRecord
             'user_id' => 'Pembuat',
             'kategori_pendanaan_id' => 'Kategori Pendanaan',
             'status_id' => 'Status',
+            'created_at' => 'Dibuat Pada Tanggal',
         ];
     }
 
