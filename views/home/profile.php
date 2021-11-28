@@ -41,15 +41,3 @@
         </div>
     </div>
 </div>
-
-
-<!-- 1 Pendanaan diajukan
-2	Pendanaan diterima
-3	Pendanaan dicairkan
-4	Pendanaan selesai
-5	Pembayaran Pending
-6	Pembayaran diterima
-7	Pendanaan Ditolak
-8	Pembayaran Ditolak
-9	Draf Pendanaan
-10	Pembayaran Menunggu Konfirmasi -->

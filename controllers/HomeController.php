@@ -591,10 +591,24 @@ class HomeController extends Controller
     {
         $setting = Setting::find()->one();
         $icon = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->logo;
+        $jumlah_pembayaran = Pembayaran::find()->where(['user_id' => Yii::$app->user->identity->id])->andWhere(['status_id' => 6])->sum('nominal');
+        $pembayaran_sukses = Pembayaran::find()->where(['user_id' => Yii::$app->user->identity->id])->andWhere(['status_id' => 6])->count('status_id');
+        $proyek_didanai = Pembayaran::find()->where(['user_id' => Yii::$app->user->identity->id])->andWhere(['status_id' => 6])->groupBy('pendanaan_id')->all();
 
+        $query = Pembayaran::find()->where(['user_id' => Yii::$app->user->identity->id]);
+        $count = $query->count();
+        $pagination = new Pagination(['totalCount' => $count, 'pageSize' => 6]);
+        $pembayarans = $query->offset($pagination->offset)
+            ->limit($pagination->limit)
+            ->all();
         return $this->render('laporan-wakaf', [
             'setting' => $setting,
             'icon' => $icon,
+            'jumlah_pembayaran' => $jumlah_pembayaran,
+            'pembayaran_sukses' => $pembayaran_sukses,
+            'pagination' => $pagination,
+            'pembayarans' => $pembayarans,
+            'proyek_didanai' => $proyek_didanai
         ]);
     }
 
