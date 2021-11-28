@@ -48,7 +48,7 @@ use yii\helpers\Url;
                 </thead>
                 <tbody>
                   <tr>
-                    <td class="font-weight-bold text-isalam-1 font-size-08">Sosial & Kemanusiaan</td>
+                    <td class="font-weight-bold text-isalam-1 font-size-08"><?= $pendanaan->kategoriPendanaan->name ?></td>
                     <td class="font-weight-bold text-isalam-1 font-size-08">Kota Jakarta Pusat</td>
                     <td class="font-weight-bold text-isalam-1 font-size-08">Ahmad Salim</td>
                   </tr>
@@ -89,14 +89,14 @@ use yii\helpers\Url;
             </div>
             <div class="row">
               <div class="col-lg-8 col-md-6 col-6 text-left font-weight-bold progress-dana pb-2">
-                Rp 150.000,00<br>
+                <?= \app\components\Angka::toReadableHarga($dana); ?><br>
               </div>
               <div class="col-lg-4 col-md-6 col-6 text-right font-weight-bold progress-dana pb-2">
-                Rp 550.000,00
+                <?= \app\components\Angka::toReadableHarga($pendanaan->nominal); ?>
               </div>
               <div class="col-12">
                 <div class="progress">
-                  <div class="progress-bar bg-warning" role="progressbar" style="width: 30%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
+                  <div class="progress-bar bg-warning" role="progressbar" style="width: <?= $persen ?>%" aria-valuenow="<?= $persen ?>" aria-valuemin="0" aria-valuemax="100"></div>
                 </div>
               </div>
             </div>
@@ -105,7 +105,7 @@ use yii\helpers\Url;
                 Durasi Wakaf
               </div>
               <div class="col-lg-6 col-md-6 col-6 text-right pt-4 font-weight-bold font-size-1">
-                90 Hari
+                <?= $interval ?> Hari
               </div>
               <div class="col-lg-6 col-md-6 col-6 text-left pt-4 font-weight-bold font-size-1">
                 Share Wakaf Melalui Sosial Media
@@ -306,8 +306,7 @@ use yii\helpers\Url;
           <div class="tab-content pt-4" id="myTabContent">
             <div class="tab-pane fade show active" id="detail" role="tabpanel" aria-labelledby="detail-tab">
               <p class="desc-program">
-                Lorem ipsum, dolor sit amet consectetur adipisicing elit. Odit, ut minima. Dolore fugit labore natus, libero reiciendis quis. Culpa ab cumque atque ipsum qui tempora rem modi repudiandae, quo sapiente, vero minus nobis, a laborum expedita eum laudantium optio facere dolorum fugiat libero nisi.<br>
-                Omnis, non iusto quam facilis maiores inventore expedita suscipit officia cupiditate sequi eveniet. Sunt earum magnam ad accusamus ipsam, vel error? Tempora odit ullam ut suscipit! Ipsa quasi saepe quidem ullam voluptates tenetur modi veniam animi eligendi culpa, quisquam atque aperiam aliquam, cum eveniet distinctio temporibus. Recusandae, ad excepturi. Eligendi sit harum ex dolores quisquam. Provident?</p>
+                <?= $pendanaan->deskripsi ?>
             </div>
             <div class="tab-pane fade" id="update" role="tabpanel" aria-labelledby="update-tab">
               <p class="update-program">
@@ -319,47 +318,21 @@ use yii\helpers\Url;
               <div class="table-responsive">
                 <table class="table table-hover">
                   <thead>
-                    <tr>
+                    <?php foreach($donatur as $done){ ?>
+                      <tr>
                       <td class="border-bottom-3 border-top-0 donatur-program-img" rowspan="2">
-                        <a href="<?= \Yii::$app->request->BaseUrl ?>/uploads/azhar.jpg" data-lightbox="update">
-                          <img class="border-r10 shadow-br3" src="<?= \Yii::$app->request->BaseUrl ?>/uploads/azhar.jpg" width="100px">
+                        <a href="<?= \Yii::$app->request->BaseUrl ?>/uploads/<?= $done->user->photo_url ?>" data-lightbox="update">
+                          <img class="border-r10 shadow-br3" src="<?= \Yii::$app->request->BaseUrl ?>/uploads/<?= $done->user->photo_url ?>" width="100px">
                         </a>
                       </td>
-                      <td class="border-top-0 donatur-program-nama">Hamba Allah</td>
-                      <td class="border-top-0">2 januari 2021</td>
+                      <td class="border-top-0 donatur-program-nama"><?= $done->nama ?></td>
+                      <td class="border-top-0"><?= \app\components\Tanggal::toReadableDate($done->tanggal_konfirmasi); ?></td>
                     </tr>
                     <tr>
-                      <td class="border-bottom-3 border-top-0 pt-0 text-isalam-1 font-weight-bold donatur-uang">Rp 100.000</td>
+                      <td class="border-bottom-3 border-top-0 pt-0 text-isalam-1 font-weight-bold donatur-uang"> <?= \app\components\Angka::toReadableHarga($done->nominal); ?></td>
                       <td class="border-bottom-3 border-top-0"></td>
                     </tr>
-
-                    <tr>
-                      <td class="border-bottom-3 border-top-0 donatur-program-img" rowspan="2">
-                        <a href="<?= \Yii::$app->request->BaseUrl ?>/uploads/azhar.jpg" data-lightbox="update">
-                          <img class="border-r10 shadow-br3" src="<?= \Yii::$app->request->BaseUrl ?>/uploads/azhar.jpg" width="100px">
-                        </a>
-                      </td>
-                      <td class="border-top-0 donatur-program-nama">Hamba Allah</td>
-                      <td class="border-top-0">2 januari 2021</td>
-                    </tr>
-                    <tr>
-                      <td class="border-bottom-3 border-top-0 pt-0 text-isalam-1 font-weight-bold donatur-uang">Rp 100.000</td>
-                      <td class="border-bottom-3 border-top-0"></td>
-                    </tr>
-
-                    <tr>
-                      <td class="border-bottom-3 border-top-0 donatur-program-img" rowspan="2">
-                        <a href="<?= \Yii::$app->request->BaseUrl ?>/uploads/azhar.jpg" data-lightbox="update">
-                          <img class="border-r10 shadow-br3" src="<?= \Yii::$app->request->BaseUrl ?>/uploads/azhar.jpg" width="100px">
-                        </a>
-                      </td>
-                      <td class="border-top-0 donatur-program-nama">Hamba Allah</td>
-                      <td class="border-top-0">2 januari 2021</td>
-                    </tr>
-                    <tr>
-                      <td class="border-bottom-3 border-top-0 pt-0 text-isalam-1 font-weight-bold donatur-uang">Rp 100.000</td>
-                      <td class="border-bottom-3 border-top-0"></td>
-                    </tr>
+                    <?php } ?>
                   </thead>
                 </table>
               </div>
@@ -374,9 +347,9 @@ use yii\helpers\Url;
           </p>
           <p class="font-size-1 font-weight-bold">
             <span class="text-isalam-1">
-              01 Desember 2021
+              <?= \app\components\Tanggal::toReadableDate($pendanaan->created_at); ?>
             </span>
-            Oleh:
+            Oleh: Admin
           </p>
         </div>
         <div class="card">
