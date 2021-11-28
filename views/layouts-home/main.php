@@ -21,7 +21,7 @@ use yii\helpers\Url;
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <meta name="description" content="<?= $setting->nama_web ?>">
-    <link href="<?= Yii::$app->urlManager->baseUrl .'/uploads/setting/'.$setting->logo ?>" rel="icon">
+    <link href="<?= Yii::$app->urlManager->baseUrl . '/uploads/setting/' . $setting->logo ?>" rel="icon">
     <?= Html::csrfMetaTags() ?>
     <title><?= Html::encode($setting->judul_web) ?></title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -56,6 +56,10 @@ use yii\helpers\Url;
             background: whitesmoke;
             border-radius: 2rem;
             margin-bottom: 2rem;
+        }
+
+        #modal-registrasi .close {
+            color: white;
         }
     </style>
 
@@ -158,7 +162,7 @@ use yii\helpers\Url;
 </script>
 
 <script>
-    $(document).ready(() => {
+    $(window).ready(() => {
         try {
 
             $('#btn-registrasi').on('click', async () => {
@@ -168,10 +172,16 @@ use yii\helpers\Url;
                     }
                 });
                 response = await response.text();
-                console.log(response)
-                document.getElementById("modal-body").innerHTML = response;
-                console.log($("#modal-registrasi"));
-                $("#modal-registrasi").modal('show')
+                var parser = new DOMParser();
+                var doc = parser.parseFromString(response, 'text/html');
+                $("#modal-body").html(response);
+                // $("#modal-registrasi").modal("show")
+                $("#modal-registrasi").attr("style", "padding-right: 17px; display: block;overflow:auto")
+                $("#modal-registrasi").attr("class", "fade modal show");
+                document.querySelector("#modal-registrasi .close").addEventListener("click", () => {
+                    $("#modal-registrasi").removeAttr("style")
+                    $("#modal-registrasi").attr("class", "fade modal");
+                })
             });
         } catch (error) {
             console.log(error)

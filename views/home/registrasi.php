@@ -43,7 +43,7 @@ use yii\bootstrap\ActiveForm;
 <?php $form = ActiveForm::begin([
     'id' => 'FormRegister',
     'layout' => 'horizontal',
-    'enableClientValidation' => true,
+    'enableClientValidation' => false,
     'errorSummaryCssClass' => 'error-summary alert alert-error'
 ]);
 ?>
@@ -55,6 +55,13 @@ use yii\bootstrap\ActiveForm;
     <?= $form->field($model, "konfirmasi_password", Constant::COLUMN(2))->passwordInput() ?>
     <?= $form->field($model, "pin", Constant::COLUMN(2))->passwordInput() ?>
     <?= $form->field($model, "konfirmasi_pin", Constant::COLUMN(2))->passwordInput() ?>
+    <?= $form->field($model, 'reCaptcha', ["template" => "{input}"])->widget(
+        \app\components\ReCaptcha3::className(),
+        [
+            'siteKey' => Yii::$app->params['recaptcha3.clientKey'], // unnecessary is reCaptcha component was set up
+            'action' => 'registrasi',
+        ]
+    ) ?>
     <div class="col-md-12">
         <div class="col-md-12">
             <button class="btn btn-primary btn-xs btn-registrasi">

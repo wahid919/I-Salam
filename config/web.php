@@ -13,10 +13,10 @@ $config = [
     'components' => [
         'reCaptcha' => [
             'class' => 'himiklab\yii2\recaptcha\ReCaptchaConfig',
-            'siteKeyV2' => 'your siteKey v2',
-            'secretV2' => 'your secret key v2',
-            'siteKeyV3' => '6LcyvGQdAAAAACirnhRzfPQZMeUSA-D7kPzkemcw',
-            'secretV3' => '6LcyvGQdAAAAAO0jnH15hnIV0qQV06wAUUKevkuK',
+            'siteKeyV2' => Yii::$app->params['recaptcha2.clientKey'],
+            'secretV2' => Yii::$app->params['recaptcha2.secretKey'],
+            'siteKeyV3' => Yii::$app->params['recaptcha3.clientKey'],
+            'secretV3' => Yii::$app->params['recaptcha3.secretKey'],
         ],
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation

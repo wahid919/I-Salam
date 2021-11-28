@@ -34,6 +34,7 @@ use Midtrans\Config;
 use yii\filters\VerbFilter;
 use yii\web\Response;
 use app\components\UploadFile;
+use app\models\home\Registrasi as HomeRegistrasi;
 use app\models\KegiatanPendanaan;
 use app\models\Notifikasi;
 use yii\web\UploadedFile;
@@ -231,25 +232,13 @@ class HomeController extends Controller
 
     public function actionRegistrasi()
     {
-        $model = new User();
+        $model = new HomeRegistrasi();
         if (Yii::$app->request->isAjax) {
             return $this->renderAjax("registrasi", compact("model"));
         }
+
         if ($model->load($_POST)) {
-            $model->role_id = 5; // Pewakaf
-            $model->nomor_handphone = Constant::purifyPhone($model->nomor_handphone);
-            if ($model->validate()) {
-                if ($model->pin != $model->konfirmasi_pin) {
-                    Yii::$app->session->setFlash("error", "Pendaftaran gagal. Pin anda tidak sama");
-                    return $this->redirect(Yii::$app->request->referrer);
-                } else if ($model->password != $model->konfirmasi_password) {
-                    Yii::$app->session->setFlash("error", "Pendaftaran gagal. Pin anda tidak sama");
-                    return $this->redirect(Yii::$app->request->referrer);
-                }
-
-                $model->password = Yii::$app->security->generatePasswordHash($model->password);
-
-                $model->save();
+            if ($model->registrasi()) {
                 Yii::$app->session->setFlash("success", "Pendaftaran berhasil. Silahkan login");
                 return $this->redirect(Yii::$app->request->referrer);
             }
@@ -618,8 +607,8 @@ class HomeController extends Controller
     {
         $user = Yii::$app->user->identity->id;
         $setting = Setting::find()->one();
-        $pembayaran = Pembayaran::find()->where(['user_id'=>$user])->limit(4)->orderBy(['id'=>SORT_DESC])->all();
-        $notifs = Notifikasi::find()->where(['user_id'=>$user])->limit(6)->orderBy(['id'=>SORT_DESC])->all();
+        $pembayaran = Pembayaran::find()->where(['user_id' => $user])->limit(4)->orderBy(['id' => SORT_DESC])->all();
+        $notifs = Notifikasi::find()->where(['user_id' => $user])->limit(6)->orderBy(['id' => SORT_DESC])->all();
         $icon = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->logo;
 
         return $this->render('notifikasi', [
@@ -713,9 +702,9 @@ class HomeController extends Controller
         $pendanaan = Pendanaan::findOne($id);
         $dana = Pembayaran::find()->where(['status_id' => 6, 'pendanaan_id' => $id])->sum('nominal');
         $agenda = AgendaPendanaan::find()->where(['pendanaan_id' => $id])->all();
-        $kegiatans = KegiatanPendanaan::find()->where(['pendanaan_id' =>$id])->orderBy(['id'=>SORT_DESC])->one();
-        $donatur = Pembayaran::find()->where(['status_id'=>6,'pendanaan_id' => $id])->all();
-        $persen = $dana / $pendanaan->nominal * 100 ;
+        $kegiatans = KegiatanPendanaan::find()->where(['pendanaan_id' => $id])->orderBy(['id' => SORT_DESC])->one();
+        $donatur = Pembayaran::find()->where(['status_id' => 6, 'pendanaan_id' => $id])->all();
+        $persen = $dana / $pendanaan->nominal * 100;
         $datetime1 =  new DateTime($pendanaan->pendanaan_berakhir);
         $datetime2 =  new Datetime(date("Y-m-d H:i:s"));
         $interval = $datetime1->diff($datetime2)->days;
