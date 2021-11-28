@@ -95,6 +95,9 @@ $kategori_pendanaans = app\models\KategoriPendanaan::find()->all();
           <li class="nav__item">
             <a href="<?= Yii::$app->request->baseUrl . "/home/profile" ?>" class="nav__item-link" style="color: black;">Akun Saya</a>
           </li><!-- /.nav-item -->
+          <li class="nav__item">
+            <a href="<?= Yii::$app->request->baseUrl . "/site/logout" ?>" class="nav__item-link" style="color: black;">Logout</a>
+          </li><!-- /.nav-item -->
           <?php } ?>
         </ul><!-- /.navbar-nav -->
       </div><!-- /.navbar-collapse -->
