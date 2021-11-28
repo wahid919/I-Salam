@@ -5,6 +5,7 @@
 
 // namespace Midtrans;
 
+use app\models\KegiatanPendanaan;
 use yii\helpers\Url;
 ?>
 <hr class="mt-0">
@@ -175,7 +176,7 @@ use yii\helpers\Url;
                       <div class="input-group-prepend mr-2" style="height:calc(1.5em + .75rem + 2px);">
                         <div class="input-group-text bg-white border-r5 font-weight-bold" style="color: #afafaf;border-color: #787878;">Rp</div>
                       </div>
-                      <input type="number" class="form-control select-wakaf border-r5" id="nominal" name="nominal" style="border-color: #787878;" placeholder="Minimal Wakaf Rp. 10.000" required>
+                      <input type="number" class="form-control select-wakaf border-r5" id="nominal" name="nominal" onkeypress="berubah()" style="border-color: #787878;" placeholder="Minimal Wakaf Rp. 10.000" required>
                     </div>
                   </div>
                 </div>
@@ -194,6 +195,7 @@ use yii\helpers\Url;
     <script type="text/javascript">
       var global = "Global Variable"; //Define global variable outside of function
 
+	
       function setGlobal() {
         global = "Hello World!";
       };
@@ -234,6 +236,18 @@ use yii\helpers\Url;
         // console.log(a);
         // data = a;
         // return true or false, depending on whether you want to allow the `href` property to follow through or not
+      }
+      function berubah(){
+        var duit = document.getElementById("nominal");
+      duit.addEventListener("keyup", function(e) {
+
+// tambahkan 'Rp.' pada saat form di ketik
+// gunakan fungsi formatduit() untuk mengubah angka yang di ketik menjadi format angka
+duit.value = this.value;
+console.log(duit);
+console.log(e);
+document.getElementById("nominal").value = duit;
+});
       }
       // console.log(data);
     </script>
@@ -309,10 +323,19 @@ use yii\helpers\Url;
                 <?= $pendanaan->deskripsi ?>
             </div>
             <div class="tab-pane fade" id="update" role="tabpanel" aria-labelledby="update-tab">
+              <?php if($kegiatans == null){
+                 ?>
               <p class="update-program">
                 Belum Ada Informasi untuk Program Wakaf Ini.
               </p>
               <img class="border-r10 shadow-br3" src="<?= \Yii::$app->request->BaseUrl ?>/uploads/azhar.jpg">
+              <?php }else{ ?>
+
+              <p class="update-program">
+                <?= $kegiatans->kegiatan; ?>
+              </p>
+              <img class="border-r10 shadow-br3" src="<?= \Yii::$app->request->BaseUrl ?>/uploads/kegiatan/<?= $kegiatans->foto ?>">
+                <?php } ?>
             </div>
             <div class="tab-pane fade" id="donatur" role="tabpanel" aria-labelledby="donatur-tab">
               <div class="table-responsive">

@@ -34,6 +34,7 @@ use Midtrans\Config;
 use yii\filters\VerbFilter;
 use yii\web\Response;
 use app\components\UploadFile;
+use app\models\KegiatanPendanaan;
 use yii\web\UploadedFile;
 
 /**
@@ -706,8 +707,9 @@ class HomeController extends Controller
         $pendanaan = Pendanaan::findOne($id);
         $dana = Pembayaran::find()->where(['status_id' => 6, 'pendanaan_id' => $id])->sum('nominal');
         $agenda = AgendaPendanaan::find()->where(['pendanaan_id' => $id])->all();
-        $donatur = Pembayaran::find()->where(['status_id' => 6, 'pendanaan_id' => $id])->all();
-        $persen = $dana / $pendanaan->nominal * 100;
+        $kegiatans = KegiatanPendanaan::find()->where(['pendanaan_id' =>$id])->orderBy(['id'=>SORT_DESC])->one();
+        $donatur = Pembayaran::find()->where(['status_id'=>6,'pendanaan_id' => $id])->all();
+        $persen = $dana / $pendanaan->nominal * 100 ;
         $datetime1 =  new DateTime($pendanaan->pendanaan_berakhir);
         $datetime2 =  new Datetime(date("Y-m-d H:i:s"));
         $interval = $datetime1->diff($datetime2)->days;
@@ -716,6 +718,7 @@ class HomeController extends Controller
 
         return $this->render('detail-program', [
             'setting' => $setting,
+            'kegiatans' => $kegiatans,
             'donatur' => $donatur,
             'dana' => $dana,
             'agenda' => $agenda,
