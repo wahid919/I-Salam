@@ -43,7 +43,6 @@ $kategori_pendanaans = app\models\KategoriPendanaan::find()->all();
             </a>
             <i class="fa fa-angle-right" data-toggle="dropdown"></i>
             <ul class="dropdown-menu">
-              <li class="nav__item"><a href="<?= \Yii::$app->request->baseUrl . "/home/program/" ?>" class="nav__item-link text-dark">Semua Kategori</a></li>
               <?php foreach ($kategori_pendanaans as $kategori_program) {  ?>
                 <li class="nav__item"><a href="<?= \Yii::$app->request->baseUrl . "/home/program?kategori=" . $kategori_program->name ?>" class="nav__item-link text-dark"><?= $kategori_program->name ?></a></li>
               <?php } ?>
@@ -59,8 +58,7 @@ $kategori_pendanaans = app\models\KategoriPendanaan::find()->all();
               </div>
             </a>
             <i class="fa fa-angle-right" data-toggle="dropdown"></i>
-            <ul class="dropdown-menu">
-              <li class="nav__item"><a href="<?= \Yii::$app->request->baseUrl . "/home/news/" ?>" class="nav__item-link text-dark">Semua Kategori</a></li>
+            <ul class="dropdown-menu">              
               <?php foreach ($categories as $kategori) {  ?>
                 <li class="nav__item"><a href="<?= \Yii::$app->request->baseUrl . "/home/news?kategori=" . $kategori->nama ?>" class="nav__item-link text-dark"><?= $kategori->nama ?></a></li>
               <?php } ?>
