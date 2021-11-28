@@ -65,7 +65,7 @@ class HomeController extends Controller
                 // 'only' => ['logout', 'design-bangunan'],
                 'rules' => [
                     [
-                        'actions' => ['login', 'registrasi', 'error', 'index', 'news', 'detail-berita', 'about', 'rekening', 'report', 'ziswaf', 'program','detail-program', 'unduh-file-uraian','unduh-file-wakaf'],
+                        'actions' => ['login', 'registrasi', 'error', 'index', 'news', 'detail-berita', 'about', 'rekening', 'report', 'ziswaf', 'program', 'detail-program', 'unduh-file-uraian', 'unduh-file-wakaf'],
                         'allow' => true,
                     ],
                     [
@@ -168,9 +168,10 @@ class HomeController extends Controller
 
 
     }
-    public function actionBayar($id){
+    public function actionBayar($id)
+    {
 
-        $pembayaran = Pembayaran::findOne(['id'=>$id]);
+        $pembayaran = Pembayaran::findOne(['id' => $id]);
         $setting = Setting::find()->one();
         $icon = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->logo;
         $bg_login = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->bg_login;
@@ -182,7 +183,7 @@ class HomeController extends Controller
         $model = new HubungiKami;
         $testimonials = Testimonials::find()->all();
         $pendanaans = Pendanaan::find()->where(['status_id' => 2])->limit(6)->all();
-        
+
         $news = Berita::find()->limit(6)->all();
 
 
@@ -213,7 +214,6 @@ class HomeController extends Controller
             'pendanaans' => $pendanaans,
             'news' => $news,
         ]);
-
     }
     function printExampleWarningMessage()
     {
@@ -576,7 +576,7 @@ class HomeController extends Controller
             'bg' => $bg
         ]);
     }
-   
+
     public function actionZiswaf()
     {
         $setting = Setting::find()->one();
@@ -614,10 +614,20 @@ class HomeController extends Controller
     {
         $setting = Setting::find()->one();
         $icon = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->logo;
+        // $pembayarans = Pembayaran::find()->where(['user_id' => Yii::$app->user->identity->id])->all();
+
+        $query = Pembayaran::find()->where(['user_id' => Yii::$app->user->identity->id]);
+        $count = $query->count();
+        $pagination = new Pagination(['totalCount' => $count, 'pageSize' => 6]);
+        $pembayarans = $query->offset($pagination->offset)
+            ->limit($pagination->limit)
+            ->all();
 
         return $this->render('profile', [
             'setting' => $setting,
             'icon' => $icon,
+            'pagination' => $pagination,
+            'pembayarans' => $pembayarans
         ]);
     }
 
@@ -681,7 +691,7 @@ class HomeController extends Controller
         $setting = Setting::find()->one();
         $icon = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->logo;
         $pendanaan = Pendanaan::findOne($id);
-        $dana = Pembayaran::find()->where(['status_id'=>6,'pendanaan_id' => $id])->sum('nominal');
+        $dana = Pembayaran::find()->where(['status_id' => 6, 'pendanaan_id' => $id])->sum('nominal');
         $agenda = AgendaPendanaan::find()->where(['pendanaan_id' => $id])->all();
         $kegiatans = KegiatanPendanaan::find()->where(['pendanaan_id' =>$id])->orderBy(['id'=>SORT_DESC])->one();
         $donatur = Pembayaran::find()->where(['status_id'=>6,'pendanaan_id' => $id])->all();
