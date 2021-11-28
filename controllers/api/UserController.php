@@ -321,10 +321,10 @@ class UserController extends \yii\rest\ActiveController
         \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         $val = \yii::$app->request->post();
         
-        $otp = Otp::findOne(['kode_otp' => $val['kode_otp'], 'is_used' => 0]);
-        if($otp){
+        // $otp = Otp::findOne(['kode_otp' => $val['kode_otp'], 'is_used' => 0]);
+        // if($otp){
             $user = User::findOne([
-                'id' => $otp->id_user
+                'visible_token' => $val['token']
             ]);
             if($user){
                 if ($val['confirm_password'] != $val['password']) {
@@ -338,6 +338,20 @@ class UserController extends \yii\rest\ActiveController
                 if ($user->save()) {
                     // $user->save();
                     unset($user->password);
+
+        //             $text = "
+        // Hay,\nini adalah kode OTP untuk Login anda.\n
+        // {$otp->kode_otp}
+        // \nJangan bagikan kode ini dengan siapapun.
+        // \nKode akan Kadaluarsa dalam 5 Menit
+        // ";
+               
+        //         Yii::$app->mailer->compose()
+        //             ->setTo($user->username)
+        //             ->setFrom(['adminIsalam@gmail.com' => 'Isalam'])
+        //             ->setSubject('Kode OTP')
+        //             ->setTextBody($text)
+        //             ->send();
                     return ['success' => true, 'message' => 'success', 'data' => $user];
                 } else {
                     // $user->rollback();
@@ -345,12 +359,12 @@ class UserController extends \yii\rest\ActiveController
                 }
             }else{
     
-                return ['success' => false, 'message' => 'Email Tidak Terdaftar', 'data' => []];
+                return ['success' => false, 'message' => 'Data tidak ditemukan', 'data' => []];
             }
-        }else{
+        // }else{
 
-            return ['success' => false, 'message' => 'Kode Otp tidak terdeteksi', 'data' => []];
-        }
+        //     return ['success' => false, 'message' => 'Kode Otp tidak terdeteksi', 'data' => []];
+        // }
 
         
        
@@ -431,7 +445,55 @@ class UserController extends \yii\rest\ActiveController
             return ['success' => false, 'message' => 'Gagal Update Profile', 'data' => $user->getErrors()];
         }
     }
+    public function actionOtpPassword()
+    {
+        $kode_otp = $_POST['kode_otp'];
 
+        $email = $_POST['username'];
+        $data_user = User::findOne(['username' => $email]);
+        if($data_user == null){
+            return [
+                "success" => false,
+                "message" => "Data user tidak ditemukan",
+                "data" =>[],
+            ];
+        }else{
+            $otp = Otp::findOne(['kode_otp' => $kode_otp,'id_user' => $data_user->id, 'is_used' => 0]);
+        if ($otp) {
+            $now = time();
+            $validasi = strtotime($otp->created_at) + (60 * 5);
+
+            if ($now < $validasi) {
+                $otp->is_used = 1;
+                $otp->save();
+                $user = User::findOne(['id' => $otp->id_user]);
+                $generate_random_string = SSOToken::generateToken();
+                $user->visible_token = $generate_random_string;
+                $user->confirm = 1;
+                $user->status = 1;
+                $user->save();
+
+                return [
+                    "success" => true,
+                    "message" => "Otp Valid",
+                    "data" => $generate_random_string
+                ];
+            }else{
+                return [
+                    "success" => false,
+                    "message" => "Kode Otp Sudah Kadaluarsa",
+                    "data" =>[],
+                ];
+            }
+        }
+
+        return [
+            "success" => false,
+            "message" => "OTP yang anda masukan tidak valid",
+        ];
+        }
+        
+    }
     public function actionCheckOtp()
     {
         $kode_otp = $_POST['kode_otp'];
