@@ -28,7 +28,7 @@ class UserController extends \yii\rest\ActiveController
         $parent = parent::behaviors();
         $parent['authentication'] = [
             "class" => "\app\components\CustomAuth",
-            "only" => ["user-view","lupa-password","update-profile"],
+            "only" => ["user-view","update-profile"],
         ];
 
         return $parent;
@@ -242,48 +242,118 @@ class UserController extends \yii\rest\ActiveController
             return ['success' => false, 'message' => 'gagal', 'data' => $user->getErrors()];
         }
     }
-
-    public function actionLupaPassword()
-    {
+    public function actionCheckEmail(){
         \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-        // $val = \yii::$app->request->post();
+        $val = \yii::$app->request->post();
+        $cek = User::find()->where(['username' => $val['username']])->one();
+            if (isset($cek)) {
+                $user_id = $cek->id;
+                $otp = Otp::findOne(['id_user' => $user_id, 'is_used' => 0]);
 
 
-        $user = User::findOne([
-            'id' => \Yii::$app->user->identity->id
-        ]);
-        // $user->name = $val['name'];
-        // $user->username = $val['username'];
-        $pass = (string) random_int(100000, 999999);
-        $user->password = Yii::$app->security->generatePasswordHash($pass);
-       
-        // $user->address = $val['address'];
-
+                if ($otp) {
         
+                    $now = time();
+                    $validasi = strtotime($otp->created_at) + 60;
+                    if ($now > $validasi) {
+                        $otp->kode_otp = (string) random_int(1000, 9999);
+                        $otp->save();
+                        $text = "
+                Hay,\nini adalah kode OTP untuk Login anda.\n
+                {$otp->kode_otp}
+                \nJangan bagikan kode ini dengan siapapun.
+                \nKode akan Kadaluarsa dalam 5 Menit
+                ";
+                        $user = User::findOne(['id' => $user_id]);
+                        Yii::$app->mailer->compose()
+                            ->setTo($user->username)
+                            ->setFrom(['adminIsalam@gmail.com' => 'Isalam'])
+                            ->setSubject('Kode OTP')
+                            ->setTextBody($text)
+                            ->send();
+        
+                        return [
+                            "success" => true,
+                            "message" => "OTP Berhasil Terkirim",
+                            "data" => $otp->kode_otp
+                        ];
+                    } else {
+                        return [
+                            "success" => false,
+                            "message" => "OTP gagal terkirim,Mohon Tunggu 1 menit",
+                            "data" => [],
+                        ];
+                    }
+                // return ['success' => true, 'message' => 'Otp Berhasil Terkirim', 'data' => $cek];
+            }else{
+                $otp = new Otp();
 
-        if ($user->save()) {
-            // $user->save();
-            
+            $otp->id_user = $user_id;
+            $otp->kode_otp = (string) random_int(1000, 9999);
+            $otp->created_at = date('Y-m-d H:i:s');
+            $otp->is_used = 0;
+            $otp->save();
             $text = "
-            Hay,\nini adalah password anda untuk Login anda.\n
-            {$pass}
-            \nJangan bagikan password ini dengan siapapun.
+            Hay,\nini adalah kode OTP untuk Login anda.\n
+            {$otp->kode_otp}
+            \nJangan bagikan kode ini dengan siapapun.
+            \nKode akan Kadaluarsa dalam 5 Menit
             ";
+            $user = User::findOne(['id' => $user_id]);
             Yii::$app->mailer->compose()
                 ->setTo($user->username)
                 ->setFrom(['Inisiatorsalam@gmail.com'])
-                ->setSubject('Lupa Password')
+                ->setSubject('Kode OTP')
                 ->setTextBody($text)
                 ->send();
 
 
+                return ['success' => true, 'message' => 'Otp Berhasil Terkirim', 'data' => $otp->kode_otp];
 
-            unset($user->password);
-            return ['success' => true, 'message' => 'success', 'data' => $user];
-        } else {
-            $user->rollback();
-            return ['success' => false, 'message' => 'gagal', 'data' => $user->getErrors()];
+            }
+        }else{
+
+            return ['success' => false, 'message' => 'Email Tidak Terdaftar', 'data' => []];
         }
+    }
+    public function actionLupaPassword()
+    {
+        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $val = \yii::$app->request->post();
+        
+        $otp = Otp::findOne(['kode_otp' => $val['kode_otp'], 'is_used' => 0]);
+        if($otp){
+            $user = User::findOne([
+                'id' => $otp->id_user
+            ]);
+            if($user){
+                if ($val['confirm_password'] != $val['password']) {
+                    return ['success' => false, 'message' => 'Password tidak sama', 'data' => null];
+                }
+                // $user->name = $val['name'];
+                // $user->username = $val['username'];
+                $pass = $val['confirm_password'];
+                $user->password = Yii::$app->security->generatePasswordHash($pass);
+                // $user->address = $val['address'];
+                if ($user->save()) {
+                    // $user->save();
+                    unset($user->password);
+                    return ['success' => true, 'message' => 'success', 'data' => $user];
+                } else {
+                    // $user->rollback();
+                    return ['success' => false, 'message' => 'gagal', 'data' => $user->getErrors()];
+                }
+            }else{
+    
+                return ['success' => false, 'message' => 'Email Tidak Terdaftar', 'data' => []];
+            }
+        }else{
+
+            return ['success' => false, 'message' => 'Kode Otp tidak terdeteksi', 'data' => []];
+        }
+
+        
+       
     }
 
     public function actionUpdateProfile()
