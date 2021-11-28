@@ -38,31 +38,32 @@
                     </div>
                 </div>
                 <?php foreach ($proyek_didanai as $proyek) { ?>
-                    <a href="<?= \Yii::$app->request->BaseUrl .'/home/program/' ?>"></a>
-                    <div class="col-lg-6 col-md-6 col-sm-8 col-8 text-left border-bottom-3">
-                        <p class="font-weight-bold"><?= $proyek->pendanaan->nama_pendanaan ?></p>
-                        <p class="font-size-08"><?= \app\components\Tanggal::toReadableDate($proyek->pendanaan->created_at); ?></p>
-                    </div>
-                    <div class="col-lg-6 col-md-6 col-sm-4 col-4 text-right border-bottom-3">
-                        <p>Status Pendanaan</p>
-                        <?php
-                        $status_pembayaran = $proyek->pendanaan->status_id;
-                        if ($status_pembayaran == 1 || $status_pembayaran == 2) {
-                            $status = "btn-info";
-                        }
-                        if ($status_pembayaran == 3 || $status_pembayaran == 4 || $status_pembayaran == 6) {
-                            $status = "btn-success";
-                        }
-                        if ($status_pembayaran == 5 || $status_pembayaran == 9 || $status_pembayaran == 10) {
-                            $status = "btn-warning";
-                        }
-                        if ($status_pembayaran == 7 || $status_pembayaran == 8) {
-                            $status = "btn-danger";
-                        }
-                        $status_pendanaan = \app\models\Status::find()->where(['id'=>$proyek->pendanaan->status_id])->one();
-                        ?>
-                        <p><a href="#" class="btn btn-sm btn-program <?=$status?>"><?= $status_pendanaan->name ?></a></p>
-                    </div>
+                    <a href="<?= \Yii::$app->request->BaseUrl . '/home/detail-program/' . $proyek->pendanaan->id ?>">
+                        <div class="col-lg-6 col-md-6 col-sm-8 col-8 text-left border-bottom-3">
+                            <p class="font-weight-bold"><?= $proyek->pendanaan->nama_pendanaan ?></p>
+                            <p class="font-size-08"><?= \app\components\Tanggal::toReadableDate($proyek->pendanaan->created_at); ?></p>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-4 col-4 text-right border-bottom-3">
+                            <p>Status Pendanaan</p>
+                            <?php
+                            $status_pembayaran = $proyek->pendanaan->status_id;
+                            if ($status_pembayaran == 1 || $status_pembayaran == 2) {
+                                $status = "btn-info";
+                            }
+                            if ($status_pembayaran == 3 || $status_pembayaran == 4 || $status_pembayaran == 6) {
+                                $status = "btn-success";
+                            }
+                            if ($status_pembayaran == 5 || $status_pembayaran == 9 || $status_pembayaran == 10) {
+                                $status = "btn-warning";
+                            }
+                            if ($status_pembayaran == 7 || $status_pembayaran == 8) {
+                                $status = "btn-danger";
+                            }
+                            $status_pendanaan = \app\models\Status::find()->where(['id' => $proyek->pendanaan->status_id])->one();
+                            ?>
+                            <p><a href="#" class="btn btn-sm btn-program <?= $status ?>"><?= $status_pendanaan->name ?></a></p>
+                        </div>
+                    </a>
                 <?php } ?>
             </div>
         </div>
