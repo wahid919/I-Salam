@@ -153,6 +153,38 @@ class HomeController extends Controller
         }
     }
 
+    public function actionRegistrasi()
+    {
+        $model = new User();
+        if (Yii::$app->request->isAjax) {
+            return $this->renderAjax("registrasi", compact("model"));
+        }
+        if ($model->load($_POST)) {
+            $model->role_id = 5; // Pewakaf
+            $model->nomor_handphone = Constant::purifyPhone($model->nomor_handphone);
+            if ($model->validate()) {
+                if ($model->pin != $model->konfirmasi_pin) {
+                    Yii::$app->session->setFlash("error", "Pendaftaran gagal. Pin anda tidak sama");
+                    return $this->redirect(Yii::$app->request->referrer);
+                } else if ($model->password != $model->konfirmasi_password) {
+                    Yii::$app->session->setFlash("error", "Pendaftaran gagal. Pin anda tidak sama");
+                    return $this->redirect(Yii::$app->request->referrer);
+                }
+
+                $model->password = Yii::$app->security->generatePasswordHash($model->password);
+
+                $model->save();
+                Yii::$app->session->setFlash("success", "Pendaftaran berhasil. Silahkan login");
+                return $this->redirect(Yii::$app->request->referrer);
+            }
+            Yii::$app->session->setFlash("error", "Pendaftaran gagal. Validasi data tidak valid : " . Constant::flattenError($model->getErrors()));
+            return $this->redirect(Yii::$app->request->referrer);
+        } else {
+            Yii::$app->session->setFlash("error", "Pendaftaran gagal");
+            return $this->redirect(Yii::$app->request->referrer);
+        }
+    }
+
     public function actionIndex()
     {
         $params = array(
@@ -355,9 +387,6 @@ class HomeController extends Controller
 
     public function actionAbout()
     {
-
-        $this->layout = false;
-
         $setting = Setting::find()->one();
         $icon = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->logo;
         $bg_login = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->bg_login;
@@ -394,8 +423,6 @@ class HomeController extends Controller
     }
     public function actionRekening()
     {
-
-        $this->layout = false;
         $searchModel  = new RekeningSearchHome;
         $dataProvider = $searchModel->search($_GET);
         $dataProvider->setPagination(['pageSize' => 20]);
@@ -429,8 +456,6 @@ class HomeController extends Controller
     }
     public function actionReport()
     {
-
-        $this->layout = false;
         $searchModel  = new RekeningSearchHome;
         $dataProvider = $searchModel->search($_GET);
         $dataProvider->setPagination(['pageSize' => 20]);
@@ -540,6 +565,60 @@ class HomeController extends Controller
     //         'model' => $model
     //     ]);
     // }
+    public function actionZiswaf()
+    {
+        $setting = Setting::find()->one();
+        $icon = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->logo;
+
+        return $this->render('ziswaf', [
+            'setting' => $setting,
+            'icon' => $icon,
+        ]);
+    }
+
+    public function actionLaporanWakaf()
+    {
+        $setting = Setting::find()->one();
+        $icon = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->logo;
+
+        return $this->render('laporan-wakaf', [
+            'setting' => $setting,
+            'icon' => $icon,
+        ]);
+    }
+
+    public function actionNotifikasi()
+    {
+        $setting = Setting::find()->one();
+        $icon = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->logo;
+
+        return $this->render('notifikasi', [
+            'setting' => $setting,
+            'icon' => $icon,
+        ]);
+    }
+
+    public function actionProfile()
+    {
+        $setting = Setting::find()->one();
+        $icon = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->logo;
+
+        return $this->render('profile', [
+            'setting' => $setting,
+            'icon' => $icon,
+        ]);
+    }
+
+    public function actionEditProfile()
+    {
+        $setting = Setting::find()->one();
+        $icon = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->logo;
+
+        return $this->render('edit-profile', [
+            'setting' => $setting,
+            'icon' => $icon,
+        ]);
+    }
 
     public function actionDetailProgram($id)
     {

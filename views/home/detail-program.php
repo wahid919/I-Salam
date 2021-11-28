@@ -121,7 +121,7 @@ use yii\helpers\Url;
             <hr>
             <div class="row">
               <div class="col-sm-12 col-md-12 col-lg-12">
-                <a href="#" class="btn btn-sm btn-program btn-block" data-toggle="modal" data-target="#mulaiwakaf">Mulai Wakaf</a>
+                <a href="#" class="btn btn-sm btn-program btn-block" data-toggle="modal" data-target="#mulaiwakaf" style="padding: 10px !important;">Mulai Wakaf</a>
               </div>
             </div>
           </div>
