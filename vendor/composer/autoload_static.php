@@ -80,6 +80,7 @@ class ComposerStaticInitb67f4ccc492bdd59afbcc1ba1d1df3f0
         'y' => 
         array (
             'yii\\swiftmailer\\' => 16,
+            'yii\\httpclient\\' => 15,
             'yii\\gii\\' => 8,
             'yii\\faker\\' => 10,
             'yii\\debug\\' => 10,
@@ -100,6 +101,7 @@ class ComposerStaticInitb67f4ccc492bdd59afbcc1ba1d1df3f0
         'r' => 
         array (
             'rmrevin\\yii\\fontawesome\\' => 24,
+            'richardfan\\widget\\' => 18,
         ),
         'p' => 
         array (
@@ -135,6 +137,11 @@ class ComposerStaticInitb67f4ccc492bdd59afbcc1ba1d1df3f0
             'kartik\\builder\\' => 15,
             'kartik\\bs4dropdown\\' => 19,
             'kartik\\base\\' => 12,
+        ),
+        'h' => 
+        array (
+            'himiklab\\yii2\\recaptcha\\tests\\' => 30,
+            'himiklab\\yii2\\recaptcha\\' => 24,
         ),
         'd' => 
         array (
@@ -192,6 +199,7 @@ class ComposerStaticInitb67f4ccc492bdd59afbcc1ba1d1df3f0
         array (
             'MyCLabs\\Enum\\' => 13,
             'Mpdf\\' => 5,
+            'Midtrans\\' => 9,
             'Matrix\\' => 7,
         ),
         'F' => 
@@ -221,6 +229,10 @@ class ComposerStaticInitb67f4ccc492bdd59afbcc1ba1d1df3f0
         'yii\\swiftmailer\\' => 
         array (
             0 => __DIR__ . '/..' . '/yiisoft/yii2-swiftmailer/src',
+        ),
+        'yii\\httpclient\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/yiisoft/yii2-httpclient/src',
         ),
         'yii\\gii\\' => 
         array (
@@ -265,6 +277,10 @@ class ComposerStaticInitb67f4ccc492bdd59afbcc1ba1d1df3f0
         'rmrevin\\yii\\fontawesome\\' => 
         array (
             0 => __DIR__ . '/..' . '/rmrevin/yii2-fontawesome',
+        ),
+        'richardfan\\widget\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/richardfan1126/yii2-js-register',
         ),
         'pheme\\settings\\' => 
         array (
@@ -369,6 +385,14 @@ class ComposerStaticInitb67f4ccc492bdd59afbcc1ba1d1df3f0
         'kartik\\base\\' => 
         array (
             0 => __DIR__ . '/..' . '/kartik-v/yii2-krajee-base/src',
+        ),
+        'himiklab\\yii2\\recaptcha\\tests\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/himiklab/yii2-recaptcha-widget/tests',
+        ),
+        'himiklab\\yii2\\recaptcha\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/himiklab/yii2-recaptcha-widget/src',
         ),
         'drsdre\\wizardwidget\\' => 
         array (
@@ -501,6 +525,10 @@ class ComposerStaticInitb67f4ccc492bdd59afbcc1ba1d1df3f0
         'Mpdf\\' => 
         array (
             0 => __DIR__ . '/..' . '/mpdf/mpdf/src',
+        ),
+        'Midtrans\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/midtrans/midtrans-php/Midtrans',
         ),
         'Matrix\\' => 
         array (

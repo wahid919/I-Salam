@@ -29,13 +29,13 @@ use yii\helpers\Html;
                 </li>
                 <li class="dropdown user user-menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        <?= Html::img(["uploads/".Yii::$app->user->identity->photo_url], ["class"=>"user-image"]) ?>
+                        <?= Html::img(["uploads/user_image/".Yii::$app->user->identity->photo_url], ["class"=>"user-image"]) ?>
                         <span class="hidden-xs"><?= Yii::$app->user->identity->name; ?></span>
                     </a>
                     <ul class="dropdown-menu">
                         <!-- User image -->
                         <li class="user-header">
-                            <?= Html::img(["uploads/".Yii::$app->user->identity->photo_url], ["class"=>"img-circle"]) ?>
+                            <?= Html::img(["uploads/user_image/".Yii::$app->user->identity->photo_url], ["class"=>"img-circle"]) ?>
 
                             <p>
                                 <?= Yii::$app->user->identity->name; ?>
