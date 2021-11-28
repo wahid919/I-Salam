@@ -41,6 +41,38 @@ class HomeController extends Controller
         return parent::beforeAction($action);
     }
 
+    public function actionRegistrasi()
+    {
+        $model = new User();
+        if (Yii::$app->request->isAjax) {
+            return $this->renderAjax("registrasi", compact("model"));
+        }
+        if ($model->load($_POST)) {
+            $model->role_id = 5; // Pewakaf
+            $model->nomor_handphone = Constant::purifyPhone($model->nomor_handphone);
+            if ($model->validate()) {
+                if ($model->pin != $model->konfirmasi_pin) {
+                    Yii::$app->session->setFlash("error", "Pendaftaran gagal. Pin anda tidak sama");
+                    return $this->redirect(Yii::$app->request->referrer);
+                } else if ($model->password != $model->konfirmasi_password) {
+                    Yii::$app->session->setFlash("error", "Pendaftaran gagal. Pin anda tidak sama");
+                    return $this->redirect(Yii::$app->request->referrer);
+                }
+
+                $model->password = Yii::$app->security->generatePasswordHash($model->password);
+
+                $model->save();
+                Yii::$app->session->setFlash("success", "Pendaftaran berhasil. Silahkan login");
+                return $this->redirect(Yii::$app->request->referrer);
+            }
+            Yii::$app->session->setFlash("error", "Pendaftaran gagal. Validasi data tidak valid : " . Constant::flattenError($model->getErrors()));
+            return $this->redirect(Yii::$app->request->referrer);
+        } else {
+            Yii::$app->session->setFlash("error", "Pendaftaran gagal");
+            return $this->redirect(Yii::$app->request->referrer);
+        }
+    }
+
     public function actionIndex()
     {
         $params = array(
@@ -296,10 +328,10 @@ class HomeController extends Controller
         $rekenings = Rekening::find()->where(['flag' => 1])->all();
         $count_program = Pendanaan::find()->count();
         $count_wakif = User::find()->where(['role_id' => 5])->count();
-       
 
 
-        
+
+
 
         return $this->render('rekening', [
             'setting' => $setting,
@@ -336,27 +368,27 @@ class HomeController extends Controller
         $count_wakif = User::find()->where(['role_id' => 5])->count();
 
         $rows_himpunans = (new \yii\db\Query())
-        ->select(['sum(nominal) as nominal', 'month(tanggal_konfirmasi) as bulan','year(tanggal_konfirmasi) as tahun'])
-        ->from('pembayaran')
-        ->where(['status_id' => 6])
-        // ->andWhere(['<>', 'State', null])
-        ->andWhere(['not', ['tanggal_konfirmasi' => null]])
-        ->groupBy('bulan,tahun')
-        ->orderBy([
-            'tahun' => SORT_ASC
-        ])
-        ->all();
+            ->select(['sum(nominal) as nominal', 'month(tanggal_konfirmasi) as bulan', 'year(tanggal_konfirmasi) as tahun'])
+            ->from('pembayaran')
+            ->where(['status_id' => 6])
+            // ->andWhere(['<>', 'State', null])
+            ->andWhere(['not', ['tanggal_konfirmasi' => null]])
+            ->groupBy('bulan,tahun')
+            ->orderBy([
+                'tahun' => SORT_ASC
+            ])
+            ->all();
 
         $rows_penyalurans = (new \yii\db\Query())
-        ->select(['sum(nominal) as nominal', 'month(tanggal_penyaluran) as bulan','year(tanggal_penyaluran) as tahun'])
-        ->from('penyaluran')
-        // ->andWhere(['<>', 'State', null])
-        ->andWhere(['not', ['tanggal_penyaluran' => null]])
-        ->groupBy('bulan,tahun')
-        ->orderBy([
-            'tahun' => SORT_ASC
-        ])
-        ->all();
+            ->select(['sum(nominal) as nominal', 'month(tanggal_penyaluran) as bulan', 'year(tanggal_penyaluran) as tahun'])
+            ->from('penyaluran')
+            // ->andWhere(['<>', 'State', null])
+            ->andWhere(['not', ['tanggal_penyaluran' => null]])
+            ->groupBy('bulan,tahun')
+            ->orderBy([
+                'tahun' => SORT_ASC
+            ])
+            ->all();
         //     $a=[];
         // for ($m=1; $m<=12; $m++) {
         //     $month = date('m', mktime(0,0,0,$m));
@@ -366,10 +398,10 @@ class HomeController extends Controller
         //     }
         // var_dump($rows->createCommand()->sql);die;
         // var_dump($rows_penyalurans);die;
-       
 
 
-        
+
+
 
         return $this->render('report', [
             'setting' => $setting,

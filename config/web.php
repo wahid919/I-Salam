@@ -116,6 +116,7 @@ $config = [
                 'about' => 'home/about',
                 'detail-berita' => 'home/detail-berita',
                 'unduh-file-uraian' => 'home/unduh-file-uraian',
+                'registrasi' => 'home/registrasi',
 
                 //pembayaran
                 'pembayaran/all' => '/pembayaran/all',

@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\Url;
 
 /* @var $this \yii\web\View */
 /* @var $content string */
@@ -23,19 +24,45 @@ use yii\helpers\Html;
     <link href="<?= $icon ?>" rel="icon">
     <?= Html::csrfMetaTags() ?>
     <title><?= Html::encode($setting->judul_web) ?></title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">    
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <?php \app\assets\HomeAsset::register($this); ?>
     <script>
         var baseUrl = "<?= Yii::$app->urlManager->baseUrl ?>";
     </script>
     <?php $this->head() ?>
+    <style>
+        #modal-registrasi .modal-header .close {
+            padding: 0;
+            margin: 0;
+        }
 
+        #modal-registrasi {
+            background: rgba(0, 0, 0, .65);
+        }
+
+        #modal-registrasi .modal-content,
+        #modal-registrasi .modal-header {
+            background: transparent;
+            border: 0;
+            border-radius: 0;
+        }
+
+        #modal-registrasi .modal-header,
+        #modal-registrasi .modal-header h2 {
+            color: #fff;
+        }
+
+        #modal-registrasi .modal-body {
+            background: whitesmoke;
+            border-radius: 2rem;
+            margin-bottom: 2rem;
+        }
+    </style>
 
 </head>
 
 <body>
     <?php $this->beginBody() ?>
-
     <div class="wrapper">
         <?= $this->render('header') ?>
         <?= $this->render(
@@ -51,6 +78,15 @@ use yii\helpers\Html;
     <?php $this->endBody() ?>
     <?php $this->registerJsFile("https://maps.googleapis.com/maps/api/js?key=AIzaSyCV6HOHjE9XM8IbEaL6ZMZdW8e0tavsOL8&libraries=places&region=id&language=en&sensor=false"); ?>
 </body>
+
+<?php
+\app\components\Modal::begin([
+    'id' => 'modal-registrasi',
+    'header' => '<div style=\'text-align:center;width:100%\'><h2>Mendaftar</h2> <p>Silahkan mengisi Data anda untuk mendaftar</p></div>'
+]);
+?>
+<div id="modal-body"></div>
+<?php \app\components\Modal::end() ?>
 <script>
     var marker;
 
@@ -119,6 +155,28 @@ use yii\helpers\Html;
             Swal.fire("Peringatan!", "<?= \Yii::$app->session->getFlash('success') ?>", "success");
         }
     });
+</script>
+
+<script>
+    $(document).ready(() => {
+        try {
+
+            $('#btn-registrasi').on('click', async () => {
+                let response = await fetch("<?= Url::to(['/registrasi'], false) ?>", {
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                });
+                response = await response.text();
+                console.log(response)
+                document.getElementById("modal-body").innerHTML = response;
+                console.log($("#modal-registrasi"));
+                $("#modal-registrasi").modal('show')
+            });
+        } catch (error) {
+            console.log(error)
+        }
+    })
 </script>
 
 </html>

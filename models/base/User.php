@@ -89,6 +89,7 @@ class User extends \yii\db\ActiveRecord
             [['username', 'password', 'name','role_id'], 'required'],
             [['role_id','confirm'], 'integer'],
             [['last_login', 'last_logout'], 'safe'],
+            [['konfirmasi_pin', 'konfirmasi_password'], 'safe'],
             [[ 'name'], 'string', 'max' => 50],
             [[ 'pin'], 'string', 'max' => 8],
             ['username', 'email'],

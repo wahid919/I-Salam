@@ -1,4 +1,5 @@
 <?php
+
 $setting = app\models\Setting::find()->one();
 $icons = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->logo;
 $categories = app\models\KategoriBerita::find()->all();
@@ -30,12 +31,12 @@ $kategori_pendanaans = app\models\KategoriPendanaan::find()->all();
           </li><!-- /.nav-item -->
           <li class="nav__item with-dropdown">
             <a href="<?= \Yii::$app->request->baseUrl . "/home/program/" ?>" class="dropdown-toggle nav__item-link dropdown-icon">
-            <div class="d-none d-lg-block">
-              PROGRAM <i class="fa fa-angle-down"></i>
-            </div>
-            <div class="d-none d-md-block d-sm-block d-block d-lg-none">
-              PROGRAM</i>
-            </div>
+              <div class="d-none d-lg-block">
+                PROGRAM <i class="fa fa-angle-down"></i>
+              </div>
+              <div class="d-none d-md-block d-sm-block d-block d-lg-none">
+                PROGRAM</i>
+              </div>
             </a>
             <i class="fa fa-angle-right" data-toggle="dropdown"></i>
             <ul class="dropdown-menu">
@@ -47,13 +48,13 @@ $kategori_pendanaans = app\models\KategoriPendanaan::find()->all();
           </li>
           <li class="nav__item with-dropdown">
             <a href="<?= \Yii::$app->request->baseUrl . "/home/news/" ?>" class="dropdown-toggle nav__item-link">
-            <div class="d-none d-lg-block">
-              BERITA <i class="fa fa-angle-down"></i>
-            </div>
-            <div class="d-none d-md-block d-sm-block d-block d-lg-none">
-              BERITA</i>
-            </div>
-          </a>
+              <div class="d-none d-lg-block">
+                BERITA <i class="fa fa-angle-down"></i>
+              </div>
+              <div class="d-none d-md-block d-sm-block d-block d-lg-none">
+                BERITA</i>
+              </div>
+            </a>
             <i class="fa fa-angle-right" data-toggle="dropdown"></i>
             <ul class="dropdown-menu">
               <li class="nav__item"><a href="<?= \Yii::$app->request->baseUrl . "/home/news/" ?>" class="nav__item-link text-dark">Semua Kategori</a></li>
@@ -64,19 +65,19 @@ $kategori_pendanaans = app\models\KategoriPendanaan::find()->all();
           </li>
           <li class="nav__item with-dropdown">
             <a href="<?= \Yii::$app->request->baseUrl . "/home#" ?>" class="dropdown-toggle nav__item-link">
-            <div class="d-none d-lg-block">
-              LAYANAN <i class="fa fa-angle-down"></i>
-            </div>
-            <div class="d-none d-md-block d-sm-block d-block d-lg-none">
-              LAYANAN</i>
-            </div>
-          </a>
+              <div class="d-none d-lg-block">
+                LAYANAN <i class="fa fa-angle-down"></i>
+              </div>
+              <div class="d-none d-md-block d-sm-block d-block d-lg-none">
+                LAYANAN</i>
+              </div>
+            </a>
             <i class="fa fa-angle-right" data-toggle="dropdown"></i>
             <ul class="dropdown-menu">
               <li class="nav__item"><a href="<?= \Yii::$app->request->baseUrl . "/home/rekening" ?>" class="nav__item-link text-dark">Daftar Rekening</a></li>
-             
-                <li class="nav__item"><a href="<?= \Yii::$app->request->baseUrl . "/home/report"?>" class="nav__item-link text-dark">Anual Report</a></li>
-              
+
+              <li class="nav__item"><a href="<?= \Yii::$app->request->baseUrl . "/home/report" ?>" class="nav__item-link text-dark">Anual Report</a></li>
+
             </ul><!-- /.dropdown-menu -->
           </li>
           <li class="nav__item">
