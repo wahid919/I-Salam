@@ -185,7 +185,7 @@ use yii\helpers\Url;
           <div class="modal-footer">
             <button type="button" class="btn btn-sm btn-batal" data-dismiss="modal">Batal</button>
             <!-- <button type="button" class="btn btn-sm btn-program" data-toggle="modal" data-target="#exampleModalScrollable" id="bayarkan">Bayar</button> -->
-            <button type="button" class="btn btn-sm btn-program" id="bayarkan">Bayar</button>
+            <button type="button" class="btn btn-sm btn-program" style="padding: 10px !important;" id="bayarkan">Bayar</button>
           </div>
         </div>
       </div>
