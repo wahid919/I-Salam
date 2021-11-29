@@ -749,6 +749,7 @@ class HomeController extends Controller
         $pagination = new Pagination(['totalCount' => $count, 'pageSize' => 6]);
         $pembayarans = $query->offset($pagination->offset)
             ->limit($pagination->limit)
+            ->orderBy(['created_at'=> SORT_DESC])
             ->all();
 
         return $this->render('profile', [

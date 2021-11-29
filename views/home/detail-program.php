@@ -15,22 +15,22 @@ use yii\helpers\Url;
       <div class="row">
         <div class="col-lg-6 col-md-6 col-sm-12 col-12">
           <div class="program1__big-img">
-            <img class="border-r10" alt="program 1" src="<?= \Yii::$app->request->BaseUrl ?>/uploads/detail-program.jpeg">
+            <img class="border-r10" alt="program 1" src="<?= \Yii::$app->request->baseUrl . "/uploads/" . $pendanaan->poster ?>">
           </div>
           <div class="program1__img-wrap">
             <div class="program1-img">
-              <a href="<?= \Yii::$app->request->BaseUrl ?>/uploads/detail-program.jpeg" data-lightbox="program">
-                <img alt="program Small 1" src="<?= \Yii::$app->request->BaseUrl ?>/uploads/detail-program.jpeg" class="img-project">
+              <a href="<?= \Yii::$app->request->baseUrl . "/uploads/" . $pendanaan->poster ?>" data-lightbox="program">
+                <img alt="program Small 1" src="<?= \Yii::$app->request->baseUrl . "/uploads/" . $pendanaan->poster ?>" class="img-project">
               </a>
             </div>
             <div class="program1-img">
-              <a href="<?= \Yii::$app->request->BaseUrl ?>/uploads/detail-program.jpeg" data-lightbox="program">
-                <img alt="program Small 1" src="<?= \Yii::$app->request->BaseUrl ?>/uploads/detail-program.jpeg" class="img-project">
+              <a href="<?= \Yii::$app->request->baseUrl . "/uploads/" . $pendanaan->poster ?>" data-lightbox="program">
+                <img alt="program Small 1" src="<?= \Yii::$app->request->baseUrl . "/uploads/" . $pendanaan->poster ?>" class="img-project">
               </a>
             </div>
             <div class="program1-img">
-              <a href="<?= \Yii::$app->request->BaseUrl ?>/uploads/detail-program.jpeg" data-lightbox="program">
-                <img alt="program Small 1" src="<?= \Yii::$app->request->BaseUrl ?>/uploads/detail-program.jpeg" class="img-project">
+              <a href="<?= \Yii::$app->request->baseUrl . "/uploads/" . $pendanaan->poster ?>" data-lightbox="program">
+                <img alt="program Small 1" src="<?= \Yii::$app->request->baseUrl . "/uploads/" . $pendanaan->poster ?>" class="img-project">
               </a>
             </div>
           </div>
@@ -388,10 +388,10 @@ use yii\helpers\Url;
             </div>
           </div>
         </div>
-        <div class="mt-4">
+        <!-- <div class="mt-4">
           <label for="" style="color:#787892;">Tambahkan Program Ini di Halaman Anda</label>
           <input type="text" style="width: 100%;" class="select-wakaf border-r5 p-2" value="Lorem ipsum dolor sit amet.">
-        </div>
+        </div> -->
       </div>
     </div><!-- /.row -->
   </div><!-- /.container -->
