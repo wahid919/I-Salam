@@ -129,7 +129,7 @@ $this->registerCss($css) ?>
                 <hr>
               </div>
               <p style="color: #666; margin-bottom: .5rem; font-size: .9rem" :hover="color: #666">
-                <?= $berita->getDescription() ?> .. <a href="<?= Url::to(['home/detail-berita', 'id' => $berita->slug]) ?>" style="color: #d07500;">Baca Selengkapnya</a>
+                <?= $berita->getDescription() ?> <a href="<?= Url::to(['home/detail-berita', 'id' => $berita->slug]) ?>" style="color: #d07500;"><?= Yii::t("cruds", "Baca Selengkapnya") ?></a>
               </p>
               <div style="text-align: right;">
                 <!-- <a href="<?= Url::to(['home/detail-berita', 'id' => $berita->slug]) ?>" class="btn btn-more"><?= Yii::t("cruds", "Baca Selengkapnya") ?></a> -->

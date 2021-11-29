@@ -6,6 +6,7 @@ use Yii;
 use \app\models\base\Berita as BaseBerita;
 use yii\helpers\ArrayHelper;
 use yii\helpers\HtmlPurifier;
+use yii\helpers\Url;
 
 /**
  * This is the model class for table "berita".
@@ -50,6 +51,12 @@ class Berita extends BaseBerita
     }
 
     public function getDescription()
+    {
+        if (strlen($this->isi) <= 200) $text = strip_tags($this->isi);
+        else $text = strip_tags(substr($this->isi, 0, 200) . "...");
+        return $text;
+    }
+    public function getDescriptions($berita)
     {
         if (strlen($this->isi) <= 200) $text = strip_tags($this->isi);
         else $text = strip_tags(substr($this->isi, 0, 200) . "...");
