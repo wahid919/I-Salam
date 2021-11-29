@@ -28,7 +28,7 @@ $fieldOptions2 = [
     </div>
     <!-- /.login-logo -->
     <div class="login-box-body">
-        <p class="login-box-msg">Silakan masukkan username & password</p>
+        <p class="login-box-msg">Silakan Masukkan Email Anda</p>
 
         <?php $form = ActiveForm::begin(['id' => 'login-form', 'enableClientValidation' => false]); ?>
 
@@ -37,10 +37,6 @@ $fieldOptions2 = [
             ->label(false)
             ->textInput(['placeholder' => $model->getAttributeLabel('username'), 'type' => 'email']) ?>
 
-        <?= $form
-            ->field($model, 'password', $fieldOptions2)
-            ->label(false)
-            ->passwordInput(['placeholder' => $model->getAttributeLabel('password')]) ?>
         <?= $form->field($model, 'reCaptcha', ["template" => "{input}"])->widget(
             \himiklab\yii2\recaptcha\ReCaptcha3::className(),
             [
@@ -48,9 +44,6 @@ $fieldOptions2 = [
                 'action' => 'login',
             ]
         ) ?>
-        <div class="col-12">
-        <?= Html::a("Lupa Password", ["home/lupa-password"]) ?>
-        </div>
         <hr>
         <div class="row">
             <div class="col-xs-8">

@@ -70,7 +70,7 @@ class HomeController extends Controller
                 // 'only' => ['logout', 'design-bangunan'],
                 'rules' => [
                     [
-                        'actions' => ['login', 'registrasi', 'error', 'index', 'news', 'detail-berita', 'about', 'rekening', 'report', 'ziswaf', 'program', 'detail-program', 'unduh-file-uraian', 'unduh-file-wakaf'],
+                        'actions' => ['login', 'registrasi', 'error', 'index', 'news', 'detail-berita', 'about', 'report', 'ziswaf', 'program', 'detail-program', 'unduh-file-uraian', 'unduh-file-wakaf', 'lupa-password', 'ganti-password'],
                         'allow' => true,
                     ],
                     [
@@ -90,8 +90,7 @@ class HomeController extends Controller
     {
         $confirm = Yii::$app->user->identity->confirm;
         $status = Yii::$app->user->identity->status;
-        if ($confirm !=1 || $status !=1) 
-        {
+        if ($confirm != 1 || $status != 1) {
             return $this->redirect(["verifikasi-akun"]);
         }
         $pendanaan = \app\models\Pendanaan::find()
@@ -201,8 +200,7 @@ class HomeController extends Controller
     {
         $confirm = Yii::$app->user->identity->confirm;
         $status = Yii::$app->user->identity->status;
-        if ($confirm !=1 || $status !=1) 
-        {
+        if ($confirm != 1 || $status != 1) {
             return $this->redirect(["verifikasi-akun"]);
         }
         $pendanaan = \app\models\Pendanaan::find()
@@ -310,8 +308,7 @@ class HomeController extends Controller
     {
         $confirm = Yii::$app->user->identity->confirm;
         $status = Yii::$app->user->identity->status;
-        if ($confirm !=1 || $status !=1) 
-        {
+        if ($confirm != 1 || $status != 1) {
             return $this->redirect(["verifikasi-akun"]);
         }
 
@@ -526,7 +523,7 @@ class HomeController extends Controller
         if ($model->load($_POST)) {
             if ($kode == $model->kode_otp) {
                 $now = time();
-                $validasi = strtotime($tanggal_otp->created_at) + (60 * 5);
+                $validasi = strtotime($tanggal_otp) + (60 * 5);
                 if ($now < $validasi) {
                     $model->is_used = 1;
                     $model->save();
@@ -561,8 +558,7 @@ class HomeController extends Controller
 
         $confirm = Yii::$app->user->identity->confirm;
         $status = Yii::$app->user->identity->status;
-        if ($confirm !=1 || $status !=1) 
-        {
+        if ($confirm != 1 || $status != 1) {
             return $this->redirect(["verifikasi-akun"]);
         }
         $this->layout = false;
@@ -736,11 +732,10 @@ class HomeController extends Controller
     {
         $confirm = Yii::$app->user->identity->confirm;
         $status = Yii::$app->user->identity->status;
-        if ($confirm !=1 || $status !=1) 
-        {
+        if ($confirm != 1 || $status != 1) {
             return $this->redirect(["verifikasi-akun"]);
         }
-        
+
         $searchModel  = new RekeningSearchHome;
         $dataProvider = $searchModel->search($_GET);
         $dataProvider->setPagination(['pageSize' => 20]);
@@ -890,8 +885,7 @@ class HomeController extends Controller
     {
         $confirm = Yii::$app->user->identity->confirm;
         $status = Yii::$app->user->identity->status;
-        if ($confirm !=1 || $status !=1) 
-        {
+        if ($confirm != 1 || $status != 1) {
             return $this->redirect(["verifikasi-akun"]);
         }
         $setting = Setting::find()->one();
@@ -947,8 +941,7 @@ class HomeController extends Controller
     {
         $confirm = Yii::$app->user->identity->confirm;
         $status = Yii::$app->user->identity->status;
-        if ($confirm !=1 || $status !=1) 
-        {
+        if ($confirm != 1 || $status != 1) {
             return $this->redirect(["verifikasi-akun"]);
         }
         $model = User::find()->where(["id" => Yii::$app->user->id])->one();
@@ -1146,5 +1139,31 @@ class HomeController extends Controller
         curl_close($curl);
         $a = json_decode($response);
         return $a;
+    }
+
+    public function actionLupaPassword()
+    {
+        $this->layout = '@app/views/layouts/main-login';
+        if (Yii::$app->user->isGuest) {
+            $model = new \app\models\LoginForm();
+            return $this->render('lupa-password', [
+                'model' => $model
+            ]);
+        } else {
+            return $this->redirect(["home/index"]);
+        }
+    }
+
+    public function actionGantiPassword()
+    {
+        $this->layout = '@app/views/layouts/main-login';
+        if (Yii::$app->user->isGuest) {
+            $model = new \app\models\LoginForm();
+            return $this->render('ganti-password', [
+                'model' => $model
+            ]);
+        } else {
+            return $this->redirect(["home/index"]);
+        }
     }
 }
