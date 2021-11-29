@@ -18,29 +18,31 @@ use yii\helpers\Url;
             <img class="border-r10" alt="program 1" src="<?= \Yii::$app->request->baseUrl . "/uploads/" . $pendanaan->poster ?>">
           </div>
           <div class="program1__img-wrap">
-            <?php if($kegiatan_pendanaans == null){ ?>
-            <div class="program1-img">
-              <a href="<?= \Yii::$app->request->baseUrl . "/uploads/" . $pendanaan->poster ?>" data-lightbox="program">
-                <img alt="program Small 1" src="<?= \Yii::$app->request->baseUrl . "/uploads/" . $pendanaan->poster ?>" class="img-project">
-              </a>
-            </div>
-            <div class="program1-img">
-              <a href="<?= \Yii::$app->request->baseUrl . "/uploads/" . $pendanaan->poster ?>" data-lightbox="program">
-                <img alt="program Small 1" src="<?= \Yii::$app->request->baseUrl . "/uploads/" . $pendanaan->poster ?>" class="img-project">
-              </a>
-            </div>
-            <div class="program1-img">
-              <a href="<?= \Yii::$app->request->baseUrl . "/uploads/" . $pendanaan->poster ?>" data-lightbox="program">
-                <img alt="program Small 1" src="<?= \Yii::$app->request->baseUrl . "/uploads/" . $pendanaan->poster ?>" class="img-project">
-              </a>
-            </div>
-            <?php }else{ foreach($kegiatan_pendanaans as $kegiatan_pendanaan){?>
+            <?php if ($kegiatan_pendanaans == null) { ?>
               <div class="program1-img">
-              <a href="<?= \Yii::$app->request->BaseUrl ?>/uploads/kegiatan/<?= $kegiatan_pendanaan->foto ?>" data-lightbox="program">
-                <img alt="<?= $kegiatan_pendanaan->kegiatan ?>" src="<?= \Yii::$app->request->BaseUrl ?>/uploads/kegiatan/<?= $kegiatan_pendanaan->foto ?>" class="img-project">
-              </a>
-            </div>
-            <?php } } ?>
+                <a href="<?= \Yii::$app->request->baseUrl . "/uploads/" . $pendanaan->poster ?>" data-lightbox="program">
+                  <img alt="program Small 1" src="<?= \Yii::$app->request->baseUrl . "/uploads/" . $pendanaan->poster ?>" class="img-project">
+                </a>
+              </div>
+              <div class="program1-img">
+                <a href="<?= \Yii::$app->request->baseUrl . "/uploads/" . $pendanaan->poster ?>" data-lightbox="program">
+                  <img alt="program Small 1" src="<?= \Yii::$app->request->baseUrl . "/uploads/" . $pendanaan->poster ?>" class="img-project">
+                </a>
+              </div>
+              <div class="program1-img">
+                <a href="<?= \Yii::$app->request->baseUrl . "/uploads/" . $pendanaan->poster ?>" data-lightbox="program">
+                  <img alt="program Small 1" src="<?= \Yii::$app->request->baseUrl . "/uploads/" . $pendanaan->poster ?>" class="img-project">
+                </a>
+              </div>
+              <?php } else {
+              foreach ($kegiatan_pendanaans as $kegiatan_pendanaan) { ?>
+                <div class="program1-img">
+                  <a href="<?= \Yii::$app->request->BaseUrl ?>/uploads/kegiatan/<?= $kegiatan_pendanaan->foto ?>" data-lightbox="program">
+                    <img alt="<?= $kegiatan_pendanaan->kegiatan ?>" src="<?= \Yii::$app->request->BaseUrl ?>/uploads/kegiatan/<?= $kegiatan_pendanaan->foto ?>" class="img-project">
+                  </a>
+                </div>
+            <?php }
+            } ?>
           </div>
         </div>
         <div class="col-lg-6 col-md-6 col-sm-12 col-12">
@@ -149,42 +151,81 @@ use yii\helpers\Url;
             </button>
           </div>
           <div class="modal-body">
-            <div class="row">
-              <div class="col-4">
-                <img class="border-r10 shadow-br3" src="<?= \Yii::$app->request->BaseUrl ?>/uploads/detail-program.jpeg" width="200px">
-              </div>
-              <div class="col-8">
-                <p class="font-size-08">Anda akan berwakaf untuk project :</p>
-                <p class="font-weight-bold"><?= $pendanaan->nama_pendanaan ?></p>
-              </div>
-              <div class="col-12 pt-3">
-                <h3 style="color: #404040;">Nominal Wakaf</h3>
-                <p class="font-size-08">Anda akan berwakaf dengan nominal sebesar :</p>
+            <ul class="nav nav-tabs pb-4" id="isalam" role="tablist">
+              <li class="nav-item text-center" style="width: 50%;">
+                <a class="nav-link font-weight-bold active" id="Wakaf-tab" data-toggle="tab" href="#pembayaran" role="tab" aria-controls="pembayaran" aria-selected="true"><i class="fas fa-hand-holding-usd"></i> Uang</a>
+              </li>
+              <li class="nav-item text-center" style="width: 50%;">
+                <a class="nav-link font-weight-bold" id="wakaf-tab" data-toggle="tab" href="#lembaran" role="tab" aria-controls="lembaran" aria-selected="false"><i class="fas fa-money-bill-alt"></i> Lembaran</a>
+              </li>
+            </ul>
+            <div class="tab-content" id="myTabContent">
+              <div class="tab-pane fade show active" id="pembayaran" role="tabpanel" aria-labelledby="pembayaran-tab">
                 <div class="row">
-                  <div class="col-6">
-                    <a href="#" class="btn btn-block btn-nilai-wakaf btn-outline-bayar border-r5 mt-2" role="button" aria-pressed="true" onclick="return theFunction(100000);">Rp. 100.000 ></a>
+                  <div class="col-4">
+                    <img class="border-r10 shadow-br3" src="<?= \Yii::$app->request->BaseUrl ?>/uploads/detail-program.jpeg" width="200px">
                   </div>
-                  <div class="col-6">
-                    <a href="#" class="btn btn-block btn-nilai-wakaf btn-outline-bayar border-r5 mt-2" role="button" aria-pressed="true" onclick="return theFunction(200000);">Rp. 200.000 ></a>
+                  <div class="col-8">
+                    <p class="font-size-08">Anda akan berwakaf untuk project :</p>
+                    <p class="font-weight-bold">
+                      <?= $pendanaan->nama_pendanaan ?>
+                    </p>
                   </div>
-                  <div class="col-6">
-                    <a href="#" class="btn btn-block btn-nilai-wakaf btn-outline-bayar border-r5 mt-2" role="button" aria-pressed="true" onclick="return theFunction(300000);">Rp. 300.000 ></a>
-                  </div>
-                  <div class="col-6">
-                    <a href="#" class="btn btn-block btn-nilai-wakaf btn-outline-bayar border-r5 mt-2" role="button" aria-pressed="true" onclick="return theFunction(400000);">Rp. 400.000 ></a>
-                  </div>
-                  <div class="col-6">
-                    <a href="#" class="btn btn-block btn-nilai-wakaf btn-outline-bayar border-r5 mt-2" role="button" aria-pressed="true" onclick="return theFunction(500000);">Rp. 500.000 ></a>
-                  </div>
-                  <div class="col-6">
-                    <a href="#" class="btn btn-block btn-nilai-wakaf btn-outline-bayar border-r5 mt-2" role="button" aria-pressed="true" onclick="return theFunction(600000);">Rp. 600.000 ></a>
-                  </div>
-                  <div class="col-12 mt-2">
-                    <div class="input-group mb-2">
-                      <div class="input-group-prepend mr-2" style="height:calc(1.5em + .75rem + 2px);">
-                        <div class="input-group-text bg-white border-r5 font-weight-bold" style="color: #afafaf;border-color: #787878;">Rp</div>
+                  <div class="col-12 pt-3">
+                    <h3 style="color: #404040;">Nominal Wakaf</h3>
+                    <p class="font-size-08">Anda akan berwakaf dengan nominal sebesar :</p>
+                    <div class="row">
+                      <div class="col-6">
+                        <a href="#" class="btn btn-block btn-nilai-wakaf btn-outline-bayar border-r5 mt-2" role="button" aria-pressed="true" onclick="return theFunction(100000);">Rp. 100.000 ></a>
                       </div>
-                      <input type="text" class="form-control select-wakaf border-r5" id="nominal" name="nominal" style="border-color: #787878;" placeholder="Minimal Wakaf Rp. 10.000" required>
+                      <div class="col-6">
+                        <a href="#" class="btn btn-block btn-nilai-wakaf btn-outline-bayar border-r5 mt-2" role="button" aria-pressed="true" onclick="return theFunction(200000);">Rp. 200.000 ></a>
+                      </div>
+                      <div class="col-6">
+                        <a href="#" class="btn btn-block btn-nilai-wakaf btn-outline-bayar border-r5 mt-2" role="button" aria-pressed="true" onclick="return theFunction(300000);">Rp. 300.000 ></a>
+                      </div>
+                      <div class="col-6">
+                        <a href="#" class="btn btn-block btn-nilai-wakaf btn-outline-bayar border-r5 mt-2" role="button" aria-pressed="true" onclick="return theFunction(400000);">Rp. 400.000 ></a>
+                      </div>
+                      <div class="col-6">
+                        <a href="#" class="btn btn-block btn-nilai-wakaf btn-outline-bayar border-r5 mt-2" role="button" aria-pressed="true" onclick="return theFunction(500000);">Rp. 500.000 ></a>
+                      </div>
+                      <div class="col-6">
+                        <a href="#" class="btn btn-block btn-nilai-wakaf btn-outline-bayar border-r5 mt-2" role="button" aria-pressed="true" onclick="return theFunction(600000);">Rp. 600.000 ></a>
+                      </div>
+                      <div class="col-12 mt-2">
+                        <div class="input-group mb-2">
+                          <div class="input-group-prepend mr-2" style="height:calc(1.5em + .75rem + 2px);">
+                            <div class="input-group-text bg-white border-r5 font-weight-bold" style="color: #afafaf;border-color: #787878;">Rp</div>
+                          </div>
+                          <input type="text" class="form-control select-wakaf border-r5" id="nominal" name="nominal" style="border-color: #787878;" placeholder="Minimal Wakaf Rp. 10.000" required>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="tab-pane fade" id="lembaran" role="tabpanel" aria-labelledby="lembaran-tab">
+                <div class="row">
+                  <div class="col-4">
+                    <img class="border-r10 shadow-br3" src="<?= \Yii::$app->request->BaseUrl ?>/uploads/detail-program.jpeg" width="200px">
+                  </div>
+                  <div class="col-8">
+                    <p class="font-size-08">Anda akan berwakaf untuk project :</p>
+                    <p class="font-weight-bold"><?= $pendanaan->nama_pendanaan ?></p>
+                  </div>
+                  <div class="col-12 pt-3">
+                    <h3 style="color: #404040;">Nominal Wakaf</h3>
+                    <p class="font-size-08">Anda akan berwakaf dengan nominal sebesar :</p>
+                    <div class="row">
+                      <div class="col-12 mt-2">
+                        <div class="input-group mb-2">
+                          <div class="input-group-prepend mr-2" style="height:calc(1.5em + .75rem + 2px);">
+                            <div class="input-group-text bg-white border-r5 font-weight-bold" style="color: #afafaf;border-color: #787878;">Rp</div>
+                          </div>
+                          <input type="text" class="form-control select-wakaf border-r5" id="nominal" name="nominal" style="border-color: #787878;" placeholder="Minimal Wakaf Rp. 10.000" required>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -341,31 +382,31 @@ use yii\helpers\Url;
             </div>
             <div class="tab-pane fade" id="donatur" role="tabpanel" aria-labelledby="donatur-tab">
               <div class="table-responsive">
-                <?php if($donatur == null){ ?>
+                <?php if ($donatur == null) { ?>
                   <p class="update-donatur">
-                  Belum Ada Donatur untuk Program Wakaf Ini.
-                </p>
-                <img class="border-r10 shadow-br3" src="<?= \Yii::$app->request->BaseUrl ?>/uploads/azhar.jpg">
-                <?php }else{ ?>
-                <table class="table table-hover">
-                  <thead>
-                    <?php foreach ($donatur as $done) { ?>
-                      <tr>
-                        <td class="border-bottom-3 border-top-0 donatur-program-img" rowspan="2">
-                          <a href="<?= \Yii::$app->request->BaseUrl ?>/uploads/<?= $done->user->photo_url ?>" data-lightbox="update">
-                            <img class="border-r10 shadow-br3" src="<?= \Yii::$app->request->BaseUrl ?>/uploads/<?= $done->user->photo_url ?>" width="100px">
-                          </a>
-                        </td>
-                        <td class="border-top-0 donatur-program-nama"><?= $done->nama ?></td>
-                        <td class="border-top-0"><?= \app\components\Tanggal::toReadableDate($done->tanggal_konfirmasi); ?></td>
-                      </tr>
-                      <tr>
-                        <td class="border-bottom-3 border-top-0 pt-0 text-isalam-1 font-weight-bold donatur-uang"> <?= \app\components\Angka::toReadableHarga($done->nominal); ?></td>
-                        <td class="border-bottom-3 border-top-0"></td>
-                      </tr>
-                    <?php } ?>
-                  </thead>
-                </table>
+                    Belum Ada Donatur untuk Program Wakaf Ini.
+                  </p>
+                  <img class="border-r10 shadow-br3" src="<?= \Yii::$app->request->BaseUrl ?>/uploads/azhar.jpg">
+                <?php } else { ?>
+                  <table class="table table-hover">
+                    <thead>
+                      <?php foreach ($donatur as $done) { ?>
+                        <tr>
+                          <td class="border-bottom-3 border-top-0 donatur-program-img" rowspan="2">
+                            <a href="<?= \Yii::$app->request->BaseUrl ?>/uploads/<?= $done->user->photo_url ?>" data-lightbox="update">
+                              <img class="border-r10 shadow-br3" src="<?= \Yii::$app->request->BaseUrl ?>/uploads/<?= $done->user->photo_url ?>" width="100px">
+                            </a>
+                          </td>
+                          <td class="border-top-0 donatur-program-nama"><?= $done->nama ?></td>
+                          <td class="border-top-0"><?= \app\components\Tanggal::toReadableDate($done->tanggal_konfirmasi); ?></td>
+                        </tr>
+                        <tr>
+                          <td class="border-bottom-3 border-top-0 pt-0 text-isalam-1 font-weight-bold donatur-uang"> <?= \app\components\Angka::toReadableHarga($done->nominal); ?></td>
+                          <td class="border-bottom-3 border-top-0"></td>
+                        </tr>
+                      <?php } ?>
+                    </thead>
+                  </table>
                 <?php } ?>
               </div>
             </div>
