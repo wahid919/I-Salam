@@ -25,6 +25,8 @@
     <div class="row">
       <?php foreach ($pendanaans as $pendanaan) {
         $nominal = \app\models\Pembayaran::find()->where(['pendanaan_id' => $pendanaan->id, 'status_id' => 6])->sum('nominal');
+
+        $pewakaf = \app\models\Pembayaran::find()->where(['pendanaan_id' => $pendanaan->id, 'status_id' => 6])->count();
         $datetime1 =  new Datetime($pendanaan->pendanaan_berakhir);
         $datetime2 =  new Datetime(date("Y-m-d H:i:s"));
         $interval = $datetime1->diff($datetime2)->days;
@@ -62,7 +64,13 @@
               </div>
               <hr>
               <div class="row">
-                <div class="col-sm-12 col-md-12 col-lg-12">
+
+                <div class="col-lg-12 col-md-12 col-12 text-left font-weight-bold font-size-08">
+                <i class="fa fa-users" aria-hidden="true"></i> Jumlah Pewakaf(<?= $pewakaf ?>)
+                </div>
+                </div>
+              <div class="row">
+                <div class="col-sm-12 col-md-12 col-lg-12" style="margin-top: 5px;">
                   <a href="<?= Url::to(["detail-program", "id" => $pendanaan->id]) ?>" class="btn btn-sm btn-program btn-block">Mulai Wakaf</a>
                 </div>
               </div>
