@@ -24,7 +24,10 @@
                       <select class="form-control select-wakaf border-r5 shadow-r2" id="select-category" style="overflow: scroll;" onchange="myFunction(event)">
                         <option class="font-weight-bold" disabled selected>Silahkan Pilih Program</option>
                         <?php
-                        foreach ($list_pendanaans as $pendana) { ?>
+
+                                use yii\helpers\Url;
+
+foreach ($list_pendanaans as $pendana) { ?>
                           <option class="font-weight-bold" value="<?= $pendana->id ?>"><?= $pendana->nama_pendanaan ?></option>
                         <?php } ?>
                       </select>
@@ -178,6 +181,7 @@
       <div class="row">
         <?php foreach ($pendanaans as $pendanaan) {
           $nominal = \app\models\Pembayaran::find()->where(['pendanaan_id' => $pendanaan->id, 'status_id' => 6])->sum('nominal');
+          $pewakaf = \app\models\Pembayaran::find()->where(['pendanaan_id' => $pendanaan->id, 'status_id' => 6])->count();
           $datetime1 =  new Datetime($pendanaan->pendanaan_berakhir);
           $datetime2 =  new Datetime(date("Y-m-d H:i:s"));
           $interval = $datetime1->diff($datetime2)->days;
@@ -215,7 +219,13 @@
                 </div>
                 <hr>
                 <div class="row">
-                  <div class="col-sm-12 col-md-12 col-lg-12">
+
+                <div class="col-lg-12 col-md-12 col-12 text-left font-weight-bold font-size-08">
+                <i class="fa fa-users" aria-hidden="true"></i> Jumlah Pewakaf(<?= $pewakaf ?>)
+                </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-12 col-md-12 col-lg-12" style="margin-top: 5px;">
                     <a href="<?= \Yii::$app->request->BaseUrl . "/home/detail-program/".$pendanaan->id?>" class="btn btn-sm btn-program btn-block">Mulai Wakaf</a>
                   </div>
                 </div>
@@ -246,17 +256,25 @@
 
                 </div>
                 <div class="card-body">
-                  <h6 class="card-title"><?= $berita->judul ?></h6>
-                  <hr>
-                  <div class="row">
-                    <div class="col-lg-6 col-md-6 col-4 text-left font-weight-bold font-size-08">
-                      <?= date("d M Y", strtotime($berita->created_at)); ?>
-                    </div>
-                    <div class="col-lg-6 col-md-6 col-8 text-right font-weight-bold font-size-08">
-                      Baca Selengkapnya
-                    </div>
+              <h6 class="card-title"><?= $berita->getShowTitle() ?></h6>
+              <div class="content-berita__info">
+                <div class="row">
+                  <div class="col-lg-6 col-md-6 col-6 text-left">
+                    <?= date("d M Y", strtotime($berita->created_at)); ?> <br>
+                  </div>
+                  <div class="col-lg-6 col-md-6 col-6 text-right">
+                    <?= $berita->kategoriBerita->nama ?>
                   </div>
                 </div>
+                <hr>
+              </div>
+              <p style="color: #666; margin-bottom: .5rem; font-size: .9rem" :hover="color: #666">
+                <?= $berita->getDescription() ?> .. <a href="<?= Url::to(['home/detail-berita', 'id' => $berita->slug]) ?>" style="color: #d07500;">Baca Selengkapnya</a>
+              </p>
+              <div style="text-align: right;">
+                <!-- <a href="<?= Url::to(['home/detail-berita', 'id' => $berita->slug]) ?>" class="btn btn-more"><?= Yii::t("cruds", "Baca Selengkapnya") ?></a> -->
+              </div>
+            </div>
               </div>
             </a>
           </div>
