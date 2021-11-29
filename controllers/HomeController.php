@@ -529,8 +529,6 @@ class HomeController extends Controller
 
     public function actionDetailBerita($id)
     {
-        // var_dump($id);die;
-        $this->layout = false;
         $berita = Berita::find()->where(['slug' => $id])->one();
         if ($berita == null) throw new HttpException(404);
         $news = Berita::find()->where(['kategori_berita_id' => $berita->kategori_berita_id])->limit(3)->all();
