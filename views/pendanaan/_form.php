@@ -33,6 +33,11 @@ use yii\helpers\Html;
                 'content' => $this->render('_form_awal',['model' => $model,'form' => $form]),
             ],
             2 => [
+                'title' => 'Data Bank',
+                'icon' => 'glyphicon glyphicon-credit-card',
+                'content' => $this->render('_form_bank',['model' => $model,'form' => $form]),
+            ],
+            3 => [
                 'title' => 'Upload File',
                 'icon' => '	glyphicon glyphicon-picture',
                 'content' => $this->render('_form_upload',['model' => $model,'form' => $form]),

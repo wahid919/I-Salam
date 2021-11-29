@@ -1,7 +1,30 @@
 <?php
 
+use app\models\KategoriPendanaan;
 use kartik\date\DatePicker;
 use kartik\datetime\DateTimePicker;
+use kartik\select2\Select2;
+
+$this->registerJsFile(Yii::getAlias("@web/tinymce/tinymce.min.js"));
+// $uploadlink = Url::to(['site/upload-image']);
+// $csrf = Yii::$app->request->csrfToken;
+
+$this->registerJs("
+      tinymce.init({
+        selector: '.tinymce-form',
+        height: '400',
+        plugins: [
+            'advlist autolink lists link image charmap print preview anchor',
+            'searchreplace visualblocks code fullscreen',
+            'insertdatetime media table paste code help wordcount',
+        ],
+
+        toolbar: 'undo redo | formatselect | ' +
+        'bold italic backcolor | alignleft aligncenter ' +
+        'alignright alignjustify | bullist numlist outdent indent | ' +
+        'removeformat | help',
+      });
+");
 ?>
 <div class="row">
             <div class="col-lg-12">
@@ -18,27 +41,11 @@ use kartik\datetime\DateTimePicker;
                         'class' => 'control-label'
                     ],
                     'options' => ['tag' => false]
-                ])->textInput(['maxlength' => true]) ?>
+                ])->textInput(['maxlength' => true])->label('1. Nama Pendanaan'); ?>
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-6">
-            <?= $form->field($model, 'uraian', [
-                    'template' => '
-                    {label}
-                    {input}
-                    {error}
-                    ',
-                    'inputOptions' => [
-                        'class' => 'form-control'
-                    ],
-                    'labelOptions' => [
-                        'class' => 'control-label'
-                    ],
-                    'options' => ['tag' => false]
-                ])->textarea(['rows' => 6]) ?>
-            </div>
-            <div class="col-lg-6">
+            <div class="col-lg-12">
             <?= $form->field($model, 'deskripsi', [
                     'template' => '
                     {label}
@@ -52,81 +59,10 @@ use kartik\datetime\DateTimePicker;
                         'class' => 'control-label'
                     ],
                     'options' => ['tag' => false]
-                ])->textarea(['rows' => 6]) ?>
+                ])->textarea(['class' => 'tinymce-form form-control'])->label('2. Deskripsi Pendanaan');?>
             </div>
         </div>
-            <div class="row">
-            <div class="col-lg-3">
-                <?= $form->field($model, 'bank_id', [
-                    'template' => '
-                    {label}
-                    {input}
-                    {error}
-                    ',
-                    'inputOptions' => [
-                        'class' => 'form-control'
-                    ],
-                    'labelOptions' => [
-                        'class' => 'control-label'
-                    ],
-                    'options' => ['tag' => false]
-                ])->dropDownList(
-                    \yii\helpers\ArrayHelper::map(app\models\Bank::find()->all(), 'id', 'name'),
-                    [
-                        'prompt' => 'Select',
-                        'disabled' => (isset($relAttributes) && isset($relAttributes['bank_id'])),
-                    ]
-                ); ?>
-            </div>
-            <div class="col-lg-3">
-                <?= $form->field($model, 'nomor_rekening', [
-                    'template' => '
-                    {label}
-                    {input}
-                    {error}
-                    ',
-                    'inputOptions' => [
-                        'class' => 'form-control'
-                    ],
-                    'labelOptions' => [
-                        'class' => 'control-label'
-                    ],
-                    'options' => ['tag' => false]
-                ])->textInput(['maxlength' => true,'type'=>'number']) ?>
-            </div>
-            <div class="col-lg-3">
-                <?= $form->field($model, 'nama_nasabah', [
-                    'template' => '
-                    {label}
-                    {input}
-                    {error}
-                    ',
-                    'inputOptions' => [
-                        'class' => 'form-control'
-                    ],
-                    'labelOptions' => [
-                        'class' => 'control-label'
-                    ],
-                    'options' => ['tag' => false]
-                ])->textInput(['maxlength' => true]) ?>
-            </div>
-            <div class="col-lg-3">
-                <?= $form->field($model, 'nama_perusahaan', [
-                    'template' => '
-                    {label}
-                    {input}
-                    {error}
-                    ',
-                    'inputOptions' => [
-                        'class' => 'form-control'
-                    ],
-                    'labelOptions' => [
-                        'class' => 'control-label'
-                    ],
-                    'options' => ['tag' => false]
-                ])->textInput(['maxlength' => true]) ?>
-            </div>
-        </div>
+            
         <div class="row">
             <div class="col-lg-4">
                 <?= $form->field($model, 'nominal', [
@@ -150,7 +86,7 @@ use kartik\datetime\DateTimePicker;
                         'autoGroup' => true
                     ],
         
-                ]) ?>
+                ])->label('3. Uang Yang Dibutuhkan'); ?>
             </div>
             <div class="col-lg-4">
                 <?= $form->field($model, 'pendanaan_berakhir', [
@@ -175,7 +111,7 @@ use kartik\datetime\DateTimePicker;
                         'autocomplete' => "off",
                         'autoclose' => true,
                     ],
-                ]); ?>
+                ])->label('4. Pendanaan Berakhir'); ?>
             </div>
             <div class="col-lg-4">
                 <?= // generated by schmunk42\giiant\generators\crud\providers\core\RelationProvider::activeField
@@ -192,13 +128,14 @@ use kartik\datetime\DateTimePicker;
                         'class' => 'control-label'
                     ],
                     'options' => ['tag' => false]
-                ])->dropDownList(
-                    \yii\helpers\ArrayHelper::map(app\models\KategoriPendanaan::find()->all(), 'id', 'name'),
-                    [
-                        'prompt' => 'Select',
-                        'disabled' => (isset($relAttributes) && isset($relAttributes['kategori_pendanaan_id'])),
-                    ]
-                ); ?>
+                ])->widget(Select2::classname(), [
+                    'data' => \yii\helpers\ArrayHelper::map(KategoriPendanaan::find()->all(), 'id', 'name'),
+                    'language' => 'en',
+                    'options' => ['multiple' => false, 'placeholder' => 'Pilih Kategori Pendanaan...'],
+                    'pluginOptions' => [
+                       'allowClear' => true
+                    ],
+                 ])->label('5. Kategori Pendanaan'); ?>
 
             </div>
         </div>
@@ -217,7 +154,7 @@ use kartik\datetime\DateTimePicker;
                         'class' => 'control-label'
                     ],
                     'options' => ['tag' => false]
-                ])->dropDownList(['1' => 'Aktif', '0' => 'Tidak'],['prompt'=>'Silahkan Pilih Status Lembaran']); ?>
+                ])->dropDownList(['1' => 'Aktif', '0' => 'Tidak'],['prompt'=>'Silahkan Pilih Status Lembaran'])->label('6. Status Lembaran'); ?>
             </div>
             <div class="col-lg-6">
                 <?= $form->field($model, 'nominal_lembaran', [
@@ -241,6 +178,6 @@ use kartik\datetime\DateTimePicker;
                         'autoGroup' => true
                     ],
         
-                ]) ?>
+                ])->label('7. Nominal Perlembar'); ?>
             </div>
         </div>

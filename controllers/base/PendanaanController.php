@@ -106,7 +106,7 @@ class PendanaanController extends Controller
             $jml = (int)$nom / (int)$nom_lembaran;
             $model->jumlah_lembaran = round($jml);
          }else{
-            $model->nominal_lembaran = 0;
+            $model->nominal_lembaran = "0";
             $model->jumlah_lembaran = 0;
          }
             $fotos = UploadedFile::getInstance($model, 'foto');

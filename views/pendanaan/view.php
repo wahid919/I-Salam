@@ -50,8 +50,10 @@ $this->title = 'Pendanaan ' . $model->nama_pendanaan;
                 'model' => $model,
                 'attributes' => [
                     'nama_pendanaan',
-                    'uraian:ntext',
-                    'deskripsi:ntext',
+                    [
+                        'attribute' => 'deskripsi',
+                        'format' => 'html',
+                    ],
                     [
                         'attribute' => 'nominal',
                         'label' => 'Nominal',
