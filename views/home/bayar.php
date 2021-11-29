@@ -360,7 +360,7 @@
 </script>
 <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="SB-Mid-client-lrPe45BCGoT9yG2O"></script>
 
-<pre><div id="result-json">JSON result will appear here after payment:<br></div></pre>
+<!-- <pre><div id="result-json">JSON result will appear here after payment:<br></div></pre> -->
 
 <?php JSRegister::begin(); ?>
 <script>
@@ -369,7 +369,7 @@
       // Optional
       onSuccess: function(result) {
         /* You may add your own js here, this is just example */
-        document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
+        // document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
         Swal.fire("Peringatan!", "Pembayaran Berhasil", "success").then((result) => {
           window.location = "<?= Yii::$app->request->baseUrl . "/home/profile" ?>";
         });
@@ -381,12 +381,12 @@
           window.location = "<?= Yii::$app->request->baseUrl . "/home/profile" ?>";
         });
         /* You may add your own js here, this is just example */
-        document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
+        // document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
       },
       // Optional
       onError: function(result) {
         /* You may add your own js here, this is just example */
-        document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
+        // document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
         Swal.fire("Peringatan!", "Pembayaran Gagal", "error");
       },
       onClose: function() {
