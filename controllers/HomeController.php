@@ -83,7 +83,7 @@ class HomeController extends Controller
         ];
     }
 
-    public function actionPembayaran($id, $nominal)
+    public function actionPembayaran($id, $nominal,$ket)
     {
         $pendanaan = \app\models\Pendanaan::find()
             ->where(['id' => $id])->one();
@@ -108,21 +108,32 @@ class HomeController extends Controller
     
                 // $model->nama = Yii::$app->user->identity->name;
                 $model->nama = $name;
-    
-    
-    
-                $model->jumlah_lembaran = 0;
-                $model->nominal = (int)$nominal;
+                if($ket == "lembar"){
+
+                    $model->jumlah_lembaran = (int)$nominal;
+                    $total = (int)$nominal * $pendanaan->nominal_lembaran;
+                $model->nominal = (int)$total;
     
                 // Optional
                 $item1_details = array(
                     'id' => '1',
-                    'price' => (int)$nominal,
+                    'price' => (int)$total,
                     'quantity' => 1,
-                    'name' => $pendanaan->nama_pendanaan . "(Non Lembaran)"
+                    'name' => $pendanaan->nama_pendanaan . "(Lembaran)"
                 );
-    
-    
+                }else{
+                    $model->jumlah_lembaran = 0;
+                    $model->nominal = (int)$nominal;
+        
+                    // Optional
+                    $item1_details = array(
+                        'id' => '1',
+                        'price' => (int)$nominal,
+                        'quantity' => 1,
+                        'name' => $pendanaan->nama_pendanaan . "(Non Lembaran)"
+                    );
+                }
+
                 // $model->jenis_pembayaran_id = $val['jenis_pembayaran_id'] ?? '';
                 // $model->user_id = \Yii::$app->user->identity->id;
                 $model->user_id = \Yii::$app->user->identity->id;;
@@ -529,8 +540,6 @@ class HomeController extends Controller
 
     public function actionDetailBerita($id)
     {
-        // var_dump($id);die;
-        $this->layout = false;
         $berita = Berita::find()->where(['slug' => $id])->one();
         if ($berita == null) throw new HttpException(404);
         $news = Berita::find()->where(['kategori_berita_id' => $berita->kategori_berita_id])->limit(3)->all();
@@ -749,6 +758,7 @@ class HomeController extends Controller
         $pagination = new Pagination(['totalCount' => $count, 'pageSize' => 6]);
         $pembayarans = $query->offset($pagination->offset)
             ->limit($pagination->limit)
+            ->orderBy(['created_at'=> SORT_DESC])
             ->all();
 
         return $this->render('profile', [
