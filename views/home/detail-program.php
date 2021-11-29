@@ -479,8 +479,8 @@ use yii\helpers\Url;
           </div>
         </div>
         <div class="mt-4">
-          <label for="" style="color:#787892;">Tambahkan Program Ini di Halaman Anda</label>
-          <input type="text" style="width: 100%;" class="select-wakaf border-r5 p-2" value="Lorem ipsum dolor sit amet.">
+          <!-- <label for="" style="color:#787892;">Tambahkan Program Ini di Halaman Anda</label>
+          <input type="text" style="width: 100%;" class="select-wakaf border-r5 p-2" value="Lorem ipsum dolor sit amet."> -->
         </div>
       </div>
     </div><!-- /.row -->

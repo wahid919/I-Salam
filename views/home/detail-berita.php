@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 <?php
 
 use yii\bootstrap\Html;
@@ -51,7 +50,6 @@ use yii\helpers\Url;
     <!-- =========================
         Header
     =========================== -->
-    <?= $this->render('component/header') ?>
 
     <!-- ============================
         Slider
@@ -76,52 +74,6 @@ use yii\helpers\Url;
               <i style="margin-left: 1rem;" class="fa fa-eye mr-1 text-primary"></i> <?= $berita->view_count ?> <?= Yii::t("cruds", "kali dilihat") ?>
               <!-- </div> -->
             </div>
-=======
-<?php $this->registerCss("
-.text-primary {
-  color: rgb(245, 174, 61) !important;
-}
-
-.content-berita__info {
-  color: #F1A527;
-  font-size: .6rem;
-  position: absolute;
-  bottom: 0;
-  left: 1.25rem;
-  right: 1.25rem;
-  padding-bottom: .5rem;
-}
-
-.card_berita {
-  border-radius: .7rem;
-  box-shadow: 0 0 3px 0px #dedede;
-}
-
-.card-title {
-  font-size: 1.1rem;
-  color: #666;
-  margin-bottom: 3rem;
-}
-") ?>
-
-<hr class="mt-0">
-<div class="mt-4 mb-4">
-  <div class="container mt-4 mb-4">
-    <div style="background-image: url(<?= Yii::$app->formatter->asMyImage("berita/" . $berita->gambar, false, "logo.png") ?>);background-position: center;background-size:cover;border-radius: 1rem;width:100%;height:35vw"></div>
-    <span style="font-size: .8rem"> <?= $berita->image_summary ?></span>
-    <div class="row">
-      <div class="col-md-7">
-        <h2 class="heading__title mt-4 mb-2" style="font-size: 1.8rem;;color: #666"><?= $berita->judul ?></h2>
-        <div class="row" style="font-size: .8rem;">
-          <div class="col-lg-2 col-md-3" style="color: #666; font-weight:600">
-            <i class="fa fa-user mr-1 text-primary"></i> <?= $berita->user ? $berita->user->name : "-" ?>
-          </div>
-          <div class="col-lg-4 col-md-4" style="color: #666; font-weight:600">
-            <i class="fa fa-calendar mr-1 text-primary"></i> <?= date("d / m / Y", strtotime($berita->created_at)); ?>
-          </div>
-          <div class="col-md-4" style="color: #666; font-weight:600">
-            <i class="fa fa-eye mr-1 text-primary"></i> <?= $berita->view_count ?> <?= Yii::t("cruds", "kali dilihat") ?>
->>>>>>> ecf72ad3079e6d1a2b8b2cd32103d0aeb0aeb8a4
           </div>
         </div>
       </div>
@@ -141,7 +93,6 @@ use yii\helpers\Url;
               <!-- <img src="" class="card-img-top" alt="..."> -->
               <div style="border-radius: .7rem;background-image: url(<?= \Yii::$app->request->baseUrl . "/uploads/berita/" . $berita->gambar ?>);background-size: cover;height: 200px;">
 
-<<<<<<< HEAD
                   </div>
                   <div class="card-body">
                     <h6 class="card-title"><?= $berita->getShowTitle() ?></h6>
@@ -161,19 +112,6 @@ use yii\helpers\Url;
                     </p>
                     <div style="text-align: right;">
                       <a href="<?= Url::to(['home/detail-berita', 'id' => $berita->slug]) ?>" class="btn btn-more"><?= Yii::t("cruds", "Baca Selengkapnya") ?></a>
-=======
-              </div>
-              <div class="card-body">
-                <h6 class="card-title"><?= $berita->getShowTitle() ?></h6>
-                <div class="content-berita__info">
-                  <hr>
-                  <div class="row">
-                    <div class="col-lg-6 col-md-6 col-6 text-left">
-                      <?= date("d M Y", strtotime($berita->created_at)); ?>
-                    </div>
-                    <div class="col-lg-6 col-md-6 col-6 text-right">
-                      <?= $berita->kategoriBerita->nama ?>
->>>>>>> ecf72ad3079e6d1a2b8b2cd32103d0aeb0aeb8a4
                     </div>
                   </div>
                 </div>
