@@ -14,80 +14,83 @@
           </ul>
           <div class="tab-content" id="myTabContent">
             <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-              
-                <div class="form-group">
-                  <div class="row">
-                    <div class="col-lg-6 col-md-6 col-sm-12 col-12">
-                      <label for="Wakaf" style="font-size: 1.4rem;color: #f1a502;margin-top: 10px;">Ayo Mulai Wakaf</label>
-                    </div>
-                    <div class="col-lg-6 col-md-6 col-sm-12 col-12">
-                      <select class="form-control select-wakaf border-r5 shadow-r2" id="select-category" style="overflow: scroll;" onchange="myFunction(event)">
-                        <option class="font-weight-bold" disabled selected>Silahkan Pilih Program</option>
-                        <?php
-                        foreach ($list_pendanaans as $pendana) { ?>
-                          <option class="font-weight-bold" value="<?= $pendana->id ?>"><?= $pendana->nama_pendanaan ?></option>
-                        <?php } ?>
-                      </select>
-                    </div>
-                    <div class="col-lg-8 col-md-8 col-sm-12 col-12 pt-4">
-                      <p style="color: #2a2a2a;" class="font-weight-bold pt-4">Silahkan Isi Jumlah Wakafmu, Insyaallah Semua Berkah</p>
-                    </div>
-                    <div class="col-12 pt-4">
-                      <div class="form-group">
-                        <label for="">Isi Nominal Wakaf Anda</label>
-                        <div class="input-group mb-2">
-                          <div class="input-group-prepend mr-2" style="height:calc(1.5em + .75rem + 2px);">
-                            <div class="input-group-text bg-white border-r5 font-weight-bold" style="color: #afafaf;">Rp</div>
-                          </div>
 
-                          <input type="hidden" class="form-control select-wakaf border-r5" id="pendanaan_wakaf" name="pendanaan_wakaf" placeholder="Minimal Wakaf Rp. 10.000">
-                          <input type="number" class="form-control select-wakaf border-r5" id="nominal" name="nominal" placeholder="Minimal Wakaf Rp. 10.000">
+              <div class="form-group">
+                <div class="row">
+                  <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                    <label for="Wakaf" style="font-size: 1.4rem;color: #f1a502;margin-top: 10px;">Ayo Mulai Wakaf</label>
+                  </div>
+                  <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                    <select class="form-control select-wakaf border-r5 shadow-r2" id="select-category" style="overflow: scroll;" onchange="myFunction(event)">
+                      <option class="font-weight-bold" disabled selected>Silahkan Pilih Program</option>
+                      <?php
+
+                      use richardfan\widget\JSRegister;
+
+                      foreach ($list_pendanaans as $pendana) { ?>
+                        <option class="font-weight-bold" value="<?= $pendana->id ?>"><?= $pendana->nama_pendanaan ?></option>
+                      <?php } ?>
+                    </select>
+                  </div>
+                  <div class="col-lg-8 col-md-8 col-sm-12 col-12 pt-4">
+                    <p style="color: #2a2a2a;" class="font-weight-bold pt-4">Silahkan Isi Jumlah Wakafmu, Insyaallah Semua Berkah</p>
+                  </div>
+                  <div class="col-12 pt-4">
+                    <div class="form-group">
+                      <label for="">Isi Nominal Wakaf Anda</label>
+                      <div class="input-group mb-2">
+                        <div class="input-group-prepend mr-2" style="height:calc(1.5em + .75rem + 2px);">
+                          <div class="input-group-text bg-white border-r5 font-weight-bold" style="color: #afafaf;">Rp</div>
                         </div>
+
+                        <input type="hidden" class="form-control select-wakaf border-r5" id="pendanaan_wakaf" name="pendanaan_wakaf" placeholder="Minimal Wakaf Rp. 10.000">
+                        <input type="number" class="form-control select-wakaf border-r5" id="nominal" name="nominal" placeholder="Minimal Wakaf Rp. 10.000">
                       </div>
                     </div>
-                    <div class="col-12">
-                      <button type="submit" class="btn-sm btn-block text-white font-weight-bold" style="height: 3rem;background-color: #f1a502;" id="bayarkan">Wakaf Sekarang</button>
-                    </div>
+                  </div>
+                  <div class="col-12">
+                    <button type="submit" class="btn-sm btn-block text-white font-weight-bold" style="height: 3rem;background-color: #f1a502;" id="bayarkan">Wakaf Sekarang</button>
                   </div>
                 </div>
-              
+              </div>
+
             </div>
             <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-              
-                <div class="form-group">
-                  <div class="row">
-                    <div class="col-lg-6 col-md-6 col-sm-12 col-12">
-                      <label for="Infak" style="font-size: 1.4rem;color: #f1a502;margin-top: 10px;">Ayo Mulai Infak</label>
-                    </div>
-                    <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+
+              <div class="form-group">
+                <div class="row">
+                  <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                    <label for="Infak" style="font-size: 1.4rem;color: #f1a502;margin-top: 10px;">Ayo Mulai Infak</label>
+                  </div>
+                  <div class="col-lg-6 col-md-6 col-sm-12 col-12">
                     <select class="form-control select-wakaf border-r5 shadow-r2" id="select-category" style="overflow: scroll;" onchange="myFunction2(event)">
-                                <option class="font-weight-bold" disabled selected>Silahkan Pilih Program</option>
-                                <?php foreach($list_pendanaans as $pendana){ ?>
-                                    <option class="font-weight-bold" value="<?= $pendana->id ?>"><?= $pendana->nama_pendanaan ?></option>
-                                <?php } ?>
-                                </select>
-                    </div>
-                    <div class="col-lg-8 col-md-8 col-sm-12 col-12 pt-4">
-                      <p style="color: #2a2a2a;" class="font-weight-bold pt-4">Silahkan Isi Jumlah Infakmu, Insyaallah Semua Berkah</p>
-                    </div>
-                    <div class="col-12 pt-4">
-                      <div class="form-group">
-                        <label for="">Isi Nominal Infak Anda</label>
-                        <div class="input-group mb-2">
-                          <div class="input-group-prepend mr-2" style="height:calc(1.5em + .75rem + 2px);">
-                            <div class="input-group-text bg-white border-r5 font-weight-bold" style="color: #afafaf;">Rp</div>
-                          </div>
-                          <input type="hidden" class="form-control select-wakaf border-r5 shadow-r2" id="pendanaan_infak" name="pendanaan_infak" placeholder="Minimal Wakaf Rp. 10.000">
-                                        <input type="number" class="form-control select-wakaf border-r5 shadow-r2" id="nominal2" name="nominal2" placeholder="Minimal infak Rp. 10.000">
+                      <option class="font-weight-bold" disabled selected>Silahkan Pilih Program</option>
+                      <?php foreach ($list_pendanaans as $pendana) { ?>
+                        <option class="font-weight-bold" value="<?= $pendana->id ?>"><?= $pendana->nama_pendanaan ?></option>
+                      <?php } ?>
+                    </select>
+                  </div>
+                  <div class="col-lg-8 col-md-8 col-sm-12 col-12 pt-4">
+                    <p style="color: #2a2a2a;" class="font-weight-bold pt-4">Silahkan Isi Jumlah Infakmu, Insyaallah Semua Berkah</p>
+                  </div>
+                  <div class="col-12 pt-4">
+                    <div class="form-group">
+                      <label for="">Isi Nominal Infak Anda</label>
+                      <div class="input-group mb-2">
+                        <div class="input-group-prepend mr-2" style="height:calc(1.5em + .75rem + 2px);">
+                          <div class="input-group-text bg-white border-r5 font-weight-bold" style="color: #afafaf;">Rp</div>
                         </div>
+                        <input type="hidden" class="form-control select-wakaf border-r5 shadow-r2" id="pendanaan_infak" name="pendanaan_infak" placeholder="Minimal Wakaf Rp. 10.000">
+                        <input type="number" class="form-control select-wakaf border-r5 shadow-r2" id="nominal2" name="nominal2" placeholder="Minimal infak Rp. 10.000">
                       </div>
                     </div>
-                    <div class="col-12">
-                      <button type="submit" class="btn-sm btn-block text-white font-weight-bold" style="height: 3rem;background-color: #f1a502;" id="bayarkan2">Infak Sekarang</button>
-                    </div>
+                  </div>
+                  <div class="col-12">
+                    <button type="submit" class="btn-sm btn-block text-white font-weight-bold" style="height: 3rem;background-color: #f1a502;" id="bayarkan2">Infak Sekarang</button>
                   </div>
                 </div>
-              
+              </div>
+
             </div>
           </div>
         </div>
@@ -330,7 +333,7 @@
 
         let ket = "wakaf";
         var base_url = window.origin + "/isalam/web/home/pembayarans/" + dana + "?nominal=" + nominal + "&keterangan=" + ket;
-          // console.log(base_url);
+        // console.log(base_url);
         window.location.href = base_url;
       }
     }
@@ -357,32 +360,41 @@
 </script>
 <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="SB-Mid-client-lrPe45BCGoT9yG2O"></script>
 
-    <pre><div id="result-json">JSON result will appear here after payment:<br></div></pre> 
-<script type="text/javascript">
+<pre><div id="result-json">JSON result will appear here after payment:<br></div></pre>
 
-      function setGlobal() {
-        window.snap.pay('<?=$pembayaran->code?>', {
-          // Optional
-          onSuccess: function(result){
-            /* You may add your own js here, this is just example */ document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
-            alert("payment success!"); console.log(result);
-            // alert("payment success!"); console.log(result);
-          },
-          // Optional
-          onPending: function(result){
-            alert("payment pending!"); console.log(result);
-            /* You may add your own js here, this is just example */ document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
-          },
-          // Optional
-          onError: function(result){
-            /* You may add your own js here, this is just example */ document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
-            alert("payment error!"); console.log(result);
-          },
-          onClose: function(){
-    /* You may add your own implementation here */
-    alert('you closed the popup without finishing the payment');
-  }
+<?php JSRegister::begin(); ?>
+<script>
+  function setGlobal() {
+    window.snap.pay('<?= $pembayaran->code ?>', {
+      // Optional
+      onSuccess: function(result) {
+        /* You may add your own js here, this is just example */
+        document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
+        Swal.fire("Peringatan!", "Pembayaran Berhasil", "success").then((result) => {
+          window.location = "<?= Yii::$app->request->baseUrl . "/home/profile" ?>";
         });
-      };
-      setGlobal();
-    </script>
+        // alert("payment success!"); console.log(result);
+      },
+      // Optional
+      onPending: function(result) {
+        Swal.fire("Peringatan!", "Transaksi Menunggu Pembayaran", "success").then((result) => {
+          window.location = "<?= Yii::$app->request->baseUrl . "/home/profile" ?>";
+        });
+        /* You may add your own js here, this is just example */
+        document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
+      },
+      // Optional
+      onError: function(result) {
+        /* You may add your own js here, this is just example */
+        document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
+        Swal.fire("Peringatan!", "Pembayaran Gagal", "error");
+      },
+      onClose: function() {
+        /* You may add your own implementation here */
+        Swal.fire("Peringatan!", "Anda Belum Menyelesaikan Pembayaran", "error");
+      }
+    });
+  };
+  setGlobal();
+</script>
+<?php JSRegister::end(); ?>
