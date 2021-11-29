@@ -76,7 +76,7 @@ use yii\helpers\Url;
                 </thead>
                 <tbody>
                   <tr>
-                    <td class="font-weight-bold text-isalam-1 font-size-08">Sosial & Kemanusiaan</td>
+                    <td class="font-weight-bold text-isalam-1 font-size-08"><?= $pendanaan->kategoriPendanaan->name ?></td>
                     <td class="font-weight-bold text-isalam-1 font-size-08">Kota Jakarta Pusat</td>
                   </tr>
                   <tr>
