@@ -37,7 +37,7 @@ use yii\helpers\Url;
         </div>
         <div class="col-lg-6 col-md-6 col-sm-12 col-12">
           <div class="program__text">
-            <h3 class="font-weight-bold text-detail-program">Mari Ikut Wakaf Masjid di Indonesia</h3>
+            <h3 class="font-weight-bold text-detail-program"><?= $pendanaan->nama_pendanaan ?></h3>
             <div class="table-responsive d-none d-lg-block">
               <table class="table table-borderless">
                 <thead>
@@ -147,129 +147,117 @@ use yii\helpers\Url;
               </div>
               <div class="col-8">
                 <p class="font-size-08">Anda akan berwakaf untuk project :</p>
-                <p class="font-weight-bold">Mari Ikut Wakaf Masjid Di Indonesia</p>
+                <p class="font-weight-bold"><?= $pendanaan->nama_pendanaan ?> </p>
+                <a href="#" class="btn btn-block btn-nilai-wakaf btn-outline-bayar border-r5 mt-2" role="button" aria-pressed="true" onclick="return theFunction(300000);">Rp. 300.000 ></a>
               </div>
-              <div class="col-12 pt-3">
-                <h3 style="color: #404040;">Nominal Wakaf</h3>
-                <p class="font-size-08">Anda akan berwakaf dengan nominal sebesar :</p>
-                <div class="row">
-                  <div class="col-6">
-                    <a href="#" class="btn btn-block btn-nilai-wakaf btn-outline-bayar border-r5 mt-2" role="button" aria-pressed="true" onclick="return theFunction(100000);">Rp. 100.000 ></a>
+              <div class="col-6">
+                <a href="#" class="btn btn-block btn-nilai-wakaf btn-outline-bayar border-r5 mt-2" role="button" aria-pressed="true" onclick="return theFunction(400000);">Rp. 400.000 ></a>
+              </div>
+              <div class="col-6">
+                <a href="#" class="btn btn-block btn-nilai-wakaf btn-outline-bayar border-r5 mt-2" role="button" aria-pressed="true" onclick="return theFunction(500000);">Rp. 500.000 ></a>
+              </div>
+              <div class="col-6">
+                <a href="#" class="btn btn-block btn-nilai-wakaf btn-outline-bayar border-r5 mt-2" role="button" aria-pressed="true" onclick="return theFunction(600000);">Rp. 600.000 ></a>
+              </div>
+              <div class="col-12 mt-2">
+                <div class="input-group mb-2">
+                  <div class="input-group-prepend mr-2" style="height:calc(1.5em + .75rem + 2px);">
+                    <div class="input-group-text bg-white border-r5 font-weight-bold" style="color: #afafaf;border-color: #787878;">Rp</div>
                   </div>
-                  <div class="col-6">
-                    <a href="#" class="btn btn-block btn-nilai-wakaf btn-outline-bayar border-r5 mt-2" role="button" aria-pressed="true" onclick="return theFunction(200000);">Rp. 200.000 ></a>
-                  </div>
-                  <div class="col-6">
-                    <a href="#" class="btn btn-block btn-nilai-wakaf btn-outline-bayar border-r5 mt-2" role="button" aria-pressed="true" onclick="return theFunction(300000);">Rp. 300.000 ></a>
-                  </div>
-                  <div class="col-6">
-                    <a href="#" class="btn btn-block btn-nilai-wakaf btn-outline-bayar border-r5 mt-2" role="button" aria-pressed="true" onclick="return theFunction(400000);">Rp. 400.000 ></a>
-                  </div>
-                  <div class="col-6">
-                    <a href="#" class="btn btn-block btn-nilai-wakaf btn-outline-bayar border-r5 mt-2" role="button" aria-pressed="true" onclick="return theFunction(500000);">Rp. 500.000 ></a>
-                  </div>
-                  <div class="col-6">
-                    <a href="#" class="btn btn-block btn-nilai-wakaf btn-outline-bayar border-r5 mt-2" role="button" aria-pressed="true" onclick="return theFunction(600000);">Rp. 600.000 ></a>
-                  </div>
-                  <div class="col-12 mt-2">
-                    <div class="input-group mb-2">
-                      <div class="input-group-prepend mr-2" style="height:calc(1.5em + .75rem + 2px);">
-                        <div class="input-group-text bg-white border-r5 font-weight-bold" style="color: #afafaf;border-color: #787878;">Rp</div>
-                      </div>
-                      <input type="text" class="form-control select-wakaf border-r5" id="nominal" name="nominal" style="border-color: #787878;" placeholder="Minimal Wakaf Rp. 10.000" required>
-                    </div>
-                  </div>
+                  <input type="text" class="form-control select-wakaf border-r5" id="nominal" name="nominal" style="border-color: #787878;" placeholder="Minimal Wakaf Rp. 10.000" required>
                 </div>
               </div>
             </div>
           </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-sm btn-batal" data-dismiss="modal">Batal</button>
-            <!-- <button type="button" class="btn btn-sm btn-program" data-toggle="modal" data-target="#exampleModalScrollable" id="bayarkan">Bayar</button> -->
-            <button type="button" class="btn btn-sm btn-program" style="padding: 10px !important;" id="bayarkan">Bayar</button>
-          </div>
         </div>
       </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-sm btn-batal" data-dismiss="modal">Batal</button>
+        <!-- <button type="button" class="btn btn-sm btn-program" data-toggle="modal" data-target="#exampleModalScrollable" id="bayarkan">Bayar</button> -->
+        <button type="button" class="btn btn-sm btn-program" style="padding: 10px !important;" id="bayarkan">Bayar</button>
+      </div>
     </div>
+  </div>
+  </div>
 
-    <script type="text/javascript">
-      var global = "Global Variable"; //Define global variable outside of function
+  <script type="text/javascript">
+    var global = "Global Variable"; //Define global variable outside of function
 
 
-      function setGlobal() {
-        global = "Hello World!";
-      };
-      setGlobal();
-      var data = 0;
-      var coba;
-      theFunction(data);
+    function setGlobal() {
+      global = "Hello World!";
+    };
+    setGlobal();
+    var data = 0;
+    var coba;
+    theFunction(data);
 
-      document.querySelector("#bayarkan").addEventListener("click", () => {
-        let nominal = document.querySelector("#nominal").getAttribute("value");
-        window.location.href = `<?= Url::to(['/home/pembayaran', 'id' => $pendanaan->id]) ?>?nominal=${nominal}`;
-      });
+    document.querySelector("#bayarkan").addEventListener("click", () => {
+      let nominal = document.querySelector("#nominal").getAttribute("value");
+      window.location.href = `<?= Url::to(['/home/pembayaran', 'id' => $pendanaan->id]) ?>?nominal=${nominal}`;
+    });
 
-      function theFunction(i) {
+    function theFunction(i) {
 
-        var rupiah;
-        var php_var = "<?php $php_var; ?>";
-        document.querySelector("#nominal").setAttribute("value", i);
-        var a = document.getElementById("nominal").value = i;
-        let num = 15;
-        let n = num.toString();
-        coba = i;
-        php_var += a;
-        var number_string = i.toString(),
-          sisa = number_string.length % 3,
-          rupiah = number_string.substr(0, sisa),
-          ribuan = number_string.substr(sisa).match(/\d{3}/g);
+      var rupiah;
+      var php_var = "<?php $php_var; ?>";
+      document.querySelector("#nominal").setAttribute("value", i);
+      var a = document.getElementById("nominal").value = i;
+      let num = 15;
+      let n = num.toString();
+      coba = i;
+      php_var += a;
+      var number_string = i.toString(),
+        sisa = number_string.length % 3,
+        rupiah = number_string.substr(0, sisa),
+        ribuan = number_string.substr(sisa).match(/\d{3}/g);
 
-        if (ribuan) {
-          separator = sisa ? '.' : '';
-          rupiah += separator + ribuan.join('.');
-        }
-        // var b = document.getElementById("nom").innerHTML = "Rp. " + rupiah;
-        // coba = "Rp. " + rupiah;
-        // var p1 = document.getElementById("nom").value;
-        // console.log(php_var);
-        return i;
-        // console.log(a);
-        // data = a;
-        // return true or false, depending on whether you want to allow the `href` property to follow through or not
+      if (ribuan) {
+        separator = sisa ? '.' : '';
+        rupiah += separator + ribuan.join('.');
       }
-      var duit = document.getElementById("nominal");
-      duit.addEventListener('keyup', function(e) {
-        // console.log(this.value);
-        duit.setAttribute("value", this.value);
-      });
+      // var b = document.getElementById("nom").innerHTML = "Rp. " + rupiah;
+      // coba = "Rp. " + rupiah;
+      // var p1 = document.getElementById("nom").value;
+      // console.log(php_var);
+      return i;
+      // console.log(a);
+      // data = a;
+      // return true or false, depending on whether you want to allow the `href` property to follow through or not
+    }
+    var duit = document.getElementById("nominal");
+    duit.addEventListener('keyup', function(e) {
+      // console.log(this.value);
+      duit.setAttribute("value", this.value);
+    });
 
-      // console.log(data);
-    </script>
-    <!-- Modal -->
-    <div class="modal fade" id="exampleModalScrollable" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-scrollable" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalScrollableTitle">Pembayaran<?php var_dump($php_var); ?></h5>
+    // console.log(data);
+  </script>
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModalScrollable" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalScrollableTitle">Pembayaran<?php var_dump($php_var); ?></h5>
 
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <?php  ?> Apakah Anda Yakin Ingin Wakaf sebesar <h3 id="nom"></h3>
-            <script>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <?php  ?> Apakah Anda Yakin Ingin Wakaf sebesar <h3 id="nom"></h3>
+          <script>
 
-            </script>
+          </script>
 
-            <?php
-            echo "<script>document.writeln(global);</script>";
-            ?>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button id="pay-button" type="button" class="btn btn-primary">Save changes</button>
-            <!-- <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="SB-Mid-client-lrPe45BCGoT9yG2O"></script>
+          <?php
+          echo "<script>document.writeln(global);</script>";
+          ?>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button id="pay-button" type="button" class="btn btn-primary">Save changes</button>
+          <!-- <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="SB-Mid-client-lrPe45BCGoT9yG2O"></script>
             <script type="text/javascript">
               document.getElementById('pay-button').onclick = function() {
                 // SnapToken acquired from previous step
@@ -292,10 +280,13 @@ use yii\helpers\Url;
                 });
               };
             </script> -->
-          </div>
         </div>
       </div>
     </div>
+  </div>
+
+  <div class="container">
+
 
     <div class="row">
       <div class="col-lg-8 col-md-6 col-sm-12 pt-60">
@@ -394,5 +385,6 @@ use yii\helpers\Url;
         </div> -->
       </div>
     </div><!-- /.row -->
+  </div>
   </div><!-- /.container -->
 </section><!-- /.blog Single -->
