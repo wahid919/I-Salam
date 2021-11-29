@@ -1,6 +1,8 @@
 <?php
 
 use yii\bootstrap\Html;
+use yii\helpers\Url;
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -22,9 +24,9 @@ use yii\bootstrap\Html;
 
     .content-berita__info {
       color: #F1A527;
-      font-size: .6rem;
-      position: absolute;
-      bottom: 0;
+      font-size: .7rem;
+      /* position: absolute;
+      bottom: 0; */
       left: 1.25rem;
       right: 1.25rem;
       padding-bottom: .5rem;
@@ -38,7 +40,7 @@ use yii\bootstrap\Html;
     .card-title {
       font-size: 1.1rem;
       color: #666;
-      margin-bottom: 3rem;
+      margin-bottom: .5rem;
     }
   </style>
 </head>
@@ -62,16 +64,16 @@ use yii\bootstrap\Html;
         <div class="row">
           <div class="col-md-7">
             <h2 class="heading__title mt-4 mb-2" style="font-size: 1.8rem;;color: #666"><?= $berita->judul ?></h2>
-            <div class="row" style="font-size: .8rem;">
-              <div class="col-md-4" style="color: #666; font-weight:600">
-                <i class="fa fa-user mr-1 text-primary"></i> <?= $berita->user ? $berita->user->name : "-" ?>
-              </div>
-              <div class="col-md-4" style="color: #666; font-weight:600">
-                <i class="fa fa-calendar mr-1 text-primary"></i> <?= date("d / m / Y", strtotime($berita->created_at)); ?>
-              </div>
-              <div class="col-md-4" style="color: #666; font-weight:600">
-                <i class="fa fa-eye mr-1 text-primary"></i> <?= $berita->view_count ?> <?= Yii::t("cruds", "kali dilihat") ?>
-              </div>
+            <div style="font-size: .8rem;">
+              <!-- <div class="col-md-4" style="color: #666; font-weight:600"> -->
+              <i class="fa fa-user mr-1 text-primary"></i> <?= $berita->user ? $berita->user->name : "-" ?>
+              <!-- </div>
+              <div class="col-md-4" style="color: #666; font-weight:600"> -->
+              <i style="margin-left: 1rem;" class="fa fa-calendar mr-1 text-primary"></i> <?= date("d / m / Y", strtotime($berita->created_at)); ?>
+              <!-- </div>
+              <div class="col-md-4" style="color: #666; font-weight:600"> -->
+              <i style="margin-left: 1rem;" class="fa fa-eye mr-1 text-primary"></i> <?= $berita->view_count ?> <?= Yii::t("cruds", "kali dilihat") ?>
+              <!-- </div> -->
             </div>
           </div>
           <div class="col-md-5"></div>
@@ -94,15 +96,21 @@ use yii\bootstrap\Html;
                   <div class="card-body">
                     <h6 class="card-title"><?= $berita->getShowTitle() ?></h6>
                     <div class="content-berita__info">
-                      <hr>
                       <div class="row">
                         <div class="col-lg-6 col-md-6 col-6 text-left">
-                          <?= date("d M Y", strtotime($berita->created_at)); ?>
+                          <?= date("d M Y", strtotime($berita->created_at)); ?> <br>
                         </div>
                         <div class="col-lg-6 col-md-6 col-6 text-right">
                           <?= $berita->kategoriBerita->nama ?>
                         </div>
                       </div>
+                      <hr>
+                    </div>
+                    <p style="color: #666; margin-bottom: .5rem; font-size: .9rem" :hover="color: #666">
+                      <?= $berita->getDescription() ?>
+                    </p>
+                    <div style="text-align: right;">
+                      <a href="<?= Url::to(['home/detail-berita', 'id' => $berita->slug]) ?>" class="btn btn-more"><?= Yii::t("cruds", "Baca Selengkapnya") ?></a>
                     </div>
                   </div>
                 </div>

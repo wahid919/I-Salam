@@ -8536,9 +8536,9 @@ textarea.form-control {
 
 .content-berita__info {
     color: #F1A527;
-    font-size: .6rem;
-    position: absolute;
-    bottom: 0;
+    font-size: .7rem;
+    /* position: absolute;
+    bottom: 0; */
     left: 1.25rem;
     right: 1.25rem;
     padding-bottom: .5rem;
@@ -8552,7 +8552,7 @@ textarea.form-control {
 .card-title {
     font-size: 1.1rem;
     color: #666;
-    margin-bottom: 3rem;
+    margin-bottom: .5rem;
 }
 
 .item {

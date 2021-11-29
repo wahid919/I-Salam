@@ -5,6 +5,7 @@ namespace app\models;
 use Yii;
 use \app\models\base\Berita as BaseBerita;
 use yii\helpers\ArrayHelper;
+use yii\helpers\HtmlPurifier;
 
 /**
  * This is the model class for table "berita".
@@ -46,5 +47,12 @@ class Berita extends BaseBerita
     {
         if (strlen($this->judul) <= 75) return $this->judul;
         return substr($this->judul, 0, 75) . "...";
+    }
+
+    public function getDescription()
+    {
+        if (strlen($this->isi) <= 200) $text = strip_tags($this->isi);
+        else $text = strip_tags(substr($this->isi, 0, 200) . "...");
+        return $text;
     }
 }
