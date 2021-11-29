@@ -82,7 +82,7 @@ class HomeController extends Controller
         ];
     }
 
-    public function actionPembayaran($id, $nominal)
+    public function actionPembayaran($id, $nominal,$ket)
     {
         $pendanaan = \app\models\Pendanaan::find()
             ->where(['id' => $id])->one();
@@ -107,21 +107,32 @@ class HomeController extends Controller
     
                 // $model->nama = Yii::$app->user->identity->name;
                 $model->nama = $name;
-    
-    
-    
-                $model->jumlah_lembaran = 0;
-                $model->nominal = (int)$nominal;
+                if($ket == "lembar"){
+
+                    $model->jumlah_lembaran = (int)$nominal;
+                    $total = (int)$nominal * $pendanaan->nominal_lembaran;
+                $model->nominal = (int)$total;
     
                 // Optional
                 $item1_details = array(
                     'id' => '1',
-                    'price' => (int)$nominal,
+                    'price' => (int)$total,
                     'quantity' => 1,
-                    'name' => $pendanaan->nama_pendanaan . "(Non Lembaran)"
+                    'name' => $pendanaan->nama_pendanaan . "(Lembaran)"
                 );
-    
-    
+                }else{
+                    $model->jumlah_lembaran = 0;
+                    $model->nominal = (int)$nominal;
+        
+                    // Optional
+                    $item1_details = array(
+                        'id' => '1',
+                        'price' => (int)$nominal,
+                        'quantity' => 1,
+                        'name' => $pendanaan->nama_pendanaan . "(Non Lembaran)"
+                    );
+                }
+
                 // $model->jenis_pembayaran_id = $val['jenis_pembayaran_id'] ?? '';
                 // $model->user_id = \Yii::$app->user->identity->id;
                 $model->user_id = \Yii::$app->user->identity->id;;
