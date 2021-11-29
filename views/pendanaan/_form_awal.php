@@ -27,7 +27,7 @@ $this->registerJs("
 ");
 ?>
 <div class="row">
-            <div class="col-lg-12">
+            <div class="col-lg-4">
                 <?= $form->field($model, 'nama_pendanaan', [
                     'template' => '
                     {label}
@@ -42,6 +42,38 @@ $this->registerJs("
                     ],
                     'options' => ['tag' => false]
                 ])->textInput(['maxlength' => true])->label('1. Nama Pendanaan'); ?>
+            </div>
+            <div class="col-lg-4">
+                <?= $form->field($model, 'tempat', [
+                    'template' => '
+                    {label}
+                    {input}
+                    {error}
+                    ',
+                    'inputOptions' => [
+                        'class' => 'form-control'
+                    ],
+                    'labelOptions' => [
+                        'class' => 'control-label'
+                    ],
+                    'options' => ['tag' => false]
+                ])->textInput(['maxlength' => true])->label('2. Tempat'); ?>
+            </div>
+            <div class="col-lg-4">
+                <?= $form->field($model, 'penerima_wakaf', [
+                    'template' => '
+                    {label}
+                    {input}
+                    {error}
+                    ',
+                    'inputOptions' => [
+                        'class' => 'form-control'
+                    ],
+                    'labelOptions' => [
+                        'class' => 'control-label'
+                    ],
+                    'options' => ['tag' => false]
+                ])->textInput(['maxlength' => true])->label('3. Penerima Wakaf'); ?>
             </div>
         </div>
         <div class="row">

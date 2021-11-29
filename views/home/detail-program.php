@@ -60,8 +60,8 @@ use yii\helpers\Url;
                 <tbody>
                   <tr>
                     <td class="font-weight-bold text-isalam-1 font-size-08"><?= $pendanaan->kategoriPendanaan->name ?></td>
-                    <td class="font-weight-bold text-isalam-1 font-size-08">Kota Jakarta Pusat</td>
-                    <td class="font-weight-bold text-isalam-1 font-size-08">Ahmad Salim</td>
+                    <td class="font-weight-bold text-isalam-1 font-size-08"><?= $pendanaan->tempat ?></td>
+                    <td class="font-weight-bold text-isalam-1 font-size-08"><?= $pendanaan->penerima_wakaf ?></td>
                   </tr>
                 </tbody>
               </table>
@@ -76,14 +76,14 @@ use yii\helpers\Url;
                 </thead>
                 <tbody>
                   <tr>
-                    <td class="font-weight-bold text-isalam-1 font-size-08">Sosial & Kemanusiaan</td>
-                    <td class="font-weight-bold text-isalam-1 font-size-08">Kota Jakarta Pusat</td>
+                    <td class="font-weight-bold text-isalam-1 font-size-08"><?= $pendanaan->kategoriPendanaan->name ?></td>
+                    <td class="font-weight-bold text-isalam-1 font-size-08"><?= $pendanaan->tempat ?></td>
                   </tr>
                   <tr>
                     <th colspan="2" style="color:#787878">Penerima Wakaf</th>
                   </tr>
                   <tr>
-                    <td colspan="2" class="font-weight-bold text-isalam-1 font-size-08">Ahmad Salim</td>
+                    <td colspan="2" class="font-weight-bold text-isalam-1 font-size-08"><?= $pendanaan->penerima_wakaf ?></td>
                   </tr>
                 </tbody>
               </table>
@@ -118,7 +118,7 @@ use yii\helpers\Url;
               <div class="col-lg-6 col-md-6 col-6 text-right pt-4 font-weight-bold font-size-1">
                 <?= $interval ?> Hari
               </div>
-              <div class="col-lg-6 col-md-6 col-6 text-left pt-4 font-weight-bold font-size-1">
+              <!-- <div class="col-lg-6 col-md-6 col-6 text-left pt-4 font-weight-bold font-size-1">
                 Share Wakaf Melalui Sosial Media
               </div>
               <div class="col-lg-6 col-md-6 col-6 text-right pt-4 font-weight-bold font-size-1 ">
@@ -127,7 +127,7 @@ use yii\helpers\Url;
                   <a href="https://twitter.com/" target="_blank"><i class="fab fa-twitter"></i></a>
                   <a href="https://www.instagram.com/" target="_blank"><i class="fab fa-instagram"></i></a>
                 </div>
-              </div>
+              </div> -->
             </div>
             <hr>
             <div class="row">
@@ -448,7 +448,7 @@ use yii\helpers\Url;
         </div>
       </div><!-- /.col-lg-12 -->
       <div class="col-lg-4 col-md-6 col-sm-12 pt-70">
-        <div class="text-left">
+        <!-- <div class="text-left">
           <p class="font-size-1 font-weight-bold">
             Penggalangan Dana Dimulai
           </p>
@@ -458,7 +458,7 @@ use yii\helpers\Url;
             </span>
             Oleh: Admin
           </p>
-        </div>
+        </div> -->
         <div class="card">
           <div class="card-body">
             <div class="row">
@@ -470,18 +470,24 @@ use yii\helpers\Url;
               </div>
               <hr>
               <div class="col-4 text-left border-top-2 mt-4 pt-4">
-                <p class="font-weight-bold">Total</p>
+                <p class="font-weight-bold">Oleh</p>
               </div>
               <div class="col-8 text-right border-top-2 mt-4 pt-4">
-                <p class="font-weight-bold text-isalam-1">1 Program Campaign</p>
+                <p class="font-weight-bold text-isalam-1"><?=$pendanaan->user->name?></p>
+              </div>
+              <div class="col-4 text-left border-top-2 mt-4 pt-4">
+                <p class="font-weight-bold">Tanggal</p>
+              </div>
+              <div class="col-8 text-right border-top-2 mt-4 pt-4">
+                <p class="font-weight-bold text-isalam-1"><?= \app\components\Tanggal::toReadableDate($pendanaan->created_at); ?></p>
               </div>
             </div>
           </div>
         </div>
-        <div class="mt-4">
+        <!-- <div class="mt-4">
           <label for="" style="color:#787892;">Tambahkan Program Ini di Halaman Anda</label>
           <input type="text" style="width: 100%;" class="select-wakaf border-r5 p-2" value="Lorem ipsum dolor sit amet.">
-        </div>
+        </div> -->
       </div>
     </div><!-- /.row -->
   </div><!-- /.container -->

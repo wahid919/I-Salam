@@ -212,7 +212,7 @@ abstract class Pendanaan extends \yii\db\ActiveRecord
             [['user_id', 'kategori_pendanaan_id', 'status_id','bank_id','noms','nomor_rekening','status_lembaran','jumlah_lembaran'], 'integer'],
             [['pendanaan_berakhir','created_at'], 'safe'],
             [['user_id', 'kategori_pendanaan_id', 'status_id'], 'required'],
-            [['nama_pendanaan', 'foto','nama_nasabah','nama_perusahaan','foto_ktp','foto_kk','file_uraian','poster','nominal','nominal_lembaran'], 'string', 'max' => 255],
+            [['nama_pendanaan', 'tempat', 'penerima_wakaf', 'foto','nama_nasabah','nama_perusahaan','foto_ktp','foto_kk','file_uraian','poster','nominal','nominal_lembaran'], 'string', 'max' => 255],
             [['kategori_pendanaan_id'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\KategoriPendanaan::className(), 'targetAttribute' => ['kategori_pendanaan_id' => 'id']],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\User::className(), 'targetAttribute' => ['user_id' => 'id']],
             [['status_id'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\Status::className(), 'targetAttribute' => ['status_id' => 'id']],
@@ -248,6 +248,8 @@ abstract class Pendanaan extends \yii\db\ActiveRecord
             'kategori_pendanaan_id' => 'Kategori Pendanaan',
             'status_id' => 'Status',
             'created_at' => 'Dibuat Pada Tanggal',
+            'tempat' => 'Tempat',
+            'penerima_wakaf' => 'Penerima Wakaf',
         ];
     }
 
