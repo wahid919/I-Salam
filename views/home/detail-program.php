@@ -176,7 +176,7 @@ use yii\helpers\Url;
                       <div class="input-group-prepend mr-2" style="height:calc(1.5em + .75rem + 2px);">
                         <div class="input-group-text bg-white border-r5 font-weight-bold" style="color: #afafaf;border-color: #787878;">Rp</div>
                       </div>
-                      <input type="number" class="form-control select-wakaf border-r5" id="nominal" name="nominal" onkeypress="berubah()" style="border-color: #787878;" placeholder="Minimal Wakaf Rp. 10.000" required>
+                      <input type="text" class="form-control select-wakaf border-r5" id="nominal" name="nominal" style="border-color: #787878;" placeholder="Minimal Wakaf Rp. 10.000" required>
                     </div>
                   </div>
                 </div>
@@ -195,7 +195,7 @@ use yii\helpers\Url;
     <script type="text/javascript">
       var global = "Global Variable"; //Define global variable outside of function
 
-	
+
       function setGlobal() {
         global = "Hello World!";
       };
@@ -237,18 +237,12 @@ use yii\helpers\Url;
         // data = a;
         // return true or false, depending on whether you want to allow the `href` property to follow through or not
       }
-      function berubah(){
-        var duit = document.getElementById("nominal");
-      duit.addEventListener("keyup", function(e) {
+      var duit = document.getElementById("nominal");
+      duit.addEventListener('keyup', function(e) {
+        // console.log(this.value);
+        duit.setAttribute("value", this.value);
+      });
 
-// tambahkan 'Rp.' pada saat form di ketik
-// gunakan fungsi formatduit() untuk mengubah angka yang di ketik menjadi format angka
-duit.value = this.value;
-console.log(duit);
-console.log(e);
-document.getElementById("nominal").value = duit;
-});
-      }
       // console.log(data);
     </script>
     <!-- Modal -->
@@ -323,38 +317,38 @@ document.getElementById("nominal").value = duit;
                 <?= $pendanaan->deskripsi ?>
             </div>
             <div class="tab-pane fade" id="update" role="tabpanel" aria-labelledby="update-tab">
-              <?php if($kegiatans == null){
-                 ?>
-              <p class="update-program">
-                Belum Ada Informasi untuk Program Wakaf Ini.
-              </p>
-              <img class="border-r10 shadow-br3" src="<?= \Yii::$app->request->BaseUrl ?>/uploads/azhar.jpg">
-              <?php }else{ ?>
+              <?php if ($kegiatans == null) {
+              ?>
+                <p class="update-program">
+                  Belum Ada Informasi untuk Program Wakaf Ini.
+                </p>
+                <img class="border-r10 shadow-br3" src="<?= \Yii::$app->request->BaseUrl ?>/uploads/azhar.jpg">
+              <?php } else { ?>
 
-              <p class="update-program">
-                <?= $kegiatans->kegiatan; ?>
-              </p>
-              <img class="border-r10 shadow-br3" src="<?= \Yii::$app->request->BaseUrl ?>/uploads/kegiatan/<?= $kegiatans->foto ?>">
-                <?php } ?>
+                <p class="update-program">
+                  <?= $kegiatans->kegiatan; ?>
+                </p>
+                <img class="border-r10 shadow-br3" src="<?= \Yii::$app->request->BaseUrl ?>/uploads/kegiatan/<?= $kegiatans->foto ?>">
+              <?php } ?>
             </div>
             <div class="tab-pane fade" id="donatur" role="tabpanel" aria-labelledby="donatur-tab">
               <div class="table-responsive">
                 <table class="table table-hover">
                   <thead>
-                    <?php foreach($donatur as $done){ ?>
+                    <?php foreach ($donatur as $done) { ?>
                       <tr>
-                      <td class="border-bottom-3 border-top-0 donatur-program-img" rowspan="2">
-                        <a href="<?= \Yii::$app->request->BaseUrl ?>/uploads/<?= $done->user->photo_url ?>" data-lightbox="update">
-                          <img class="border-r10 shadow-br3" src="<?= \Yii::$app->request->BaseUrl ?>/uploads/<?= $done->user->photo_url ?>" width="100px">
-                        </a>
-                      </td>
-                      <td class="border-top-0 donatur-program-nama"><?= $done->nama ?></td>
-                      <td class="border-top-0"><?= \app\components\Tanggal::toReadableDate($done->tanggal_konfirmasi); ?></td>
-                    </tr>
-                    <tr>
-                      <td class="border-bottom-3 border-top-0 pt-0 text-isalam-1 font-weight-bold donatur-uang"> <?= \app\components\Angka::toReadableHarga($done->nominal); ?></td>
-                      <td class="border-bottom-3 border-top-0"></td>
-                    </tr>
+                        <td class="border-bottom-3 border-top-0 donatur-program-img" rowspan="2">
+                          <a href="<?= \Yii::$app->request->BaseUrl ?>/uploads/<?= $done->user->photo_url ?>" data-lightbox="update">
+                            <img class="border-r10 shadow-br3" src="<?= \Yii::$app->request->BaseUrl ?>/uploads/<?= $done->user->photo_url ?>" width="100px">
+                          </a>
+                        </td>
+                        <td class="border-top-0 donatur-program-nama"><?= $done->nama ?></td>
+                        <td class="border-top-0"><?= \app\components\Tanggal::toReadableDate($done->tanggal_konfirmasi); ?></td>
+                      </tr>
+                      <tr>
+                        <td class="border-bottom-3 border-top-0 pt-0 text-isalam-1 font-weight-bold donatur-uang"> <?= \app\components\Angka::toReadableHarga($done->nominal); ?></td>
+                        <td class="border-bottom-3 border-top-0"></td>
+                      </tr>
                     <?php } ?>
                   </thead>
                 </table>

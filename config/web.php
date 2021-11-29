@@ -7,9 +7,17 @@ $config = [
     'id' => 'basic',
     'name' => 'ISALAM',
     'timeZone' => 'Asia/Jakarta',
+    'language' => 'id_ID',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'components' => [
+        'reCaptcha' => [
+            'class' => 'himiklab\yii2\recaptcha\ReCaptchaConfig',
+            'siteKeyV2' => Yii::$app->params['recaptcha2.clientKey'],
+            'secretV2' => Yii::$app->params['recaptcha2.secretKey'],
+            'siteKeyV3' => Yii::$app->params['recaptcha3.clientKey'],
+            'secretV3' => Yii::$app->params['recaptcha3.secretKey'],
+        ],
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'secret',
