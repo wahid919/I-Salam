@@ -2,6 +2,8 @@
 
 namespace app\controllers;
 
+date_default_timezone_set('Asia/Jakarta');
+
 use app\components\Constant;
 use Yii;
 use yii\web\Controller;
@@ -37,6 +39,7 @@ use app\components\UploadFile;
 use app\models\home\Registrasi as HomeRegistrasi;
 use app\models\KegiatanPendanaan;
 use app\models\Notifikasi;
+use app\models\Otp;
 use yii\web\UploadedFile;
 
 /**
@@ -67,11 +70,11 @@ class HomeController extends Controller
                 // 'only' => ['logout', 'design-bangunan'],
                 'rules' => [
                     [
-                        'actions' => ['login', 'registrasi', 'error', 'index', 'news', 'detail-berita', 'about', 'rekening', 'report', 'ziswaf', 'program', 'detail-program', 'unduh-file-uraian', 'unduh-file-wakaf'],
+                        'actions' => ['login', 'registrasi', 'error', 'index', 'news', 'detail-berita', 'about', 'report', 'ziswaf', 'program', 'detail-program', 'unduh-file-uraian', 'unduh-file-wakaf', 'lupa-password', 'ganti-password'],
                         'allow' => true,
                     ],
                     [
-                        'actions' => ['logout', 'index', 'profile', 'edit-profile', 'bayar', 'pembayaran', 'pembayarans', 'chechkout', 'laporan-wakaf', 'notifikasi', ''], // add all actions to take guest to login page
+                        'actions' => ['logout', 'index', 'verifikasi-akun', 'kirim-otp', 'profile', 'edit-profile', 'bayar', 'pembayaran', 'pembayarans', 'chechkout', 'laporan-wakaf', 'notifikasi', ''], // add all actions to take guest to login page
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -83,8 +86,13 @@ class HomeController extends Controller
         ];
     }
 
-    public function actionPembayaran($id, $nominal,$ket)
+    public function actionPembayaran($id, $nominal, $ket)
     {
+        $confirm = Yii::$app->user->identity->confirm;
+        $status = Yii::$app->user->identity->status;
+        if ($confirm != 1 || $status != 1) {
+            return $this->redirect(["verifikasi-akun"]);
+        }
         $pendanaan = \app\models\Pendanaan::find()
             ->where(['id' => $id])->one();
         // Required
@@ -99,29 +107,29 @@ class HomeController extends Controller
                 // $model->kode_transaksi = Yii::$app->security->generateRandomString(10) . date('dmYHis');
                 $model->kode_transaksi = $order_id_midtrans;
 
-                
+
 
 
 
                 // $model->nama = Yii::$app->user->identity->name;
                 $model->nama = $name;
-                if($ket == "lembar"){
-                    
+                if ($ket == "lembar") {
+
                     $model->jumlah_lembaran = (int)$nominal;
                     $total = (int)$nominal * $pendanaan->nominal_lembaran;
-                $model->nominal = (int)$total;
-                $transaction_details = array(
-                    'order_id' => $order_id_midtrans,
-                    'gross_amount' => (int)$total, // no decimal allowed for creditcard
-                );
-                // Optional 
-                $item1_details = array(
-                    'id' => '1',
-                    'price' => (int)$total,
-                    'quantity' => 1,
-                    'name' => $pendanaan->nama_pendanaan . "(Lembaran)"
-                );
-                }else{
+                    $model->nominal = (int)$total;
+                    $transaction_details = array(
+                        'order_id' => $order_id_midtrans,
+                        'gross_amount' => (int)$total, // no decimal allowed for creditcard
+                    );
+                    // Optional 
+                    $item1_details = array(
+                        'id' => '1',
+                        'price' => (int)$total,
+                        'quantity' => 1,
+                        'name' => $pendanaan->nama_pendanaan . "(Lembaran)"
+                    );
+                } else {
                     $model->jumlah_lembaran = 0;
                     $model->nominal = (int)$nominal;
                     $transaction_details = array(
@@ -190,6 +198,11 @@ class HomeController extends Controller
     }
     public function actionPembayarans($id, $nominal, $keterangan)
     {
+        $confirm = Yii::$app->user->identity->confirm;
+        $status = Yii::$app->user->identity->status;
+        if ($confirm != 1 || $status != 1) {
+            return $this->redirect(["verifikasi-akun"]);
+        }
         $pendanaan = \app\models\Pendanaan::find()
             ->where(['id' => $id])->one();
         // Required
@@ -243,7 +256,7 @@ class HomeController extends Controller
 
                 // $model->jenis_pembayaran_id = $val['jenis_pembayaran_id'] ?? '';
                 // $model->user_id = \Yii::$app->user->identity->id;
-                $model->user_id = \Yii::$app->user->identity->id;;
+                $model->user_id = \Yii::$app->user->identity->id;
                 $model->status_id = 5;
 
                 $shipping_address = array(
@@ -293,6 +306,11 @@ class HomeController extends Controller
     }
     public function actionBayar($id)
     {
+        $confirm = Yii::$app->user->identity->confirm;
+        $status = Yii::$app->user->identity->status;
+        if ($confirm != 1 || $status != 1) {
+            return $this->redirect(["verifikasi-akun"]);
+        }
 
         $pembayaran = Pembayaran::findOne(['id' => $id]);
         $setting = Setting::find()->one();
@@ -429,9 +447,120 @@ class HomeController extends Controller
         ]);
     }
 
+    public function actionKirimOtp()
+    {
+        date_default_timezone_set('Asia/Jakarta');
+
+        $otp = Otp::findOne(['id_user' => \Yii::$app->user->identity->id, 'is_used' => 0]);
+
+        $now = time();
+        $validasi = strtotime($otp->created_at) + 60;
+
+        // var_dump($now . " " . $validasi);die;
+        if ($now > $validasi) {
+            $otp->kode_otp = (string) random_int(1000, 9999);
+            $text = "
+                Hay,\nini adalah kode OTP untuk Login anda.\n
+                {$otp->kode_otp}
+                \nJangan bagikan kode ini dengan siapapun.
+                \nKode akan Kadaluarsa dalam 5 Menit
+                ";
+            Yii::$app->mailer->compose()
+                ->setTo(\Yii::$app->user->identity->username)
+                ->setFrom(['Inisiatorsalam@gmail.com'])
+                ->setSubject('Kode OTP')
+                ->setTextBody($text)
+                ->send();
+
+            if ($otp->save()) {
+                Yii::$app->session->setFlash("success", "OTP Berhasil Dikirim");
+                return $this->redirect(["home/verifikasi-akun"]);
+            } else {
+                Yii::$app->session->setFlash("error", "OTP Gagal Dikirim");
+                return $this->redirect(["home/verifikasi-akun"]);
+            }
+        } else {
+            Yii::$app->session->setFlash("error", "Tunggu 1 Menit");
+            return $this->redirect(["home/verifikasi-akun"]);
+        }
+    }
+
+    public function actionVerifikasiAkun()
+    {
+        date_default_timezone_set('Asia/Jakarta');
+
+        $setting = Setting::find()->one();
+        $icon = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->logo;
+
+        $model = Otp::findOne(['id_user' => \Yii::$app->user->identity->id, 'is_used' => 0]);
+
+        // var_dump($model);die;
+        if ($model == null) {
+            $model = new Otp();
+
+            $model->id_user = \Yii::$app->user->identity->id;
+            $model->kode_otp = (string) random_int(1000, 9999);
+            $model->created_at = date('Y-m-d H:i:s');
+            $model->is_used = 0;
+
+            $text = "
+                Hay,\nini adalah kode OTP untuk Login anda.\n
+                {$model->kode_otp}
+                \nJangan bagikan kode ini dengan siapapun.
+                \nKode akan Kadaluarsa dalam 5 Menit
+                ";
+            Yii::$app->mailer->compose()
+                ->setTo(\Yii::$app->user->identity->username)
+                ->setFrom(['Inisiatorsalam@gmail.com'])
+                ->setSubject('Kode OTP')
+                ->setTextBody($text)
+                ->send();
+            Yii::$app->session->setFlash("success", "Kode OTP Telah Dikirimkan Melalui Email");
+        }
+        $kode = $model->kode_otp;
+        $tanggal_otp = $model->created_at;
+
+        if ($model->load($_POST)) {
+            if ($kode == $model->kode_otp) {
+                $now = time();
+                $validasi = strtotime($tanggal_otp) + (60 * 5);
+                if ($now < $validasi) {
+                    $model->is_used = 1;
+                    $model->save();
+
+                    $user = User::findOne(['id' => $model->id_user]);
+                    $user->confirm = 1;
+                    $user->status = 1;
+                    $user->save();
+
+                    Yii::$app->session->setFlash("success", "Akun Berhasil Diverifikasi");
+                    return $this->redirect(["home/index"]);
+                } else {
+                    Yii::$app->session->setFlash("error", "OTP Tidak Valid");
+                    return $this->redirect(["home/verifikasi-akun"]);
+                }
+            } else {
+                Yii::$app->session->setFlash("error", "OTP Tidak Valid");
+                return $this->redirect(["home/verifikasi-akun"]);
+            }
+        }
+        end:
+        $model->kode_otp = "";
+        return $this->render('validasi-akun', [
+            'model' => $model,
+            'setting' => $setting,
+            'icon' => $icon,
+        ]);
+    }
+
     public function actionCheckout()
     {
 
+        $confirm = Yii::$app->user->identity->confirm;
+        $status = Yii::$app->user->identity->status;
+        if ($confirm != 1 || $status != 1) {
+            return $this->redirect(["verifikasi-akun"]);
+        }
         $this->layout = false;
         $params = array(
             'transaction_details' => array(
@@ -601,6 +730,12 @@ class HomeController extends Controller
     }
     public function actionRekening()
     {
+        $confirm = Yii::$app->user->identity->confirm;
+        $status = Yii::$app->user->identity->status;
+        if ($confirm != 1 || $status != 1) {
+            return $this->redirect(["verifikasi-akun"]);
+        }
+
         $searchModel  = new RekeningSearchHome;
         $dataProvider = $searchModel->search($_GET);
         $dataProvider->setPagination(['pageSize' => 20]);
@@ -748,6 +883,11 @@ class HomeController extends Controller
 
     public function actionProfile()
     {
+        $confirm = Yii::$app->user->identity->confirm;
+        $status = Yii::$app->user->identity->status;
+        if ($confirm != 1 || $status != 1) {
+            return $this->redirect(["verifikasi-akun"]);
+        }
         $setting = Setting::find()->one();
         $icon = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->logo;
         $data_all = Pembayaran::find()->where(['user_id' => Yii::$app->user->identity->id])->all();
@@ -759,35 +899,35 @@ class HomeController extends Controller
             ->limit($pagination->limit)
             ->orderBy(['created_at' => SORT_DESC])
             ->all();
-            foreach($data_all as $data){
-                $wf = Pembayaran::find()->where(['id' => $data->id])->one();
-                $a = $this->findMidtrans($wf->kode_transaksi);
+        foreach ($data_all as $data) {
+            $wf = Pembayaran::find()->where(['id' => $data->id])->one();
+            $a = $this->findMidtrans($wf->kode_transaksi);
 
-                if($a->status_code == "404"){
-                     $wf->status_id = 5;
-                }else{
-                    if($a->transaction_status == "pending"){
-                         $wf->status_id = 5;
-                    }elseif($a->transaction_status == "capture" || $a->transaction_status == "settlement" ){
-                         $wf->status_id = 6;
-                         $wf->tanggal_konfirmasi = date('Y-m-d H:i:s');
-                    }elseif($a->transaction_status == "deny" || $a->transaction_status == "cancel" || $a->transaction_status == "expire" ){
-                         $wf->status_id = 8;
-                         $wf->tanggal_konfirmasi = date('Y-m-d H:i:s');
-                    }
+            if ($a->status_code == "404") {
+                $wf->status_id = 5;
+            } else {
+                if ($a->transaction_status == "pending") {
+                    $wf->status_id = 5;
+                } elseif ($a->transaction_status == "capture" || $a->transaction_status == "settlement") {
+                    $wf->status_id = 6;
+                    $wf->tanggal_konfirmasi = date('Y-m-d H:i:s');
+                } elseif ($a->transaction_status == "deny" || $a->transaction_status == "cancel" || $a->transaction_status == "expire") {
+                    $wf->status_id = 8;
+                    $wf->tanggal_konfirmasi = date('Y-m-d H:i:s');
                 }
-
-                if($a->status_code == "404"){
-                     $wf->jenis_pembayaran_id ="Tidak Ditemukan";
-                }else{
-                    if($a->payment_type == "cstore"){
-                         $wf->jenis_pembayaran_id = $a->store;
-                    }else{
-                         $wf->jenis_pembayaran_id = $a->payment_type;
-                    }
-                }
-                $wf->save();
             }
+
+            if ($a->status_code == "404") {
+                $wf->jenis_pembayaran_id = "Tidak Ditemukan";
+            } else {
+                if ($a->payment_type == "cstore") {
+                    $wf->jenis_pembayaran_id = $a->store;
+                } else {
+                    $wf->jenis_pembayaran_id = $a->payment_type;
+                }
+            }
+            $wf->save();
+        }
 
         return $this->render('profile', [
             'setting' => $setting,
@@ -799,6 +939,11 @@ class HomeController extends Controller
 
     public function actionEditProfile()
     {
+        $confirm = Yii::$app->user->identity->confirm;
+        $status = Yii::$app->user->identity->status;
+        if ($confirm != 1 || $status != 1) {
+            return $this->redirect(["verifikasi-akun"]);
+        }
         $model = User::find()->where(["id" => Yii::$app->user->id])->one();
         $setting = Setting::find()->one();
         $icon = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->logo;
@@ -994,5 +1139,31 @@ class HomeController extends Controller
         curl_close($curl);
         $a = json_decode($response);
         return $a;
+    }
+
+    public function actionLupaPassword()
+    {
+        $this->layout = '@app/views/layouts/main-login';
+        if (Yii::$app->user->isGuest) {
+            $model = new \app\models\LoginForm();
+            return $this->render('lupa-password', [
+                'model' => $model
+            ]);
+        } else {
+            return $this->redirect(["home/index"]);
+        }
+    }
+
+    public function actionGantiPassword()
+    {
+        $this->layout = '@app/views/layouts/main-login';
+        if (Yii::$app->user->isGuest) {
+            $model = new \app\models\LoginForm();
+            return $this->render('ganti-password', [
+                'model' => $model
+            ]);
+        } else {
+            return $this->redirect(["home/index"]);
+        }
     }
 }
