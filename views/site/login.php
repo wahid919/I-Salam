@@ -1,12 +1,14 @@
 <?php
+
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 
 /* @var $this yii\web\View */
 /* @var $form yii\bootstrap\ActiveForm */
 /* @var $model \app\models\LoginForm */
+
 $set = \app\models\Setting::find()->all();
-$this->title = 'Masuk - '.Yii::$app->name;
+$this->title = 'Masuk - ' . Yii::$app->name;
 
 $fieldOptions1 = [
     'options' => ['class' => 'form-group has-feedback'],
@@ -21,8 +23,8 @@ $fieldOptions2 = [
 
 <div class="login-box">
     <div class="login-logo">
-    
-        <?= Html::img(["uploads/setting/".$set["0"]->logo],["width" => "210px"]) ?>
+
+        <?= Html::img(["uploads/setting/" . $set["0"]->logo], ["width" => "210px"]) ?>
     </div>
     <!-- /.login-logo -->
     <div class="login-box-body">
@@ -33,12 +35,19 @@ $fieldOptions2 = [
         <?= $form
             ->field($model, 'username', $fieldOptions1)
             ->label(false)
-            ->textInput(['placeholder' => $model->getAttributeLabel('username'),'type'=>'email']) ?>
+            ->textInput(['placeholder' => $model->getAttributeLabel('username'), 'type' => 'email']) ?>
 
         <?= $form
             ->field($model, 'password', $fieldOptions2)
             ->label(false)
             ->passwordInput(['placeholder' => $model->getAttributeLabel('password')]) ?>
+        <?= $form->field($model, 'reCaptcha', ["template" => "{input}"])->widget(
+            \himiklab\yii2\recaptcha\ReCaptcha3::className(),
+            [
+                'siteKey' => Yii::$app->params['recaptcha3.clientKey'], // unnecessary is reCaptcha component was set up
+                'action' => 'login',
+            ]
+        ) ?>
         <hr>
         <div class="row">
             <div class="col-xs-8">

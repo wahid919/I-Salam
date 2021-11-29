@@ -1,4 +1,5 @@
 <?php
+
 use yii\helpers\Html;
 use yii\helpers\Url;
 use app\models\Setting;
@@ -16,9 +17,10 @@ $set = Setting::find()->all();
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
 <html lang="<?= Yii::$app->language ?>">
+
 <head>
-    <link rel="icon" type="image/png" href=<?= \Yii::$app->request->BaseUrl.'/uploads/setting/'.$set["0"]->logo ?> />
-    <meta charset="<?= Yii::$app->charset ?>"/>
+    <link rel="icon" type="image/png" href=<?= \Yii::$app->request->BaseUrl . '/uploads/setting/' . $set["0"]->logo ?> />
+    <meta charset="<?= Yii::$app->charset ?>" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <?= Html::csrfMetaTags() ?>
     <title><?= Html::encode($this->title) ?></title>
@@ -27,39 +29,41 @@ $set = Setting::find()->all();
     </script>
     <?php $this->head() ?>
 </head>
+
 <body class="hold-transition skin-yellow-light sidebar-mini">
-<?php $this->beginBody() ?>
-<div class="wrapper">
+    <?php $this->beginBody() ?>
+    <div class="wrapper">
 
-    <?= $this->render(
-        'header.php',
-        [
-            'directoryAsset' => $directoryAsset,
-            'pluginAsset' => $pluginAsset,
-        ]
-    ) ?>
+        <?= $this->render(
+            'header.php',
+            [
+                'directoryAsset' => $directoryAsset,
+                'pluginAsset' => $pluginAsset,
+            ]
+        ) ?>
 
-    <?= $this->render(
-        'left.php',
-        [
-            'directoryAsset' => $directoryAsset,
-            'pluginAsset' => $pluginAsset,
-        ]
-    )
-    ?>
+        <?= $this->render(
+            'left.php',
+            [
+                'directoryAsset' => $directoryAsset,
+                'pluginAsset' => $pluginAsset,
+            ]
+        )
+        ?>
 
-    <?= $this->render(
-        'content.php',
-        [
-            'content' => $content,
-            'directoryAsset' => $directoryAsset,
-            'pluginAsset' => $pluginAsset,
-        ]
-    ) ?>
+        <?= $this->render(
+            'content.php',
+            [
+                'content' => $content,
+                'directoryAsset' => $directoryAsset,
+                'pluginAsset' => $pluginAsset,
+            ]
+        ) ?>
 
-</div>
+    </div>
 
-<?php $this->endBody() ?>
+    <?php $this->endBody() ?>
 </body>
+
 </html>
 <?php $this->endPage() ?>
