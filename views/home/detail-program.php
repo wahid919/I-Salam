@@ -198,11 +198,16 @@ use yii\helpers\Url;
                           <div class="input-group-prepend mr-2" style="height:calc(1.5em + .75rem + 2px);">
                             <div class="input-group-text bg-white border-r5 font-weight-bold" style="color: #afafaf;border-color: #787878;">Rp</div>
                           </div>
-                          <input type="text" class="form-control select-wakaf border-r5" id="nominal" name="nominal" style="border-color: #787878;" placeholder="Minimal Wakaf Rp. 10.000" required>
+                          <input type="number" class="form-control select-wakaf border-r5" id="nominal" name="nominal" style="border-color: #787878;" placeholder="Minimal Wakaf Rp. 10.000" required>
                         </div>
                       </div>
                     </div>
                   </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-sm btn-batal" data-dismiss="modal">Batal</button>
+                  <!-- <button type="button" class="btn btn-sm btn-program" data-toggle="modal" data-target="#exampleModalScrollable" id="bayarkan">Bayar</button> -->
+                  <button type="button" class="btn btn-sm btn-program" style="padding: 10px !important;" id="bayarkan">Bayar</button>
                 </div>
               </div>
               <div class="tab-pane fade" id="lembaran" role="tabpanel" aria-labelledby="lembaran-tab">
@@ -215,28 +220,30 @@ use yii\helpers\Url;
                     <p class="font-weight-bold"><?= $pendanaan->nama_pendanaan ?></p>
                   </div>
                   <div class="col-12 pt-3">
-                    <h3 style="color: #404040;">Nominal Wakaf</h3>
-                    <p class="font-size-08">Anda akan berwakaf dengan nominal sebesar :</p>
+                    <h3 style="color: #404040;">Lembar Wakaf</h3>
+                    <p class="font-size-08">Anda akan berwakaf dengan nominal sebesar :<br />*Perlembar <?= \app\components\Angka::toReadableHarga($pendanaan->nominal_lembaran); ?></p>
                     <div class="row">
+
                       <div class="col-12 mt-2">
                         <div class="input-group mb-2">
                           <div class="input-group-prepend mr-2" style="height:calc(1.5em + .75rem + 2px);">
-                            <div class="input-group-text bg-white border-r5 font-weight-bold" style="color: #afafaf;border-color: #787878;">Rp</div>
+                            <div class="input-group-text bg-white border-r5 font-weight-bold" style="color: #afafaf;border-color: #787878;">Lembar</div>
                           </div>
-                          <input type="text" class="form-control select-wakaf border-r5" id="nominal" name="nominal" style="border-color: #787878;" placeholder="Minimal Wakaf Rp. 10.000" required>
+                          <input type="number" class="form-control select-wakaf border-r5" id="nominal2" name="nominal2" style="border-color: #787878;" placeholder="Minimal Wakaf 1 Lembar" required>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-sm btn-batal" data-dismiss="modal">Batal</button>
+                  <!-- <button type="button" class="btn btn-sm btn-program" data-toggle="modal" data-target="#exampleModalScrollable" id="bayarkan">Bayar</button> -->
+                  <button type="button" class="btn btn-sm btn-program" style="padding: 10px !important;" id="bayarkan2">Bayar</button>
+                </div>
               </div>
             </div>
           </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-sm btn-batal" data-dismiss="modal">Batal</button>
-            <!-- <button type="button" class="btn btn-sm btn-program" data-toggle="modal" data-target="#exampleModalScrollable" id="bayarkan">Bayar</button> -->
-            <button type="button" class="btn btn-sm btn-program" style="padding: 10px !important;" id="bayarkan">Bayar</button>
-          </div>
+
         </div>
       </div>
     </div>
@@ -252,10 +259,32 @@ use yii\helpers\Url;
       var data = 0;
       var coba;
       theFunction(data);
-
+      var pendanaan = "<?php echo $pendanaan->id; ?>";
       document.querySelector("#bayarkan").addEventListener("click", () => {
         let nominal = document.querySelector("#nominal").getAttribute("value");
-        window.location.href = `<?= Url::to(['/home/pembayaran', 'id' => $pendanaan->id]) ?>?nominal=${nominal}`;
+        if (nominal == null || nominal == "0" || nominal == 0) {
+          alert("Anda Belum Mengisi Nominal Wakaf");
+        }else if(nominal < 0 ){
+          alert("Silahkan Isi Nominal Dengan Benar");
+        }else {
+          if(pendanaan == null){
+          alert("Pendanaan Tidak Diketahui");
+          }else{
+            window.location.href = `<?= Url::to(['/home/pembayaran', 'id' => $pendanaan->id]) ?>?nominal=${nominal}&ket=nominal`;
+          }
+        }
+      });
+      document.querySelector("#bayarkan2").addEventListener("click", () => {
+        let nominal2 = document.querySelector("#nominal2").getAttribute("value");
+        if (nominal2 == null) {
+          alert("Anda Belum Mengisi Nominal Wakaf");
+        } else {
+          if(pendanaan == null){
+          alert("Pendanaan Tidak Diketahui");
+          }else{
+            window.location.href = `<?= Url::to(['/home/pembayaran', 'id' => $pendanaan->id]) ?>?nominal=${nominal2}&ket=lembar`;
+          }
+        }
       });
 
       function theFunction(i) {
@@ -290,6 +319,11 @@ use yii\helpers\Url;
       duit.addEventListener('keyup', function(e) {
         // console.log(this.value);
         duit.setAttribute("value", this.value);
+      });
+      var duit2 = document.getElementById("nominal2");
+      duit2.addEventListener('keyup', function(e) {
+        // console.log(this.value);
+        duit2.setAttribute("value", this.value);
       });
 
       // console.log(data);

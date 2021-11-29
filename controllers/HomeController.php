@@ -99,22 +99,22 @@ class HomeController extends Controller
                 // $model->kode_transaksi = Yii::$app->security->generateRandomString(10) . date('dmYHis');
                 $model->kode_transaksi = $order_id_midtrans;
 
-                $transaction_details = array(
-                    'order_id' => $order_id_midtrans,
-                    'gross_amount' => (int)$nominal, // no decimal allowed for creditcard
-                );
+                
 
 
 
                 // $model->nama = Yii::$app->user->identity->name;
                 $model->nama = $name;
                 if($ket == "lembar"){
-
+                    
                     $model->jumlah_lembaran = (int)$nominal;
                     $total = (int)$nominal * $pendanaan->nominal_lembaran;
                 $model->nominal = (int)$total;
-    
-                // Optional
+                $transaction_details = array(
+                    'order_id' => $order_id_midtrans,
+                    'gross_amount' => (int)$total, // no decimal allowed for creditcard
+                );
+                // Optional 
                 $item1_details = array(
                     'id' => '1',
                     'price' => (int)$total,
@@ -124,7 +124,10 @@ class HomeController extends Controller
                 }else{
                     $model->jumlah_lembaran = 0;
                     $model->nominal = (int)$nominal;
-        
+                    $transaction_details = array(
+                        'order_id' => $order_id_midtrans,
+                        'gross_amount' => (int)$nominal, // no decimal allowed for creditcard
+                    );
                     // Optional
                     $item1_details = array(
                         'id' => '1',
