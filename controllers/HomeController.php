@@ -70,7 +70,7 @@ class HomeController extends Controller
                 // 'only' => ['logout', 'design-bangunan'],
                 'rules' => [
                     [
-                        'actions' => ['login', 'registrasi', 'error', 'index', 'news', 'detail-berita', 'about', 'report', 'ziswaf', 'program', 'detail-program', 'unduh-file-uraian', 'unduh-file-wakaf', 'lupa-password', 'ganti-password'],
+                        'actions' => ['login', 'registrasi', 'error', 'index', 'news', 'detail-berita', 'about', 'report', 'ziswaf', 'program', 'detail-program', 'unduh-file-uraian', 'unduh-file-wakaf', 'lupa-password', 'ganti-password','visi','misi'],
                         'allow' => true,
                     ],
                     [
@@ -491,66 +491,72 @@ class HomeController extends Controller
 
         $setting = Setting::find()->one();
         $icon = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->logo;
+        $user = Yii::$app->user->identity;
+        if($user->status == 0 && $user->confirm == 0){
+            $model = Otp::findOne(['id_user' => \Yii::$app->user->identity->id, 'is_used' => 0]);
 
-        $model = Otp::findOne(['id_user' => \Yii::$app->user->identity->id, 'is_used' => 0]);
-
-        // var_dump($model);die;
-        if ($model == null) {
-            $model = new Otp();
-
-            $model->id_user = \Yii::$app->user->identity->id;
-            $model->kode_otp = (string) random_int(1000, 9999);
-            $model->created_at = date('Y-m-d H:i:s');
-            $model->is_used = 0;
-
-            $text = "
-                Hay,\nini adalah kode OTP untuk Login anda.\n
-                {$model->kode_otp}
-                \nJangan bagikan kode ini dengan siapapun.
-                \nKode akan Kadaluarsa dalam 5 Menit
-                ";
-            Yii::$app->mailer->compose()
-                ->setTo(\Yii::$app->user->identity->username)
-                ->setFrom(['Inisiatorsalam@gmail.com'])
-                ->setSubject('Kode OTP')
-                ->setTextBody($text)
-                ->send();
-            Yii::$app->session->setFlash("success", "Kode OTP Telah Dikirimkan Melalui Email");
-        }
-        $kode = $model->kode_otp;
-        $tanggal_otp = $model->created_at;
-
-        if ($model->load($_POST)) {
-            if ($kode == $model->kode_otp) {
-                $now = time();
-                $validasi = strtotime($tanggal_otp) + (60 * 5);
-                if ($now < $validasi) {
-                    $model->is_used = 1;
-                    $model->save();
-
-                    $user = User::findOne(['id' => $model->id_user]);
-                    $user->confirm = 1;
-                    $user->status = 1;
-                    $user->save();
-
-                    Yii::$app->session->setFlash("success", "Akun Berhasil Diverifikasi");
-                    return $this->redirect(["home/index"]);
+            // var_dump($model);die;
+            if ($model == null) {
+                $model = new Otp();
+    
+                $model->id_user = \Yii::$app->user->identity->id;
+                $model->kode_otp = (string) random_int(1000, 9999);
+                $model->created_at = date('Y-m-d H:i:s');
+                $model->is_used = 0;
+    
+                $text = "
+                    Hay,\nini adalah kode OTP untuk Login anda.\n
+                    {$model->kode_otp}
+                    \nJangan bagikan kode ini dengan siapapun.
+                    \nKode akan Kadaluarsa dalam 5 Menit
+                    ";
+                Yii::$app->mailer->compose()
+                    ->setTo(\Yii::$app->user->identity->username)
+                    ->setFrom(['Inisiatorsalam@gmail.com'])
+                    ->setSubject('Kode OTP')
+                    ->setTextBody($text)
+                    ->send();
+                Yii::$app->session->setFlash("success", "Kode OTP Telah Dikirimkan Melalui Email");
+            }
+            $kode = $model->kode_otp;
+            $tanggal_otp = $model->created_at;
+    
+            if ($model->load($_POST)) {
+                if ($kode == $model->kode_otp) {
+                    $now = time();
+                    $validasi = strtotime($tanggal_otp) + (60 * 5);
+                    if ($now < $validasi) {
+                        $model->is_used = 1;
+                        $model->save();
+    
+                        $user = User::findOne(['id' => $model->id_user]);
+                        $user->confirm = 1;
+                        $user->status = 1;
+                        $user->save();
+    
+                        Yii::$app->session->setFlash("success", "Akun Berhasil Diverifikasi");
+                        return $this->redirect(["home/index"]);
+                    } else {
+                        Yii::$app->session->setFlash("error", "OTP Tidak Valid");
+                        return $this->redirect(["home/verifikasi-akun"]);
+                    }
                 } else {
                     Yii::$app->session->setFlash("error", "OTP Tidak Valid");
                     return $this->redirect(["home/verifikasi-akun"]);
                 }
-            } else {
-                Yii::$app->session->setFlash("error", "OTP Tidak Valid");
-                return $this->redirect(["home/verifikasi-akun"]);
             }
+            end:
+            $model->kode_otp = "";
+            return $this->render('validasi-akun', [
+                'model' => $model,
+                'setting' => $setting,
+                'icon' => $icon,
+            ]);
+        }else{
+            Yii::$app->session->setFlash("success", "Akun Berhasil Diverifikasi");
+                        return $this->redirect(["home/index"]);
         }
-        end:
-        $model->kode_otp = "";
-        return $this->render('validasi-akun', [
-            'model' => $model,
-            'setting' => $setting,
-            'icon' => $icon,
-        ]);
+        
     }
 
     public function actionCheckout()
@@ -717,6 +723,82 @@ class HomeController extends Controller
         }
 
         return $this->render('about_us', [
+            'setting' => $setting,
+            'count_program' => $count_program,
+            'count_wakif' => $count_wakif,
+            'organisasis' => $organisasis,
+            'lembagas' => $lembagas,
+            'icon' => $icon,
+            'bg_login' => $bg_login,
+            'bg' => $bg,
+            'model' => $model
+        ]);
+    }
+
+
+    public function actionVisi()
+    {
+        // var_dump("tes");die;
+        $setting = Setting::find()->one();
+        $icon = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->logo;
+        $bg_login = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->bg_login;
+        $bg = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->bg_pin;
+        $organisasis = Organisasi::find()->where(['flag' => 1])->all();
+        $lembagas = LembagaPenerima::find()->where(['flag' => 1])->all();
+        $count_program = Pendanaan::find()->count();
+        $count_wakif = User::find()->where(['role_id' => 5])->count();
+        $model = new HubungiKami;
+
+
+        if ($model->load($_POST)) {
+            $model->status = 0;
+
+            if ($model->save()) {
+                Yii::$app->session->setFlash('success', "Data berhasil disimpan.");
+            } else {
+                Yii::$app->session->setFlash('error', "Data tidak berhasil disimpan.");
+            }
+            return $this->redirect(['home/visi']);
+        }
+
+        return $this->render('visi', [
+            'setting' => $setting,
+            'count_program' => $count_program,
+            'count_wakif' => $count_wakif,
+            'organisasis' => $organisasis,
+            'lembagas' => $lembagas,
+            'icon' => $icon,
+            'bg_login' => $bg_login,
+            'bg' => $bg,
+            'model' => $model
+        ]);
+    }
+
+    public function actionMisi()
+    {
+        $setting = Setting::find()->one();
+        $icon = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->logo;
+        $bg_login = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->bg_login;
+        $bg = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->bg_pin;
+        $organisasis = Organisasi::find()->where(['flag' => 1])->all();
+        $lembagas = LembagaPenerima::find()->where(['flag' => 1])->all();
+        $count_program = Pendanaan::find()->count();
+        $count_wakif = User::find()->where(['role_id' => 5])->count();
+        $model = new HubungiKami;
+
+
+        if ($model->load($_POST)) {
+            $model->status = 0;
+
+            if ($model->save()) {
+                Yii::$app->session->setFlash('success', "Data berhasil disimpan.");
+            } else {
+                Yii::$app->session->setFlash('error', "Data tidak berhasil disimpan.");
+            }
+            return $this->redirect(['home/misi']);
+        }
+
+        return $this->render('misi', [
             'setting' => $setting,
             'count_program' => $count_program,
             'count_wakif' => $count_wakif,
