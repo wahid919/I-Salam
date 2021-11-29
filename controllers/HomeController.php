@@ -828,6 +828,8 @@ class HomeController extends Controller
         $dana = Pembayaran::find()->where(['status_id' => 6, 'pendanaan_id' => $id])->sum('nominal');
         $agenda = AgendaPendanaan::find()->where(['pendanaan_id' => $id])->all();
         $kegiatans = KegiatanPendanaan::find()->where(['pendanaan_id' => $id])->orderBy(['id' => SORT_DESC])->one();
+
+        $kegiatan_pendanaans = KegiatanPendanaan::find()->where(['pendanaan_id' => $id])->orderBy(['id' => SORT_DESC])->limit(3)->all();
         $donatur = Pembayaran::find()->where(['status_id' => 6, 'pendanaan_id' => $id])->all();
         $persen = $dana / $pendanaan->nominal * 100;
         $datetime1 =  new DateTime($pendanaan->pendanaan_berakhir);
@@ -835,10 +837,11 @@ class HomeController extends Controller
         $interval = $datetime1->diff($datetime2)->days;
 
         if ($pendanaan == null) throw new HttpException(404);
-
+        // var_dump($kegiatan_pendanaans);die;
         return $this->render('detail-program', [
             'setting' => $setting,
             'kegiatans' => $kegiatans,
+            'kegiatan_pendanaans' => $kegiatan_pendanaans,
             'donatur' => $donatur,
             'dana' => $dana,
             'agenda' => $agenda,

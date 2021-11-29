@@ -36,7 +36,10 @@ $kategori_pendanaans = app\models\KategoriPendanaan::find()->all();
           <li class="nav__item">
             <a href="<?= Yii::$app->request->baseUrl ."/home/program" ?>" class="nav__item-link">Wakaf</a>
           </li>
-          <li class="nav__item with-dropdown">
+          <li class="nav__item">
+            <a href="<?= Yii::$app->request->baseUrl ."/home/news" ?>" class="nav__item-link">Berita</a>
+          </li>
+          <!-- <li class="nav__item with-dropdown">
             <a href="<?= \Yii::$app->request->baseUrl . "/home/news/" ?>" class="dropdown-toggle nav__item-link">
               <div class="d-none d-lg-block">
                 Berita <i class="fa fa-angle-down"></i>
@@ -50,8 +53,8 @@ $kategori_pendanaans = app\models\KategoriPendanaan::find()->all();
               <?php foreach ($categories as $kategori) {  ?>
                 <li class="nav__item"><a href="<?= \Yii::$app->request->baseUrl . "/home/news?kategori=" . $kategori->nama ?>" class="nav__item-link text-dark"><?= $kategori->nama ?></a></li>
               <?php } ?>
-            </ul><!-- /.dropdown-menu -->
-          </li>
+            </ul>
+          </li> -->
           <li class="nav__item with-dropdown">
             <a href="<?= \Yii::$app->request->baseUrl . "/home#" ?>" class="dropdown-toggle nav__item-link">
               <div class="d-none d-lg-block">

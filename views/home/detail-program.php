@@ -18,6 +18,7 @@ use yii\helpers\Url;
             <img class="border-r10" alt="program 1" src="<?= \Yii::$app->request->baseUrl . "/uploads/" . $pendanaan->poster ?>">
           </div>
           <div class="program1__img-wrap">
+            <?php if($kegiatan_pendanaans == null){ ?>
             <div class="program1-img">
               <a href="<?= \Yii::$app->request->baseUrl . "/uploads/" . $pendanaan->poster ?>" data-lightbox="program">
                 <img alt="program Small 1" src="<?= \Yii::$app->request->baseUrl . "/uploads/" . $pendanaan->poster ?>" class="img-project">
@@ -33,6 +34,13 @@ use yii\helpers\Url;
                 <img alt="program Small 1" src="<?= \Yii::$app->request->baseUrl . "/uploads/" . $pendanaan->poster ?>" class="img-project">
               </a>
             </div>
+            <?php }else{ foreach($kegiatan_pendanaans as $kegiatan_pendanaan){?>
+              <div class="program1-img">
+              <a href="<?= \Yii::$app->request->BaseUrl ?>/uploads/kegiatan/<?= $kegiatan_pendanaan->foto ?>" data-lightbox="program">
+                <img alt="<?= $kegiatan_pendanaan->kegiatan ?>" src="<?= \Yii::$app->request->BaseUrl ?>/uploads/kegiatan/<?= $kegiatan_pendanaan->foto ?>" class="img-project">
+              </a>
+            </div>
+            <?php } } ?>
           </div>
         </div>
         <div class="col-lg-6 col-md-6 col-sm-12 col-12">
@@ -333,6 +341,12 @@ use yii\helpers\Url;
             </div>
             <div class="tab-pane fade" id="donatur" role="tabpanel" aria-labelledby="donatur-tab">
               <div class="table-responsive">
+                <?php if($donatur == null){ ?>
+                  <p class="update-donatur">
+                  Belum Ada Donatur untuk Program Wakaf Ini.
+                </p>
+                <img class="border-r10 shadow-br3" src="<?= \Yii::$app->request->BaseUrl ?>/uploads/azhar.jpg">
+                <?php }else{ ?>
                 <table class="table table-hover">
                   <thead>
                     <?php foreach ($donatur as $done) { ?>
@@ -352,6 +366,7 @@ use yii\helpers\Url;
                     <?php } ?>
                   </thead>
                 </table>
+                <?php } ?>
               </div>
             </div>
           </div>
