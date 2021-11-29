@@ -29,24 +29,12 @@ $kategori_pendanaans = app\models\KategoriPendanaan::find()->all();
           <li class="nav__item">
             <a href="<?= Yii::$app->request->baseUrl ?>" class="nav__item-link">Home</a>
           </li><!-- /.nav-item -->
-          <li class="nav__item">
+          <!-- <li class="nav__item">
             <a href="<?= Yii::$app->request->baseUrl ."/home/ziswaf" ?>" class="nav__item-link">Ziswaf</a>
-          </li><!-- /.nav-item -->
-          <li class="nav__item with-dropdown">
-            <a href="<?= \Yii::$app->request->baseUrl . "/home/program/" ?>" class="dropdown-toggle nav__item-link dropdown-icon">
-              <div class="d-none d-lg-block">
-                Program <i class="fa fa-angle-down"></i>
-              </div>
-              <div class="d-none d-md-block d-sm-block d-block d-lg-none">
-                Program</i>
-              </div>
-            </a>
-            <i class="fa fa-angle-right" data-toggle="dropdown"></i>
-            <ul class="dropdown-menu">
-              <?php foreach ($kategori_pendanaans as $kategori_program) {  ?>
-                <li class="nav__item"><a href="<?= \Yii::$app->request->baseUrl . "/home/program?kategori=" . $kategori_program->name ?>" class="nav__item-link text-dark"><?= $kategori_program->name ?></a></li>
-              <?php } ?>
-            </ul><!-- /.dropdown-menu -->
+          </li> -->
+          <!-- /.nav-item -->
+          <li class="nav__item">
+            <a href="<?= Yii::$app->request->baseUrl ."/home/program" ?>" class="nav__item-link">Wakaf</a>
           </li>
           <li class="nav__item with-dropdown">
             <a href="<?= \Yii::$app->request->baseUrl . "/home/news/" ?>" class="dropdown-toggle nav__item-link">
