@@ -39,65 +39,35 @@ for ($i = 1; $i <= 12; $i++) {
 // var_dump($daftartanggal);die;
 ?>
 <style>
-    .table-responsive {
-      overflow: auto; 
-    }
+  .table-responsive {
+    overflow: auto;
+  }
 </style>
 <hr class="mt-0">
-<section id="services" class="services pb-90" style="margin-left: 2rem;margin-bottom:-25rem">
-  <div class="container">
-    <div class="row heading heading-2 mb-40">
-      <div class="col-sm-12 col-md-12 col-lg-12">
-        <div class="table-responsive">
-          <h2 class="text-left pb-3" style="color:#f1a527;font-size:1.5rem;line-height: 1;margin-bottom:-15px;">Report Wakaf</h2>
-          <hr>
-          <div class="row">
-            <div class="col-sm-3">
-
-              <h2 class="text-left pb-3" style="color:#f1a527;font-size:1.2rem;line-height: 1.3;margin-top:1.5rem">GRAFIK <br />PENGHIMPUNAN <br /> DAN PENYALURAN</h2>
-              <style>
-                table {
-                  display: inline-table;
-                  width: 90%;
-                  border-collapse: collapse;
-                }
-              </style>
-              <table>
-                <tr>
-                  <th>
-                    <h4 style="color:#f1a527;font-size:1.3rem;line-height: 1.3;">Total Keseluruhan</h4>
-                  </th>
-                </tr>
-                <tr>
-                  <td>Pengimpunan</td>
-                </tr>
-                <tr>
-                  <th>
-                    <h4 style="color:#f1a527;font-size:1.3rem;line-height: 1.3;"><?= \app\components\Angka::toReadableHarga($penghimpunan); ?></h4>
-                  </th>
-                </tr>
-                <tr>
-                  <td>Penyaluran</td>
-                </tr>
-                <tr>
-                  <th>
-                    <h4 style="color:#f1a527;font-size:1.3rem;line-height: 1.3;"><?= \app\components\Angka::toReadableHarga($penyaluran); ?></h4>
-                  </th>
-                </tr>
-              </table>
-            </div>
-            <div class="col-sm-9">
-              <!-- <canvas id='myChart' width='400' height='150'></canvas> -->
-              <div class="chart-container" style="position: relative; height: 750px !important; width: 825px  !important;">
-                <canvas id="myChart"></canvas>
-              </div>
-            </div>
-          </div>
+<div class="container">
+  <div class="row">
+    <div class="col-lg-4">
+      <div class="row">
+        <div class="col-12">
+          <h3 class="text-isalam-1 font-weight-bold">Total Keseluruhan</h3>
         </div>
-      </div><!-- /.col-lg-5 -->
-    </div><!-- /.row -->
-  </div><!-- /.container -->
-</section><!-- /.Services -->
+        <div class="col-lg-12 col-md-6 col-sm-6 col-6">
+          <p class="font-weight-bold">Pengimpunan</p>
+          <p class="text-isalam-1"><?= \app\components\Angka::toReadableHarga($penghimpunan); ?></p>
+        </div>
+        <div class="col-lg-12 col-md-6 col-sm-6 col-6">
+          <p class="font-weight-bold">Penyaluran</p>
+          <p class="text-isalam-1"><?= \app\components\Angka::toReadableHarga($penyaluran); ?></p>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-8">
+      <div class="chart-container">
+        <canvas id="myChart"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
 
 <?php $this->registerJsFile(\Yii::$app->request->BaseUrl . '/chart/chart.js') ?>
 <?php JSRegister::begin(); ?>
@@ -112,7 +82,7 @@ for ($i = 1; $i <= 12; $i++) {
         data: <?= json_encode(array_values($total)) ?>,
       },
       {
-        label: "Penyaluran Dana",
+        label: "Penyaluran Dandiva",
         backgroundColor: "#d07500",
         data: <?= json_encode(array_values($total2)) ?>,
       },

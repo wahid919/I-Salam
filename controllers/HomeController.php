@@ -71,7 +71,7 @@ class HomeController extends Controller
                         'allow' => true,
                     ],
                     [
-                        'actions' => ['logout', 'index', 'profile', 'edit-profile', 'bayar','pembayaran','pembayarans', 'chechkout', 'laporan-wakaf', 'notifikasi', ''], // add all actions to take guest to login page
+                        'actions' => ['logout', 'index', 'profile', 'edit-profile', 'bayar', 'pembayaran', 'pembayarans', 'chechkout', 'laporan-wakaf', 'notifikasi', ''], // add all actions to take guest to login page
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -88,24 +88,24 @@ class HomeController extends Controller
         $pendanaan = \app\models\Pendanaan::find()
             ->where(['id' => $id])->one();
         // Required
-        if($pendanaan != null){
+        if ($pendanaan != null) {
             if ($nominal) {
                 $name = \Yii::$app->user->identity->name;
                 // $name = "Tes";
                 $model = new Pembayaran();
-    
+
                 $order_id_midtrans = rand();
                 $model->pendanaan_id = $pendanaan->id;
                 // $model->kode_transaksi = Yii::$app->security->generateRandomString(10) . date('dmYHis');
                 $model->kode_transaksi = $order_id_midtrans;
-    
+
                 $transaction_details = array(
                     'order_id' => $order_id_midtrans,
                     'gross_amount' => (int)$nominal, // no decimal allowed for creditcard
                 );
-    
-    
-    
+
+
+
                 // $model->nama = Yii::$app->user->identity->name;
                 $model->nama = $name;
                 if($ket == "lembar"){
@@ -138,7 +138,7 @@ class HomeController extends Controller
                 // $model->user_id = \Yii::$app->user->identity->id;
                 $model->user_id = \Yii::$app->user->identity->id;;
                 $model->status_id = 5;
-    
+
                 $shipping_address = array(
                     'first_name'    => $pendanaan->nama_nasabah,
                     'last_name'     => "(" . $pendanaan->nama_perusahaan . ")",
@@ -158,93 +158,91 @@ class HomeController extends Controller
                     'billing_address'  => $shipping_address,
                     'shipping_address' => $shipping_address
                 );
-    
+
                 $hasil_code = \app\components\ActionMidtrans::toReadableOrder($item1_details, $transaction_details, $customer_details);
                 $model->code = $hasil_code;
                 $hasil = 'https://app.sandbox.midtrans.com/snap/v2/vtweb/' . $hasil_code;
-    
+
                 // var_dump($hasil_code);
                 // die;
                 if ($model->validate()) {
                     $model->save();
                     // $this->layout= false;
+
                     return $this->redirect(['bayar', 'id' => $model->id]);
                     // return ['success' => true, 'message' => 'success', 'data' => $model, 'code' => $hasil_code,'url'=>$hasil];
                 } else {
-    
+
                     return $this->redirect(['detail_program', 'id' => $pendanaan->id]);
                     // return ['success' => false, 'message' => 'gagal', 'data' => $model->getErrors()];
                 }
             }
-    
+
             return $this->redirect(['detail_program', 'id' => $pendanaan->id]);
             // return ["success" => false, "message" => "Nominal belum diatur"];
-    
-        }else{
+
+        } else {
             return $this->redirect('program');
         }
-        
-
-
     }
-    public function actionPembayarans($id, $nominal,$keterangan)
+    public function actionPembayarans($id, $nominal, $keterangan)
     {
         $pendanaan = \app\models\Pendanaan::find()
             ->where(['id' => $id])->one();
         // Required
-        if($pendanaan != null){
+        if ($pendanaan != null) {
             if ($nominal) {
                 $name = \Yii::$app->user->identity->name;
                 // $name = "Tes";
                 $model = new Pembayaran();
-    
+
                 $order_id_midtrans = rand();
                 $model->pendanaan_id = $pendanaan->id;
                 // $model->kode_transaksi = Yii::$app->security->generateRandomString(10) . date('dmYHis');
                 $model->kode_transaksi = $order_id_midtrans;
-    
+
                 $transaction_details = array(
                     'order_id' => $order_id_midtrans,
                     'gross_amount' => (int)$nominal, // no decimal allowed for creditcard
                 );
-    
-    
-    
+
+
+
                 // $model->nama = Yii::$app->user->identity->name;
                 $model->nama = $name;
-    
-    
-    
+
+
+
                 $model->jumlah_lembaran = 0;
                 $model->nominal = (int)$nominal;
-    
+
                 // Optional
-                if($keterangan == "infak"){
+                if ($keterangan == "infak") {
                     $item1_details = array(
                         'id' => '1',
                         'price' => (int)$nominal,
                         'quantity' => 1,
                         'name' => $pendanaan->nama_pendanaan . "(Infak)"
                     );
-                }elseif ($keterangan == "wakaf") {
+                } elseif ($keterangan == "wakaf") {
                     $item1_details = array(
                         'id' => '1',
                         'price' => (int)$nominal,
                         'quantity' => 1,
                         'name' => $pendanaan->nama_pendanaan . "(Wakaf)"
-                    );    
-                }else{
+                    );
+                } else {
 
-            return $this->redirect('ziswaf');
+                    return $this->redirect('ziswaf');
                 }
-                
-    
-    
+
+
+
                 // $model->jenis_pembayaran_id = $val['jenis_pembayaran_id'] ?? '';
                 // $model->user_id = \Yii::$app->user->identity->id;
                 $model->user_id = \Yii::$app->user->identity->id;;
                 $model->status_id = 5;
-    
+
                 $shipping_address = array(
                     'first_name'    => $pendanaan->nama_nasabah,
                     'last_name'     => "(" . $pendanaan->nama_perusahaan . ")",
@@ -264,34 +262,31 @@ class HomeController extends Controller
                     'billing_address'  => $shipping_address,
                     'shipping_address' => $shipping_address
                 );
-    
+
                 $hasil_code = \app\components\ActionMidtrans::toReadableOrder($item1_details, $transaction_details, $customer_details);
                 $model->code = $hasil_code;
                 $hasil = 'https://app.sandbox.midtrans.com/snap/v2/vtweb/' . $hasil_code;
-    
+
                 // var_dump($hasil_code);
                 // die;
                 if ($model->validate()) {
                     $model->save();
-                    // $this->layout= false;
+                    Yii::$app->session->setFlash('success', "Data berhasil disimpan.");
                     return $this->redirect(['bayar', 'id' => $model->id]);
                     // return ['success' => true, 'message' => 'success', 'data' => $model, 'code' => $hasil_code,'url'=>$hasil];
                 } else {
-    
+                    Yii::$app->session->setFlash('error', "Data tidak berhasil disimpan.");
                     return $this->redirect(['detail_program', 'id' => $pendanaan->id]);
                     // return ['success' => false, 'message' => 'gagal', 'data' => $model->getErrors()];
                 }
             }
-    
+            Yii::$app->session->setFlash('error', "Nominal Belum Diatur");
             return $this->redirect(['detail_program', 'id' => $pendanaan->id]);
             // return ["success" => false, "message" => "Nominal belum diatur"];
-    
-        }else{
+
+        } else {
             return $this->redirect('ziswaf');
         }
-        
-
-
     }
     public function actionBayar($id)
     {
@@ -318,10 +313,11 @@ class HomeController extends Controller
 
             if ($model->save()) {
                 Yii::$app->session->setFlash('success', "Data berhasil disimpan.");
+                return $this->redirect(['home/index']);
             } else {
                 Yii::$app->session->setFlash('error', "Data tidak berhasil disimpan.");
+                return $this->redirect(['home/index']);
             }
-            return $this->redirect(['home/index']);
         }
 
         return $this->render('bayar', [
@@ -758,7 +754,7 @@ class HomeController extends Controller
         $pagination = new Pagination(['totalCount' => $count, 'pageSize' => 6]);
         $pembayarans = $query->offset($pagination->offset)
             ->limit($pagination->limit)
-            ->orderBy(['created_at'=> SORT_DESC])
+            ->orderBy(['created_at' => SORT_DESC])
             ->all();
 
         return $this->render('profile', [
