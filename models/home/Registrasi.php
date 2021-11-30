@@ -34,7 +34,7 @@ class Registrasi extends Model
             [['nomor_handphone'], 'number', 'min' => 10, 'max' => 14],
             [['username'], 'email'],
             [['password'], 'string', 'min' => 8],
-            [['konfirmasi_password'], 'match', 'taarget' => 8],
+            [['konfirmasi_password'], 'string', 'min' => 8],
             [['pin'], 'string', 'min' => 8],
             [['konfirmasi_pin'], 'string', 'min' => 8],
             [
