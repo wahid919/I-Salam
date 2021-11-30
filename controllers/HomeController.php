@@ -1059,7 +1059,7 @@ class HomeController extends Controller
         $icon = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->logo;
         $jumlah_pembayaran = Pembayaran::find()->where(['user_id' => Yii::$app->user->identity->id])->andWhere(['status_id' => 6])->sum('nominal');
         $pembayaran_sukses = Pembayaran::find()->where(['user_id' => Yii::$app->user->identity->id])->andWhere(['status_id' => 6])->count('status_id');
-        $proyek_didanai = Pembayaran::find()->where(['user_id' => Yii::$app->user->identity->id])->andWhere(['status_id' => 6])->groupBy('pendanaan_id')->all();
+        $proyek_didanai = Pembayaran::find()->select('pendanaan_id')->where(['user_id' => Yii::$app->user->identity->id])->andWhere(['status_id' => 6])->groupBy('pendanaan_id')->all();
 
         $query = Pembayaran::find()->where(['user_id' => Yii::$app->user->identity->id]);
         $count = $query->count();
