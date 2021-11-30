@@ -327,6 +327,7 @@ class HomeController extends Controller
         $list_pendanaans = Pendanaan::find()->where(['status_id' => 2])->all();
         $news = Berita::find()->limit(6)->all();
 
+        $slides = Slides::find()->where(['status' => 1])->orderBy(new Expression('rand()'))->one();
 
         if ($model->load($_POST)) {
             $model->status = 0;
@@ -341,7 +342,6 @@ class HomeController extends Controller
         }
 
         return $this->render('bayar', [
-            'pembayaran' => $pembayaran,
             'setting' => $setting,
             // 'snapToken' => $snapToken,
             'count_program' => $count_program,
@@ -356,6 +356,7 @@ class HomeController extends Controller
             'pendanaans' => $pendanaans,
             'list_pendanaans' => $list_pendanaans,
             'news' => $news,
+            'slides' => $slides
         ]);
     }
     function printExampleWarningMessage()
