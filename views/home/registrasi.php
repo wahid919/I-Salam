@@ -43,13 +43,16 @@ use yii\bootstrap\ActiveForm;
 <?php $form = ActiveForm::begin([
     'id' => 'FormRegister',
     'layout' => 'horizontal',
-    'enableClientValidation' => false,
+    'enableClientValidation' => true,
     'errorSummaryCssClass' => 'error-summary alert alert-error'
 ]);
 ?>
 <div class="row">
     <?= $form->field($model, "name", Constant::COLUMN(1))->textInput() ?>
-    <?= $form->field($model, "nomor_handphone", Constant::COLUMN(1))->textInput()->label("No HP") ?>
+    <?= $form->field($model, "nomor_handphone", Constant::COLUMN(1))->textInput([
+        "onkeydown" => "this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');",
+        "onkeyup" => "this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');",
+    ])->label("No HP") ?>
     <?= $form->field($model, "username", Constant::COLUMN(1))->textInput()->label("Email") ?>
     <?= $form->field($model, "password", Constant::COLUMN(2))->passwordInput() ?>
     <?= $form->field($model, "konfirmasi_password", Constant::COLUMN(2))->passwordInput() ?>
