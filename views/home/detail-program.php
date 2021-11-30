@@ -424,7 +424,7 @@ use yii\helpers\Url;
             <div class="tab-pane fade" id="donatur" role="tabpanel" aria-labelledby="donatur-tab">
               <div class="table-responsive">
                 <?php if ($donatur == null) { ?>
-                  <p class="update-donatur">
+                  <p class="update-program">
                     Belum Ada Donatur untuk Program Wakaf Ini.
                   </p>
                   <!-- <img class="border-r10 shadow-br3" src="<?= \Yii::$app->request->BaseUrl ?>/uploads/azhar.jpg"> -->
