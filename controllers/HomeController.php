@@ -72,7 +72,7 @@ class HomeController extends Controller
                 // 'only' => ['logout', 'design-bangunan'],
                 'rules' => [
                     [
-                        'actions' => ['login', 'registrasi', 'error', 'index', 'news', 'detail-berita', 'about', 'report', 'ziswaf', 'program', 'detail-program', 'unduh-file-uraian', 'unduh-file-wakaf', 'lupa-password', 'ganti-password','visi','misi'],
+                        'actions' => ['login', 'registrasi', 'error', 'index', 'news', 'detail-berita', 'about', 'report', 'ziswaf', 'program', 'detail-program', 'unduh-file-uraian', 'unduh-file-wakaf', 'lupa-password', 'ganti-password', 'visi', 'misi'],
                         'allow' => true,
                     ],
                     [
@@ -404,18 +404,17 @@ class HomeController extends Controller
         if (Yii::$app->request->isAjax) {
             return $this->renderAjax("login", compact("model"));
         }
-        if ($model->load(Yii::$app->request->post()) && $model->login()) {
-
-            //log last login column
-            $user = Yii::$app->user->identity;
-            $user->last_login = new Expression("NOW()");
-            $user->save();
-
-            return $this->goBack();
+        if ($model->load($_POST)) {
+            if ($model->login()) {
+                Yii::$app->session->setFlash("success", "Login berhasil");
+                return $this->redirect(Yii::$app->request->referrer);
+            }
+            Yii::$app->session->setFlash("error", "Login gagal. Validasi data tidak valid : " . Constant::flattenError($model->getErrors()));
+            return $this->redirect(Yii::$app->request->referrer);
+        } else {
+            Yii::$app->session->setFlash("error", "Login gagal");
+            return $this->redirect(Yii::$app->request->referrer);
         }
-        // return $this->render('login', [
-        //     'model' => $model,
-        // ]);
     }
 
     public function actionIndex()
@@ -520,18 +519,18 @@ class HomeController extends Controller
         $setting = Setting::find()->one();
         $icon = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->logo;
         $user = Yii::$app->user->identity;
-        if($user->status == 0 && $user->confirm == 0){
+        if ($user->status == 0 && $user->confirm == 0) {
             $model = Otp::findOne(['id_user' => \Yii::$app->user->identity->id, 'is_used' => 0]);
 
             // var_dump($model);die;
             if ($model == null) {
                 $model = new Otp();
-    
+
                 $model->id_user = \Yii::$app->user->identity->id;
                 $model->kode_otp = (string) random_int(1000, 9999);
                 $model->created_at = date('Y-m-d H:i:s');
                 $model->is_used = 0;
-    
+
                 $text = "
                     Hay,\nini adalah kode OTP untuk Login anda.\n
                     {$model->kode_otp}
@@ -548,7 +547,7 @@ class HomeController extends Controller
             }
             $kode = $model->kode_otp;
             $tanggal_otp = $model->created_at;
-    
+
             if ($model->load($_POST)) {
                 if ($kode == $model->kode_otp) {
                     $now = time();
@@ -556,12 +555,12 @@ class HomeController extends Controller
                     if ($now < $validasi) {
                         $model->is_used = 1;
                         $model->save();
-    
+
                         $user = User::findOne(['id' => $model->id_user]);
                         $user->confirm = 1;
                         $user->status = 1;
                         $user->save();
-    
+
                         Yii::$app->session->setFlash("success", "Akun Berhasil Diverifikasi");
                         return $this->redirect(["home/index"]);
                     } else {
@@ -580,11 +579,10 @@ class HomeController extends Controller
                 'setting' => $setting,
                 'icon' => $icon,
             ]);
-        }else{
+        } else {
             Yii::$app->session->setFlash("success", "Akun Berhasil Diverifikasi");
-                        return $this->redirect(["home/index"]);
+            return $this->redirect(["home/index"]);
         }
-        
     }
 
     public function actionCheckout()

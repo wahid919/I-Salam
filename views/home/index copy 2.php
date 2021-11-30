@@ -1,112 +1,112 @@
 <?php
 
-use richardfan\widget\JSRegister;
 use yii\helpers\Url;
 ?>
-<section id="slider3" class="slider slider-3">
+<section id="slider3" class="slider slider-3 header-wakaf">
   <div class="carousel owl-carousel carousel-arrows carousel-dots" data-slide="1" data-slide-md="1" data-slide-sm="1" data-autoplay="false" data-nav="true" data-dots="false" data-space="0" data-loop="true" data-speed="3000" data-transition="fade" data-animate-out="fadeOut" data-animate-in="fadeIn">
-
-  <?php foreach($slides as $slide) { ?>
-    <div class="slide-item header-wakaf align-v-h bg-overlay">
-      <div class="bg-img"><img src="<?= Yii::$app->request->baseUrl.'/uploads/slides/' . $slide->gambar ?>" alt="slide img"></div>
-      <div class="container">
-        <div class="row">
-          <div class="col-sm-12 col-md-12 col-lg-6 offset-lg-6">
-            <div class="header-panel-wrap margin-wakaf">
-              <ul class="nav nav-tabs pb-4" id="isalam" role="tablist">
-                <li class="nav-item text-center" style="width: 50%;">
-                  <a class="nav-link font-weight-bold active" id="Wakaf-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true"><i class="fas fa-hand-holding-usd"></i> Wakaf</a>
-                </li>
-                <li class="nav-item text-center" style="width: 50%;">
-                  <a class="nav-link font-weight-bold" id="wakaf-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false"><i class="fas fa-money-bill-alt"></i> Infak</a>
-                </li>
-              </ul>
-              <div class="tab-content" id="myTabContent">
-                <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-
-                  <div class="form-group">
-                    <div class="row">
-                      <div class="col-lg-6 col-md-6 col-sm-12 col-12">
-                        <label for="Wakaf" style="font-size: 1.4rem;color: #f1a502;margin-top: 10px;">Ayo Mulai Wakaf</label>
-                      </div>
-                      <div class="col-lg-6 col-md-6 col-sm-12 col-12">
-                        <select class="form-control select-wakaf border-r5 shadow-r2" id="select-category" style="overflow: scroll;" onchange="myFunction(event)">
-                          <option class="font-weight-bold" disabled selected>Silahkan Pilih Program</option>
-                          <?php
-                          foreach ($list_pendanaans as $pendana) { ?>
-                            <option class="font-weight-bold" value="<?= $pendana->id ?>"><?= $pendana->nama_pendanaan ?></option>
-                          <?php } ?>
-                        </select>
-                      </div>
-                      <div class="col-lg-8 col-md-8 col-sm-12 col-12 pt-4">
-                        <p style="color: #2a2a2a;" class="font-weight-bold pt-4">Silahkan Isi Jumlah Wakafmu, Insyaallah Semua Berkah</p>
-                      </div>
-                      <div class="col-12 pt-4">
-                        <div class="form-group">
-                          <label for="">Isi Nominal Wakaf Anda</label>
-                          <div class="input-group mb-2">
-                            <div class="input-group-prepend mr-2" style="height:calc(1.5em + .75rem + 2px);">
-                              <div class="input-group-text bg-white border-r5 font-weight-bold" style="color: #afafaf;">Rp</div>
-                            </div>
-
-                            <input type="hidden" class="form-control select-wakaf border-r5" id="pendanaan_wakaf" name="pendanaan_wakaf" placeholder="Minimal Wakaf Rp. 10.000">
-                            <input type="number" class="form-control select-wakaf border-r5" id="nominal" name="nominal" placeholder="Minimal Wakaf Rp. 10.000">
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-12">
-                        <button type="submit" class="btn-sm btn-block text-white font-weight-bold" style="height: 3rem;background-color: #f1a502;" id="bayarkan">Wakaf Sekarang</button>
-                      </div>
-                    </div>
-                  </div>
-
-                </div>
-                <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-
-                  <div class="form-group">
-                    <div class="row">
-                      <div class="col-lg-6 col-md-6 col-sm-12 col-12">
-                        <label for="Infak" style="font-size: 1.4rem;color: #f1a502;margin-top: 10px;">Ayo Mulai Infak</label>
-                      </div>
-                      <div class="col-lg-6 col-md-6 col-sm-12 col-12">
-                        <select class="form-control select-wakaf border-r5 shadow-r2" id="select-category" style="overflow: scroll;" onchange="myFunction2(event)">
-                          <option class="font-weight-bold" disabled selected>Silahkan Pilih Program</option>
-                          <?php foreach ($list_pendanaans as $pendana) { ?>
-                            <option class="font-weight-bold" value="<?= $pendana->id ?>"><?= $pendana->nama_pendanaan ?></option>
-                          <?php } ?>
-                        </select>
-                      </div>
-                      <div class="col-lg-8 col-md-8 col-sm-12 col-12 pt-4">
-                        <p style="color: #2a2a2a;" class="font-weight-bold pt-4">Silahkan Isi Jumlah Infakmu, Insyaallah Semua Berkah</p>
-                      </div>
-                      <div class="col-12 pt-4">
-                        <div class="form-group">
-                          <label for="">Isi Nominal Infak Anda</label>
-                          <div class="input-group mb-2">
-                            <div class="input-group-prepend mr-2" style="height:calc(1.5em + .75rem + 2px);">
-                              <div class="input-group-text bg-white border-r5 font-weight-bold" style="color: #afafaf;">Rp</div>
-                            </div>
-                            <input type="hidden" class="form-control select-wakaf border-r5 shadow-r2" id="pendanaan_infak" name="pendanaan_infak" placeholder="Minimal Wakaf Rp. 10.000">
-                            <input type="number" class="form-control select-wakaf border-r5 shadow-r2" id="nominal2" name="nominal2" placeholder="Minimal infak Rp. 10.000">
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-12">
-                        <button type="submit" class="btn-sm btn-block text-white font-weight-bold" style="height: 3rem;background-color: #f1a502;" id="bayarkan2">Infak Sekarang</button>
-                      </div>
-                    </div>
-                  </div>
-
-                </div>
+    <?php
+    foreach ($slides as $slide) { ?>
+      <div class="slide-item align-v-h bg-overlay">
+        <div class="bg-img"><img src="<?= Yii::$app->request->baseUrl . "/uploads/slides/" . $slide->gambar ?>" alt="slide img"></div>
+        <div class="container">
+          <div class="row">
+            <div class="col-sm-12 col-md-12 col-lg-4 col-xl-6">
+              <div class="caption-header">
+                <h2 class="title-header"><?= $slide->judul ?></h2>
+                <p class="subtitle-header"><?= $slide->sub_judul ?></p>
               </div>
             </div>
-          </div><!-- /.col-lg-12 -->
-        </div><!-- /.row -->
-      </div>
-      <!-- /.container -->
-    </div><!-- /.slide-item -->
+          </div><!-- /.row -->
+        </div><!-- /.container -->
+      </div><!-- /.slide-item -->
     <?php } ?>
   </div><!-- /.carousel -->
+  <div class="col-sm-12 col-md-12 col-lg-8 col-xl-6 offset-lg-6">
+    <div class="header-panel-wrap margin-wakaf">
+      <ul class="nav nav-tabs pb-4" id="isalam" role="tablist">
+        <li class="nav-item text-center" style="width: 50%;">
+          <a class="nav-link font-weight-bold active" id="Wakaf-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true"><i class="fas fa-hand-holding-usd"></i> Wakaf</a>
+        </li>
+        <li class="nav-item text-center" style="width: 50%;">
+          <a class="nav-link font-weight-bold" id="wakaf-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false"><i class="fas fa-money-bill-alt"></i> Infak</a>
+        </li>
+      </ul>
+      <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+
+          <div class="form-group">
+            <div class="row">
+              <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                <label for="Wakaf" style="font-size: 1.4rem;color: #f1a502;margin-top: 10px;">Ayo Mulai Wakaf</label>
+              </div>
+              <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                <select class="form-control select-wakaf border-r5 shadow-r2" id="select-category" style="overflow: scroll;" onchange="myFunction(event)">
+                  <option class="font-weight-bold" disabled selected>Silahkan Pilih Program</option>
+                  <?php
+                  foreach ($list_pendanaans as $pendana) { ?>
+                    <option class="font-weight-bold" value="<?= $pendana->id ?>"><?= $pendana->nama_pendanaan ?></option>
+                  <?php } ?>
+                </select>
+              </div>
+              <div class="col-lg-8 col-md-8 col-sm-12 col-12 pt-4">
+                <p style="color: #2a2a2a;" class="font-weight-bold pt-4">Silahkan Isi Jumlah Wakafmu, Insyaallah Semua Berkah</p>
+              </div>
+              <div class="col-12 pt-4">
+                <div class="form-group">
+                  <label for="">Isi Nominal Wakaf Anda</label>
+                  <div class="input-group mb-2">
+                    <div class="input-group-prepend mr-2" style="height:calc(1.5em + .75rem + 2px);">
+                      <div class="input-group-text bg-white border-r5 font-weight-bold" style="color: #afafaf;">Rp</div>
+                    </div>
+                    <input type="hidden" class="form-control select-wakaf border-r5" id="pendanaan_wakaf" name="pendanaan_wakaf" placeholder="Minimal Wakaf Rp. 10.000">
+                    <input type="number" class="form-control select-wakaf border-r5" id="nominal" name="nominal" placeholder="Minimal Wakaf Rp. 10.000">
+                  </div>
+                </div>
+              </div>
+              <div class="col-12">
+                <button type="submit" class="btn-sm btn-block text-white font-weight-bold" style="height: 3rem;background-color: #f1a502;" id="bayarkan">Wakaf Sekarang</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+          <div class="form-group">
+            <div class="row">
+              <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                <label for="Infak" style="font-size: 1.4rem;color: #f1a502;margin-top: 10px;">Ayo Mulai Infak</label>
+              </div>
+              <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                <select class="form-control select-wakaf border-r5 shadow-r2" id="select-category" style="overflow: scroll;" onchange="myFunction2(event)">
+                  <option class="font-weight-bold" disabled selected>Silahkan Pilih Program</option>
+                  <?php foreach ($list_pendanaans as $pendana) { ?>
+                    <option class="font-weight-bold" value="<?= $pendana->id ?>"><?= $pendana->nama_pendanaan ?></option>
+                  <?php } ?>
+                </select>
+              </div>
+              <div class="col-lg-8 col-md-8 col-sm-12 col-12 pt-4">
+                <p style="color: #2a2a2a;" class="font-weight-bold pt-4">Silahkan Isi Jumlah Infakmu, Insyaallah Semua Berkah</p>
+              </div>
+              <div class="col-12 pt-4">
+                <div class="form-group">
+                  <label for="">Isi Nominal Infak Anda</label>
+                  <div class="input-group mb-2">
+                    <div class="input-group-prepend mr-2" style="height:calc(1.5em + .75rem + 2px);">
+                      <div class="input-group-text bg-white border-r5 font-weight-bold" style="color: #afafaf;">Rp</div>
+                    </div>
+                    <input type="hidden" class="form-control select-wakaf border-r5 shadow-r2" id="pendanaan_infak" name="pendanaan_infak" placeholder="Minimal Wakaf Rp. 10.000">
+                    <input type="number" class="form-control select-wakaf border-r5 shadow-r2" id="nominal2" name="nominal2" placeholder="Minimal infak Rp. 10.000">
+                  </div>
+                </div>
+              </div>
+              <div class="col-12">
+                <button type="submit" class="btn-sm btn-block text-white font-weight-bold" style="height: 3rem;background-color: #f1a502;" id="bayarkan2">Infak Sekarang</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div><!-- /.col-xl-6 -->
 </section><!-- /.slider -->
 
 <div class="container">

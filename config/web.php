@@ -125,6 +125,7 @@ $config = [
                 'detail-berita' => 'home/detail-berita',
                 'unduh-file-uraian' => 'home/unduh-file-uraian',
                 'registrasi' => 'home/registrasi',
+                'login' => 'home/login',
 
                 //pembayaran
                 'pembayaran/all' => '/pembayaran/all',

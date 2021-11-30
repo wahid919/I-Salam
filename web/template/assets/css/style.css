@@ -4486,6 +4486,7 @@ textarea.form-control {
 
 .slider .slide-item {
     height: 100vh;
+    min-height: 600px;
 }
 
 .slider .slide__subtitle {
@@ -4693,7 +4694,8 @@ textarea.form-control {
         margin-top: 0;
     }
     .slider .slide-item {
-        height: calc(100vh - 80px);
+        /* height: calc(100vh - 80px); */
+        height: 725px;
     }
     .slider .slide__desc {
         padding-right: 0;
@@ -8165,7 +8167,7 @@ textarea.form-control {
 }
 
 .margin-wakaf {
-    margin-right: 115px;
+    margin-right: 50px;
 }
 
 .logo-header {
@@ -8605,6 +8607,18 @@ textarea.form-control {
     margin: 0;
 }
 
+.caption-header {
+    padding-top: 25%;
+}
+
+.title-header {
+    color: #fff;
+}
+
+.subtitle-header {
+    color: #fff;
+}
+
 @media only screen and (max-width: 768px) {
     .title-img {
         width: 90vw;
@@ -8732,6 +8746,15 @@ textarea.form-control {
         width: 100%;
         margin-top: 1rem;
     }
+    .title-header {
+        text-align: center;
+    }
+    .subtitle-header {
+        text-align: center;
+    }
+    .caption-header {
+        padding-top: 0px;
+    }
 }
 
 
@@ -8804,6 +8827,15 @@ textarea.form-control {
     }
     .program__text {
         margin-bottom: 0px;
+    }
+    .title-header {
+        text-align: center;
+    }
+    .subtitle-header {
+        text-align: center;
+    }
+    .caption-header {
+        padding-top: 0px;
     }
 }
 
