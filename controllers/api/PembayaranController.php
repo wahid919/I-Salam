@@ -88,7 +88,7 @@ class PembayaranController extends \yii\rest\ActiveController
                     "data" => null,
                 ];
             } else {
-                $a = $this->findMidtrans($wf->kode_transaksi);
+                $a = $this->findMidtransProduction($wf->kode_transaksi);
 
                 if($a->status_code == "404"){
                      $wf->status_id = 5;

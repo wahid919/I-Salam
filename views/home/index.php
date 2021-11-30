@@ -444,7 +444,7 @@ if (!\Yii::$app->user->isGuest) {
       } else {
 
         let ket = "wakaf";
-        var base_url = window.origin + "/isalam/web/home/pembayarans/" + dana + "?nominal=" + nominal + "&keterangan=" + ket;
+        var base_url = window.origin + "/web/home/pembayarans/" + dana + "?nominal=" + nominal + "&keterangan=" + ket;
         // console.log(base_url);
         window.location.href = base_url;
       }
@@ -463,7 +463,7 @@ if (!\Yii::$app->user->isGuest) {
         alert("Anda Belum Mengisi Nominal Infak");
       } else {
         let ket2 = "infak";
-        var base_url2 = window.origin + "/isalam/web/home/pembayarans/" + dana2 + "?nominal=" + nominal2 + "&keterangan=" + ket2;
+        var base_url2 = window.origin + "/web/home/pembayarans/" + dana2 + "?nominal=" + nominal2 + "&keterangan=" + ket2;
         //   console.log(base_url);
         window.location.href = base_url2;
       }

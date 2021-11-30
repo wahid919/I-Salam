@@ -171,7 +171,7 @@ class HomeController extends Controller
 
                 $hasil_code = \app\components\ActionMidtrans::toReadableOrder($item1_details, $transaction_details, $customer_details);
                 $model->code = $hasil_code;
-                $hasil = 'https://app.sandbox.midtrans.com/snap/v2/vtweb/' . $hasil_code;
+                $hasil = 'https://app.midtrans.com/snap/v2/vtweb/' . $hasil_code;
 
                 // var_dump($hasil_code);
                 // die;
@@ -280,9 +280,9 @@ class HomeController extends Controller
 
                 $hasil_code = \app\components\ActionMidtrans::toReadableOrder($item1_details, $transaction_details, $customer_details);
                 $model->code = $hasil_code;
-                $hasil = 'https://app.sandbox.midtrans.com/snap/v2/vtweb/' . $hasil_code;
+                $hasil = 'https://app.midtrans.com/snap/v2/vtweb/' . $hasil_code;
 
-                // var_dump($hasil_code);
+                // var_dump($model);
                 // die;
                 if ($model->validate()) {
                     $model->save();
