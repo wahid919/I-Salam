@@ -107,9 +107,9 @@ class User extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'username' => 'Username',
+            'name' => 'Nama',
+            'username' => 'Email',
             'password' => 'Password',
-            'name' => 'Name',
             'role_id' => 'Role',
             'photo_url' => 'Photo Url',
             'pin' => 'Pin',
@@ -126,11 +126,6 @@ class User extends \yii\db\ActiveRecord
     public function getRole()
     {
         return $this->hasOne(\app\models\Role::className(), ['id' => 'role_id']);
-    }
-
-    public function getJenisKaryawans()
-    {
-        return $this->hasOne(\app\models\JenisKaryawan::className(), ['id' => 'id_jenis_karyawan']);
     }
 
 }
