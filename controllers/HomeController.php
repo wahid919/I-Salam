@@ -38,6 +38,7 @@ use yii\web\Response;
 use app\components\UploadFile;
 use app\models\home\Registrasi as HomeRegistrasi;
 use app\models\KegiatanPendanaan;
+use app\models\Kontak;
 use app\models\LoginForm;
 use app\models\Notifikasi;
 use app\models\Otp;
@@ -73,7 +74,7 @@ class HomeController extends Controller
                 // 'only' => ['logout', 'design-bangunan'],
                 'rules' => [
                     [
-                        'actions' => ['login', 'registrasi', 'error', 'index', 'news', 'detail-berita', 'about', 'report', 'ziswaf', 'program', 'detail-program', 'unduh-file-uraian', 'unduh-file-wakaf', 'lupa-password', 'ganti-password', 'visi', 'misi','lupa'],
+                        'actions' => ['login', 'registrasi', 'error', 'index', 'news', 'detail-berita', 'about', 'report', 'ziswaf', 'program', 'detail-program', 'unduh-file-uraian', 'unduh-file-wakaf', 'lupa-password', 'ganti-password', 'visi', 'kontak','lupa','organisasi'],
                         'allow' => true,
                     ],
                     [
@@ -345,6 +346,7 @@ class HomeController extends Controller
             'setting' => $setting,
             // 'snapToken' => $snapToken,
             'count_program' => $count_program,
+            'pembayaran' => $pembayaran,
             'count_wakif' => $count_wakif,
             'organisasis' => $organisasis,
             'lembagas' => $lembagas,
@@ -914,8 +916,7 @@ class HomeController extends Controller
             'model' => $model
         ]);
     }
-
-    public function actionMisi()
+    public function actionOrganisasi()
     {
         $setting = Setting::find()->one();
         $icon = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->logo;
@@ -936,10 +937,49 @@ class HomeController extends Controller
             } else {
                 Yii::$app->session->setFlash('error', "Data tidak berhasil disimpan.");
             }
-            return $this->redirect(['home/misi']);
+            return $this->redirect(['home/organisasi']);
         }
 
-        return $this->render('misi', [
+        return $this->render('struktur_organisasi', [
+            'setting' => $setting,
+            'count_program' => $count_program,
+            'count_wakif' => $count_wakif,
+            'organisasis' => $organisasis,
+            'lembagas' => $lembagas,
+            'icon' => $icon,
+            'bg_login' => $bg_login,
+            'bg' => $bg,
+            'model' => $model
+        ]);
+    }
+
+    public function actionKontak()
+    {
+        $setting = Setting::find()->one();
+        $icon = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->logo;
+        $bg_login = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->bg_login;
+        $bg = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->bg_pin;
+        $organisasis = Organisasi::find()->where(['flag' => 1])->all();
+        $lembagas = LembagaPenerima::find()->where(['flag' => 1])->all();
+        $count_program = Pendanaan::find()->count();
+        $count_wakif = User::find()->where(['role_id' => 5])->count();
+        $model = new HubungiKami;
+        $kontaks = Kontak::find()->all();
+
+
+        if ($model->load($_POST)) {
+            $model->status = 0;
+
+            if ($model->save()) {
+                Yii::$app->session->setFlash('success', "Data berhasil disimpan.");
+            } else {
+                Yii::$app->session->setFlash('error', "Data tidak berhasil disimpan.");
+            }
+            return $this->redirect(['home/kontak']);
+        }
+
+        return $this->render('kontak', [
+            'kontaks' => $kontaks,
             'setting' => $setting,
             'count_program' => $count_program,
             'count_wakif' => $count_wakif,
