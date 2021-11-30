@@ -10,7 +10,11 @@ use yii\helpers\Html;
   <div class="bg-img"><img src="<?= Yii::$app->request->baseUrl . '/uploads/slides/' . $slides->gambar ?>" alt="background"></div>
   <div class="">
     <div class="row">
-      <div class="col-sm-12 col-md-12 col-lg-6 offset-lg-6">
+      <div class="col-sm-12 col-md-12 col-lg-6 caption-header">
+        <h3 class="title-header"><?= $slides->judul ?></h3>
+        <p class="subtitle-header"><?= $slides->sub_judul ?></p>
+      </div>
+      <div class="col-sm-12 col-md-12 col-lg-6">
         <div class="header-panel-wrap margin-wakaf">
           <ul class="nav nav-tabs pb-4" id="isalam" role="tablist">
             <li class="nav-item text-center" style="width: 50%;">
@@ -57,7 +61,7 @@ use yii\helpers\Html;
                     <?php if (!\Yii::$app->user->isGuest) { ?>
                       <button type="submit" class="btn-sm btn-block text-white font-weight-bold" style="height: 3rem;background-color: #f1a502;" id="bayarkan">Wakaf Sekarang</button>
                     <?php } else { ?>
-                      <button type="button" class="btn-sm btn-block text-white font-weight-bold" style="height: 3rem;background-color: #f1a502;" id="btn-user-login">Login</button>
+                      <button type="button" class="btn-sm btn-block text-white font-weight-bold" style="height: 3rem;background-color: #f1a502;" id="btn-user-login">Wakaf Sekarang</button>
                     <?php
                     } ?>
                   </div>
@@ -97,9 +101,9 @@ use yii\helpers\Html;
                   </div>
                   <div class="col-12">
                     <?php if (!\Yii::$app->user->isGuest) { ?>
-                      <a id="btn-user-login" class="nav__item-link" style="color: black;">Login</a>
+                      <a id="btn-user-login" class="nav__item-link" style="color: black;">Infak Sekarang</a>
                     <?php } else { ?>
-                      <button type="button" class="btn-sm btn-block text-white font-weight-bold" style="height: 3rem;background-color: #f1a502;" id="btn-user-login">Login</button>
+                      <button type="submit" class="btn-sm btn-block text-white font-weight-bold" style="height: 3rem;background-color: #f1a502;" id="bayarkan2">Infak Sekarang</button>
                     <?php
                     } ?>
                   </div>
@@ -424,61 +428,61 @@ if (!\Yii::$app->user->isGuest) {
 ?>
 
 <?php if (!\Yii::$app->user->isGuest) { ?>
-<script>
-  function myFunction(e) {
-    document.getElementById("pendanaan_wakaf").value = e.target.value
-  }
-
-  function myFunction2(e) {
-    document.getElementById("pendanaan_infak").value = e.target.value
-  }
-  var duit = document.getElementById("nominal");
-  duit.addEventListener('keyup', function(e) {
-    console.log(this.value);
-    duit.setAttribute("value", this.value);
-  });
-
-  var duit2 = document.getElementById("nominal2");
-  duit2.addEventListener('keyup', function(e) {
-    // console.log(this.value);
-    duit2.setAttribute("value", this.value);
-  });
-
-  document.querySelector("#bayarkan").addEventListener("click", () => {
-    let dana = document.querySelector("#pendanaan_wakaf").getAttribute("value");
-    if (dana == null) {
-      alert("Anda Belum Memilih Program Wakaf");
-    } else {
-      let nominal = document.querySelector("#nominal").getAttribute("value");
-      if (nominal == null) {
-        alert("Anda Belum Mengisi Nominal Pendanaan");
-      } else {
-
-        let ket = "wakaf";
-        var base_url = window.origin + "/isalam/web/home/pembayarans/" + dana + "?nominal=" + nominal + "&keterangan=" + ket;
-        // console.log(base_url);
-        window.location.href = base_url;
-      }
+  <script>
+    function myFunction(e) {
+      document.getElementById("pendanaan_wakaf").value = e.target.value
     }
 
-  });
-  document.querySelector("#bayarkan2").addEventListener("click", () => {
-    let dana2 = document.querySelector("#pendanaan_infak").getAttribute("value");
-    if (dana2 == null) {
-
-      alert("Anda Belum Memilih Program Infak");
-    } else {
-      let nominal2 = document.querySelector("#nominal2").getAttribute("value");
-      if (nominal2 == null) {
-
-        alert("Anda Belum Mengisi Nominal Infak");
-      } else {
-        let ket2 = "infak";
-        var base_url2 = window.origin + "/isalam/web/home/pembayarans/" + dana2 + "?nominal=" + nominal2 + "&keterangan=" + ket2;
-        //   console.log(base_url);
-        window.location.href = base_url2;
-      }
+    function myFunction2(e) {
+      document.getElementById("pendanaan_infak").value = e.target.value
     }
-  });
-</script>
+    var duit = document.getElementById("nominal");
+    duit.addEventListener('keyup', function(e) {
+      console.log(this.value);
+      duit.setAttribute("value", this.value);
+    });
+
+    var duit2 = document.getElementById("nominal2");
+    duit2.addEventListener('keyup', function(e) {
+      // console.log(this.value);
+      duit2.setAttribute("value", this.value);
+    });
+
+    document.querySelector("#bayarkan").addEventListener("click", () => {
+      let dana = document.querySelector("#pendanaan_wakaf").getAttribute("value");
+      if (dana == null) {
+        alert("Anda Belum Memilih Program Wakaf");
+      } else {
+        let nominal = document.querySelector("#nominal").getAttribute("value");
+        if (nominal == null) {
+          alert("Anda Belum Mengisi Nominal Pendanaan");
+        } else {
+
+          let ket = "wakaf";
+          var base_url = window.origin + "/isalam/web/home/pembayarans/" + dana + "?nominal=" + nominal + "&keterangan=" + ket;
+          // console.log(base_url);
+          window.location.href = base_url;
+        }
+      }
+
+    });
+    document.querySelector("#bayarkan2").addEventListener("click", () => {
+      let dana2 = document.querySelector("#pendanaan_infak").getAttribute("value");
+      if (dana2 == null) {
+
+        alert("Anda Belum Memilih Program Infak");
+      } else {
+        let nominal2 = document.querySelector("#nominal2").getAttribute("value");
+        if (nominal2 == null) {
+
+          alert("Anda Belum Mengisi Nominal Infak");
+        } else {
+          let ket2 = "infak";
+          var base_url2 = window.origin + "/isalam/web/home/pembayarans/" + dana2 + "?nominal=" + nominal2 + "&keterangan=" + ket2;
+          //   console.log(base_url);
+          window.location.href = base_url2;
+        }
+      }
+    });
+  </script>
 <?php } ?>
