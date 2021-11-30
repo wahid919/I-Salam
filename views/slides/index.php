@@ -5,10 +5,10 @@ use yii\helpers\Url;
 use yii\grid\GridView;
 
 /**
-* @var yii\web\View $this
-* @var yii\data\ActiveDataProvider $dataProvider
-* @var app\models\search\SlidesSearch $searchModel
-*/
+ * @var yii\web\View $this
+ * @var yii\data\ActiveDataProvider $dataProvider
+ * @var app\models\search\SlidesSearch $searchModel
+ */
 
 $this->title = 'Slides';
 $this->params['breadcrumbs'][] = $this->title;
@@ -19,33 +19,43 @@ $this->params['breadcrumbs'][] = $this->title;
 </p>
 
 
-    <?php \yii\widgets\Pjax::begin(['id'=>'pjax-main', 'enableReplaceState'=> false, 'linkSelector'=>'#pjax-main ul.pagination a, th a', 'clientOptions' => ['pjax:success'=>'function(){alert("yo")}']]) ?>
+<?php \yii\widgets\Pjax::begin(['id' => 'pjax-main', 'enableReplaceState' => false, 'linkSelector' => '#pjax-main ul.pagination a, th a', 'clientOptions' => ['pjax:success' => 'function(){alert("yo")}']]) ?>
 
-    <div class="box box-info">
-        <div class="box-body">
-            <div class="table-responsive">
-                <?= GridView::widget([
+<div class="box box-info">
+    <div class="box-body">
+        <div class="table-responsive">
+            <?= GridView::widget([
                 'layout' => '{summary}{pager}{items}{pager}',
                 'dataProvider' => $dataProvider,
                 'pager'        => [
-                'class'          => yii\widgets\LinkPager::className(),
-                'firstPageLabel' => 'First',
-                'lastPageLabel'  => 'Last'                ],
+                    'class'          => yii\widgets\LinkPager::className(),
+                    'firstPageLabel' => 'First',
+                    'lastPageLabel'  => 'Last'
+                ],
                 'filterModel' => $searchModel,
                 'tableOptions' => ['class' => 'table table-striped table-bordered table-hover'],
-                'headerRowOptions' => ['class'=>'x'],
+                'headerRowOptions' => ['class' => 'x'],
                 'columns' => [
 
-                \app\components\ActionButton::getButtons(),
+                    \app\components\ActionButton::getButtons(),
 
-			'judul',
-			'sub_judul',
-			'status',
+                    'judul',
+                    'sub_judul',
+                    [
+                        'attribute' => 'status',
+                        'format' => 'html',
+                        'value' => function ($model) {
+                            if ($model == 1) {
+                                return "Aktif";
+                            } else {
+                                return "Nonaktif";
+                            }
+                        },
+                    ],
                 ],
-                ]); ?>
-            </div>
+            ]); ?>
         </div>
     </div>
+</div>
 
-    <?php \yii\widgets\Pjax::end() ?>
-
+<?php \yii\widgets\Pjax::end() ?>

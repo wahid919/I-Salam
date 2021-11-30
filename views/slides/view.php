@@ -56,7 +56,20 @@ $this->params['breadcrumbs'][] = 'View';
                             return Html::img(\Yii::$app->request->BaseUrl . '/uploads/slides/' . $model->gambar, ['width' => 100]);
                         },
                     ],
-                    'status',
+                    [
+                        'attribute' => 'status',
+                        'format' => 'html',
+                        'value' => function ($model) {
+                            if($model == 1)
+                            {
+                                return "Aktif";
+                            }
+                            else
+                            {
+                                return "Nonaktif";
+                            }
+                        },
+                    ],
                 ],
             ]); ?>
 
