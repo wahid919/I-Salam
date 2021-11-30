@@ -59,7 +59,7 @@ use yii\helpers\Html;
         ]
     ) ?>
     <div class="col-12">
-        <?= Html::a("Lupa Password", ["home/lupa-password"]) ?>
+        <?= Html::a("Lupa Password", ["site/lupa-password"]) ?>
     </div>
     <div class="col-md-12">
         <div class="col-md-12">
