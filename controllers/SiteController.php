@@ -288,7 +288,8 @@ class SiteController extends Controller
 
         if ($model == null) {
             Yii::$app->session->addFlash("error", "Token Tidak Valid");
-            return $this->redirect(["site/login"]);
+            
+            return $this->redirect(["site/lupa-password"]);
         } else {
             $now = strtotime(date('Y-m-d H:i:s'));
             $validasi = strtotime($model->secret_at) + (60 * 5);
@@ -309,7 +310,7 @@ class SiteController extends Controller
                         $model->secret_link = null;
                         $model->save();
                         Yii::$app->session->addFlash("success", "Password Telah Diubah, Silahkan Login");
-                        return $this->redirect(["site/login"]);
+                        return $this->redirect(["site/lupa-password"]);
                         $this->refresh();
                     }
                 }
