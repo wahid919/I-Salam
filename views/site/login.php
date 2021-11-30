@@ -49,7 +49,8 @@ $fieldOptions2 = [
             ]
         ) ?>
         <div class="col-12">
-        <?= Html::a("Lupa Password", ["home/lupa-password"]) ?>
+            
+        <?= Html::a('Lupa Password?', \yii\helpers\Url::to(['/site/lupa-password'])) ?>
         </div>
         <hr>
         <div class="row">

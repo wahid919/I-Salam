@@ -18,6 +18,7 @@ use app\models\User;
 use kartik\mpdf\Pdf;
 use Yii;
 use yii\db\Expression;
+use yii\helpers\Url;
 use yii\web\Controller;
 use yii\web\Response;
 use yii\web\UploadedFile;
@@ -223,5 +224,99 @@ class SiteController extends Controller
     {
         return $this->render('about');
     }
-    
+    public function actionLupaPassword()
+    {
+        // var_dump("tes");die;
+        $this->view->title = 'Lupa Password';
+        
+        $this->layout = "main-login";
+        $getEmail = $_POST['Lupa']['email'];
+        $getModel = \app\models\User::find()->where(['username' => $getEmail])->one();
+
+
+        if (isset($_POST['Lupa'])) {
+            if ($getModel != null) {
+                // if ($detik >= 01 || $getModel->is_used == 0) {
+                $getToken = rand(0, 99999);
+                $getTime = date("Y-m-d H:i:s");
+                $getModel->secret_link = md5($getToken . $getTime);
+                $getModel->secret_at = $getTime;
+                $getModel->secret_is_used = 1;
+                $subjek = "Reset Password";
+                $text = "Klik link berikut untuk mengatur ulang Password. 
+                    <b>Harap diperhatikan bahwa link berikut hanya berlaku 5 menit.</b><br>
+                    Abaikan jika Anda tidak mengatur ulang password!<br/> 
+                    <a href='
+                    http://" . Url::base('http') . "/site/ganti-password?token=" . $getModel->secret_link . "'>Klik Disini</a>
+                    <br/> Jika link tidak dapat dibuka salin teks berikut dan tempel di url browser : <br/>
+                    " . Url::base('http') . "/site/ganti-password?token=" . $getModel->secret_link;
+                if ($getModel->validate()) {
+
+                    // $getModel->token_created_at = null;
+                    Yii::$app->mailer->compose()
+                        ->setTo($getModel->username)
+                        ->setFrom(['adminIsalam@gmail.com' => 'Isalam'])
+                        ->setSubject($subjek)
+                        ->setHtmlBody($text)
+                        ->send();
+                    $getModel->save();
+
+                    \Yii::$app->getSession()->setFlash(
+                        'success',
+                        'Link untuk mereset Password Anda telah dikirim ke email Anda. Mohon <b>Cek Spam</b> jika tidak ada di kotak masuk!'
+                    );
+                    return $this->redirect(["site/lupa-password"]);
+                }
+                
+            } else {
+                \Yii::$app->getSession()->setFlash(
+                    'error',
+                    'Email Tidak Terdaftar'
+                );
+                return $this->redirect(["site/lupa-password"]);
+            }
+        }
+        return $this->render('lupa-password');
+    }
+
+    public function actionGantiPassword($token)
+    {
+        $this->view->title = 'Ganti Password';
+
+        $this->layout = "main-login";
+        $model = \app\models\User::find()->where(['secret_link' => $token])->one();
+
+        if ($model == null) {
+            Yii::$app->session->addFlash("error", "Token Tidak Valid");
+            return $this->redirect(["site/login"]);
+        } else {
+            $now = strtotime(date('Y-m-d H:i:s'));
+            $validasi = strtotime($model->secret_at) + (60 * 5);
+            if ($now > $validasi) {
+                $model->secret_link = null;
+                $model->secret_at = null;
+                $model->secret_is_used = 0;
+                $model->save();
+                \Yii::$app->getSession()->setFlash(
+                    'error',
+                    'Link kadaluwarsa, silahkan masukkan kembali Email Anda.'
+                );
+                return $this->redirect(["site/lupa-password"]);
+            } else {
+                if (isset($_POST['Ganti'])) {
+                    if ($model->secret_link == $_POST['Ganti']['tokenhid']) {
+                        $model->password = \Yii::$app->security->generatePasswordHash($_POST['Ganti']['password']);
+                        $model->secret_link = null;
+                        $model->save();
+                        Yii::$app->session->addFlash("success", "Password Telah Diubah, Silahkan Login");
+                        return $this->redirect(["site/login"]);
+                        $this->refresh();
+                    }
+                }
+                return $this->render('ganti-password', array(
+                    'model' => $model,
+                ));
+            }
+        }
+    }
 }
