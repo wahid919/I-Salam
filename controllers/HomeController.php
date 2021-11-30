@@ -42,6 +42,7 @@ use app\models\LoginForm;
 use app\models\Notifikasi;
 use app\models\Otp;
 use app\models\Slides;
+use yii\db\Expression;
 use yii\web\UploadedFile;
 
 /**
@@ -497,7 +498,7 @@ class HomeController extends Controller
         $model = new HubungiKami;
         $testimonials = Testimonials::find()->all();
         $pendanaans = Pendanaan::find()->where(['status_id' => 2])->limit(6)->all();
-        $slides = Slides::find()->where(['status' => 1])->all();
+        $slides = Slides::find()->where(['status' => 1])->orderBy(new Expression('rand()'))->one();
 
         $list_pendanaans = Pendanaan::find()->where(['status_id' => 2])->all();
         $news = Berita::find()->limit(6)->all();
