@@ -42,6 +42,7 @@ use app\models\LoginForm;
 use app\models\Notifikasi;
 use app\models\Otp;
 use app\models\Slides;
+use yii\db\Expression;
 use yii\web\UploadedFile;
 
 /**
@@ -72,7 +73,7 @@ class HomeController extends Controller
                 // 'only' => ['logout', 'design-bangunan'],
                 'rules' => [
                     [
-                        'actions' => ['login', 'registrasi', 'error', 'index', 'news', 'detail-berita', 'about', 'report', 'ziswaf', 'program', 'detail-program', 'unduh-file-uraian', 'unduh-file-wakaf', 'visi', 'misi'],
+                        'actions' => ['login', 'registrasi', 'error', 'index', 'news', 'detail-berita', 'about', 'report', 'ziswaf', 'program', 'detail-program', 'unduh-file-uraian', 'unduh-file-wakaf', 'lupa-password', 'ganti-password', 'visi', 'misi','lupa'],
                         'allow' => true,
                     ],
                     [
@@ -413,6 +414,65 @@ class HomeController extends Controller
         }
     }
 
+    public function actionLupa()
+    {
+        // if (!\Yii::$app->user->isGuest) {
+        //     return $this->goHome();
+        // }
+        // var_dump("tes");die;
+        if (Yii::$app->request->isAjax) {
+            return $this->renderAjax("lupa");
+        }
+        $getEmail = $_POST['Lupa']['email'];
+        $getModel = \app\models\User::find()->where(['username' => $getEmail])->one();
+        if (isset($_POST['Lupa'])) {
+            if ($getModel != null) {
+                // if ($detik >= 01 || $getModel->is_used == 0) {
+                $getToken = rand(0, 99999);
+                $getTime = date("Y-m-d H:i:s");
+                $getModel->secret_link = md5($getToken . $getTime);
+                $getModel->secret_at = $getTime;
+                $getModel->secret_is_used = 1;
+                $subjek = "Reset Password";
+                $text = "Klik link berikut untuk mengatur ulang Password. 
+                    <b>Harap diperhatikan bahwa link berikut hanya berlaku 5 menit.</b><br>
+                    Abaikan jika Anda tidak mengatur ulang password!<br/> 
+                    <a href='
+                    http://" . Url::base('http') . "/site/ganti-password?token=" . $getModel->secret_link . "'>Klik Disini</a>
+                    <br/> Jika link tidak dapat dibuka salin teks berikut dan tempel di url browser : <br/>
+                    " . Url::base('http') . "/site/ganti-password?token=" . $getModel->secret_link;
+                if ($getModel->validate()) {
+
+                    // $getModel->token_created_at = null;
+                    Yii::$app->mailer->compose()
+                        ->setTo($getModel->username)
+                        ->setFrom(['adminIsalam@gmail.com' => 'Isalam'])
+                        ->setSubject($subjek)
+                        ->setHtmlBody($text)
+                        ->send();
+                    $getModel->save();
+
+                    // \Yii::$app->getSession()->setFlash(
+                    //     'success',
+                    //     ''
+                    // );
+                    Yii::$app->session->setFlash("success", "Link untuk mereset Password Anda telah dikirim ke email Anda. Mohon <b>Cek Spam</b> jika tidak ada di kotak masuk!");
+                return $this->redirect(Yii::$app->request->referrer);
+                }
+                
+            } else {
+                // \Yii::$app->getSession()->setFlash(
+                //     'error',
+                //     'Email Tidak Terdaftar'
+                // );
+                Yii::$app->session->setFlash("false", "Email Tidak Terdaftar");
+                return $this->redirect(Yii::$app->request->referrer);
+            }
+        }
+        // Yii::$app->session->setFlash("false", "Email Tidak Terdaftar");
+                return $this->redirect(Yii::$app->request->referrer);
+    }
+
     public function actionIndex()
     {
         date_default_timezone_set('Asia/Jakarta');
@@ -434,7 +494,7 @@ class HomeController extends Controller
         // $model = new HubungiKami;
         $testimonials = Testimonials::find()->all();
         $pendanaans = Pendanaan::find()->where(['status_id' => 2])->limit(6)->all();
-        $slides = Slides::find()->where(['status' => 1])->all();
+        $slides = Slides::find()->where(['status' => 1])->orderBy(new Expression('rand()'))->one();
 
         $list_pendanaans = Pendanaan::find()->where(['status_id' => 2])->all();
         $news = Berita::find()->limit(6)->all();
@@ -1060,7 +1120,8 @@ class HomeController extends Controller
             ->all();
         foreach ($data_all as $data) {
             $wf = Pembayaran::find()->where(['id' => $data->id])->one();
-            $a = $this->findMidtrans($wf->kode_transaksi);
+            // $a = $this->findMidtrans($wf->kode_transaksi);
+            $a = $this->findMidtransProduction($wf->kode_transaksi);
 
             if ($a->status_code == "404") {
                 $wf->status_id = 5;
@@ -1286,6 +1347,33 @@ class HomeController extends Controller
                 "Accept: application/json",
                 "Content-Type: application/json",
                 "Authorization: Basic U0ItTWlkLXNlcnZlci1MV1RfNVJHdkhsUk9sSWJtYUU4SzBudGI6"
+            ),
+        ));
+
+        $response = curl_exec($curl);
+
+        curl_close($curl);
+        $a = json_decode($response);
+        return $a;
+    }
+    protected function findMidtransProduction($id)
+    {
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => "https://api.midtrans.com/v2/" . $id . "/status",
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => "",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "GET",
+            CURLOPT_POSTFIELDS => "\n\n",
+            CURLOPT_HTTPHEADER => array(
+                "Accept: application/json",
+                "Content-Type: application/json",
+                "Authorization: Basic TWlkLXNlcnZlci1oV3hSekx0a3NmX0s4SUNhY3RjZ0Fwdl86"
             ),
         ));
 

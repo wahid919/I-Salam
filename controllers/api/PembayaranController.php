@@ -462,4 +462,31 @@ class PembayaranController extends \yii\rest\ActiveController
         $a = json_decode($response);
         return $a;
     }
+    protected function findMidtransProduction($id)
+    {
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => "https://api.midtrans.com/v2/" . $id . "/status",
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => "",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "GET",
+            CURLOPT_POSTFIELDS => "\n\n",
+            CURLOPT_HTTPHEADER => array(
+                "Accept: application/json",
+                "Content-Type: application/json",
+                "Authorization: Basic TWlkLXNlcnZlci1oV3hSekx0a3NmX0s4SUNhY3RjZ0Fwdl86"
+            ),
+        ));
+
+        $response = curl_exec($curl);
+
+        curl_close($curl);
+        $a = json_decode($response);
+        return $a;
+    }
 }

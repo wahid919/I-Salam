@@ -11,13 +11,20 @@ use app\components\ActionMidtransSnap;
 
 // Set Your server key
 // can find in Merchant Portal -> Settings -> Access keys
-ActionMidtransConfig::$serverKey = 'SB-Mid-server-LWT_5RGvHlROlIbmaE8K0ntb';
-ActionMidtransConfig::$clientKey = 'SB-Mid-client-lrPe45BCGoT9yG2O';
+
+
+//production
+ActionMidtransConfig::$serverKey = 'Mid-server-hWxRzLtksf_K8ICactcgApv_';
+ActionMidtransConfig::$clientKey = 'Mid-client-IzRsb2KnAzGzaaBr';
+
+//sandobox
+// ActionMidtransConfig::$serverKey = 'SB-Mid-server-LWT_5RGvHlROlIbmaE8K0ntb';
+// ActionMidtransConfig::$clientKey = 'SB-Mid-client-lrPe45BCGoT9yG2O';
 
 // non-relevant function only used for demo/example purpose
 
 // Uncomment for production environment
-// ActionMidtransConfig::$isProduction = true;
+ActionMidtransConfig::$isProduction = true;
 
 // Enable sanitization
 ActionMidtransConfig::$isSanitized = true;
