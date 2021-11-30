@@ -30,14 +30,14 @@ $kategori_pendanaans = app\models\KategoriPendanaan::find()->all();
             <a href="<?= Yii::$app->request->baseUrl ?>" class="nav__item-link">Home</a>
           </li><!-- /.nav-item -->
           <!-- <li class="nav__item">
-            <a href="<?= Yii::$app->request->baseUrl ."/home/ziswaf" ?>" class="nav__item-link">Ziswaf</a>
+            <a href="<?= Yii::$app->request->baseUrl . "/home/ziswaf" ?>" class="nav__item-link">Ziswaf</a>
           </li> -->
           <!-- /.nav-item -->
           <li class="nav__item">
-            <a href="<?= Yii::$app->request->baseUrl ."/home/program" ?>" class="nav__item-link">Wakaf</a>
+            <a href="<?= Yii::$app->request->baseUrl . "/home/program" ?>" class="nav__item-link">Wakaf</a>
           </li>
           <li class="nav__item">
-            <a href="<?= Yii::$app->request->baseUrl ."/home/news" ?>" class="nav__item-link">Berita</a>
+            <a href="<?= Yii::$app->request->baseUrl . "/home/news" ?>" class="nav__item-link">Berita</a>
           </li>
           <!-- <li class="nav__item with-dropdown">
             <a href="<?= \Yii::$app->request->baseUrl . "/home/news/" ?>" class="dropdown-toggle nav__item-link">
@@ -75,20 +75,23 @@ $kategori_pendanaans = app\models\KategoriPendanaan::find()->all();
           <li class="nav__item">
             <a href="<?= Yii::$app->request->baseUrl . "/about" ?>" class="nav__item-link" style="color: black;">Tentang Kami</a>
           </li><!-- /.nav-item -->
-          <?php if(Yii::$app->user->identity->id == null) {?>
+          <?php if (Yii::$app->user->identity->id == null) { ?>
+            <!-- <li class="nav__item">
+              <a href="<?= Yii::$app->request->baseUrl . "/site/login" ?>" class="nav__item-link" style="color: black;">Login</a>
+            </li> -->
             <li class="nav__item">
-            <a href="<?= Yii::$app->request->baseUrl . "/site/login" ?>" class="nav__item-link" style="color: black;">Login</a>
-          </li><!-- /.nav-item -->
-          <li class="nav__item">
-            <a id="btn-registrasi" class="nav__item-link" style="color: black;">Daftar</a>
-          </li>
+              <a id="btn-login" class="nav__item-link" style="color: black;">Login</a>
+            </li>
+            <li class="nav__item">
+              <a id="btn-registrasi" class="nav__item-link" style="color: black;">Daftar</a>
+            </li>
           <?php } else { ?>
-          <li class="nav__item">
-            <a href="<?= Yii::$app->request->baseUrl . "/home/profile" ?>" class="nav__item-link" style="color: black;">Akun Saya</a>
-          </li><!-- /.nav-item -->
-          <li class="nav__item">
-            <a href="<?= Yii::$app->request->baseUrl . "/site/logout" ?>" class="nav__item-link" style="color: black;">Logout</a>
-          </li><!-- /.nav-item -->
+            <li class="nav__item">
+              <a href="<?= Yii::$app->request->baseUrl . "/home/profile" ?>" class="nav__item-link" style="color: black;">Akun Saya</a>
+            </li><!-- /.nav-item -->
+            <li class="nav__item">
+              <a href="<?= Yii::$app->request->baseUrl . "/site/logout" ?>" class="nav__item-link" style="color: black;">Logout</a>
+            </li><!-- /.nav-item -->
           <?php } ?>
         </ul><!-- /.navbar-nav -->
       </div><!-- /.navbar-collapse -->

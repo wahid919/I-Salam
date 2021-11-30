@@ -38,8 +38,10 @@ use yii\web\Response;
 use app\components\UploadFile;
 use app\models\home\Registrasi as HomeRegistrasi;
 use app\models\KegiatanPendanaan;
+use app\models\LoginForm;
 use app\models\Notifikasi;
 use app\models\Otp;
+use app\models\Slides;
 use yii\web\UploadedFile;
 
 /**
@@ -392,6 +394,30 @@ class HomeController extends Controller
         }
     }
 
+    public function actionLogin()
+    {
+        if (!\Yii::$app->user->isGuest) {
+            return $this->goHome();
+        }
+
+        $model = new LoginForm();
+        if (Yii::$app->request->isAjax) {
+            return $this->renderAjax("login", compact("model"));
+        }
+        if ($model->load(Yii::$app->request->post()) && $model->login()) {
+
+            //log last login column
+            $user = Yii::$app->user->identity;
+            $user->last_login = new Expression("NOW()");
+            $user->save();
+
+            return $this->goBack();
+        }
+        // return $this->render('login', [
+        //     'model' => $model,
+        // ]);
+    }
+
     public function actionIndex()
     {
         $params = array(
@@ -413,6 +439,7 @@ class HomeController extends Controller
         $model = new HubungiKami;
         $testimonials = Testimonials::find()->all();
         $pendanaans = Pendanaan::find()->where(['status_id' => 2])->limit(6)->all();
+        $slides = Slides::find()->where(['status' => 1])->all();
 
         $list_pendanaans = Pendanaan::find()->where(['status_id' => 2])->all();
         $news = Berita::find()->limit(6)->all();
@@ -443,7 +470,8 @@ class HomeController extends Controller
             'model' => $model,
             'pendanaans' => $pendanaans,
             'list_pendanaans' => $list_pendanaans,
-            'news' => $news
+            'news' => $news,
+            'slides' => $slides
         ]);
     }
 

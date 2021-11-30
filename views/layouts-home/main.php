@@ -61,6 +61,38 @@ use yii\helpers\Url;
         #modal-registrasi .close {
             color: white;
         }
+        
+
+        #modal-login .modal-header .close {
+            padding: 0;
+            margin: 0;
+        }
+
+        #modal-login {
+            background: rgba(0, 0, 0, .65);
+        }
+
+        #modal-login .modal-content,
+        #modal-login .modal-header {
+            background: transparent;
+            border: 0;
+            border-radius: 0;
+        }
+
+        #modal-login .modal-header,
+        #modal-login .modal-header h2 {
+            color: #fff;
+        }
+
+        #modal-login .modal-body {
+            background: whitesmoke;
+            border-radius: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        #modal-login .close {
+            color: white;
+        }
     </style>
 
 </head>
@@ -90,6 +122,15 @@ use yii\helpers\Url;
 ]);
 ?>
 <div id="modal-body"></div>
+<?php \app\components\Modal::end() ?>
+
+<?php
+\app\components\Modal::begin([
+    'id' => 'modal-login',
+    'header' => '<div style=\'text-align:center;width:100%\'><h2>Login</h2> <p>Silahkan mengisi Data anda untuk login</p></div>'
+]);
+?>
+<div id="modal-body2"></div>
 <?php \app\components\Modal::end() ?>
 <script>
     var marker;
@@ -183,10 +224,31 @@ use yii\helpers\Url;
                     $("#modal-registrasi").attr("class", "fade modal");
                 })
             });
+
+            $('#btn-login').on('click', async () => {
+                let response = await fetch("<?= Url::to(['/login'], false) ?>", {
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                });
+                response = await response.text();
+                var parser = new DOMParser();
+                var doc = parser.parseFromString(response, 'text/html');
+                console.log(response)
+                $("#modal-body2").html(response);
+                // $("#modal-login").modal("show")
+                $("#modal-login").attr("style", "padding-right: 17px; display: block;overflow:auto")
+                $("#modal-login").attr("class", "fade modal show");
+                document.querySelector("#modal-login .close").addEventListener("click", () => {
+                    $("#modal-login").removeAttr("style")
+                    $("#modal-login").attr("class", "fade modal");
+                })
+            });
         } catch (error) {
             console.log(error)
         }
     })
+
 </script>
 
 </html>
