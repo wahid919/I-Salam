@@ -280,9 +280,9 @@ class HomeController extends Controller
 
                 $hasil_code = \app\components\ActionMidtrans::toReadableOrder($item1_details, $transaction_details, $customer_details);
                 $model->code = $hasil_code;
-                $hasil = 'https://app.sandbox.midtrans.com/snap/v2/vtweb/' . $hasil_code;
+                $hasil = 'https://app.midtrans.com/snap/v2/vtweb/' . $hasil_code;
 
-                // var_dump($hasil_code);
+                // var_dump($model);
                 // die;
                 if ($model->validate()) {
                     $model->save();
@@ -327,6 +327,7 @@ class HomeController extends Controller
         $list_pendanaans = Pendanaan::find()->where(['status_id' => 2])->all();
         $news = Berita::find()->limit(6)->all();
 
+        $slides = Slides::find()->where(['status' => 1])->orderBy(new Expression('rand()'))->one();
 
         if ($model->load($_POST)) {
             $model->status = 0;
@@ -341,7 +342,6 @@ class HomeController extends Controller
         }
 
         return $this->render('bayar', [
-            'pembayaran' => $pembayaran,
             'setting' => $setting,
             // 'snapToken' => $snapToken,
             'count_program' => $count_program,
@@ -356,6 +356,7 @@ class HomeController extends Controller
             'pendanaans' => $pendanaans,
             'list_pendanaans' => $list_pendanaans,
             'news' => $news,
+            'slides' => $slides
         ]);
     }
     function printExampleWarningMessage()
@@ -1059,7 +1060,7 @@ class HomeController extends Controller
         $icon = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->logo;
         $jumlah_pembayaran = Pembayaran::find()->where(['user_id' => Yii::$app->user->identity->id])->andWhere(['status_id' => 6])->sum('nominal');
         $pembayaran_sukses = Pembayaran::find()->where(['user_id' => Yii::$app->user->identity->id])->andWhere(['status_id' => 6])->count('status_id');
-        $proyek_didanai = Pembayaran::find()->where(['user_id' => Yii::$app->user->identity->id])->andWhere(['status_id' => 6])->groupBy('pendanaan_id')->all();
+        $proyek_didanai = Pembayaran::find()->select('pendanaan_id')->where(['user_id' => Yii::$app->user->identity->id])->andWhere(['status_id' => 6])->groupBy('pendanaan_id')->all();
 
         $query = Pembayaran::find()->where(['user_id' => Yii::$app->user->identity->id]);
         $count = $query->count();

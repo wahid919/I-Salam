@@ -44,12 +44,15 @@
       </div>
       <div class="col-md-5"></div>
     </div>
-    <p class="mt-4 text-justify" style="font-size: .9rem;color:#888">
-      <?= $berita->isi ?>
-    </p>
+    <div style="margin-left : 10px;">
 
+      <p class="mt-4 text-justify" style="font-size: .9rem;color:#888;">
+        <?= $berita->isi ?>
+      </p>
+    </div>
+      
     <hr>
-    <h3 class="mt-4 mb-4" style="color: #F5AE3D;font-size:1.4rem"><?= Yii::t("cruds", "Berita Lainnya") ?></h3>
+    <h3 class="mt-4 mb-4" style="margin-left:10px;color: #F5AE3D;font-size:1.4rem"><?= Yii::t("cruds", "Berita Lainnya") ?></h3>
     <div class="row">
       <?php foreach ($news as $berita) { ?>
         <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12 mt-3">

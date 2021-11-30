@@ -205,9 +205,9 @@ use yii\helpers\Url;
                   </div>
                 </div>
                 <div class="modal-footer">
-                  <button type="button" class="btn btn-sm btn-batal" data-dismiss="modal">Batal</button>
+                  <button type="button" class="btn btn-sm btn-batal" style="background-color:firebrick;color:white" data-dismiss="modal">Batal</button>
                   <!-- <button type="button" class="btn btn-sm btn-program" data-toggle="modal" data-target="#exampleModalScrollable" id="bayarkan">Bayar</button> -->
-                  <button type="button" class="btn btn-sm btn-program" style="padding: 10px !important;" id="bayarkan">Bayar</button>
+                  <button type="button" class="btn btn-sm btn-program" style="padding: 10px !important;background-color:green" id="bayarkan">Bayar</button>
                 </div>
               </div>
               <div class="tab-pane fade" id="lembaran" role="tabpanel" aria-labelledby="lembaran-tab">
@@ -236,9 +236,9 @@ use yii\helpers\Url;
                   </div>
                 </div>
                 <div class="modal-footer">
-                  <button type="button" class="btn btn-sm btn-batal" data-dismiss="modal">Batal</button>
+                  <button type="button" class="btn btn-sm btn-batal" style="background-color:firebrick;color:white" data-dismiss="modal">Batal</button>
                   <!-- <button type="button" class="btn btn-sm btn-program" data-toggle="modal" data-target="#exampleModalScrollable" id="bayarkan">Bayar</button> -->
-                  <button type="button" class="btn btn-sm btn-program" style="padding: 10px !important;" id="bayarkan2">Bayar</button>
+                  <button type="button" class="btn btn-sm btn-program" style="padding: 10px !important;background-color:green" id="bayarkan2">Bayar</button>
                 </div>
               </div>
             </div>
