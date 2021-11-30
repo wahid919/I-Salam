@@ -50,6 +50,8 @@ $this->title = 'Pendanaan ' . $model->nama_pendanaan;
                 'model' => $model,
                 'attributes' => [
                     'nama_pendanaan',
+                    'tempat',
+                    'penerima_wakaf',
                     [
                         'attribute' => 'deskripsi',
                         'format' => 'html',
@@ -214,7 +216,7 @@ $this->title = 'Pendanaan ' . $model->nama_pendanaan;
 
             <?php $this->beginBlock('Pembayarans'); ?>
             <div style='position: relative'>
-                <div style='position:absolute; right: 0px; top 0px;'>
+                <div style='position:absolute; right: 0px; top :0px;'>
 
                 </div>
             </div><?php Pjax::begin(['id' => 'pjax-Pembayarans', 'enableReplaceState' => false, 'linkSelector' => '#pjax-Pembayarans ul.pagination a, th a', 'clientOptions' => ['pjax:success' => 'function(){alert("yo")}']]) ?>

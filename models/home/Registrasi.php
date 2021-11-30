@@ -31,6 +31,12 @@ class Registrasi extends Model
                 'konfirmasi_pin',
                 'reCaptcha'
             ], 'required'],
+            [['nomor_handphone'], 'number', 'min' => 10, 'max' => 14],
+            [['username'], 'email'],
+            [['password'], 'string', 'min' => 8],
+            [['konfirmasi_password'], 'string', 'min' => 8],
+            [['pin'], 'string', 'min' => 8],
+            [['konfirmasi_pin'], 'string', 'min' => 8],
             [
                 ['reCaptcha'], \himiklab\yii2\recaptcha\ReCaptchaValidator3::className(),
                 'secret' => Yii::$app->params['recaptcha3.secretKey'], // unnecessary if reСaptcha is already configured
