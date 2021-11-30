@@ -55,7 +55,7 @@ $kategori_pendanaans = app\models\KategoriPendanaan::find()->all();
               <?php } ?>
             </ul>
           </li> -->
-          <li class="nav__item with-dropdown">
+          <!-- <li class="nav__item with-dropdown">
             <a href="<?= \Yii::$app->request->baseUrl . "/home#" ?>" class="dropdown-toggle nav__item-link">
               <div class="d-none d-lg-block">
                 Layanan <i class="fa fa-angle-down"></i>
@@ -70,11 +70,28 @@ $kategori_pendanaans = app\models\KategoriPendanaan::find()->all();
 
               <li class="nav__item"><a href="<?= \Yii::$app->request->baseUrl . "/home/report" ?>" class="nav__item-link text-dark">Anual Report</a></li>
 
-            </ul><!-- /.dropdown-menu -->
-          </li>
+            </ul>
+          </li> -->
           <li class="nav__item">
-            <a href="<?= Yii::$app->request->baseUrl . "/about" ?>" class="nav__item-link" style="color: black;">Tentang Kami</a>
-          </li><!-- /.nav-item -->
+            <a href="<?= Yii::$app->request->baseUrl . "/home/report" ?>" class="nav__item-link">Layanan</a>
+          </li>
+          <li class="nav__item with-dropdown">
+            <a href="<?= \Yii::$app->request->baseUrl . "/home#" ?>" class="dropdown-toggle nav__item-link">
+              <div class="d-none d-lg-block">
+                Tentang Kami <i class="fa fa-angle-down"></i>
+              </div>
+              <div class="d-none d-md-block d-sm-block d-block d-lg-none">
+                Tentang Kami</i>
+              </div>
+            </a>
+            <i class="fa fa-angle-right" data-toggle="dropdown"></i>
+            <ul class="dropdown-menu">
+              <li class="nav__item"><a href="<?= \Yii::$app->request->baseUrl . "/home/visi" ?>" class="nav__item-link text-dark">Visi</a></li>
+
+              <li class="nav__item"><a href="<?= \Yii::$app->request->baseUrl . "/home/misi" ?>" class="nav__item-link text-dark">Misi</a></li>
+
+            </ul>
+          </li>
           <?php if (Yii::$app->user->identity->id == null) { ?>
             <!-- <li class="nav__item">
               <a href="<?= Yii::$app->request->baseUrl . "/site/login" ?>" class="nav__item-link" style="color: black;">Login</a>
