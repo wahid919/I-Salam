@@ -25,7 +25,7 @@ use kartik\file\FileInput;
         );
         ?>
         <?= $form->field($model, 'judul')->textInput(['maxlength' => true]) ?>
-        <?= $form->field($model, 'sub_judul')->textInput(['maxlength' => true]) ?>
+        <?= $form->field($model, 'sub_judul')->textarea(['maxlength' => true]) ?>
         <?= $form->field(
             $model,
             'gambar'
@@ -41,7 +41,9 @@ use kartik\file\FileInput;
                 'browseLabel' => 'Upload File',
             ],
         ]); ?>
-        <?= $form->field($model, 'status')->textInput() ?>
+        <?= $form->field($model, 'status')->dropDownList(
+            ['1' => 'Aktif', '0' => 'Nonaktif']
+        ); ?>
         <hr />
         <?php echo $form->errorSummary($model); ?>
         <div class="row">

@@ -35,7 +35,7 @@ abstract class Slides extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['judul', 'sub_judul', 'gambar'], 'required'],
+            [['judul', 'sub_judul'], 'required'],
             [['status'], 'integer'],
             [['judul', 'sub_judul', 'gambar'], 'string', 'max' => 255]
         ];

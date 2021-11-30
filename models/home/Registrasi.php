@@ -46,6 +46,23 @@ class Registrasi extends Model
         ];
     }
 
+    public function attributeLabels()
+    {
+        return [
+            'id' => 'ID',
+            'name' => 'Nama',
+            'username' => 'Email',
+            'password' => 'Password',
+            'role_id' => 'Role',
+            'photo_url' => 'Photo Url',
+            'pin' => 'Pin',
+            'secret_token' => 'Secret Token',
+            'nomor_handphone' => 'Nomor Handphone',
+            'last_login' => 'Last Login',
+            'last_logout' => 'Last Logout',
+        ];
+    }
+
 
     public function registrasi()
     {
