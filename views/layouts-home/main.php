@@ -94,6 +94,37 @@ use yii\bootstrap\ActiveForm;
         #modal-login .close {
             color: white;
         }
+
+        #modal-forgot .modal-header .close {
+            padding: 0;
+            margin: 0;
+        }
+
+        #modal-forgot {
+            background: rgba(0, 0, 0, .65);
+        }
+
+        #modal-forgot .modal-content,
+        #modal-forgot .modal-header {
+            background: transparent;
+            border: 0;
+            border-radius: 0;
+        }
+
+        #modal-forgot .modal-header,
+        #modal-forgot .modal-header h2 {
+            color: #fff;
+        }
+
+        #modal-forgot .modal-body {
+            background: whitesmoke;
+            border-radius: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        #modal-forgot .close {
+            color: white;
+        }
     </style>
 
 </head>
@@ -119,7 +150,7 @@ use yii\bootstrap\ActiveForm;
 <?php
 \app\components\Modal::begin([
     'id' => 'modal-registrasi',
-    'header' => '<div style=\'text-align:center;width:100%\'><h2>Mendaftar</h2> <p>Silahkan mengisi Data anda untuk mendaftar</p></div>'
+    'header' => '<div style=\'text-align:center;width:100%\'><h2>Mendaftar</h2> <p>Silahkan mengisi Data Anda untuk mendaftar</p></div>'
 ]);
 ?>
 <div id="modal-body"></div>
@@ -128,10 +159,19 @@ use yii\bootstrap\ActiveForm;
 <?php
 \app\components\Modal::begin([
     'id' => 'modal-login',
-    'header' => '<div style=\'text-align:center;width:100%\'><h2>Login</h2> <p>Silahkan mengisi Data anda untuk login</p></div>'
+    'header' => '<div style=\'text-align:center;width:100%\'><h2>Login</h2> <p>Silahkan mengisi Data Anda untuk login</p></div>'
 ]);
 ?>
 <div id="modal-body2"></div>
+<?php \app\components\Modal::end() ?>
+
+<?php
+\app\components\Modal::begin([
+    'id' => 'modal-forgot',
+    'header' => '<div style=\'text-align:center;width:100%\'><h2>Lupa Password</h2> <p>Silahkan mengisi Data Anda</p></div>'
+]);
+?>
+<div id="modal-body3"></div>
 <?php \app\components\Modal::end() ?>
 
 <script>
@@ -209,6 +249,29 @@ use yii\bootstrap\ActiveForm;
     $(window).ready(() => {
         try {
 
+            $('#btn-user-login').on('click', async () => {
+                let response = await fetch("<?= Url::to(['/login'], false) ?>", {
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                });
+                response = await response.text();
+                var parser = new DOMParser();
+                var doc = parser.parseFromString(response, 'text/html');
+                $("#modal-body2").html(response);
+                // $("#modal-login").modal("show")
+                $("#modal-login").attr("style", "padding-right: 17px; display: block;overflow:auto")
+                $("#modal-login").attr("class", "fade modal show");
+                document.querySelector("#modal-login .close").addEventListener("click", () => {
+                    $("#modal-login").removeAttr("style")
+                    $("#modal-login").attr("class", "fade modal");
+                })
+                document.querySelector("#modal-login #btn-forgot").addEventListener("click", async () => {
+                    $("#modal-login").removeAttr("style")
+                    $("#modal-login").attr("class", "fade modal");
+                })
+            });
+
             $('#btn-registrasi').on('click', async () => {
                 let response = await fetch("<?= Url::to(['/registrasi'], false) ?>", {
                     headers: {
@@ -237,7 +300,6 @@ use yii\bootstrap\ActiveForm;
                 response = await response.text();
                 var parser = new DOMParser();
                 var doc = parser.parseFromString(response, 'text/html');
-                console.log(response)
                 $("#modal-body2").html(response);
                 // $("#modal-login").modal("show")
                 $("#modal-login").attr("style", "padding-right: 17px; display: block;overflow:auto")
@@ -245,6 +307,30 @@ use yii\bootstrap\ActiveForm;
                 document.querySelector("#modal-login .close").addEventListener("click", () => {
                     $("#modal-login").removeAttr("style")
                     $("#modal-login").attr("class", "fade modal");
+                })
+                document.querySelector("#modal-login #btn-forgot").addEventListener("click", async () => {
+                    $("#modal-login").removeAttr("style")
+                    $("#modal-login").attr("class", "fade modal");
+                    let response = await fetch("<?= Url::to(['/site/lupa-password'], false) ?>", {
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                });
+                response = await response.text();
+                var parser = new DOMParser();
+                var doc = parser.parseFromString(response, 'text/html');
+                console.log(response)
+                $("#modal-body3").html(response);
+                $("#modal-forgot").attr("style", "padding-right: 17px; display: block;overflow:auto")
+                $("#modal-forgot").attr("class", "fade modal show");
+                document.querySelector("#modal-forgot .close").addEventListener("click", () => {
+                    $("#modal-forgot").removeAttr("style")
+                    $("#modal-forgot").attr("class", "fade modal");
+                })
+                document.querySelector("#modal-login #btn-forgot").addEventListener("click", () => {
+                    $("#modal-login").attr("class", "fade modal");
+                })
+                    
                 })
             });
 

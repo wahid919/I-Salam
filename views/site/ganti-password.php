@@ -1,70 +1,32 @@
 <?php
 
-use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
-
-/* @var $this yii\web\View */
-/* @var $form yii\bootstrap\ActiveForm */
-/* @var $model \app\models\LoginForm */
-
-$set = \app\models\Setting::find()->all();
-$this->title = 'Masuk - ' . Yii::$app->name;
-
-$fieldOptions1 = [
-    'options' => ['class' => 'form-group has-feedback'],
-    'inputTemplate' => "{input}<span class='glyphicon glyphicon-envelope form-control-feedback'></span>"
-];
-
-$fieldOptions2 = [
-    'options' => ['class' => 'form-group has-feedback'],
-    'inputTemplate' => "{input}<span class='glyphicon glyphicon-lock form-control-feedback'></span>"
-];
+use yii\helpers\Html;
 ?>
+<hr class="mt-0">
+<div class="container">
+    <div class="row">
+        <div class="col-lg-6 col-md-6 col-sm-12 col-12 profile-section mx-auto">
+            <h3 class="text-isalam-1 font-weight-bold text-detail-program">Masukkan Password Baru Anda</h3>
+            <?php $form = ActiveForm::begin([
+                'id' => 'Ganti-form',
+            ]); ?>
 
-<div class="login-box">
-    <div class="login-logo">
+            <?php echo $form->errorSummary($model); ?>
 
-        <?= Html::img(["uploads/setting/" . $set["0"]->logo], ["width" => "210px"]) ?>
-    </div>
-    <!-- /.login-logo -->
-    <div class="login-box-body">
-        <p class="login-box-msg">Silakan masukkan email anda disini</p>
-        <?php if (Yii::$app->session->hasFlash('success')) : ?>
-                    <p style="color:#00f">
-                        <?= Yii::$app->session->getFlash('success') ?>
-                    </p>
-                <?php endif; ?>
-
-                <!-- display error message -->
-                <?php if (Yii::$app->session->hasFlash('error')) : ?>
-                    <p style="color:#f00">
-                        <?= Yii::$app->session->getFlash('error') ?>
-                    </p>
-                <?php endif; ?>
-                <?php $form = ActiveForm::begin([
-                    'id' => 'Ganti-form',
-                ]); ?>
-
-        <div class="col-12">
-        <label for="Email">Password baru</label>
-                    <input class="form-control" name="Ganti[password]" id="ContactForm_email" type="password">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                    <label for="Email">Password baru</label>
+                    <input class="form-control mb-4" name="Ganti[password]" id="ContactForm_email" type="password">
                     <input name="Ganti[tokenhid]" id="ContactForm_email" type="hidden" value="<?php echo $model->secret_link ?>">
-        </div>
-        <hr>
-        <div class="row">
-            <div class="col-xs-8">
+                </div>
             </div>
-            <!-- /.col -->
-            <div class="col-xs-4">
-                
-            <?= Html::submitButton('<i class="fa fa-lock"></i> Submit', ['class' => 'btn btn-primary btn-block btn-flat','id'=>'logIn', 'name' => 'login-button']) ?>
+            <div class="row">
+                <div class="col-12">
+                    <?= Html::submitButton('Ganti Password', ['class' => 'btn btn-sm btn-program btn-block', 'style' => 'padding:10px!important;width:100%']); ?>
+                </div>
             </div>
-            <!-- /.col -->
+            <?php ActiveForm::end(); ?>
         </div>
-
-
-        <?php ActiveForm::end(); ?>
-
     </div>
-    <!-- /.login-box-body -->
-</div><!-- /.login-box -->
+</div>

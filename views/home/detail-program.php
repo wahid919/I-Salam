@@ -15,10 +15,10 @@ use yii\helpers\Url;
       <div class="row">
         <div class="col-lg-6 col-md-6 col-sm-12 col-12">
           <div class="program1__big-img">
-            <img class="border-r10" alt="program 1" src="<?= \Yii::$app->request->baseUrl . "/uploads/" . $pendanaan->poster ?>">
+            <img class="border-r10" alt="program 1" src="<?= \Yii::$app->request->baseUrl . "/uploads/" . $pendanaan->poster ?>" style="max-height: 500px;">
           </div>
-          <div class="program1__img-wrap">
-            <?php if ($kegiatan_pendanaans == null) { ?>
+          <div class="program1__img-wrap d-none">
+            <!-- <?php if ($kegiatan_pendanaans == null) { ?>
               <div class="program1-img">
                 <a href="<?= \Yii::$app->request->baseUrl . "/uploads/" . $pendanaan->poster ?>" data-lightbox="program">
                   <img alt="program Small 1" src="<?= \Yii::$app->request->baseUrl . "/uploads/" . $pendanaan->poster ?>" class="img-project">
@@ -42,7 +42,7 @@ use yii\helpers\Url;
                   </a>
                 </div>
             <?php }
-            } ?>
+            } ?> -->
           </div>
         </div>
         <div class="col-lg-6 col-md-6 col-sm-12 col-12">
@@ -132,7 +132,14 @@ use yii\helpers\Url;
             <hr>
             <div class="row">
               <div class="col-sm-12 col-md-12 col-lg-12">
-                <a href="#" class="btn btn-sm btn-program btn-block" data-toggle="modal" data-target="#mulaiwakaf" style="padding: 10px !important;">Mulai Wakaf</a>
+                <!-- <a href="#" class="btn btn-sm btn-program btn-block" data-toggle="modal" data-target="#mulaiwakaf" style="padding: 10px !important;">Mulai Wakaf</a> -->
+                <div class="col-12">
+                    <?php if (!\Yii::$app->user->isGuest) { ?>
+                      <a href="#" class="btn btn-sm btn-program btn-block" data-toggle="modal" data-target="#mulaiwakaf" style="padding: 10px !important;">Mulai Wakaf</a>
+                    <?php } else { ?>
+                      <button type="button" class="btn-sm btn-block text-white font-weight-bold" style="height: 3rem;background-color: #f1a502;" id="btn-user-login">Mulai Wakaf</button>
+                    <?php
+                    } ?>
               </div>
             </div>
           </div>
@@ -405,7 +412,7 @@ use yii\helpers\Url;
                 <p class="update-program">
                   Belum Ada Informasi untuk Program Wakaf Ini.
                 </p>
-                <img class="border-r10 shadow-br3" src="<?= \Yii::$app->request->BaseUrl ?>/uploads/azhar.jpg">
+                <!-- <img class="border-r10 shadow-br3" src="<?= \Yii::$app->request->BaseUrl ?>/uploads/azhar.jpg"> -->
               <?php } else { ?>
 
                 <p class="update-program">
@@ -417,10 +424,10 @@ use yii\helpers\Url;
             <div class="tab-pane fade" id="donatur" role="tabpanel" aria-labelledby="donatur-tab">
               <div class="table-responsive">
                 <?php if ($donatur == null) { ?>
-                  <p class="update-donatur">
+                  <p class="update-program">
                     Belum Ada Donatur untuk Program Wakaf Ini.
                   </p>
-                  <img class="border-r10 shadow-br3" src="<?= \Yii::$app->request->BaseUrl ?>/uploads/azhar.jpg">
+                  <!-- <img class="border-r10 shadow-br3" src="<?= \Yii::$app->request->BaseUrl ?>/uploads/azhar.jpg"> -->
                 <?php } else { ?>
                   <table class="table table-hover">
                     <thead>

@@ -7,10 +7,14 @@ use yii\helpers\Html;
 ?>
 
 <section id="header" class="header-wakaf bg-overlay pt-120 pb-120">
-<div class="bg-img"><img src="<?= Yii::$app->request->baseUrl . '/uploads/slides/' . $slides->gambar ?>" alt="background"></div>
+  <div class="bg-img"><img src="<?= Yii::$app->request->baseUrl . '/uploads/slides/' . $slides->gambar ?>" alt="background"></div>
   <div class="">
     <div class="row">
-      <div class="col-sm-12 col-md-12 col-lg-6 offset-lg-6">
+      <div class="col-sm-12 col-md-12 col-lg-6 caption-header">
+        <h3 class="title-header"><?= $slides->judul ?></h3>
+        <p class="subtitle-header"><?= $slides->sub_judul ?></p>
+      </div>
+      <div class="col-sm-12 col-md-12 col-lg-6">
         <div class="header-panel-wrap margin-wakaf">
           <ul class="nav nav-tabs pb-4" id="isalam" role="tablist">
             <li class="nav-item text-center" style="width: 50%;">
@@ -22,80 +26,90 @@ use yii\helpers\Html;
           </ul>
           <div class="tab-content" id="myTabContent">
             <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-              
-                <div class="form-group">
-                  <div class="row">
-                    <div class="col-lg-6 col-md-6 col-sm-12 col-12">
-                      <label for="Wakaf" style="font-size: 1.4rem;color: #f1a502;margin-top: 10px;">Ayo Mulai Wakaf</label>
-                    </div>
-                    <div class="col-lg-6 col-md-6 col-sm-12 col-12">
-                      <select class="form-control select-wakaf border-r5 shadow-r2" id="select-category" style="overflow: scroll;" onchange="myFunction(event)">
-                        <option class="font-weight-bold" disabled selected>Silahkan Pilih Program</option>
-                        <?php
-                        foreach ($list_pendanaans as $pendana) { ?>
-                          <option class="font-weight-bold" value="<?= $pendana->id ?>"><?= $pendana->nama_pendanaan ?></option>
-                        <?php } ?>
-                      </select>
-                    </div>
-                    <div class="col-lg-8 col-md-8 col-sm-12 col-12 pt-4">
-                      <p style="color: #2a2a2a;" class="font-weight-bold pt-4">Silahkan Isi Jumlah Wakafmu, Insyaallah Semua Berkah</p>
-                    </div>
-                    <div class="col-12 pt-4">
-                      <div class="form-group">
-                        <label for="">Isi Nominal Wakaf Anda</label>
-                        <div class="input-group mb-2">
-                          <div class="input-group-prepend mr-2" style="height:calc(1.5em + .75rem + 2px);">
-                            <div class="input-group-text bg-white border-r5 font-weight-bold" style="color: #afafaf;">Rp</div>
-                          </div>
 
-                          <input type="hidden" class="form-control select-wakaf border-r5" id="pendanaan_wakaf" name="pendanaan_wakaf" placeholder="Minimal Wakaf Rp. 10.000">
-                          <input type="number" class="form-control select-wakaf border-r5" id="nominal" name="nominal" placeholder="Minimal Wakaf Rp. 10.000">
+              <div class="form-group">
+                <div class="row">
+                  <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                    <label for="Wakaf" style="font-size: 1.4rem;color: #f1a502;margin-top: 10px;">Ayo Mulai Wakaf</label>
+                  </div>
+                  <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                    <select class="form-control select-wakaf border-r5 shadow-r2" id="select-category" style="overflow: scroll;" onchange="myFunction(event)">
+                      <option class="font-weight-bold" disabled selected>Silahkan Pilih Program</option>
+                      <?php
+                      foreach ($list_pendanaans as $pendana) { ?>
+                        <option class="font-weight-bold" value="<?= $pendana->id ?>"><?= $pendana->nama_pendanaan ?></option>
+                      <?php } ?>
+                    </select>
+                  </div>
+                  <div class="col-lg-8 col-md-8 col-sm-12 col-12 pt-4">
+                    <p style="color: #2a2a2a;" class="font-weight-bold pt-4">Silahkan Isi Jumlah Wakafmu, Insyaallah Semua Berkah</p>
+                  </div>
+                  <div class="col-12 pt-4">
+                    <div class="form-group">
+                      <label for="">Isi Nominal Wakaf Anda</label>
+                      <div class="input-group mb-2">
+                        <div class="input-group-prepend mr-2" style="height:calc(1.5em + .75rem + 2px);">
+                          <div class="input-group-text bg-white border-r5 font-weight-bold" style="color: #afafaf;">Rp</div>
                         </div>
+
+                        <input type="hidden" class="form-control select-wakaf border-r5" id="pendanaan_wakaf" name="pendanaan_wakaf" placeholder="Minimal Wakaf Rp. 10.000">
+                        <input type="number" class="form-control select-wakaf border-r5" id="nominal" name="nominal" placeholder="Minimal Wakaf Rp. 10.000">
                       </div>
                     </div>
-                    <div class="col-12">
+                  </div>
+                  <div class="col-12">
+                    <?php if (!\Yii::$app->user->isGuest) { ?>
                       <button type="submit" class="btn-sm btn-block text-white font-weight-bold" style="height: 3rem;background-color: #f1a502;" id="bayarkan">Wakaf Sekarang</button>
-                    </div>
+                    <?php } else { ?>
+                      <button type="button" class="btn-sm btn-block text-white font-weight-bold" style="height: 3rem;background-color: #f1a502;" id="btn-user-login">Wakaf Sekarang</button>
+                    <?php
+                    } ?>
                   </div>
                 </div>
-              
+              </div>
+
             </div>
             <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-              
-                <div class="form-group">
-                  <div class="row">
-                    <div class="col-lg-6 col-md-6 col-sm-12 col-12">
-                      <label for="Infak" style="font-size: 1.4rem;color: #f1a502;margin-top: 10px;">Ayo Mulai Infak</label>
-                    </div>
-                    <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+
+              <div class="form-group">
+                <div class="row">
+                  <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                    <label for="Infak" style="font-size: 1.4rem;color: #f1a502;margin-top: 10px;">Ayo Mulai Infak</label>
+                  </div>
+                  <div class="col-lg-6 col-md-6 col-sm-12 col-12">
                     <select class="form-control select-wakaf border-r5 shadow-r2" id="select-category" style="overflow: scroll;" onchange="myFunction2(event)">
-                                <option class="font-weight-bold" disabled selected>Silahkan Pilih Program</option>
-                                <?php foreach($list_pendanaans as $pendana){ ?>
-                                    <option class="font-weight-bold" value="<?= $pendana->id ?>"><?= $pendana->nama_pendanaan ?></option>
-                                <?php } ?>
-                                </select>
-                    </div>
-                    <div class="col-lg-8 col-md-8 col-sm-12 col-12 pt-4">
-                      <p style="color: #2a2a2a;" class="font-weight-bold pt-4">Silahkan Isi Jumlah Infakmu, Insyaallah Semua Berkah</p>
-                    </div>
-                    <div class="col-12 pt-4">
-                      <div class="form-group">
-                        <label for="">Isi Nominal Infak Anda</label>
-                        <div class="input-group mb-2">
-                          <div class="input-group-prepend mr-2" style="height:calc(1.5em + .75rem + 2px);">
-                            <div class="input-group-text bg-white border-r5 font-weight-bold" style="color: #afafaf;">Rp</div>
-                          </div>
-                          <input type="hidden" class="form-control select-wakaf border-r5 shadow-r2" id="pendanaan_infak" name="pendanaan_infak" placeholder="Minimal Wakaf Rp. 10.000">
-                                        <input type="number" class="form-control select-wakaf border-r5 shadow-r2" id="nominal2" name="nominal2" placeholder="Minimal infak Rp. 10.000">
+                      <option class="font-weight-bold" disabled selected>Silahkan Pilih Program</option>
+                      <?php foreach ($list_pendanaans as $pendana) { ?>
+                        <option class="font-weight-bold" value="<?= $pendana->id ?>"><?= $pendana->nama_pendanaan ?></option>
+                      <?php } ?>
+                    </select>
+                  </div>
+                  <div class="col-lg-8 col-md-8 col-sm-12 col-12 pt-4">
+                    <p style="color: #2a2a2a;" class="font-weight-bold pt-4">Silahkan Isi Jumlah Infakmu, Insyaallah Semua Berkah</p>
+                  </div>
+                  <div class="col-12 pt-4">
+                    <div class="form-group">
+                      <label for="">Isi Nominal Infak Anda</label>
+                      <div class="input-group mb-2">
+                        <div class="input-group-prepend mr-2" style="height:calc(1.5em + .75rem + 2px);">
+                          <div class="input-group-text bg-white border-r5 font-weight-bold" style="color: #afafaf;">Rp</div>
                         </div>
+                        <input type="hidden" class="form-control select-wakaf border-r5 shadow-r2" id="pendanaan_infak" name="pendanaan_infak" placeholder="Minimal Wakaf Rp. 10.000">
+                        <input type="number" class="form-control select-wakaf border-r5 shadow-r2" id="nominal2" name="nominal2" placeholder="Minimal infak Rp. 10.000">
                       </div>
                     </div>
-                    <div class="col-12">
+                  </div>
+                  <div class="col-12">
+                    <?php if (!\Yii::$app->user->isGuest) { ?>
+                      <a id="btn-user-login" class="nav__item-link" style="color: black;">Infak Sekarang</a>
+                    <?php } else { ?>
                       <button type="submit" class="btn-sm btn-block text-white font-weight-bold" style="height: 3rem;background-color: #f1a502;" id="bayarkan2">Infak Sekarang</button>
-                    </div>
+                    <?php
+                    } ?>
                   </div>
                 </div>
-              
+              </div>
+
             </div>
           </div>
         </div>
@@ -323,171 +337,152 @@ use yii\helpers\Html;
 
 <?php
 if (!\Yii::$app->user->isGuest) {
-        $confirm = Yii::$app->user->identity->confirm;
-        $status = Yii::$app->user->identity->status;
-        if ($confirm != 1 || $status != 1) {
-    ?>
-            <div class="modal fade" id="verifakun" tabindex="-1" role="dialog" aria-labelledby="verifakun" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-scrollable" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="verifakun">Verifikasi Akun Anda!</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="col-12">
-                                <?php
+  $confirm = Yii::$app->user->identity->confirm;
+  $status = Yii::$app->user->identity->status;
+  if ($confirm != 1 || $status != 1) {
+?>
+    <div class="modal fade" id="verifakun" tabindex="-1" role="dialog" aria-labelledby="verifakun" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="verifakun">Verifikasi Akun Anda!</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="col-12">
+              <?php
 
-                                $form = ActiveForm::begin([
-                                    'id' => 'otp',
-                                    'layout' => 'horizontal',
-                                    'enableClientValidation' => true,
-                                    'errorSummaryCssClass' => 'error-summary alert alert-error',
-                                    'enableClientScript' => false,
-                                ]);
-                                ?>
-                                <?php echo $form->errorSummary($model); ?>
+              $form = ActiveForm::begin([
+                'id' => 'otp',
+                'layout' => 'horizontal',
+                'enableClientValidation' => true,
+                'errorSummaryCssClass' => 'error-summary alert alert-error',
+                'enableClientScript' => false,
+              ]);
+              ?>
+              <?php echo $form->errorSummary($model); ?>
 
-                                <div class="row">
-                                    <div class="col-lg-12 col-md-12 col-sm-12 col-12">
-                                        <?= $form->field(
-                                            $model,
-                                            'kode_otp',
-                                            [
-                                                'template' => '
+              <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                  <?= $form->field(
+                    $model,
+                    'kode_otp',
+                    [
+                      'template' => '
                     {label}
                     {input}
                     {error}
                 ',
-                                                'inputOptions' => [
-                                                    'class' => 'form-control'
-                                                ],
-                                                'labelOptions' => [
-                                                    'class' => 'control-label'
-                                                ],
-                                                'options' => ['tag' => false]
-                                            ]
-                                        )->textInput(['maxlength' => true]) ?>
-                                    </div>
-                                </div>
+                      'inputOptions' => [
+                        'class' => 'form-control'
+                      ],
+                      'labelOptions' => [
+                        'class' => 'control-label'
+                      ],
+                      'options' => ['tag' => false]
+                    ]
+                  )->textInput(['maxlength' => true]) ?>
+                </div>
+              </div>
 
-                                <div class="row">
-                                    <div class="col-6">
-                                        <a href="<?= \Yii::$app->request->BaseUrl . "/home/kirim-otp/" ?>" class="btn btn-sm btn-program btn-info btn-block" style="padding:10px!important;">Kirim OTP</a>
-                                    </div>
-                                    <div class="col-6">
-                                        <?= Html::submitButton('Submit', ['class' => 'btn btn-sm btn-program btn-block', 'style' => 'padding:10px!important;width:100%']); ?>
-                                    </div>
-                                </div>
-                                <?php ActiveForm::end(); ?>
-                            </div>
-                        </div>
-                        <!-- <div class="modal-footer">
+              <div class="row">
+                <div class="col-6">
+                  <a href="<?= \Yii::$app->request->BaseUrl . "/home/kirim-otp/" ?>" class="btn btn-sm btn-program btn-info btn-block" style="padding:10px!important;">Kirim OTP</a>
+                </div>
+                <div class="col-6">
+                  <?= Html::submitButton('Submit', ['class' => 'btn btn-sm btn-program btn-block', 'style' => 'padding:10px!important;width:100%']); ?>
+                </div>
+              </div>
+              <?php ActiveForm::end(); ?>
+            </div>
+          </div>
+          <!-- <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                             <button type="button" class="btn btn-primary">Save changes</button>
                         </div> -->
-                    </div>
-                </div>
-            </div>
-    <?php }
-    } ?>
+        </div>
+      </div>
+    </div>
+<?php }
+} ?>
 </div>
 
 <?php
 if (!\Yii::$app->user->isGuest) {
-    $confirm = Yii::$app->user->identity->confirm;
-    $status = Yii::$app->user->identity->status;
-    if ($confirm != 1 || $status != 1) {
+  $confirm = Yii::$app->user->identity->confirm;
+  $status = Yii::$app->user->identity->status;
+  if ($confirm != 1 || $status != 1) {
 ?>
-        <?php JSRegister::begin(); ?>
-        <script>
-            $(document).ready(function() {
-                $('#verifakun').modal('show');
-            });
-        </script>
-        <?php JSRegister::end(); ?>
+    <?php JSRegister::begin(); ?>
+    <script>
+      $(document).ready(function() {
+        $('#verifakun').modal('show');
+      });
+    </script>
+    <?php JSRegister::end(); ?>
 <?php
-    }
+  }
 }
 ?>
 
-<script>
-  function myFunction(e) {
-    document.getElementById("pendanaan_wakaf").value = e.target.value
-  }
-
-  function myFunction2(e) {
-    document.getElementById("pendanaan_infak").value = e.target.value
-  }
-  var duit = document.getElementById("nominal");
-  duit.addEventListener('keyup', function(e) {
-    console.log(this.value);
-    duit.setAttribute("value", this.value);
-  });
-
-  var duit2 = document.getElementById("nominal2");
-  duit2.addEventListener('keyup', function(e) {
-    // console.log(this.value);
-    duit2.setAttribute("value", this.value);
-  });
-
-  document.querySelector("#bayarkan").addEventListener("click", () => {
-    let dana = document.querySelector("#pendanaan_wakaf").getAttribute("value");
-    if (dana == null) {
-      alert("Anda Belum Memilih Program Wakaf");
-    } else {
-      let nominal = document.querySelector("#nominal").getAttribute("value");
-      if (nominal == null) {
-        alert("Anda Belum Mengisi Nominal Pendanaan");
-      } else {
-
-        let ket = "wakaf";
-        var base_url = window.origin + "/isalam/web/home/pembayarans/" + dana + "?nominal=" + nominal + "&keterangan=" + ket;
-        // console.log(base_url);
-        window.location.href = base_url;
-      }
+<?php if (!\Yii::$app->user->isGuest) { ?>
+  <script>
+    function myFunction(e) {
+      document.getElementById("pendanaan_wakaf").value = e.target.value
     }
 
-  });
-  document.querySelector("#bayarkan2").addEventListener("click", () => {
-    let dana2 = document.querySelector("#pendanaan_infak").getAttribute("value");
-    if (dana2 == null) {
-
-      alert("Anda Belum Memilih Program Infak");
-    } else {
-      let nominal2 = document.querySelector("#nominal2").getAttribute("value");
-      if (nominal2 == null) {
-
-        alert("Anda Belum Mengisi Nominal Infak");
-      } else {
-        let ket2 = "infak";
-        var base_url2 = window.origin + "/isalam/web/home/pembayarans/" + dana2 + "?nominal=" + nominal2 + "&keterangan=" + ket2;
-        //   console.log(base_url);
-        window.location.href = base_url2;
-      }
+    function myFunction2(e) {
+      document.getElementById("pendanaan_infak").value = e.target.value
     }
-  });
-</script>
-<!-- <script>
-var slideIndex = 0;
-showSlides();
+    var duit = document.getElementById("nominal");
+    duit.addEventListener('keyup', function(e) {
+      console.log(this.value);
+      duit.setAttribute("value", this.value);
+    });
 
-function showSlides() {
-  var i;
-  var slides = document.getElementsByClassName("mySlides");
-  var dots = document.getElementsByClassName("dot");
-  for (i = 0; i < slides.length; i++) {
-    slides[i].style.display = "none";  
-  }
-  slideIndex++;
-  if (slideIndex > slides.length) {slideIndex = 1}    
-  for (i = 0; i < dots.length; i++) {
-    dots[i].className = dots[i].className.replace(" active", "");
-  }
-  slides[slideIndex-1].style.display = "block";  
-  dots[slideIndex-1].className += " active";
-  setTimeout(showSlides, 2000); // Change image every 2 seconds
-}
-</script> -->
+    var duit2 = document.getElementById("nominal2");
+    duit2.addEventListener('keyup', function(e) {
+      // console.log(this.value);
+      duit2.setAttribute("value", this.value);
+    });
+
+    document.querySelector("#bayarkan").addEventListener("click", () => {
+      let dana = document.querySelector("#pendanaan_wakaf").getAttribute("value");
+      if (dana == null) {
+        alert("Anda Belum Memilih Program Wakaf");
+      } else {
+        let nominal = document.querySelector("#nominal").getAttribute("value");
+        if (nominal == null) {
+          alert("Anda Belum Mengisi Nominal Pendanaan");
+        } else {
+
+          let ket = "wakaf";
+          var base_url = window.origin + "/isalam/web/home/pembayarans/" + dana + "?nominal=" + nominal + "&keterangan=" + ket;
+          // console.log(base_url);
+          window.location.href = base_url;
+        }
+      }
+
+    });
+    document.querySelector("#bayarkan2").addEventListener("click", () => {
+      let dana2 = document.querySelector("#pendanaan_infak").getAttribute("value");
+      if (dana2 == null) {
+
+        alert("Anda Belum Memilih Program Infak");
+      } else {
+        let nominal2 = document.querySelector("#nominal2").getAttribute("value");
+        if (nominal2 == null) {
+
+          alert("Anda Belum Mengisi Nominal Infak");
+        } else {
+          let ket2 = "infak";
+          var base_url2 = window.origin + "/isalam/web/home/pembayarans/" + dana2 + "?nominal=" + nominal2 + "&keterangan=" + ket2;
+          //   console.log(base_url);
+          window.location.href = base_url2;
+        }
+      }
+    });
+  </script>
+<?php } ?>
