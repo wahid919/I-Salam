@@ -31,7 +31,7 @@ class Registrasi extends Model
                 'konfirmasi_pin',
                 'reCaptcha'
             ], 'required'],
-            [['nomor_handphone'], 'number', 'min' => 10, 'max' => 14],
+            [['nomor_handphone'], 'string', 'min' => 10, 'max' => 14],
             [['username'], 'email'],
             [['password'], 'string', 'min' => 8],
             [['konfirmasi_password'], 'string', 'min' => 8],

@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\helpers\Url;
+use yii\bootstrap\ActiveForm;
 
 /* @var $this \yii\web\View */
 /* @var $content string */
@@ -61,7 +62,7 @@ use yii\helpers\Url;
         #modal-registrasi .close {
             color: white;
         }
-        
+
 
         #modal-login .modal-header .close {
             padding: 0;
@@ -132,6 +133,7 @@ use yii\helpers\Url;
 ?>
 <div id="modal-body2"></div>
 <?php \app\components\Modal::end() ?>
+
 <script>
     var marker;
 
@@ -199,6 +201,7 @@ use yii\helpers\Url;
         if (success !== "") {
             Swal.fire("Peringatan!", "<?= \Yii::$app->session->getFlash('success') ?>", "success");
         }
+
     });
 </script>
 
@@ -244,11 +247,11 @@ use yii\helpers\Url;
                     $("#modal-login").attr("class", "fade modal");
                 })
             });
+
         } catch (error) {
             console.log(error)
         }
     })
-
 </script>
 
 </html>
