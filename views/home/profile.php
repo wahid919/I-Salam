@@ -34,7 +34,10 @@
                         <!-- <p><a href="#" class="btn btn-sm btn-program <?= $status ?>"><?= $pembayaran->status->name ?></a></p> -->
                     </div>
 
-<script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="SB-Mid-client-lrPe45BCGoT9yG2O"></script>
+<!-- Production -->
+<script src="https://app.midtrans.com/snap/snap.js" data-client-key="Mid-client-IzRsb2KnAzGzaaBr"></script>
+<!-- //sandbox -->
+<!-- <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="SB-Mid-client-lrPe45BCGoT9yG2O"></script> -->
 <script type="text/javascript">
     let kode_snap_<?=$pembayaran->id ?> = "<?= $code ?>";
       document.getElementById('pay-button-<?=$pembayaran->id ?>').onclick = function(){

@@ -358,7 +358,10 @@
     }
   });
 </script>
-<script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="SB-Mid-client-lrPe45BCGoT9yG2O"></script>
+<!-- Production -->
+<script src="https://app.midtrans.com/snap/snap.js" data-client-key="Mid-client-IzRsb2KnAzGzaaBr"></script>
+<!-- //sandbox -->
+<!-- <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="SB-Mid-client-lrPe45BCGoT9yG2O"></script> -->
 
 <!-- <pre><div id="result-json">JSON result will appear here after payment:<br></div></pre> -->
 
