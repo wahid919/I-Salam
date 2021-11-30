@@ -31,10 +31,10 @@
       <div class="col-md-7">
         <h2 class="heading__title mt-4 mb-2" style="font-size: 1.8rem;;color: #666"><?= $berita->judul ?></h2>
         <div class="row" style="font-size: .8rem;">
-          <div class="col-lg-2 col-md-3" style="color: #666; font-weight:600">
+          <div class="col-lg-3 col-md-3" style="color: #666; font-weight:600">
             <i class="fa fa-user mr-1 text-primary"></i> <?= $berita->user ? $berita->user->name : "-" ?>
           </div>
-          <div class="col-lg-4 col-md-4" style="color: #666; font-weight:600">
+          <div class="col-lg-3 col-md-4" style="color: #666; font-weight:600">
             <i class="fa fa-calendar mr-1 text-primary"></i> <?= date("d / m / Y", strtotime($berita->created_at)); ?>
           </div>
           <div class="col-md-4" style="color: #666; font-weight:600">

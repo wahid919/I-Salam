@@ -526,7 +526,7 @@ class HomeController extends Controller
     
                     $model->save();
                     $text = "
-                        Hay,\nini adalah kode OTP untuk Login anda.\n
+                        hai,\nini adalah kode OTP untuk Login anda.\n
                         {$model->kode_otp}
                         \nJangan bagikan kode ini dengan siapapun.
                         \nKode akan Kadaluarsa dalam 5 Menit
@@ -603,7 +603,7 @@ class HomeController extends Controller
         if ($now > $validasi) {
             $otp->kode_otp = (string) random_int(1000, 9999);
             $text = "
-                Hay,\nini adalah kode OTP untuk Login anda.\n
+                hai,\nini adalah kode OTP untuk Login anda.\n
                 {$otp->kode_otp}
                 \nJangan bagikan kode ini dengan siapapun.
                 \nKode akan Kadaluarsa dalam 5 Menit

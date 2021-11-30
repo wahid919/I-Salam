@@ -126,7 +126,8 @@ $config = [
                 'unduh-file-uraian' => 'home/unduh-file-uraian',
                 'registrasi' => 'home/registrasi',
                 'login' => 'home/login',
-
+                'lupa-password' => 'site/lupa-password',
+                
                 //pembayaran
                 'pembayaran/all' => '/pembayaran/all',
                 'pembayaran/bayar' => 'pembayaran/bayar',

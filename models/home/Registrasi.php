@@ -35,8 +35,8 @@ class Registrasi extends Model
             [['username'], 'email'],
             [['password'], 'string', 'min' => 8],
             [['konfirmasi_password'], 'string', 'min' => 8],
-            [['pin'], 'string', 'min' => 8],
-            [['konfirmasi_pin'], 'string', 'min' => 8],
+            [['pin'], 'string', 'min' => 4, 'max' => 6],
+            [['konfirmasi_pin'], 'string', 'min' => 4, 'max' => 6],
             [
                 ['reCaptcha'], \himiklab\yii2\recaptcha\ReCaptchaValidator3::className(),
                 'secret' => Yii::$app->params['recaptcha3.secretKey'], // unnecessary if reСaptcha is already configured
@@ -54,12 +54,13 @@ class Registrasi extends Model
             'username' => 'Email',
             'password' => 'Password',
             'role_id' => 'Role',
-            'photo_url' => 'Photo Url',
-            'pin' => 'Pin',
+            'photo_url' => 'Foto',
+            'pin' => 'PIN',
             'secret_token' => 'Secret Token',
             'nomor_handphone' => 'Nomor Handphone',
             'last_login' => 'Last Login',
             'last_logout' => 'Last Logout',
+            'konfirmasi_pin' => 'Konfirmasi PIN'
         ];
     }
 

@@ -58,8 +58,8 @@ use yii\helpers\Html;
             'action' => 'login',
         ]
     ) ?>
-    <div class="col-12">
-        <?= Html::a("Lupa Password", ["site/lupa-password"]) ?>
+    <div class="col-12 pb-4 ml-4">
+        <a id="btn-forgot" style="color: blue;">Lupa Password</a>
     </div>
     <div class="col-md-12">
         <div class="col-md-12">
