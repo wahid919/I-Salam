@@ -17,8 +17,8 @@ use yii\helpers\Url;
           <div class="program1__big-img">
             <img class="border-r10" alt="program 1" src="<?= \Yii::$app->request->baseUrl . "/uploads/" . $pendanaan->poster ?>">
           </div>
-          <div class="program1__img-wrap">
-            <?php if ($kegiatan_pendanaans == null) { ?>
+          <div class="program1__img-wrap d-none">
+            <!-- <?php if ($kegiatan_pendanaans == null) { ?>
               <div class="program1-img">
                 <a href="<?= \Yii::$app->request->baseUrl . "/uploads/" . $pendanaan->poster ?>" data-lightbox="program">
                   <img alt="program Small 1" src="<?= \Yii::$app->request->baseUrl . "/uploads/" . $pendanaan->poster ?>" class="img-project">
@@ -42,7 +42,7 @@ use yii\helpers\Url;
                   </a>
                 </div>
             <?php }
-            } ?>
+            } ?> -->
           </div>
         </div>
         <div class="col-lg-6 col-md-6 col-sm-12 col-12">
