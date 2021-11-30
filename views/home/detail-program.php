@@ -132,7 +132,14 @@ use yii\helpers\Url;
             <hr>
             <div class="row">
               <div class="col-sm-12 col-md-12 col-lg-12">
-                <a href="#" class="btn btn-sm btn-program btn-block" data-toggle="modal" data-target="#mulaiwakaf" style="padding: 10px !important;">Mulai Wakaf</a>
+                <!-- <a href="#" class="btn btn-sm btn-program btn-block" data-toggle="modal" data-target="#mulaiwakaf" style="padding: 10px !important;">Mulai Wakaf</a> -->
+                <div class="col-12">
+                    <?php if (!\Yii::$app->user->isGuest) { ?>
+                      <a href="#" class="btn btn-sm btn-program btn-block" data-toggle="modal" data-target="#mulaiwakaf" style="padding: 10px !important;">Mulai Wakaf</a>
+                    <?php } else { ?>
+                      <button type="button" class="btn-sm btn-block text-white font-weight-bold" style="height: 3rem;background-color: #f1a502;" id="btn-user-login">Login</button>
+                    <?php
+                    } ?>
               </div>
             </div>
           </div>

@@ -249,6 +249,29 @@ use yii\bootstrap\ActiveForm;
     $(window).ready(() => {
         try {
 
+            $('#btn-user-login').on('click', async () => {
+                let response = await fetch("<?= Url::to(['/login'], false) ?>", {
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                });
+                response = await response.text();
+                var parser = new DOMParser();
+                var doc = parser.parseFromString(response, 'text/html');
+                $("#modal-body2").html(response);
+                // $("#modal-login").modal("show")
+                $("#modal-login").attr("style", "padding-right: 17px; display: block;overflow:auto")
+                $("#modal-login").attr("class", "fade modal show");
+                document.querySelector("#modal-login .close").addEventListener("click", () => {
+                    $("#modal-login").removeAttr("style")
+                    $("#modal-login").attr("class", "fade modal");
+                })
+                document.querySelector("#modal-login #btn-forgot").addEventListener("click", async () => {
+                    $("#modal-login").removeAttr("style")
+                    $("#modal-login").attr("class", "fade modal");
+                })
+            });
+
             $('#btn-registrasi').on('click', async () => {
                 let response = await fetch("<?= Url::to(['/registrasi'], false) ?>", {
                     headers: {
