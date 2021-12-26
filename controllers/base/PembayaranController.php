@@ -4,6 +4,8 @@
 
 namespace app\controllers\base;
 
+use app\components\Angka;
+use app\components\Tanggal;
 use Yii;
 use app\models\Pembayaran;
 use app\models\Notifikasi;
@@ -17,6 +19,7 @@ use app\models\Action;
 use app\models\Setting;
 use app\models\User;
 use kartik\mpdf\Pdf;
+use yii\db\Query;
 use yii\web\UploadedFile;
 
 /**
@@ -325,6 +328,81 @@ class PembayaranController extends Controller
             ]
         ]);
         return $pdf->render(); 
+    }
+
+    public function actionExport(){
+        extract($_GET);
+        $tgl1 = $t1.' 00:00:01';
+        $tgl2 = $t2.' 23:59:59';
+        // $tgl2 = date('Y-m-d', strtotime($t1.'+ 1 days')).' 02:00:00';
+        $query = new Query();
+        $query->select(['user.name as nama_bayar','pembayaran.nominal as nominal','pembayaran.nama as pewakaf','pendanaan.nama_pendanaan as nm_pendanaan','pembayaran.created_at as tgl_buat','status.name as status_name'])
+                            ->from('pembayaran')
+                            ->join('LEFT JOIN',
+                                'user',
+                                'user.id = pembayaran.user_id'
+                            )->join('LEFT JOIN',
+                                'pendanaan',
+                                'pendanaan.id = pembayaran.pendanaan_id'
+                            )
+                            ->join('LEFT JOIN',
+                                'status',
+                                'status.id = pembayaran.status_id'
+                            )->where(['between', 'pembayaran.created_at', "$tgl1", "$tgl2"])
+                          ;
+        $command = $query->createCommand();
+        $mdl = $command->queryAll();
+
+        $objPHPExcel = new \PHPExcel();
+
+        $sheet = 0;
+
+        $objPHPExcel->setActiveSheetIndex($sheet);
+
+        $objPHPExcel->getActiveSheet()->getColumnDimension('A')->setWidth(5);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('B')->setWidth(30);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('C')->setWidth(30);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('D')->setWidth(30);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('E')->setWidth(40);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('F')->setWidth(40);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('G')->setWidth(30);
+
+        $objPHPExcel->getActiveSheet()->setTitle('Laporan Barang')
+            ->setCellValue('A1', 'NO')
+            ->setCellValue('B1', 'Nama')
+            ->setCellValue('C1', 'Nominal')
+            ->setCellValue('D1', 'Pewakaf')
+            ->setCellValue('E1', 'Pendanaan')
+            ->setCellValue('F1', 'Tanggal Buat')
+            ->setCellValue('G1', 'Status');
+        $count=1;
+        $row = 2;
+        $itm = $mdlitm;
+        foreach ($mdl as $m) {
+            $objPHPExcel->getActiveSheet()->setCellValue('A' . $row, $count);
+            $objPHPExcel->getActiveSheet()->setCellValue('B' . $row, $m['nama_bayar']);
+            $objPHPExcel->getActiveSheet()->setCellValue('C' . $row, 'Rp '.Angka::toReadableAngka($m['nominal'],FALSE));
+            $objPHPExcel->getActiveSheet()->setCellValue('D' . $row, $m['pewakaf']);
+            $objPHPExcel->getActiveSheet()->setCellValue('E' . $row, $m['nm_pendanaan']);
+            $objPHPExcel->getActiveSheet()->setCellValue('F' . $row, Tanggal::toReadableDate($m['tgl_buat'],FALSE));
+            $objPHPExcel->getActiveSheet()->setCellValue('G' . $row, $m['status_name']);
+            $row++;
+            $count++;
+            // if ($m === end($mdl)) {
+            //   $objPHPExcel->getActiveSheet()->setCellValue('E' . $row++, 'Total Omset');
+            //   $objPHPExcel->getActiveSheet()->setCellValue('F' . --$row, 'Rp '.Angka::toReadableAngka($htg,FALSE));
+            // }
+        }
+
+        $filename = "LaporanPembayaran" . $tgl1."-". $tgl2 .".xls";
+        ob_end_clean();
+        header('Content-Type: application/vnd.ms-excel');
+        header('Content-Disposition: attachment;filename=' . $filename . ' ');
+        header("Pragma: no-cache");
+        header("Expires: 0");
+        $objWriter = \PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+        $objWriter->save('php://output');
+        ob_end_clean();
     }
     /**
      * Finds the Pembayaran model based on its primary key value.

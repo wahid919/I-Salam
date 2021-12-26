@@ -724,8 +724,79 @@ class PendanaanController extends Controller
          return $this->redirect(['index']);
       }
    }
+   public function actionExport(){
+      extract($_GET);
+      $tgl1 = $t1.' 00:00:01';
+      $tgl2 = $t2.' 23:59:59';
+      // $tgl2 = date('Y-m-d', strtotime($t1.'+ 1 days')).' 02:00:00';
+      $query = new Query();
+      $query->select(['pendanaan.nama_pendanaan as nm_pendanaan','pendanaan.nominal as nominal','sum(pembayaran.nominal) as jml','pendanaan.created_at as tgl_buat','pendanaan.pendanaan_berakhir as tgl_berakhir','status.name as status_name'])
+                          ->from('pendanaan')
+                          ->join('LEFT JOIN',
+                              'pembayaran',
+                              'pembayaran.pendanaan_id = pendanaan.id'
+                          )
+                          ->join('LEFT JOIN',
+                              'status',
+                              'status.id = pendanaan.status_id'
+                          )->where(['between', 'pembayaran.created_at', "$tgl1", "$tgl2"])
+                          ->andWhere(['pembayaran.status_id'=>6])
+                        ;
+      $command = $query->createCommand();
+      $mdl = $command->queryAll();
 
-   public function actionExport($id)
+      $objPHPExcel = new \PHPExcel();
+
+      $sheet = 0;
+
+      $objPHPExcel->setActiveSheetIndex($sheet);
+
+      $objPHPExcel->getActiveSheet()->getColumnDimension('A')->setWidth(5);
+      $objPHPExcel->getActiveSheet()->getColumnDimension('B')->setWidth(30);
+      $objPHPExcel->getActiveSheet()->getColumnDimension('C')->setWidth(30);
+      $objPHPExcel->getActiveSheet()->getColumnDimension('D')->setWidth(30);
+      $objPHPExcel->getActiveSheet()->getColumnDimension('E')->setWidth(40);
+      $objPHPExcel->getActiveSheet()->getColumnDimension('F')->setWidth(40);
+      $objPHPExcel->getActiveSheet()->getColumnDimension('G')->setWidth(30);
+
+      $objPHPExcel->getActiveSheet()->setTitle('Laporan Barang')
+          ->setCellValue('A1', 'NO')
+          ->setCellValue('B1', 'Nama Pendanaan')
+          ->setCellValue('C1', 'Nominal')
+          ->setCellValue('D1', 'Jumlah Terkumpul')
+          ->setCellValue('E1', 'Tanggal Buat')
+          ->setCellValue('F1', 'Tanggal Selesai')
+          ->setCellValue('G1', 'Status');
+      $count=1;
+      $row = 2;
+      $itm = $mdlitm;
+      foreach ($mdl as $m) {
+          $objPHPExcel->getActiveSheet()->setCellValue('A' . $row, $count);
+          $objPHPExcel->getActiveSheet()->setCellValue('B' . $row, $m['nm_pendanaan']);
+          $objPHPExcel->getActiveSheet()->setCellValue('C' . $row, 'Rp '.Angka::toReadableAngka($m['nominal'],FALSE));
+          $objPHPExcel->getActiveSheet()->setCellValue('D' . $row, 'Rp '.Angka::toReadableAngka($m['jml'],FALSE));
+          $objPHPExcel->getActiveSheet()->setCellValue('E' . $row, Tanggal::toReadableDate($m['tgl_buat'],FALSE));
+          $objPHPExcel->getActiveSheet()->setCellValue('F' . $row, Tanggal::toReadableDate($m['tgl_berakhir'],FALSE));
+          $objPHPExcel->getActiveSheet()->setCellValue('G' . $row, $m['status_name']);
+          $row++;
+          $count++;
+          // if ($m === end($mdl)) {
+          //   $objPHPExcel->getActiveSheet()->setCellValue('E' . $row++, 'Total Omset');
+          //   $objPHPExcel->getActiveSheet()->setCellValue('F' . --$row, 'Rp '.Angka::toReadableAngka($htg,FALSE));
+          // }
+      }
+
+      $filename = "LaporanPendanaan" . $tgl1."-". $tgl2 .".xls";
+      ob_end_clean();
+      header('Content-Type: application/vnd.ms-excel');
+      header('Content-Disposition: attachment;filename=' . $filename . ' ');
+      header("Pragma: no-cache");
+      header("Expires: 0");
+      $objWriter = \PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+      $objWriter->save('php://output');
+      ob_end_clean();
+  }
+   public function actionExports($id)
     {
        
        
