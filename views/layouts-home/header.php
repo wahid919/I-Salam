@@ -86,9 +86,11 @@ $kategori_pendanaans = app\models\KategoriPendanaan::find()->all();
             </a>
             <i class="fa fa-angle-right" data-toggle="dropdown"></i>
             <ul class="dropdown-menu">
-              <li class="nav__item"><a href="<?= \Yii::$app->request->baseUrl . "/home/visi" ?>" class="nav__item-link text-dark">Visi</a></li>
+              <li class="nav__item"><a href="<?= \Yii::$app->request->baseUrl . "/home/visi" ?>" class="nav__item-link text-dark">Visi Misi</a></li>
 
-              <li class="nav__item"><a href="<?= \Yii::$app->request->baseUrl . "/home/misi" ?>" class="nav__item-link text-dark">Misi</a></li>
+              <li class="nav__item"><a href="<?= \Yii::$app->request->baseUrl . "/home/organisasi" ?>" class="nav__item-link text-dark">Organisasi</a></li>
+
+              <li class="nav__item"><a href="<?= \Yii::$app->request->baseUrl . "/home/kontak" ?>" class="nav__item-link text-dark">Kontak</a></li>
 
             </ul>
           </li>

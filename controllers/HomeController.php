@@ -344,6 +344,7 @@ class HomeController extends Controller
         return $this->render('bayar', [
             'setting' => $setting,
             // 'snapToken' => $snapToken,
+            'pembayaran' => $pembayaran,
             'count_program' => $count_program,
             'count_wakif' => $count_wakif,
             'organisasis' => $organisasis,
