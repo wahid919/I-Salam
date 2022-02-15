@@ -112,6 +112,13 @@ $kategori_pendanaans = app\models\KategoriPendanaan::find()->all();
               <a href="<?= Yii::$app->request->baseUrl . "/site/logout" ?>" class="nav__item-link" style="color: black;">Logout</a>
             </li><!-- /.nav-item -->
           <?php } ?>
+
+          <?php if (Yii::$app->user->identity->role_id == 1) { ?>
+
+            <li class="nav__item">
+            <a href="<?= Yii::$app->request->baseUrl . "/site/index" ?>" class="nav__item-link" style="color: black;">Halaman Admin</a>
+            </li>
+          <?php } ?>
         </ul><!-- /.navbar-nav -->
       </div><!-- /.navbar-collapse -->
     </div><!-- /.container -->

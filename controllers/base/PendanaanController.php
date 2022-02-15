@@ -730,7 +730,7 @@ class PendanaanController extends Controller
       $tgl2 = $t2.' 23:59:59';
       // $tgl2 = date('Y-m-d', strtotime($t1.'+ 1 days')).' 02:00:00';
       $query = new Query();
-      $query->select(['pendanaan.nama_pendanaan as nm_pendanaan','pendanaan.nominal as nominal','sum(pembayaran.nominal) as jml','pendanaan.created_at as tgl_buat','pendanaan.pendanaan_berakhir as tgl_berakhir','status.name as status_name'])
+      $query->select(['pendanaan.id as id_pendanaan','pendanaan.nama_pendanaan as nm_pendanaan','pendanaan.nominal as nominal','pendanaan.created_at as tgl_buat','pendanaan.pendanaan_berakhir as tgl_berakhir','status.name as status_name'])
                           ->from('pendanaan')
                           ->join('LEFT JOIN',
                               'pembayaran',
@@ -739,8 +739,8 @@ class PendanaanController extends Controller
                           ->join('LEFT JOIN',
                               'status',
                               'status.id = pendanaan.status_id'
-                          )->where(['between', 'pembayaran.created_at', "$tgl1", "$tgl2"])
-                          ->andWhere(['pembayaran.status_id'=>6])
+                          )->where(['between', 'pendanaan.created_at', "$tgl1", "$tgl2"])
+                          ->groupBy(['pendanaan.id'])
                         ;
       $command = $query->createCommand();
       $mdl = $command->queryAll();
@@ -759,7 +759,7 @@ class PendanaanController extends Controller
       $objPHPExcel->getActiveSheet()->getColumnDimension('F')->setWidth(40);
       $objPHPExcel->getActiveSheet()->getColumnDimension('G')->setWidth(30);
 
-      $objPHPExcel->getActiveSheet()->setTitle('Laporan Barang')
+      $objPHPExcel->getActiveSheet()->setTitle('Laporan Pendanaan')
           ->setCellValue('A1', 'NO')
           ->setCellValue('B1', 'Nama Pendanaan')
           ->setCellValue('C1', 'Nominal')
@@ -771,10 +771,13 @@ class PendanaanController extends Controller
       $row = 2;
       $itm = $mdlitm;
       foreach ($mdl as $m) {
+         
+         $bayar = \app\models\Pembayaran::find()
+         ->where(['pendanaan_id'=>$m['id_pendanaan']])->andWhere(['status_id'=>6])->sum('nominal');
           $objPHPExcel->getActiveSheet()->setCellValue('A' . $row, $count);
           $objPHPExcel->getActiveSheet()->setCellValue('B' . $row, $m['nm_pendanaan']);
           $objPHPExcel->getActiveSheet()->setCellValue('C' . $row, 'Rp '.Angka::toReadableAngka($m['nominal'],FALSE));
-          $objPHPExcel->getActiveSheet()->setCellValue('D' . $row, 'Rp '.Angka::toReadableAngka($m['jml'],FALSE));
+          $objPHPExcel->getActiveSheet()->setCellValue('D' . $row, 'Rp '.Angka::toReadableAngka($bayar,FALSE));
           $objPHPExcel->getActiveSheet()->setCellValue('E' . $row, Tanggal::toReadableDate($m['tgl_buat'],FALSE));
           $objPHPExcel->getActiveSheet()->setCellValue('F' . $row, Tanggal::toReadableDate($m['tgl_berakhir'],FALSE));
           $objPHPExcel->getActiveSheet()->setCellValue('G' . $row, $m['status_name']);
@@ -796,6 +799,74 @@ class PendanaanController extends Controller
       $objWriter->save('php://output');
       ob_end_clean();
   }
+  public function actionExportPdf() {
+   extract($_GET);
+      $tgl1 = $t1.' 00:00:01';
+      $tgl2 = $t2.' 23:59:59';
+      // $tgl2 = date('Y-m-d', strtotime($t1.'+ 1 days')).' 02:00:00';
+      $query = new Query();
+      $query->select(['pendanaan.id as id_pendanaan','pendanaan.nama_pendanaan as nm_pendanaan','pendanaan.nominal as nominal','pendanaan.created_at as tgl_buat','pendanaan.pendanaan_berakhir as tgl_berakhir','status.name as status_name'])
+                          ->from('pendanaan')
+                          ->join('LEFT JOIN',
+                              'pembayaran',
+                              'pembayaran.pendanaan_id = pendanaan.id'
+                          )
+                          ->join('LEFT JOIN',
+                              'status',
+                              'status.id = pendanaan.status_id'
+                          )->where(['between', 'pendanaan.created_at', "$tgl1", "$tgl2"])
+                          ->groupBy(['pendanaan.id'])
+                        ;
+      $command = $query->createCommand();
+      $mdl = $command->queryAll();
+   $content = $this->renderPartial('view-print-export',[
+       'mdl' => $mdl,
+       'tgl1' => $tgl1,
+       'tgl2' => $tgl2,
+]);
+   
+$filename = "Download LaporanPendanaan" . $tgl1."-". $tgl2 .".pdf";
+   // setup kartik\mpdf\Pdf component
+   $pdf = new Pdf([
+       // set to use core fonts only
+       'mode' => Pdf::MODE_CORE, 
+       //Name file
+       'filename' => $filename,
+       // LEGAL paper format
+       'format' => Pdf::FORMAT_LETTER, 
+       // portrait orientation
+       'orientation' => Pdf::ORIENT_PORTRAIT, 
+       // stream to browser inline
+       'destination' => Pdf::DEST_BROWSER, 
+       // your html content input
+       'content' => $content,  
+       'marginHeader' => 0,
+       'marginFooter' => 1,
+       'marginTop' => 5,
+       'marginBottom' => 5,
+       'marginLeft' => 0,
+       'marginRight' => 0,
+       // format content from your own css file if needed or use the
+       // enhanced bootstrap css built by Krajee for mPDF formatting 
+       'cssFile' => '@vendor/kartik-v/yii2-mpdf/src/assets/kv-mpdf-bootstrap.min.css',
+       // any css to be embedded if required
+       // 'cssInline' => '.kv-heading-1{font-size:25px}', 
+       'cssInline' => 'body { font-family: irannastaliq; font-size: 17px; }.page-break {display: none;};
+       .kv-heading-1{font-size:17px}table{width: 100%;line-height: inherit;text-align: left; border-collapse: collapse;}table, td, th {margin-left:50px;margin-right:50px;},fa { font-family: fontawesome;} @media print{
+           .page-break{display: block;page-break-before: always;}
+       }',
+        // set mPDF properties on the fly
+        'options' => [               
+           'defaultheaderline' => 0,  //for header
+            'defaultfooterline' => 0,  //for footer
+       ],
+        // call mPDF methods on the fly
+       'methods' => [
+           'SetTitle'=>'Print', 
+       ]
+   ]);
+   return $pdf->render(); 
+}
    public function actionExports($id)
     {
        

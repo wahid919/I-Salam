@@ -188,27 +188,18 @@ $long = ($model->longitude) ? $model->longitude : 0;
 $js = <<<JS
 $(function() {
     let lat = $lat,
-    lng = $long,
-    latlng = new google.maps.LatLng(lat, lng);
-    let mapOptions = {
-        center: new google.maps.LatLng(lat, lng),
-        zoom: 10,
-        mapTypeId: google.maps.MapTypeId.ROADMAP,
-        panControl: true,
-        panControlOptions: {
-            position: google.maps.ControlPosition.TOP_RIGHT
-        },
-        zoomControl: true,
-        zoomControlOptions: {
-            style: google.maps.ZoomControlStyle.LARGE,
-            position: google.maps.ControlPosition.TOP_left
-        }
-    },
-    map = new google.maps.Map(document.getElementById('map_canvas'), mapOptions),
-    marker = new google.maps.Marker({
-        position: latlng,
-        map: map,
-    });
+     lng = $long,
+    
+    map = L.map("map_canvas").setView([lat, lng], 13);
+   let marker = L.marker([lat, lng]).addTo(map);
+    L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+    maxZoom: 18,
+    id: 'mapbox/streets-v11',
+    tileSize: 512,
+    zoomOffset: -1,
+    accessToken: 'pk.eyJ1IjoiZGVmcmluZHIiLCJhIjoiY2s4ZTN5ZjM0MDFrNzNsdG1tNXk2M2dlMSJ9.YXJM0PTu8PSsCCtYVjJNmw'
+}).addTo(map);
 });
 JS;
 

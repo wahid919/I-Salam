@@ -2,10 +2,12 @@
 
 use app\models\KategoriPendanaan;
 use app\models\Status;
+use yii\bootstrap\Modal;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\grid\GridView;
 use yii\helpers\ArrayHelper;
+use yii\web\JsExpression;
 use yii\web\View;
 
 /**
@@ -16,42 +18,25 @@ use yii\web\View;
 
 $this->title = 'Pendanaan';
 $this->params['breadcrumbs'][] = $this->title;
+
+Modal::begin([
+    'id' => 'modal-export',
+    'header' => '<h2 id="modal_title" class="text-center">Export Data</h2>',
+]);
+
+echo $this->render('_export');
+
+Modal::end();
+
+$this->registerCss(".modal-content{border-radius: 10px}");
 ?>
 
 <p>
     <?= Html::a('<i class="fa fa-plus"></i> Tambah Baru', ['create'], ['class' => 'btn btn-success']) ?>
+    <?=Html::button('Export Data', ['class' => 'btn btn-success','onclick' => new JsExpression("
+	$('#modal-export').modal({show: true});
+								")])?>
 </p>
-<div class="box-body">
-
-<div class="row">
-    <div class="col-md-12">
-        <label><strong>Pilih Tanggal Awal :</strong></label>
-    </div>
-    <div class="col-md-12">
-        <input id="tanggal1" type="text" class="datepicker form-control"
-               value="<?php echo date("Y-m-d"); ?>" style="text-align: center">
-    </div>
-</div>
-<br/>
-<div class="row">
-    <div class="col-md-12">
-        <label><strong>Pilih Tanggal Akhir :</strong></label>
-    </div>
-    <div class="col-md-12">
-        <input id="tanggal2" type="text" class="datepicker form-control"
-               value="<?php echo date("Y-m-d"); ?>" style="text-align: center">
-    </div>
-</div>
-<br/>
-<hr />
-
-<div class="row">
-    <div class="clearfix"></div>
-    <div class="col-md-12">
-        <a class="btn btn-success btn-block" id="cetak" target="_blank" >Export Excel</a>
-    </div>
-</div>
-</div>
 
     <?php \yii\widgets\Pjax::begin(['id'=>'pjax-main', 'enableReplaceState'=> false, 'linkSelector'=>'#pjax-main ul.pagination a, th a', 'clientOptions' => ['pjax:success'=>'function(){alert("yo")}']]) ?>
 
@@ -150,22 +135,4 @@ $this->params['breadcrumbs'][] = $this->title;
     </div>
 
     <?php \yii\widgets\Pjax::end() ?>
-<?php
-$my_js = '
-$(document).ready(function(){
-$(".datepicker").datepicker({
-format: "yyyy-mm-dd"
-});
- $("#spinner").hide();
-});
-            $("#cetak").click(function() {
-                var url = "'.Yii::$app->homeUrl.'pendanaan/export?"
-                    + "t1=" + $("#tanggal1").val()
-                    + "&t2=" + $("#tanggal2").val();
-
-                window.open(url, "_blank","height=200,width=150");
-            });
-   ';
-$this->registerJs($my_js, View::POS_END);
-?>
 

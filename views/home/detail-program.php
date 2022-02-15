@@ -205,12 +205,27 @@ use yii\helpers\Url;
                           <div class="input-group-prepend mr-2" style="height:calc(1.5em + .75rem + 2px);">
                             <div class="input-group-text bg-white border-r5 font-weight-bold" style="color: #afafaf;border-color: #787878;">Rp</div>
                           </div>
-                          <input type="number" class="form-control select-wakaf border-r5" id="nominal" name="nominal" style="border-color: #787878;" placeholder="Minimal Wakaf Rp. 10.000" required>
+                          <input type="number" class="form-control select-wakaf" id="nominal" name="nominal" style="border-color: #787878;" placeholder="Minimal Wakaf Rp. 10.000" required>
+                          <button id="clear" class="btn btn-danger btn-sm" type="button" style="height: calc(1.5em + 0.75rem + 2px);
+                          line-height: 34px;
+                          width: 60px;background-color:firebrick;color:white;border-radius:0px;">
+                          X</button>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
+                <script>
+                  let hasils =document.querySelector('#nominal');
+    window.addEventListener('load', () => {
+        const button = document.querySelector('#clear');
+        button.addEventListener('click', () => {
+          
+        hasils.setAttribute("value", 0);
+            hasils.value = "";
+        });
+    }); 
+   </script>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-sm btn-batal" style="background-color:firebrick;color:white" data-dismiss="modal">Batal</button>
                   <!-- <button type="button" class="btn btn-sm btn-program" data-toggle="modal" data-target="#exampleModalScrollable" id="bayarkan">Bayar</button> -->
@@ -236,7 +251,11 @@ use yii\helpers\Url;
                           <div class="input-group-prepend mr-2" style="height:calc(1.5em + .75rem + 2px);">
                             <div class="input-group-text bg-white border-r5 font-weight-bold" style="color: #afafaf;border-color: #787878;">Lembar</div>
                           </div>
-                          <input type="number" class="form-control select-wakaf border-r5" id="nominal2" name="nominal2" style="border-color: #787878;" placeholder="Minimal Wakaf 1 Lembar" required>
+                          <input type="number" class="form-control select-wakaf" id="nominal2" name="nominal2" style="border-color: #787878;" placeholder="Minimal Wakaf 1 Lembar" required>
+                          <button id="clear2" class="btn btn-danger btn-sm" type="button" style="height: calc(1.5em + 0.75rem + 2px);
+                          line-height: 34px;
+                          width: 60px;background-color:firebrick;color:white;border-radius:0px;">
+                          X</button>
                         </div>
                       </div>
                     </div>
@@ -250,7 +269,17 @@ use yii\helpers\Url;
               </div>
             </div>
           </div>
-
+          <script>
+                  let hasils2 =document.querySelector('#nominal2');
+    window.addEventListener('load', () => {
+        const button = document.querySelector('#clear2');
+        button.addEventListener('click', () => {
+          
+        hasils2.setAttribute("value", 0);
+            hasils2.value = "";
+        });
+    }); 
+   </script>
         </div>
       </div>
     </div>

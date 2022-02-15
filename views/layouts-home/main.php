@@ -144,7 +144,7 @@ use yii\bootstrap\ActiveForm;
     <button id="scrollTopBtn"><i class="fas fa-chevron-circle-up"></i></button>
 
     <?php $this->endBody() ?>
-    <?php $this->registerJsFile("https://maps.googleapis.com/maps/api/js?key=AIzaSyCV6HOHjE9XM8IbEaL6ZMZdW8e0tavsOL8&libraries=places&region=id&language=en&sensor=false"); ?>
+    <!-- <?php $this->registerJsFile("https://maps.googleapis.com/maps/api/js?key=AIzaSyCV6HOHjE9XM8IbEaL6ZMZdW8e0tavsOL8&libraries=places&region=id&language=en&sensor=false"); ?> -->
 </body>
 
 <?php
@@ -177,74 +177,23 @@ use yii\bootstrap\ActiveForm;
 <script>
     var marker;
 
-    function initialize() {
-
-        // Variabel untuk menyimpan informasi (desc)
-        var infoWindow = new google.maps.InfoWindow;
-
-        //  Variabel untuk menyimpan peta Roadmap
-        var mapOptions = {
-            zoom: 5,
-            mapTypeId: google.maps.MapTypeId.ROADMAP
-        }
-
-        // Pembuatan petanya
-        var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
-
-        // Variabel untuk menyimpan batas kordinat
-        var bounds = new google.maps.LatLngBounds();
-
-        // Pengambilan data dari database
-        <?php
-
-        $nama = $setting->nama_web;
+    <?php
         $lat = $setting->latitude;
         $lon = $setting->longitude;
-
-        echo ("addMarker('<b>$nama</b>');\n");
-
         ?>
-
-        // Proses membuat marker 
-        function addMarker(info) {
-            var lat = <?php echo $lat ?>;
-            var lng = <?php echo $lon ?>;
-            var lokasi = new google.maps.LatLng(lat, lng);
-            bounds.extend(lokasi);
-            var marker = new google.maps.Marker({
-                map: map,
-                position: lokasi
-            });
-            // map.fitBounds(bounds);
-            map.setCenter(bounds.getCenter());
-            map.setZoom(16);
-            bindInfoWindow(marker, map, infoWindow, info);
-        }
-
-        // Menampilkan informasi pada masing-masing marker yang diklik
-        function bindInfoWindow(marker, map, infoWindow, html) {
-            google.maps.event.addListener(marker, 'click', function() {
-                if (map.getZoom() > 16) map.setZoom(16);
-                infoWindow.setContent(html);
-                infoWindow.open(map, marker);
-            });
-        }
-
-    }
-    google.maps.event.addDomListener(window, 'load', initialize);
-    $(document).ready(function() {
-        var success = "<?= \Yii::$app->session->getFlash('success') ?>";
-        var error = "<?= \Yii::$app->session->getFlash('error') ?>";
-        if (error !== "") {
-            Swal.fire("Peringatan!", "<?= \Yii::$app->session->getFlash('error') ?>", "error");
-        }
-        if (success !== "") {
-            Swal.fire("Peringatan!", "<?= \Yii::$app->session->getFlash('success') ?>", "success");
-        }
-
-    });
+    var lat = <?php echo $lat ?>;
+    var lng = <?php echo $lon ?>;
+    var map = L.map("map-canvas").setView([lat, lng], 13);
+    marker = L.marker([lat, lng]).addTo(map);
+    L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+    maxZoom: 18,
+    id: 'mapbox/streets-v11',
+    tileSize: 512,
+    zoomOffset: -1,
+    accessToken: 'pk.eyJ1IjoiZGVmcmluZHIiLCJhIjoiY2s4ZTN5ZjM0MDFrNzNsdG1tNXk2M2dlMSJ9.YXJM0PTu8PSsCCtYVjJNmw'
+}).addTo(map);
 </script>
-
 <script>
     $(window).ready(() => {
         try {

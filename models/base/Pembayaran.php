@@ -60,7 +60,7 @@ abstract class Pembayaran extends \yii\db\ActiveRecord
             unset($parent['url']);
             
             $parent['url'] = function ($model) {
-                return 'https://app.sandbox.midtrans.com/snap/v2/vtweb/'.$model->code;
+                return 'https://app.midtrans.com/snap/v2/vtweb/'.$model->code;
             };
         }
 
@@ -71,7 +71,7 @@ abstract class Pembayaran extends \yii\db\ActiveRecord
                 $curl = curl_init();
 
                 curl_setopt_array($curl, array(
-                    CURLOPT_URL => "https://api.sandbox.midtrans.com/v2/" . $model->kode_transaksi . "/status",
+                    CURLOPT_URL => "https://api.midtrans.com/v2/" . $model->kode_transaksi . "/status",
                     CURLOPT_RETURNTRANSFER => true,
                     CURLOPT_ENCODING => "",
                     CURLOPT_MAXREDIRS => 10,
@@ -83,7 +83,7 @@ abstract class Pembayaran extends \yii\db\ActiveRecord
                     CURLOPT_HTTPHEADER => array(
                         "Accept: application/json",
                         "Content-Type: application/json",
-                        "Authorization: Basic U0ItTWlkLXNlcnZlci1MV1RfNVJHdkhsUk9sSWJtYUU4SzBudGI6"
+                        "Authorization: Basic TWlkLXNlcnZlci1oV3hSekx0a3NmX0s4SUNhY3RjZ0Fwdl86"
                     ),
                 ));
         
@@ -111,7 +111,7 @@ abstract class Pembayaran extends \yii\db\ActiveRecord
                 $curl = curl_init();
 
                 curl_setopt_array($curl, array(
-                    CURLOPT_URL => "https://api.sandbox.midtrans.com/v2/" . $model->kode_transaksi . "/status",
+                    CURLOPT_URL => "https://api.midtrans.com/v2/" . $model->kode_transaksi . "/status",
                     CURLOPT_RETURNTRANSFER => true,
                     CURLOPT_ENCODING => "",
                     CURLOPT_MAXREDIRS => 10,
@@ -123,7 +123,7 @@ abstract class Pembayaran extends \yii\db\ActiveRecord
                     CURLOPT_HTTPHEADER => array(
                         "Accept: application/json",
                         "Content-Type: application/json",
-                        "Authorization: Basic U0ItTWlkLXNlcnZlci1MV1RfNVJHdkhsUk9sSWJtYUU4SzBudGI6"
+                        "Authorization: Basic TWlkLXNlcnZlci1oV3hSekx0a3NmX0s4SUNhY3RjZ0Fwdl86"
                     ),
                 ));
         

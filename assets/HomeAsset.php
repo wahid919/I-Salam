@@ -13,13 +13,17 @@ class HomeAsset extends AssetBundle
         "css/libraries.css",
         "css/style.css",
         "css/sweetalert2.min.css",
-        "fontawesome/css/all.css"
+        "fontawesome/css/all.css",
+        "leaflet/leaflet.css",
+        "leaflet/leaflet-search.css"
     ];
     public $js = [
         "js/jquery-3.3.1.min.js",
         "js/plugins.js",
         "js/main.js",
         "js/sweetalert2.all.min.js",
+        "leaflet/leaflet.js",
+        "leaflet/leaflet-search.js",
     ];
     public $depends = [
     ];

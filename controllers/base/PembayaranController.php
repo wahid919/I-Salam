@@ -404,6 +404,77 @@ class PembayaranController extends Controller
         $objWriter->save('php://output');
         ob_end_clean();
     }
+
+    public function actionExportPdf() {
+        extract($_GET);
+        $tgl1 = $t1.' 00:00:01';
+        $tgl2 = $t2.' 23:59:59';
+        // $tgl2 = date('Y-m-d', strtotime($t1.'+ 1 days')).' 02:00:00';
+        $query = new Query();
+        $query->select(['user.name as nama_bayar','pembayaran.nominal as nominal','pembayaran.nama as pewakaf','pendanaan.nama_pendanaan as nm_pendanaan','pembayaran.created_at as tgl_buat','status.name as status_name'])
+                            ->from('pembayaran')
+                            ->join('LEFT JOIN',
+                                'user',
+                                'user.id = pembayaran.user_id'
+                            )->join('LEFT JOIN',
+                                'pendanaan',
+                                'pendanaan.id = pembayaran.pendanaan_id'
+                            )
+                            ->join('LEFT JOIN',
+                                'status',
+                                'status.id = pembayaran.status_id'
+                            )->where(['between', 'pembayaran.created_at', "$tgl1", "$tgl2"])
+                          ;
+        $command = $query->createCommand();
+        $mdl = $command->queryAll();
+        $content = $this->renderPartial('view-print-export',[
+            'mdl' => $mdl,
+            'tgl1' => $tgl1,
+            'tgl2' => $tgl2,
+    ]);
+        
+    $filename = "Download LaporanPembayaran" . $tgl1."-". $tgl2 .".pdf";
+        // setup kartik\mpdf\Pdf component
+        $pdf = new Pdf([
+            // set to use core fonts only
+            'mode' => Pdf::MODE_CORE, 
+            //Name file
+            'filename' => $filename,
+            // LEGAL paper format
+            'format' => Pdf::FORMAT_LETTER, 
+            // portrait orientation
+            'orientation' => Pdf::ORIENT_PORTRAIT, 
+            // stream to browser inline
+            'destination' => Pdf::DEST_BROWSER, 
+            // your html content input
+            'content' => $content,  
+            'marginHeader' => 0,
+            'marginFooter' => 1,
+            'marginTop' => 5,
+            'marginBottom' => 5,
+            'marginLeft' => 0,
+            'marginRight' => 0,
+            // format content from your own css file if needed or use the
+            // enhanced bootstrap css built by Krajee for mPDF formatting 
+            'cssFile' => '@vendor/kartik-v/yii2-mpdf/src/assets/kv-mpdf-bootstrap.min.css',
+            // any css to be embedded if required
+            // 'cssInline' => '.kv-heading-1{font-size:25px}', 
+            'cssInline' => 'body { font-family: irannastaliq; font-size: 17px; }.page-break {display: none;};
+            .kv-heading-1{font-size:17px}table{width: 100%;line-height: inherit;text-align: left; border-collapse: collapse;}table, td, th {margin-left:50px;margin-right:50px;},fa { font-family: fontawesome;} @media print{
+                .page-break{display: block;page-break-before: always;}
+            }',
+             // set mPDF properties on the fly
+             'options' => [               
+                'defaultheaderline' => 0,  //for header
+                 'defaultfooterline' => 0,  //for footer
+            ],
+             // call mPDF methods on the fly
+            'methods' => [
+                'SetTitle'=>'Print', 
+            ]
+        ]);
+        return $pdf->render(); 
+    }
     /**
      * Finds the Pembayaran model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.

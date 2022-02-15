@@ -69,7 +69,7 @@ for ($i = 1; $i <= $tgl_akhir; $i++) {
                 <div class="panel panel-primary">
                   <div class="panel-body">
                     <canvas id='TransChart' width='400' height='150'></canvas>
-                    <script src="<?= \Yii::$app->request->BaseUrl ?>/chart/chart.js"></script>
+                    <script src="<?= \Yii::$app->request->BaseUrl ?>/chart/Chart.js"></script>
                     <script>
                       var ctx = document.getElementById('TransChart').getContext('2d');
                       var myChart = new Chart(ctx, {
@@ -173,7 +173,7 @@ for ($i = 1; $i <= $tgl_akhir; $i++) {
               <div class="col-md-9">
 
                 <canvas id='pieChart' width='400' height='150'></canvas>
-                <script src="<?= \Yii::$app->request->BaseUrl ?>/chart/chart.js"></script>
+                <script src="<?= \Yii::$app->request->BaseUrl ?>/chart/Chart.js"></script>
                 <script>
                   var ctx = document.getElementById('pieChart').getContext('2d');
                   const data = {
