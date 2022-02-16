@@ -4,6 +4,7 @@
 
 namespace app\controllers\base;
 
+use app\components\ActionSendFcm;
 use app\components\UploadFile;
 use app\models\Berita;
 use app\models\search\BeritaSearch;
@@ -13,6 +14,7 @@ use yii\helpers\Url;
 use yii\filters\AccessControl;
 use dmstr\bootstrap\Tabs;
 use app\models\Action;
+use app\models\User;
 use Yii;
 use yii\web\UploadedFile;
 
@@ -112,6 +114,18 @@ use UploadFile;
                 //     $gambar->saveAs($path);
                 // }
                 if ($model->save()) {
+                    $usrs = User::find()->where(['<>','fcm_token',null])->all();
+                    foreach ($usrs as $value) {
+                        $user = User::findOne(['id'=>$value->id]);
+                        ActionSendFcm::getMessage($value->fcm_token, [
+                            "title" => "Berita Baru",
+                            "title" => "Halo,terdapat berita baru di website/aplikasi isalam",
+                            "sound" => "notification.wav",
+                            "id_transaksi" => $model->id
+                        ], function ($user) {
+                            return $user;
+                        });
+                    }
                     return $this->redirect(['view', 'id' => $model->id]);
                 }
             } elseif (!\Yii::$app->request->isPost) {

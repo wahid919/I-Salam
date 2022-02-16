@@ -4,6 +4,7 @@
 
 namespace app\controllers\base;
 
+use app\components\ActionSendFcm;
 use app\components\Angka;
 use app\components\Tanggal;
 use Yii;
@@ -265,6 +266,18 @@ class PendanaanController extends Controller
                'success',
                'Pendanaan Telah Disetujui!'
             );
+            $usrs = User::find()->where(['<>','fcm_token',null])->all();
+                    foreach ($usrs as $value) {
+                        $user = User::findOne(['id'=>$value->id]);
+                        ActionSendFcm::getMessage($value->fcm_token, [
+                            "title" => "Program Baru",
+                            "title" => "Halo,terdapat program baru di website/aplikasi isalam",
+                            "sound" => "notification.wav",
+                            "id_transaksi" => $model->id
+                        ], function ($user) {
+                            return $user;
+                        });
+                    }
          } else {
             \Yii::$app->getSession()->setFlash(
                'danger',
