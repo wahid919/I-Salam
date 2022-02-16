@@ -60,6 +60,7 @@ class UserController extends \yii\rest\ActiveController
     {
         $username = !empty($_POST['username']) ? $_POST['username'] : '';
         $password = !empty($_POST['password']) ? $_POST['password'] : '';
+        $fcm_token = !empty($_POST['fcm_token']) ? $_POST['fcm_token'] : '';
         $result = [];
         // validasi jika kosong
         if (empty($username) || empty($password)) {
@@ -86,6 +87,9 @@ class UserController extends \yii\rest\ActiveController
                     }else{
                         $generate_random_string = SSOToken::generateToken();
                         $user->secret_token = $generate_random_string;
+                        if(isset($fcm_token)){
+                            $user->fcm_token = $fcm_token;
+                        }
                         $user->save();
                         
                         $result['success'] = true;
