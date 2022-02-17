@@ -5,12 +5,13 @@ namespace app\components;
     class ActionSendFcm
     {
         
-        public static function getMessage($token,$isi)
+        public static function getMessage($token,$type,$id,$title,$body)
         {
             $payload = array(
                 'to' => $token,
                 'sound' => 'default',
-                'body' => $isi,
+                'title' => $title,
+                'body' => $body,
             );
         
         $curl = curl_init();
@@ -41,7 +42,16 @@ namespace app\components;
         if ($err) {
           echo "cURL Error #:" . $err;
         } else {
-          echo $response;
+            $data = json_decode($response);
+            if(!isset($data->type)){
+                $data->type = $type;
+            }
+            if(!isset($data->data->id_berita)){
+                $data->data->id_berita = $id;
+            }
+            // var_dump($data);die;
+            // $response["dat"]["id_transaksi"] = $id;
+          return $data;
         }
         }        
 

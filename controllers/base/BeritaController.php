@@ -81,6 +81,7 @@ use UploadFile;
      */
     public function actionCreate()
     {
+        // var_dump(ActionSendFcm::getMessage("ExponentPushToken[dvs18uMElj10c0yIBKLDFl]","Berita","23","Berita Baru","Tes var_dump"));die;
         $model = new Berita;
 
         try {
@@ -117,8 +118,8 @@ use UploadFile;
                     $usrs = User::find()->where(['<>','fcm_token',""])->all();
                     foreach ($usrs as $value) {
                         $user = User::findOne(['id'=>$value->id]);
-                       ActionSendFcm::getMessage($value->fcm_token,"Berita Baru");
-                    //    var_dump(ActionSendFcm::getMessage($value->fcm_token));die;
+                        ActionSendFcm::getMessage($value->fcm_token,"Berita",$model->id,"Berita Baru",$model->judul);
+                        // var_dump(ActionSendFcm::getMessage($value->fcm_token,$model->id,"Berita Baru",$model->judul));die;
                     }
                     return $this->redirect(['view', 'id' => $model->id]);
                 }

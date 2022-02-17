@@ -269,7 +269,7 @@ class PendanaanController extends Controller
             $usrs = User::find()->where(['<>','fcm_token',""])->all();
                     foreach ($usrs as $value) {
                         $user = User::findOne(['id'=>$value->id]);
-                        ActionSendFcm::getMessage($value->fcm_token,"Terdapat Program Baru");
+                        ActionSendFcm::getMessage($value->fcm_token,"Program Baru",$model->id,"Program Baru",$model->nama_pendanaan);
                     }
          } else {
             \Yii::$app->getSession()->setFlash(
