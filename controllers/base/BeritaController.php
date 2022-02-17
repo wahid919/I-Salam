@@ -114,17 +114,11 @@ use UploadFile;
                 //     $gambar->saveAs($path);
                 // }
                 if ($model->save()) {
-                    $usrs = User::find()->where(['<>','fcm_token',null])->all();
+                    $usrs = User::find()->where(['<>','fcm_token',""])->all();
                     foreach ($usrs as $value) {
                         $user = User::findOne(['id'=>$value->id]);
-                        ActionSendFcm::getMessage($value->fcm_token, [
-                            "title" => "Berita Baru",
-                            "title" => "Halo,terdapat berita baru di website/aplikasi isalam",
-                            "sound" => "notification.wav",
-                            "id_transaksi" => $model->id
-                        ], function ($user) {
-                            return $user;
-                        });
+                       ActionSendFcm::getMessage($value->fcm_token,"Berita Baru");
+                    //    var_dump(ActionSendFcm::getMessage($value->fcm_token));die;
                     }
                     return $this->redirect(['view', 'id' => $model->id]);
                 }
