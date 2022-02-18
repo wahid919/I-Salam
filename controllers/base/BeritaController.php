@@ -118,7 +118,7 @@ use UploadFile;
                     $usrs = User::find()->where(['<>','fcm_token',""])->all();
                     foreach ($usrs as $value) {
                         $user = User::findOne(['id'=>$value->id]);
-                        ActionSendFcm::getMessage($value->fcm_token,"Berita",$model->id,"Berita Baru",$model->judul);
+                        ActionSendFcm::getMessage($value->fcm_token,"berita",$model->id,"Berita Baru",$model->judul);
                         // var_dump(ActionSendFcm::getMessage($value->fcm_token,$model->id,"Berita Baru",$model->judul));die;
                     }
                     return $this->redirect(['view', 'id' => $model->id]);

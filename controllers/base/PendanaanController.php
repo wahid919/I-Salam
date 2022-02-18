@@ -269,7 +269,7 @@ class PendanaanController extends Controller
             $usrs = User::find()->where(['<>','fcm_token',""])->all();
                     foreach ($usrs as $value) {
                         $user = User::findOne(['id'=>$value->id]);
-                        ActionSendFcm::getMessage($value->fcm_token,"Program",$model->id,"Program Baru",$model->nama_pendanaan);
+                        ActionSendFcm::getMessage($value->fcm_token,"program",$model->id,"Program Baru",$model->nama_pendanaan);
                     }
          } else {
             \Yii::$app->getSession()->setFlash(
@@ -315,7 +315,7 @@ class PendanaanController extends Controller
                $notifikasi->date=date('Y-m-d H:i:s');
                $notifikasi->save();
                if($user->fcm_token != ""){
-                  ActionSendFcm::getMessage($user->fcm_token,"Program",$model->id,"Program Telah Dicairkan",$msg);
+                  ActionSendFcm::getMessage($user->fcm_token,"program",$model->id,"Program Telah Dicairkan",$msg);
                }
             }
                $notifikasi2 = new Notifikasi;
@@ -366,7 +366,7 @@ class PendanaanController extends Controller
                $notifikasi->date=date('Y-m-d H:i:s');
                $notifikasi->save();
                if($user->fcm_token != null){
-                  ActionSendFcm::getMessage($user->fcm_token,"Program",$model->id,"Uang Program Telah Disalurkan",$msg);
+                  ActionSendFcm::getMessage($user->fcm_token,"program",$model->id,"Uang Program Telah Disalurkan",$msg);
                }
             }
                $notifikasi2 = new Notifikasi;
@@ -411,7 +411,7 @@ class PendanaanController extends Controller
             $notifikasi->date=date('Y-m-d H:i:s');
             $notifikasi->save();
             if($user->fcm_token != ""){
-               ActionSendFcm::getMessage($user->fcm_token,"Program",$model->id,"Progress Program",$msg);
+               ActionSendFcm::getMessage($user->fcm_token,"program",$model->id,"Progress Program",$msg);
             }
          }
          

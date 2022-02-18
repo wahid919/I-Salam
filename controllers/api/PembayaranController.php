@@ -177,7 +177,7 @@ class PembayaranController extends \yii\rest\ActiveController
                     if($wf->save()){
                         $user = User::findOne(['id'=>$wf->user_id]);
                         if($user->fcm_token != ""){
-                            ActionSendFcm::getMessage($user->fcm_token,"Pembayaran",$wf->id,"Status Pembayaran",$msg);
+                            ActionSendFcm::getMessage($user->fcm_token,"pembayaran",$wf->id,"Status Pembayaran",$msg);
                         }
                         return [
                             "success" => true,
