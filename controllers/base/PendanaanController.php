@@ -269,7 +269,7 @@ class PendanaanController extends Controller
             $usrs = User::find()->where(['<>','fcm_token',""])->all();
                     foreach ($usrs as $value) {
                         $user = User::findOne(['id'=>$value->id]);
-                        ActionSendFcm::getMessage($value->fcm_token,"Program Baru",$model->id,"Program Baru",$model->nama_pendanaan);
+                        ActionSendFcm::getMessage($value->fcm_token,"Program",$model->id,"Program Baru",$model->nama_pendanaan);
                     }
          } else {
             \Yii::$app->getSession()->setFlash(
@@ -306,12 +306,17 @@ class PendanaanController extends Controller
             if ($model->save()) {
                $pembayar = Pembayaran::find()->where(['pendanaan_id'=>$model->id,'status_id'=>6])->all();
             foreach($pembayar as $value){
+               $user = User::findOne(['id'=>$value->user_id]);
+               $msg = "Pendanaan ".$model->nama_pendanaan." Telah di cairkan";
                $notifikasi = new Notifikasi;
                $notifikasi->message = "Pendanaan ".$model->nama_pendanaan." Telah di cairkan";
                $notifikasi->user_id = $value->user_id;
                $notifikasi->flag = 1;
                $notifikasi->date=date('Y-m-d H:i:s');
                $notifikasi->save();
+               if($user->fcm_token != ""){
+                  ActionSendFcm::getMessage($user->fcm_token,"Program",$model->id,"Program Telah Dicairkan",$msg);
+               }
             }
                $notifikasi2 = new Notifikasi;
             $notifikasi2->message = "Pendanaan ".$model->nama_pendanaan." Telah Anda Cairkan";
@@ -352,12 +357,17 @@ class PendanaanController extends Controller
                $cair->save();
                $pembayar = Pembayaran::find()->where(['pendanaan_id'=>$model->id,'status_id'=>6])->all();
             foreach($pembayar as $value){
+               $user = User::findOne(['id'=>$value->id]);
+               $msg = "Uang Pendanaan ".$model->nama_pendanaan." Telah di Disalurkan";
                $notifikasi = new Notifikasi;
                $notifikasi->message = "Uang Pendanaan ".$model->nama_pendanaan." Telah di Disalurkan";
                $notifikasi->user_id = $value->user_id;
                $notifikasi->flag = 1;
                $notifikasi->date=date('Y-m-d H:i:s');
                $notifikasi->save();
+               if($user->fcm_token != null){
+                  ActionSendFcm::getMessage($user->fcm_token,"Program",$model->id,"Uang Program Telah Disalurkan",$msg);
+               }
             }
                $notifikasi2 = new Notifikasi;
             $notifikasi2->message = "Uang Pendanaan ".$model->nama_pendanaan." Telah Anda Salurkan";
@@ -392,12 +402,17 @@ class PendanaanController extends Controller
          $model->status_id = 4;
          $pembayar = Pembayaran::find()->where(['pendanaan_id'=>$model->id,'status_id'=>6])->all();
          foreach($pembayar as $value){
+            $user = User::find()->where(['id'=>$value->user_id])->one();
+            $msg = "Pendanaan ".$model->nama_pendanaan." Telah selesai";
             $notifikasi = new Notifikasi;
             $notifikasi->message = "Pendanaan ".$model->nama_pendanaan." Telah selesai";
             $notifikasi->user_id = $value->user_id;
             $notifikasi->flag = 1;
             $notifikasi->date=date('Y-m-d H:i:s');
             $notifikasi->save();
+            if($user->fcm_token != ""){
+               ActionSendFcm::getMessage($user->fcm_token,"Program",$model->id,"Progress Program",$msg);
+            }
          }
          
          if ($model->save()) {

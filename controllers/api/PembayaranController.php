@@ -6,10 +6,12 @@ namespace app\controllers\api;
  * This is the class for REST controller "PembayaranController".
  */
 
+use app\components\ActionSendFcm;
 use app\models\Pembayaran;
 use app\models\Pendanaan;
 use app\models\JenisPembayaran;
 use app\models\Pencairan;
+use app\models\User;
 use Midtrans\ActionMidtrans;
 use Yii;
 use yii\filters\AccessControl;
@@ -42,6 +44,7 @@ class PembayaranController extends \yii\rest\ActiveController
             'detail-wakaf' => ['GET'],
             'status-midtrans' => ['GET'],
             'wakaf' => ['GET'],
+            'pewakaf' => ['GET'],
         ];
     }
 
@@ -127,6 +130,80 @@ class PembayaranController extends \yii\rest\ActiveController
             return [
                 "success" => false,
                 "message" => "Data Wakaf Tidak Ditemukan",
+                "data" => null,
+            ];
+        }
+    }
+
+    public function actionPewakaf()
+    {
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $wfs = Pembayaran::find()->where(['read' => 0])->all();
+        if ($wfs != null) {
+                foreach($wfs as $wf){
+                    $a = $this->findMidtransProduction($wf->kode_transaksi);
+    
+                    if($a->status_code == "404"){
+                         $wf->status_id = 5;
+                         $wf->read = 1;
+                         $msg = "Data Transaksi Tidak Ditemukan";
+                    }else{
+                        if($a->transaction_status == "pending"){
+                             $wf->status_id = 5;
+                             $msg = "Anda Belum Melakukan Pembayaran";
+                        }elseif($a->transaction_status == "capture" || $a->transaction_status == "settlement" ){
+                             $wf->status_id = 6;
+                             $wf->tanggal_konfirmasi = date('Y-m-d H:i:s');
+                             $msg = "Pembayaran Berhasil";
+                             $wf->read = 1;
+                        }elseif($a->transaction_status == "deny" || $a->transaction_status == "cancel" || $a->transaction_status == "expire" ){
+                             $wf->status_id = 8;
+                             $wf->tanggal_konfirmasi = date('Y-m-d H:i:s');
+                             $msg = "Pembayaran Gagal";
+                             $wf->read = 1;
+                             
+                        }
+                    }
+    
+                    if($a->status_code == "404"){
+                         $wf->jenis_pembayaran_id ="Tidak Ditemukan";
+                    }else{
+                        if($a->payment_type == "cstore"){
+                             $wf->jenis_pembayaran_id = $a->store;
+                        }else{
+                             $wf->jenis_pembayaran_id = $a->payment_type;
+                        }
+                    }   
+                    if($wf->save()){
+                        $user = User::findOne(['id'=>$wf->user_id]);
+                        if($user->fcm_token != ""){
+                            ActionSendFcm::getMessage($user->fcm_token,"Pembayaran",$wf->id,"Status Pembayaran",$msg);
+                        }
+                        return [
+                            "success" => true,
+                            "message" => "Berhasil Ganti Status Pembayaran",
+                            "data" => $wf,
+                            // "code" => $wf->code,
+                            // "url" => $hasil,
+                        ];
+
+                    }
+                    // else{
+                    //     return [
+                    //         "success" => false,
+                    //         "message" => "Gagal Ganti Status Pembayaran",
+                    //         "data" => $wf,
+                    //         // "code" => $wf->code,
+                    //         // "url" => $hasil,
+                    //     ];
+                    // }
+                    // $hasil  = 'https://app.midtrans.com/snap/v2/vtweb/'.$wf->code;
+                }
+            
+        } else {
+            return [
+                "success" => false,
+                "message" => "Data Tidak Ada",
                 "data" => null,
             ];
         }
