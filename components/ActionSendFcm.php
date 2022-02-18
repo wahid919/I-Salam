@@ -7,8 +7,14 @@ namespace app\components;
         
         public static function getMessage($token,$type,$id,$title,$body)
         {
+            // $show =  $data = json_decode($value);
+            $dt = [
+                'type' => $type,
+                'id' => $id
+            ];
             $payload = array(
                 'to' => $token,
+                'data' => $dt,
                 'sound' => 'default',
                 'title' => $title,
                 'body' => $body,

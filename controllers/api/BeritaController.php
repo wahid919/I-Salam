@@ -6,7 +6,9 @@ namespace app\controllers\api;
 * This is the class for REST controller "BeritaController".
 */
 
+use app\components\ActionSendFcm;
 use app\models\Berita;
+use app\models\User;
 use Yii;
 use yii\filters\AccessControl;
 use yii\helpers\ArrayHelper;
@@ -62,5 +64,13 @@ protected function verbs()
             "message" => "Detail Berita",
             "data" => $beritas,
         ];
+    }
+    public function actionTest(){
+
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $user = User::findOne(['id'=>30]);
+        $beritas = Berita::findOne(['id' => 12]);
+       return ActionSendFcm::getMessage($user->fcm_token,"berita",$beritas->id,"Berita Baru",$beritas->judul);
+        
     }
 }
