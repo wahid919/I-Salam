@@ -23,7 +23,7 @@ use yii\helpers\Html;
             </div>
           <?php endif; ?>
 
-<section id="header" class="header-wakaf bg-overlay pt-120 pb-120">
+<section id="header" class="header-wakaf bg-overlay pt-120 pb-50">
   <div class="bg-img"><img src="<?= Yii::$app->request->baseUrl . '/uploads/slides/' . $slides->gambar ?>" alt="background"></div>
   <div class="">
     <div class="row">
