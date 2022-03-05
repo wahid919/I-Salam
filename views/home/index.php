@@ -1,5 +1,6 @@
 <?php
 
+use app\models\Pembayaran;
 use richardfan\widget\JSRegister;
 use yii\helpers\Url;
 use yii\bootstrap\ActiveForm;
@@ -444,7 +445,9 @@ if (!\Yii::$app->user->isGuest) {
 }
 ?>
 
-<?php if (!\Yii::$app->user->isGuest) { ?>
+<?php if (!\Yii::$app->user->isGuest) { 
+  $pembayar = Pembayaran::find()->where(['status_id' => 5,'user_id' => \Yii::$app->user->identity->id])->count();
+  ?>
   <script>
     function myFunction(e) {
       document.getElementById("pendanaan_wakaf").value = e.target.value
@@ -474,11 +477,15 @@ if (!\Yii::$app->user->isGuest) {
         if (nominal == null) {
           alert("Anda Belum Mengisi Nominal Pendanaan");
         } else {
-
+          let pembayaran = <?php echo $pembayar ?>;
+          if(pembayaran == 0){
           let ket = "wakaf";
           var base_url = window.origin + "/web/home/pembayarans/" + dana + "?nominal=" + nominal + "&keterangan=" + ket;
           // console.log(base_url);
           window.location.href = base_url;
+          }else{
+            alert("Mohon Selesaikan Pembayaran Anda Terlebih Dahulu");
+          }
         }
       }
 
@@ -494,10 +501,15 @@ if (!\Yii::$app->user->isGuest) {
 
           alert("Anda Belum Mengisi Nominal Infak");
         } else {
+          let pembayaran2 = <?php echo $pembayar ?>;
+          if(pembayaran2 == 0){
           let ket2 = "infak";
           var base_url2 = window.origin + "/web/home/pembayarans/" + dana2 + "?nominal=" + nominal2 + "&keterangan=" + ket2;
           //   console.log(base_url);
           window.location.href = base_url2;
+          }else{
+            alert("Mohon Selesaikan Pembayaran Anda Terlebih Dahulu");
+          }
         }
       }
     });
