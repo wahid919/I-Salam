@@ -174,7 +174,11 @@ abstract class Pendanaan extends \yii\db\ActiveRecord
             // };
             $parent['dana_terkumpul'] = function ($model) {
                 $pembayar =  \app\models\Pembayaran::find()->where(['pendanaan_id'=>$model->id,'status_id'=>6])->sum('nominal');
-                return $pembayar;
+                if($pembayar != null){
+                    return $pembayar;
+                }else{
+                    return "0";
+                }
             };
             
         }

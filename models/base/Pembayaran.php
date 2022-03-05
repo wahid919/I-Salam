@@ -64,6 +64,13 @@ abstract class Pembayaran extends \yii\db\ActiveRecord
                 return 'https://app.midtrans.com/snap/v2/vtweb/'.$model->code;
             };
         }
+        if (isset($parent['jenis'])) {
+            unset($parent['jenis']);
+            
+            $parent['jenis_pembayaran_pendanaan'] = function ($model) {
+                return $model->jenis;
+            };
+        }
         if (!isset($parent['link_ikrar'])) {
             unset($parent['link_ikrar']);
             // $parent['_link_ikrar'] = function ($model) {
