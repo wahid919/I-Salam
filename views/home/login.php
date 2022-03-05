@@ -49,7 +49,7 @@ use yii\helpers\Html;
 ]);
 ?>
 <div class="row">
-    <?= $form->field($model, "username", Constant::COLUMN(1))->textInput()->label("Email") ?>
+    <?= $form->field($model, "username", Constant::COLUMN(1))->textInput(['type' => 'email'])->label("Email") ?>
     <?= $form->field($model, "password", Constant::COLUMN(1))->passwordInput() ?>
     <?= $form->field($model, 'reCaptcha', ["template" => "{input}"])->widget(
         \app\components\ReCaptcha3::className(),

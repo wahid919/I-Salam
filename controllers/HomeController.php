@@ -410,7 +410,9 @@ class HomeController extends Controller
                 Yii::$app->session->setFlash("success", "Login berhasil");
                 return $this->redirect(Yii::$app->request->referrer);
             }
-            Yii::$app->session->setFlash("error", "Login gagal. Validasi data tidak valid : " . Constant::flattenError($model->getErrors()));
+            
+            Yii::$app->session->setFlash("error", "Login gagal. Validasi data tidak valid");
+            // Yii::$app->session->setFlash("error", "Login gagal. Validasi data tidak valid : " . Constant::flattenError($model->getErrors()));
             return $this->redirect(Yii::$app->request->referrer);
         } else {
             Yii::$app->session->setFlash("error", "Login gagal");

@@ -99,10 +99,10 @@ $kategori_pendanaans = app\models\KategoriPendanaan::find()->all();
               <a href="<?= Yii::$app->request->baseUrl . "/site/login" ?>" class="nav__item-link" style="color: black;">Login</a>
             </li> -->
             <li class="nav__item">
-              <a id="btn-login" class="nav__item-link" style="color: black;">Login</a>
+              <a id="btn-login" class="nav__item-link" style="color: black;cursor:pointer">Login</a>
             </li>
             <li class="nav__item">
-              <a id="btn-registrasi" class="nav__item-link" style="color: black;">Daftar</a>
+              <a id="btn-registrasi" class="nav__item-link" style="color: black;cursor:pointer">Daftar</a>
             </li>
           <?php } else { ?>
             <li class="nav__item">

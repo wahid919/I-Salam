@@ -5,6 +5,23 @@ use yii\helpers\Url;
 use yii\bootstrap\ActiveForm;
 use yii\helpers\Html;
 ?>
+          <!-- display success message -->
+          <?php if (Yii::$app->session->hasFlash('success')) : ?>
+            <div class="alert alert-success alert-dismissable">
+              <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+              <p><i class="icon fa fa-check"></i>Saved!</p>
+              <?= Yii::$app->session->getFlash('success') ?>
+            </div>
+          <?php endif; ?>
+
+          <!-- display error message -->
+          <?php if (Yii::$app->session->hasFlash('error')) : ?>
+            <div class="alert alert-danger alert-dismissable">
+              <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+              <h4><i class="icon fa fa-check"></i>Saved!</h4>
+              <?= Yii::$app->session->getFlash('error') ?>
+            </div>
+          <?php endif; ?>
 
 <section id="header" class="header-wakaf bg-overlay pt-120 pb-120">
   <div class="bg-img"><img src="<?= Yii::$app->request->baseUrl . '/uploads/slides/' . $slides->gambar ?>" alt="background"></div>
@@ -100,7 +117,7 @@ use yii\helpers\Html;
                     </div>
                   </div>
                   <div class="col-12">
-                  <?php if (!\Yii::$app->user->isGuest) { ?>
+                     <?php if (!\Yii::$app->user->isGuest) { ?>
                       <button type="submit" class="btn-sm btn-block text-white font-weight-bold" style="height: 3rem;background-color: #f1a502;" id="bayarkan2">Wakaf Sekarang</button>
                     <?php } else { ?>
                       <button type="button" class="btn-sm btn-block text-white font-weight-bold" style="height: 3rem;background-color: #f1a502;" id="btn-user-login">Wakaf Sekarang</button>
