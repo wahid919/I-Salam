@@ -241,6 +241,13 @@ class PembayaranController extends \yii\rest\ActiveController
         }else{
             $ket = $val['kategori'];
         }
+
+        $keterangan = $val['keterangan'];
+        if($keterangan != null){
+            $model->keterangan = $keterangan;
+        }else{
+            $model->keterangan = "";
+        }
         if ($val['lembaran'] != 0) {
 
 
