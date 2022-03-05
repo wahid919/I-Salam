@@ -150,7 +150,8 @@ class HomeController extends Controller
                 // $model->user_id = \Yii::$app->user->identity->id;
                 $model->user_id = \Yii::$app->user->identity->id;;
                 $model->status_id = 5;
-
+                
+                $model->jenis = "wakaf";
                 $shipping_address = array(
                     'first_name'    => $pendanaan->nama_nasabah,
                     'last_name'     => "(" . $pendanaan->nama_perusahaan . ")",
@@ -250,7 +251,7 @@ class HomeController extends Controller
                     );
                 } else {
 
-                    return $this->redirect('ziswaf');
+                    return $this->redirect('index');
                 }
 
 
@@ -259,7 +260,7 @@ class HomeController extends Controller
                 // $model->user_id = \Yii::$app->user->identity->id;
                 $model->user_id = \Yii::$app->user->identity->id;
                 $model->status_id = 5;
-
+                $model->jenis = $keterangan;
                 $shipping_address = array(
                     'first_name'    => $pendanaan->nama_nasabah,
                     'last_name'     => "(" . $pendanaan->nama_perusahaan . ")",
