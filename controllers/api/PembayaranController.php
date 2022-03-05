@@ -214,6 +214,11 @@ class PembayaranController extends \yii\rest\ActiveController
     {
         Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         $val = \yii::$app->request->post();
+        $data = Pembayaran::find()->where(['status_id'=>5,'user_id'=>\Yii::$app->user->identity->id])->count();
+        if($data != 0){
+
+            return ['success' => false, 'message' => 'Mohon Selesaikan Pembayaran Anda Sebelumnya', 'data' => []];
+        }
         $model = new Pembayaran();
 
         $order_id_midtrans = rand();
