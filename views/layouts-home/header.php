@@ -4,6 +4,10 @@ $setting = app\models\Setting::find()->one();
 $icons = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->logo;
 $categories = app\models\KategoriBerita::find()->all();
 $kategori_pendanaans = app\models\KategoriPendanaan::find()->all();
+
+$relativeHomeUrl = $_SERVER['REQUEST_URI'];
+
+// var_dump($relativeHomeUrl);die;
 ?>
 <style>
   .navbar .nav__item .nav__item-link {
@@ -27,17 +31,17 @@ $kategori_pendanaans = app\models\KategoriPendanaan::find()->all();
       <div class="collapse navbar-collapse" id="mainNavigation">
         <ul class="navbar-nav ml-auto">
           <li class="nav__item">
-            <a href="<?= Yii::$app->request->baseUrl ?>" class="nav__item-link">Home</a>
+            <a href="<?= Yii::$app->request->baseUrl ?>" class="nav__item-link <?php if($relativeHomeUrl == "/web/"){ echo "active"; } ?>">Home</a>
           </li><!-- /.nav-item -->
           <!-- <li class="nav__item">
             <a href="<?= Yii::$app->request->baseUrl . "/home/ziswaf" ?>" class="nav__item-link">Ziswaf</a>
           </li> -->
           <!-- /.nav-item -->
           <li class="nav__item">
-            <a href="<?= Yii::$app->request->baseUrl . "/home/program" ?>" class="nav__item-link">Wakaf</a>
+            <a href="<?= Yii::$app->request->baseUrl . "/home/program" ?>" class="nav__item-link <?php if($relativeHomeUrl == "/web/home/program"){ echo "active"; } ?>">Wakaf</a>
           </li>
           <li class="nav__item">
-            <a href="<?= Yii::$app->request->baseUrl . "/home/news" ?>" class="nav__item-link">Berita</a>
+            <a href="<?= Yii::$app->request->baseUrl . "/home/news" ?>" class="nav__item-link <?php if($relativeHomeUrl == "/web/home/news"){ echo "active"; } ?>">Berita</a>
           </li>
           <!-- <li class="nav__item with-dropdown">
             <a href="<?= \Yii::$app->request->baseUrl . "/home/news/" ?>" class="dropdown-toggle nav__item-link">
@@ -73,10 +77,19 @@ $kategori_pendanaans = app\models\KategoriPendanaan::find()->all();
             </ul>
           </li> -->
           <li class="nav__item">
-            <a href="<?= Yii::$app->request->baseUrl . "/home/report" ?>" class="nav__item-link">Layanan</a>
+            <a href="<?= Yii::$app->request->baseUrl . "/home/report" ?>" class="nav__item-link <?php if($relativeHomeUrl == "/web/home/report"){ echo "active"; } ?>">Layanan</a>
           </li>
           <li class="nav__item with-dropdown">
-            <a href="<?= \Yii::$app->request->baseUrl . "/home#" ?>" class="dropdown-toggle nav__item-link">
+            <a href="<?= \Yii::$app->request->baseUrl . "/home#" ?>" class="dropdown-toggle nav__item-link <?php
+             if($relativeHomeUrl == "/web/home/visi"){
+                echo "active";
+               }elseif($relativeHomeUrl == "/web/home/organisasi"){
+                echo "active";
+               }elseif($relativeHomeUrl == "/web/home/kontak"){
+                echo "active";
+               } 
+             
+             ?>">
               <div class="d-none d-lg-block">
                 Tentang Kami <i class="fa fa-angle-down"></i>
               </div>
