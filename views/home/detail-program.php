@@ -135,8 +135,18 @@ use yii\helpers\Url;
               <div class="col-sm-12 col-md-12 col-lg-12">
                 <!-- <a href="#" class="btn btn-sm btn-program btn-block" data-toggle="modal" data-target="#mulaiwakaf" style="padding: 10px !important;">Mulai Wakaf</a> -->
                 <div class="col-12">
-                    <?php if (!\Yii::$app->user->isGuest) { ?>
-                      <a href="#" class="btn btn-sm btn-program btn-block" data-toggle="modal" data-target="#mulaiwakaf" style="padding: 10px !important;">Mulai Wakaf</a>
+                    <?php if (!\Yii::$app->user->isGuest) {
+                    $pembayar = app\models\Pembayaran::find()->where(['status_id' => 5,'user_id' => \Yii::$app->user->identity->id])->count();
+                    if($pembayar == 0){ ?>
+                    <a href="#" class="btn btn-sm btn-program btn-block" data-toggle="modal" data-target="#mulaiwakaf" style="padding: 10px !important;">Mulai Wakaf</a>
+                    <?php }else{ ?>
+                      <button type="submit" class="btn-sm btn-block text-white font-weight-bold" style="height: 3rem;background-color: #f1a502;" id="status_pembayaran">Mulai Wakaf</button>
+                      <script>
+                      document.querySelector("#status_pembayaran").addEventListener("click", () => {
+                      alert("Mohon Selesaikan Pembayaran Anda Terlebih Dahulu");
+                      });
+                    </script>
+                    <?php } ?>
                     <?php } else { ?>
                       <button type="button" class="btn-sm btn-block text-white font-weight-bold" style="height: 3rem;background-color: #f1a502;" id="btn-user-login">Mulai Wakaf</button>
                     <?php
