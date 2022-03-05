@@ -487,14 +487,15 @@ use yii\helpers\Url;
                 <?php } else { ?>
                   <table class="table table-hover">
                     <thead>
-                      <?php foreach ($donatur as $done) { ?>
+                      <?php foreach ($donatur as $done) { $sub_kalimat = substr($done->nama,0,3);
+                      $nm = $sub_kalimat."***";?>
                         <tr>
                           <td class="border-bottom-3 border-top-0 donatur-program-img" rowspan="2">
                             <a href="<?= \Yii::$app->request->BaseUrl ?>/uploads/<?= $done->user->photo_url ?>" data-lightbox="update">
                               <img class="border-r10 shadow-br3" src="<?= \Yii::$app->request->BaseUrl ?>/uploads/<?= $done->user->photo_url ?>" width="100px">
                             </a>
                           </td>
-                          <td class="border-top-0 donatur-program-nama"><?= $done->nama ?></td>
+                          <td class="border-top-0 donatur-program-nama"><?= $nm ?></td>
                           <td class="border-top-0"><?= \app\components\Tanggal::toReadableDate($done->tanggal_konfirmasi); ?></td>
                         </tr>
                         <tr>
