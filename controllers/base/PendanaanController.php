@@ -757,8 +757,14 @@ class PendanaanController extends Controller
    }
    public function actionExport(){
       extract($_GET);
-      $tgl1 = $t1.' 00:00:01';
-      $tgl2 = $t2.' 23:59:59';
+      $tt = date_create($t1);
+      $tt1 = date_format($tt,"Y-m-d");
+      
+      $ttt = date_create($t2);
+      $tt2 = date_format($ttt,"Y-m-d");
+      
+      $tgl1 = $tt1.' 00:00:01';
+      $tgl2 = $tt2.' 23:59:59';
       // $tgl2 = date('Y-m-d', strtotime($t1.'+ 1 days')).' 02:00:00';
       $query = new Query();
       $query->select(['pendanaan.id as id_pendanaan','pendanaan.nama_pendanaan as nm_pendanaan','pendanaan.nominal as nominal','pendanaan.created_at as tgl_buat','pendanaan.pendanaan_berakhir as tgl_berakhir','status.name as status_name'])
@@ -832,8 +838,14 @@ class PendanaanController extends Controller
   }
   public function actionExportPdf() {
    extract($_GET);
-      $tgl1 = $t1.' 00:00:01';
-      $tgl2 = $t2.' 23:59:59';
+   $tt = date_create($t1);
+      $tt1 = date_format($tt,"Y-m-d");
+      
+      $ttt = date_create($t2);
+      $tt2 = date_format($ttt,"Y-m-d");
+      
+      $tgl1 = $tt1.' 00:00:01';
+      $tgl2 = $tt2.' 23:59:59';
       // $tgl2 = date('Y-m-d', strtotime($t1.'+ 1 days')).' 02:00:00';
       $query = new Query();
       $query->select(['pendanaan.id as id_pendanaan','pendanaan.nama_pendanaan as nm_pendanaan','pendanaan.nominal as nominal','pendanaan.created_at as tgl_buat','pendanaan.pendanaan_berakhir as tgl_berakhir','status.name as status_name'])

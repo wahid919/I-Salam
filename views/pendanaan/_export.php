@@ -11,7 +11,7 @@
 
 use yii\web\View;
 
-echo date("Y-m-d"); ?>" style="text-align: center">
+echo date("d-M-Y"); ?>" style="text-align: center">
     </div>
 </div>
 <br/>
@@ -21,7 +21,7 @@ echo date("Y-m-d"); ?>" style="text-align: center">
     </div>
     <div class="col-md-12">
         <input id="tanggal2" type="text" class="datepicker form-control"
-               value="<?php echo date("Y-m-d"); ?>" style="text-align: center">
+               value="<?php echo date("d-M-Y"); ?>" style="text-align: center">
     </div>
 </div>
 <br/>
@@ -40,7 +40,7 @@ echo date("Y-m-d"); ?>" style="text-align: center">
 $my_js = '
 $(document).ready(function(){
 $(".datepicker").datepicker({
-format: "yyyy-mm-dd"
+format: "d-M-yyyy"
 });
  $("#spinner").hide();
 });
