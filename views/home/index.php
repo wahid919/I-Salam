@@ -100,10 +100,10 @@ use yii\helpers\Html;
                     </div>
                   </div>
                   <div class="col-12">
-                    <?php if (!\Yii::$app->user->isGuest) { ?>
-                      <a id="btn-user-login" class="nav__item-link" style="color: black;">Infak Sekarang</a>
+                  <?php if (!\Yii::$app->user->isGuest) { ?>
+                      <button type="submit" class="btn-sm btn-block text-white font-weight-bold" style="height: 3rem;background-color: #f1a502;" id="bayarkan2">Wakaf Sekarang</button>
                     <?php } else { ?>
-                      <button type="submit" class="btn-sm btn-block text-white font-weight-bold" style="height: 3rem;background-color: #f1a502;" id="bayarkan2">Infak Sekarang</button>
+                      <button type="button" class="btn-sm btn-block text-white font-weight-bold" style="height: 3rem;background-color: #f1a502;" id="btn-user-login">Wakaf Sekarang</button>
                     <?php
                     } ?>
                   </div>

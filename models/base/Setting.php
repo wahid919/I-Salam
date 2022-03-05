@@ -23,7 +23,26 @@ use Yii;
 abstract class Setting extends \yii\db\ActiveRecord
 {
 
+    public function fields()
+    {
+        $parent = parent::fields();
 
+        
+        if (!isset($parent['website'])) {
+            unset($parent['website']);
+            // $parent['_website'] = function ($model) {
+            //     return $model->website;
+            // };
+            $parent['website'] = function ($model) {
+                
+                // $model->tanggal_received=date('Y-m-d H:i:s');
+                return $path = "http://i-salam.id/web/";
+            };
+            
+        }
+        
+        return $parent;
+    }
 
     /**
      * @inheritdoc

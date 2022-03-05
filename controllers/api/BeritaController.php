@@ -8,6 +8,9 @@ namespace app\controllers\api;
 
 use app\components\ActionSendFcm;
 use app\models\Berita;
+use app\models\Notifikasi;
+use app\models\Pembayaran;
+use app\models\Pendanaan;
 use app\models\User;
 use Yii;
 use yii\filters\AccessControl;
@@ -70,7 +73,18 @@ protected function verbs()
         Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         $user = User::findOne(['id'=>30]);
         $beritas = Berita::findOne(['id' => 12]);
-       return ActionSendFcm::getMessage($user->fcm_token,"berita",$beritas->id,"Berita Baru",$beritas->judul);
+        $model = new Notifikasi();
+        $model->message =" Berita Baru ";
+        $model->date=date('Y-m-d H:i:s');
+        $model->flag = 1;
+        $model->user_id = 30;
+        $pembayaran = Pembayaran::find()->where(['id'=>98])->one();
+        if($model->save()){
+            return ActionSendFcm::getMessage($user->fcm_token,"pembayaran",$pembayaran->id,"Pembayaran",$pembayaran->nama);
+
+        }
         
     }
+    
+
 }

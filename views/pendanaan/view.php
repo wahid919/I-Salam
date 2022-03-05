@@ -236,20 +236,20 @@ $this->title = 'Pendanaan ' . $model->nama_pendanaan;
                         'lastPageLabel'  => 'Last'
                     ],
                     'columns' => [
-                        [
-                            'class'      => 'yii\grid\ActionColumn',
-                            'template'   => '{view} {update}',
-                            'contentOptions' => ['nowrap' => 'nowrap'],
-                            'urlCreator' => function ($action, $model, $key, $index) {
-                                // using the column name as key, not mapping to 'id' like the standard generator
-                                $params = is_array($key) ? $key : [$model->primaryKey()[0] => (string) $key];
-                                $params[0] = 'pembayaran' . '/' . $action;
-                                $params['Pembayaran'] = ['pendanaan_id' => $model->primaryKey()[0]];
-                                return $params;
-                            },
-                            'buttons'    => [],
-                            'controller' => 'pembayaran'
-                        ],
+                        // [
+                        //     'class'      => 'yii\grid\ActionColumn',
+                        //     'template'   => '{view} {update}',
+                        //     'contentOptions' => ['nowrap' => 'nowrap'],
+                        //     'urlCreator' => function ($action, $model, $key, $index) {
+                        //         // using the column name as key, not mapping to 'id' like the standard generator
+                        //         $params = is_array($key) ? $key : [$model->primaryKey()[0] => (string) $key];
+                        //         $params[0] = 'pembayaran' . '/' . $action;
+                        //         $params['Pembayaran'] = ['pendanaan_id' => $model->primaryKey()[0]];
+                        //         return $params;
+                        //     },
+                        //     'buttons'    => [],
+                        //     'controller' => 'pembayaran'
+                        // ],
                         'nama',
                         [
                             'attribute' => 'nominal',
@@ -304,7 +304,8 @@ $this->title = 'Pendanaan ' . $model->nama_pendanaan;
                             'attribute' => 'status_id',
                             'value' => function ($model) {
                                 if ($rel = $model->status) {
-                                    return Html::a($rel->name, ['status/view', 'id' => $rel->id,], ['data-pjax' => 0]);
+                                    // return Html::a($rel->name, ['status/view', 'id' => $rel->id,], ['data-pjax' => 0]);
+                                    return $rel->name;
                                 } else {
                                     return '';
                                 }

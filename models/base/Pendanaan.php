@@ -95,7 +95,7 @@ abstract class Pendanaan extends \yii\db\ActiveRecord
             // $parent['_kategori_pendanaan_id'] = function ($model) {
             //     return $model->kategori_pendanaan_id;
             // };
-            $parent['kategori_pendanaaan'] = function ($model) {
+            $parent['kategori_pendanaan'] = function ($model) {
                 return $model->kategoriPendanaan;
             };
         }
@@ -152,6 +152,28 @@ abstract class Pendanaan extends \yii\db\ActiveRecord
             // };
             $parent['total_pewakaf'] = function ($model) {
                 $pembayar =  \app\models\Pembayaran::find()->where(['pendanaan_id'=>$model->id,'status_id'=>6])->count();
+                return $pembayar;
+            };
+            
+        }
+        if (!isset($parent['jumlah_pewakaf'])) {
+            unset($parent['jumlah_pewakaf']);
+            // $parent['_jumlah_pewakaf'] = function ($model) {
+            //     return $model->jumlah_pewakaf;
+            // };
+            $parent['jumlah_pewakaf'] = function ($model) {
+                $pembayar =  \app\models\Pembayaran::find()->where(['pendanaan_id'=>$model->id,'status_id'=>6])->count();
+                return $pembayar;
+            };
+            
+        }
+        if (!isset($parent['dana_terkumpul'])) {
+            unset($parent['dana_terkumpul']);
+            // $parent['_dana_terkumpul'] = function ($model) {
+            //     return $model->dana_terkumpul;
+            // };
+            $parent['dana_terkumpul'] = function ($model) {
+                $pembayar =  \app\models\Pembayaran::find()->where(['pendanaan_id'=>$model->id,'status_id'=>6])->sum('nominal');
                 return $pembayar;
             };
             

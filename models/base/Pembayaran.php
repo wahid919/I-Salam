@@ -8,6 +8,7 @@ use Yii;
 use app\models\JenisPembayaran;
 use yii\behaviors\TimestampBehavior;
 use yii\db\Expression;
+use yii\helpers\Url;
 
 /**
  * This is the base-model class for table "pembayaran".
@@ -63,7 +64,22 @@ abstract class Pembayaran extends \yii\db\ActiveRecord
                 return 'https://app.midtrans.com/snap/v2/vtweb/'.$model->code;
             };
         }
-
+        if (!isset($parent['link_ikrar'])) {
+            unset($parent['link_ikrar']);
+            // $parent['_link_ikrar'] = function ($model) {
+            //     return $model->link_ikrar;
+            // };
+            $parent['link_ikrar'] = function ($model) {
+                $pembayar =  \app\models\Pembayaran::find()->where(['id'=>$model->id])->one();
+                if($pembayar->status_id == 6){
+                    $byr = Url::to(['home/cetak', 'id' => $pembayar->kode_transaksi]);
+                }else{
+                    $byr = "-";
+                }
+                return $byr;
+            };
+            
+        }
         if (isset($parent['status_id'])) {
             unset($parent['status_id']);
             

@@ -7,6 +7,7 @@ namespace app\controllers\base;
 use app\components\ActionSendFcm;
 use app\components\Angka;
 use app\components\Tanggal;
+use app\components\SendWa;
 use Yii;
 use app\models\Pendanaan;
 use app\models\Notifikasi;
@@ -314,6 +315,9 @@ class PendanaanController extends Controller
                $notifikasi->flag = 1;
                $notifikasi->date=date('Y-m-d H:i:s');
                $notifikasi->save();
+
+               $phone_s = substr_replace($user->nomor_handphone, '62', 0, 1);
+               SendWa::send($phone_s,$msg);
                if($user->fcm_token != ""){
                   ActionSendFcm::getMessage($user->fcm_token,"program",$model->id,"Program Telah Dicairkan",$msg);
                }
@@ -356,8 +360,8 @@ class PendanaanController extends Controller
                $cair->tanggal_penyaluran = date('Y-m-d H:i:s');
                $cair->save();
                $pembayar = Pembayaran::find()->where(['pendanaan_id'=>$model->id,'status_id'=>6])->all();
-            foreach($pembayar as $value){
-               $user = User::findOne(['id'=>$value->id]);
+               foreach($pembayar as $value){
+                  $user = User::findOne(['id'=>$value->user_id]);
                $msg = "Uang Pendanaan ".$model->nama_pendanaan." Telah di Disalurkan";
                $notifikasi = new Notifikasi;
                $notifikasi->message = "Uang Pendanaan ".$model->nama_pendanaan." Telah di Disalurkan";
@@ -365,6 +369,8 @@ class PendanaanController extends Controller
                $notifikasi->flag = 1;
                $notifikasi->date=date('Y-m-d H:i:s');
                $notifikasi->save();
+               $phone_s = substr_replace($user->nomor_handphone, '62', 0, 1);
+               SendWa::send($phone_s,$msg);
                if($user->fcm_token != null){
                   ActionSendFcm::getMessage($user->fcm_token,"program",$model->id,"Uang Program Telah Disalurkan",$msg);
                }
@@ -410,9 +416,13 @@ class PendanaanController extends Controller
             $notifikasi->flag = 1;
             $notifikasi->date=date('Y-m-d H:i:s');
             $notifikasi->save();
+            $phone_s = substr_replace($user->nomor_handphone, '62', 0, 1);
+            // var_dump($phone_s);die;
+            SendWa::send($phone_s,$msg);
             if($user->fcm_token != ""){
                ActionSendFcm::getMessage($user->fcm_token,"program",$model->id,"Progress Program",$msg);
             }
+
          }
          
          if ($model->save()) {

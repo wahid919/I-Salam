@@ -53,6 +53,24 @@ class User extends \yii\db\ActiveRecord
                 }
             };
         }
+        if(!isset($parent['total_wakaf'])){
+            unset($parent['total_wakaf']);
+            $parent['total_wakaf'] = function($model){
+                $pembayar =  \app\models\Pembayaran::find()->where(['user_id'=>$model->id,'status_id'=>6])->sum('nominal');
+                return $pembayar;
+            };
+        }
+        if (!isset($parent['jumlah_wakaf'])) {
+            unset($parent['jumlah_wakaf']);
+            // $parent['_jumlah_wakaf'] = function ($model) {
+            //     return $model->jumlah_wakaf;
+            // };
+            $parent['jumlah_wakaf'] = function ($model) {
+                $pembayar =  \app\models\Pembayaran::find()->where(['user_id'=>$model->id,'status_id'=>6])->count();
+                return $pembayar;
+            };
+            
+        }
 
 
         // if (isset($parent['last_login'])) {

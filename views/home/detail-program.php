@@ -5,6 +5,7 @@
 
 // namespace Midtrans;
 
+use app\components\Angka;
 use app\models\KegiatanPendanaan;
 use yii\helpers\Url;
 ?>
@@ -180,6 +181,14 @@ use yii\helpers\Url;
                   </div>
                   <div class="col-12 pt-3">
                     <h3 style="color: #404040;">Nominal Wakaf</h3>
+                    <p class="font-size-08">Beban Biaya Setiap Transaksi :</p>
+                    <table style="width: 100%;">
+                      <tbody>
+                      <tr>
+                      <td style="width: 50%;"><p class="font-size-08">Bank Transfer : <?php $hrg = 4000; echo Angka::toReadableHarga($hrg,false) ?></p></td>
+                      </tr>
+                      </tbody>
+                    </table>
                     <p class="font-size-08">Anda akan berwakaf dengan nominal sebesar :</p>
                     <div class="row">
                       <div class="col-6">
@@ -243,6 +252,14 @@ use yii\helpers\Url;
                   </div>
                   <div class="col-12 pt-3">
                     <h3 style="color: #404040;">Lembar Wakaf</h3>
+                    <p class="font-size-08">Beban Biaya Setiap Transaksi :</p>
+                    <table style="width: 100%;">
+                      <tbody>
+                      <tr>
+                      <td style="width: 50%;"><p class="font-size-08">Bank Transfer : <?php $hrg = 4000; echo Angka::toReadableHarga($hrg,false) ?></p></td>
+                      </tr>
+                      </tbody>
+                    </table>
                     <p class="font-size-08">Anda akan berwakaf dengan nominal sebesar :<br />*Perlembar <?= \app\components\Angka::toReadableHarga($pendanaan->nominal_lembaran); ?></p>
                     <div class="row">
 

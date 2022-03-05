@@ -6,6 +6,7 @@ namespace app\models\base;
 
 use Yii;
 use yii\behaviors\TimestampBehavior;
+use yii\helpers\Url;
 
 /**
  * This is the base-model class for table "berita".
@@ -63,18 +64,30 @@ abstract class Berita extends \yii\db\ActiveRecord
             };
             
         }
-        if (isset($parent['isi'])) {
-            unset($parent['isi']);
-            // $parent['_isi'] = function ($model) {
-            //     return $model->isi;
+        if (!isset($parent['full_link'])) {
+            unset($parent['full_link']);
+            // $parent['_full_link'] = function ($model) {
+            //     return $model->full_link;
             // };
-            $parent['isi'] = function ($model) {
-                $text = strip_tags($model->isi);
-                // $model->tanggal_received=date('Y-m-d H:i:s');
-                return $text;
+            $parent['full_link'] = function ($model) {
+                $path = "http://i-salam.id/web/detail-berita?id=";
+                $pembayar = Url::to(['home/detail-berita', 'id' => $model->slug]);
+                return $pembayar;
             };
             
         }
+        // if (isset($parent['isi'])) {
+        //     unset($parent['isi']);
+        //     // $parent['_isi'] = function ($model) {
+        //     //     return $model->isi;
+        //     // };
+        //     $parent['isi'] = function ($model) {
+        //         $text = strip_tags($model->isi);
+        //         // $model->tanggal_received=date('Y-m-d H:i:s');
+        //         return $text;
+        //     };
+            
+        // }
         if(isset($parent['view_count'])){
             unset($parent['view_count']);
 

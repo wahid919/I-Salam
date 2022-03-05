@@ -43,6 +43,7 @@ use app\models\LoginForm;
 use app\models\Notifikasi;
 use app\models\Otp;
 use app\models\Slides;
+use kartik\mpdf\Pdf;
 use yii\db\Expression;
 use yii\web\UploadedFile;
 
@@ -74,7 +75,7 @@ class HomeController extends Controller
                 // 'only' => ['logout', 'design-bangunan'],
                 'rules' => [
                     [
-                        'actions' => ['login', 'registrasi', 'error', 'index', 'news', 'detail-berita', 'about', 'report', 'ziswaf', 'program', 'detail-program', 'unduh-file-uraian', 'unduh-file-wakaf', 'lupa-password', 'ganti-password', 'visi', 'organisasi','lupa','kontak'],
+                        'actions' => ['login', 'registrasi', 'error', 'index', 'news', 'detail-berita', 'about', 'report', 'ziswaf', 'program', 'detail-program', 'unduh-file-uraian', 'unduh-file-wakaf', 'lupa-password', 'ganti-password', 'visi', 'organisasi','lupa','kontak','cetak'],
                         'allow' => true,
                     ],
                     [
@@ -405,17 +406,9 @@ class HomeController extends Controller
             return $this->renderAjax("login", compact("model"));
         }
         if ($model->load($_POST)) {
-            // var_dump($model);die;
             if ($model->login()) {
-                // $users = User::findOne(['username' => $model['username'],'password'=>$model['password']]);
-                // var_dump($users->role_id);die;
-                // if($users->role_id == 1){
-                    // return $this->redirect(["site/index"]);
-                // }else{
-                    Yii::$app->session->setFlash("success", "Login berhasil");
-                    return $this->redirect(Yii::$app->request->referrer);
-                // }
-                    
+                Yii::$app->session->setFlash("success", "Login berhasil");
+                return $this->redirect(Yii::$app->request->referrer);
             }
             Yii::$app->session->setFlash("error", "Login gagal. Validasi data tidak valid : " . Constant::flattenError($model->getErrors()));
             return $this->redirect(Yii::$app->request->referrer);
@@ -1378,6 +1371,58 @@ class HomeController extends Controller
         } else {
             throw new \yii\web\NotFoundHttpException("{$path} is not found!");
         }
+    }
+    public function actionCetak($id) {
+        $formatter = \Yii::$app->formatter;
+        $model = Pembayaran::findOne(['kode_transaksi' => $id]);
+        $content = $this->renderPartial('view-print',[
+            'model' => $model,
+    ]);
+        
+        // setup kartik\mpdf\Pdf component
+        $pdf = new Pdf([
+            // set to use core fonts only
+            'mode' => Pdf::MODE_CORE, 
+            //Name file
+            'filename' => 'Akad Wakaf'."pdf",
+            // LEGAL paper format
+            'format' => Pdf::FORMAT_LEGAL, 
+            // portrait orientation
+            'orientation' => Pdf::ORIENT_PORTRAIT, 
+            // stream to browser inline
+            'destination' => Pdf::DEST_BROWSER, 
+            // your html content input
+            'content' => $content,  
+            'marginHeader' => 0,
+            'marginFooter' => 1,
+            'marginTop' => 1,
+            'marginBottom' => 5,
+            'marginLeft' => 0,
+            'marginRight' => 0,
+            // format content from your own css file if needed or use the
+            // enhanced bootstrap css built by Krajee for mPDF formatting 
+            'cssFile' => '@vendor/kartik-v/yii2-mpdf/src/assets/kv-mpdf-bootstrap.min.css',
+            // any css to be embedded if required
+            // 'cssInline' => '.kv-heading-1{font-size:25px}', 
+            'cssInline' => 'body { font-family: irannastaliq; font-size: 17px; }.page-break {display: none;};
+            .kv-heading-1{font-size:17px}table{width: 100%;line-height: inherit;text-align: left; border-collapse: collapse;}table, td, th {margin-left:50px;margin-right:50px;},fa { font-family: fontawesome;} @media print{
+                .page-break{display: block;page-break-before: always;}
+            }',
+             // set mPDF properties on the fly
+             'options' => [               
+                'defaultheaderline' => 0,  //for header
+                 'defaultfooterline' => 0,  //for footer
+            ],
+             // call mPDF methods on the fly
+            'methods' => [
+                'SetTitle'=>'Print', 
+                'SetHeader' => $this->renderPartial('header_gambar'),
+              //   // 'SetHeader'=>['AMONG TANI FOUNDATION'],
+              //   'SetFooter'=>$this->renderPartial('footer_gambar'),
+                
+            ]
+        ]);
+        return $pdf->render(); 
     }
     protected function findMidtrans($id)
     {
