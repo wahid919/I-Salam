@@ -230,6 +230,12 @@ class PembayaranController extends \yii\rest\ActiveController
         $pendanaan = \app\models\Pendanaan::find()
             ->where(['id' => $val['pendanaan_id']])->one();
         $model->nama = $val['nama'];
+        $kt = $val['kategori'];
+        if($kt == ""){
+            $ket = "wakaf";
+        }else{
+            $ket = $val['kategori'];
+        }
         if ($val['lembaran'] != 0) {
 
 
@@ -263,7 +269,7 @@ class PembayaranController extends \yii\rest\ActiveController
         $model->jenis_pembayaran_id = $val['jenis_pembayaran_id'] ?? '';
         $model->user_id = \Yii::$app->user->identity->id;
         $model->status_id = 5;
-        $model->jenis ="wakaf";
+        $model->jenis =$ket;
         // $model->tanggal_pembayaran = date('Y-m-d');
         $bukti_transaksis = UploadedFile::getInstanceByName('bukti_transaksi');
 
