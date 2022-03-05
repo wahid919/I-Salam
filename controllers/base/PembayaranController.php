@@ -332,8 +332,14 @@ class PembayaranController extends Controller
 
     public function actionExport(){
         extract($_GET);
-        $tgl1 = $t1.' 00:00:01';
-        $tgl2 = $t2.' 23:59:59';
+        $tt = date_create($t1);
+      $tt1 = date_format($tt,"Y-m-d");
+      
+      $ttt = date_create($t2);
+      $tt2 = date_format($ttt,"Y-m-d");
+      
+      $tgl1 = $tt1.' 00:00:01';
+      $tgl2 = $tt2.' 23:59:59';
         // $tgl2 = date('Y-m-d', strtotime($t1.'+ 1 days')).' 02:00:00';
         $query = new Query();
         $query->select(['user.name as nama_bayar','pembayaran.nominal as nominal','pembayaran.nama as pewakaf','pendanaan.nama_pendanaan as nm_pendanaan','pembayaran.created_at as tgl_buat','status.name as status_name'])
@@ -407,8 +413,14 @@ class PembayaranController extends Controller
 
     public function actionExportPdf() {
         extract($_GET);
-        $tgl1 = $t1.' 00:00:01';
-        $tgl2 = $t2.' 23:59:59';
+        $tt = date_create($t1);
+      $tt1 = date_format($tt,"Y-m-d");
+      
+      $ttt = date_create($t2);
+      $tt2 = date_format($ttt,"Y-m-d");
+      
+      $tgl1 = $tt1.' 00:00:01';
+      $tgl2 = $tt2.' 23:59:59';
         // $tgl2 = date('Y-m-d', strtotime($t1.'+ 1 days')).' 02:00:00';
         $query = new Query();
         $query->select(['user.name as nama_bayar','pembayaran.nominal as nominal','pembayaran.nama as pewakaf','pendanaan.nama_pendanaan as nm_pendanaan','pembayaran.created_at as tgl_buat','status.name as status_name'])
