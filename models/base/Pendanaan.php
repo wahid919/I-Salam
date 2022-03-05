@@ -195,6 +195,14 @@ abstract class Pendanaan extends \yii\db\ActiveRecord
                return \app\components\Tanggal::toReadableDate($model->created_at);
             };
         }
+        if(!isset($parent['link'])){
+            unset($parent['link']);
+
+            $parent['link'] = function ($model){
+                $link = "https://i-salam.id/web/home/detail-program/".$model->id;
+            return $link;
+            };
+        }
         // $file = $model->file_uraian;
         // // $model->tanggal_received=date('Y-m-d H:i:s');
         // $path = Yii::getAlias("@app/web/uploads/uraian/") . $file;

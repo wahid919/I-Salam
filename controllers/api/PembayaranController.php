@@ -28,7 +28,7 @@ class PembayaranController extends \yii\rest\ActiveController
         $parent = parent::behaviors();
         $parent['authentication'] = [
             "class" => "\app\components\CustomAuth",
-            "only" => ["bayar", "wakaf", "detail-wakaf", "status-midtrans"],
+            "only" => ["bayar", "wakaf", "detail-wakaf", "status-midtrans","list-pewakaf"],
         ];
 
         return $parent;
@@ -45,6 +45,7 @@ class PembayaranController extends \yii\rest\ActiveController
             'status-midtrans' => ['GET'],
             'wakaf' => ['GET'],
             'pewakaf' => ['GET'],
+            'list-pewakaf' => ['GET'],
         ];
     }
 
@@ -177,7 +178,7 @@ class PembayaranController extends \yii\rest\ActiveController
                     if($wf->save()){
                         $user = User::findOne(['id'=>$wf->user_id]);
                         if($user->fcm_token != ""){
-                            ActionSendFcm::getMessage($user->fcm_token,"pembayaran",$wf->id,"Status Pembayaran",$msg);
+                            ActionSendFcm::getMessage($user->fcm_token,"Pembayaran",$wf->id,"Status Pembayaran",$msg);
                         }
                         return [
                             "success" => true,
@@ -510,6 +511,27 @@ class PembayaranController extends \yii\rest\ActiveController
             // ];
         } catch (\Throwable $th) {
             echo $th->getMessage();
+        }
+    }
+    public function actionListPewakaf($id)
+    {
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $pembayar =  \app\models\Pembayaran::find()->where(['pendanaan_id'=>$id,'status_id'=>6])->all();
+        if ($pembayar != null) {
+            
+
+                return [
+                    "success" => true,
+                    "message" => "Wakaf",
+                    "data" => $pembayar,
+                ];
+            
+        } else {
+            return [
+                "success" => false,
+                "message" => "Belum Ada Pewakaf",
+                "data" => null,
+            ];
         }
     }
     protected function findMidtrans($id)
