@@ -59,7 +59,7 @@ use yii\helpers\Html;
         ]
     ) ?>
     <div class="col-12 pb-4 ml-4">
-        <a id="btn-forgot" style="color: blue;">Lupa Password</a>
+        <a id="btn-forgot" style="color: blue;cursor:pointer">Lupa Password</a>
     </div>
     <div class="col-md-12">
         <div class="col-md-12">
