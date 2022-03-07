@@ -8,6 +8,7 @@ use app\components\ActionSendFcm;
 use app\components\Angka;
 use app\components\Tanggal;
 use app\components\SendWa;
+use app\components\UploadFile;
 use Yii;
 use app\models\Pendanaan;
 use app\models\Notifikasi;
@@ -32,7 +33,8 @@ use yii\web\UploadedFile;
  */
 class PendanaanController extends Controller
 {
-
+   
+use UploadFile;
 
    /**
     * @var boolean whether to enable CSRF validation for the actions in this controller.
@@ -204,21 +206,28 @@ class PendanaanController extends Controller
 
             $posters = UploadedFile::getInstance($model, 'poster');
             if ($posters != NULL) {
+               $response = $this->uploadPoster($posters);
+                if ($response->success == false) {
+                    Yii::$app->session->setFlash('danger', 'Gagal Upload Foto');
+                    // goto end;
+                    return $this->render('create', ['model' => $model]);
+                }
+                $model->poster = $response->filename;
                # store the source posters name
-               $model->poster = $posters->name;
-               $arr = explode(".", $posters->name);
-               $extension = end($arr);
+               // $model->poster = $posters->name;
+               // $arr = explode(".", $posters->name);
+               // $extension = end($arr);
 
-               # generate a unique posters name
-               $model->poster = "poster/".Yii::$app->security->generateRandomString() . ".{$extension}";
+               // # generate a unique posters name
+               // $model->poster = "poster/".Yii::$app->security->generateRandomString() . ".{$extension}";
 
-               # the path to save posters
-               // unlink(Yii::getAlias("@app/web/uploads/pengajuan/") . $oldFile);
-               if (file_exists(Yii::getAlias("@app/web/uploads/")) == false) {
-                  mkdir(Yii::getAlias("@app/web/uploads/"), 0777, true);
-               }
-               $path = Yii::getAlias("@app/web/uploads/") . $model->poster;
-               $posters->saveAs($path);
+               // # the path to save posters
+               // // unlink(Yii::getAlias("@app/web/uploads/pengajuan/") . $oldFile);
+               // if (file_exists(Yii::getAlias("@app/web/uploads/")) == false) {
+               //    mkdir(Yii::getAlias("@app/web/uploads/"), 0777, true);
+               // }
+               // $path = Yii::getAlias("@app/web/uploads/") . $model->poster;
+               // $posters->saveAs($path);
             }
             $model->created_at = date('Y-m-d H:i:s');
             if ($model->save()) {
