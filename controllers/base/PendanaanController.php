@@ -290,6 +290,44 @@ use UploadFile;
          return $this->redirect(['index']);
       }
    }
+   public function actionBack($id)
+   {
+      $model = $this->findModel($_GET['id']);
+      
+      //return print_r($model);
+      if ($model) {
+         $oldStatus = $model->status_id;
+         if($oldStatus == 2){
+            $newStatus = 1;
+         }elseif($oldStatus == 4){
+            $newStatus = 2;
+         }elseif($oldStatus == 3){
+            $newStatus = 4;
+            $oldCair = Pencairan::findOne(['pendanaan_id'=>$model->id]);
+            $oldCair->delete();
+         }elseif($oldStatus == 11){
+            $newStatus = 3;
+            $oldPenyaluran = Penyaluran::findOne(['id_pendanaan'=>$model->id]);
+            $oldPenyaluran->delete();
+         }elseif($oldStatus == 7){
+            $newStatus = 1;
+         }
+         $model->status_id = $newStatus;
+         if ($model->save()) {
+            \Yii::$app->getSession()->setFlash(
+               'success',
+               'Status Pendanaan Telah Dikembalikan!'
+            );
+           
+         } else {
+            \Yii::$app->getSession()->setFlash(
+               'danger',
+               'Status Pendanaan Gagal Diperbarui!'
+            );
+         }
+         return $this->redirect(['index']);
+      }
+   }
 
    public function actionPendanaanCair($id)
    {

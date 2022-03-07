@@ -18,7 +18,7 @@ use yii\helpers\Html;
         {
             return [
                 'class' => 'yii\grid\ActionColumn',
-                'template' => '{approve-pendanaan} {cancel} {pendanaan-selesai} {pendanaan-cair} {export} {penyaluran_pendanaan}',
+                'template' => '{approve-pendanaan} {cancel} {pendanaan-selesai} {pendanaan-cair} {export} {penyaluran_pendanaan} {back}',
                 'header' => 'Pendanaan',
                 'visible'=>\Yii::$app->user->identity->role_id ==1,
                 'buttons' => [
@@ -40,7 +40,15 @@ use yii\helpers\Html;
                     ]);
                     }
                 },
-
+                'back' => function ($url, $model, $key) {
+                  if($model->status_id != 1){
+                    return Html::a("<i class='fa fa-rotate-left'></i>", ["back", "id"=>$model->id], [
+                        "class"=>"btn btn-danger",
+                        "title"=>"Status Kembali",
+                        "data-confirm" => "Apakah Anda yakin mengembalikan status pendanaan ini ?",
+                    ]);
+                  }
+                },
                 'pendanaan-selesai' => function ($url, $model, $key) {
                     if($model->status_id ==2){
                       return Html::a("<i class='fa fa-check'></i>", ["pendanaan-selesai", "id"=>$model->id], [
