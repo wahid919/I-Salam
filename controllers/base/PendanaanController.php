@@ -298,16 +298,21 @@ use UploadFile;
          $oldStatus = $model->status_tampil;
          if($oldStatus == 0){
             $newStatus = 1;
-         }else{
-            $newStatus = 0;
-         }
-         $model->status_tampil = $newStatus;
-         if ($model->save()) {
-           
-            \Yii::$app->getSession()->setFlash(
+            $text =  \Yii::$app->getSession()->setFlash(
                'success',
                'Pendanaan Telah Ditampilkan!'
             );
+         }else{
+            $newStatus = 0;
+            $text =  \Yii::$app->getSession()->setFlash(
+               'success',
+               'Pendanaan Telah Tidak Ditampilkan!'
+            );
+         }
+         $model->status_tampil = $newStatus;
+         if ($model->save()) {
+           echo $text;
+           
          } else {
             \Yii::$app->getSession()->setFlash(
                'danger',
