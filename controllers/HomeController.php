@@ -325,9 +325,9 @@ class HomeController extends Controller
         $count_wakif = User::find()->where(['role_id' => 5])->count();
         $model = new HubungiKami;
         $testimonials = Testimonials::find()->all();
-        $pendanaans = Pendanaan::find()->where(['status_id' => 2])->limit(6)->all();
+        $pendanaans = Pendanaan::find()->where(['status_tampil' => 1])->limit(6)->all();
 
-        $list_pendanaans = Pendanaan::find()->where(['status_id' => 2])->all();
+        $list_pendanaans = Pendanaan::find()->where(['status_tampil' => 1])->all();
         $news = Berita::find()->limit(6)->all();
 
         $slides = Slides::find()->where(['status' => 1])->orderBy(new Expression('rand()'))->one();
@@ -500,10 +500,10 @@ class HomeController extends Controller
         $count_wakif = User::find()->where(['role_id' => 5])->count();
         // $model = new HubungiKami;
         $testimonials = Testimonials::find()->all();
-        $pendanaans = Pendanaan::find()->where(['status_id' => 2])->limit(6)->all();
+        $pendanaans = Pendanaan::find()->where(['status_tampil' => 1])->limit(6)->all();
         $slides = Slides::find()->where(['status' => 1])->orderBy(new Expression('rand()'))->one();
 
-        $list_pendanaans = Pendanaan::find()->where(['status_id' => 2])->all();
+        $list_pendanaans = Pendanaan::find()->where(['status_tampil' => 1])->all();
         $news = Berita::find()->limit(6)->all();
 
 
@@ -1089,7 +1089,7 @@ class HomeController extends Controller
     public function actionZiswaf()
     {
         $setting = Setting::find()->one();
-        $pendanaans = Pendanaan::find()->where(['status_id' => 2])->all();
+        $pendanaans = Pendanaan::find()->where(['status_tampil' => 1])->all();
         $icon = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->logo;
 
         return $this->render('ziswaf', [
@@ -1306,14 +1306,14 @@ class HomeController extends Controller
         if (isset($_GET['kategori'])) {
             $kategori = $_GET['kategori'];
             $get_id = KategoriPendanaan::find()->where(['name' => $kategori])->one();
-            $query = Pendanaan::find()->where(['status_id' => 2, 'kategori_pendanaan_id' => $get_id]);
+            $query = Pendanaan::find()->where(['status_tampil' => 1, 'kategori_pendanaan_id' => $get_id]);
             $count = $query->count();
             $pagination = new Pagination(['totalCount' => $count, 'pageSize' => 9]);
             $pendanaans = $query->offset($pagination->offset)
                 ->limit($pagination->limit)
                 ->all();
         } else {
-            $query = Pendanaan::find()->where(['status_id' => 2]);
+            $query = Pendanaan::find()->where(['status_tampil' => 1]);
             $count = $query->count();
             $pagination = new Pagination(['totalCount' => $count, 'pageSize' => 9]);
             $pendanaans = $query->offset($pagination->offset)
