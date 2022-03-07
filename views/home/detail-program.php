@@ -151,6 +151,9 @@ use yii\helpers\Url;
                       <button type="button" class="btn-sm btn-block text-white font-weight-bold" style="height: 3rem;background-color: #f1a502;" id="btn-user-login">Mulai Wakaf</button>
                     <?php
                     } ?>
+                    <br>
+
+                    <a href="#" class="btn btn-sm btn-program btn-block" data-toggle="modal" data-target="#share_program" style="padding: 10px !important;">Bagikan</a>
               </div>
             </div>
           </div>
@@ -307,6 +310,75 @@ use yii\helpers\Url;
         });
     }); 
    </script>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Share Modal -->
+    <div class="modal fade" id="share_program" tabindex="-1" role="dialog" aria-labelledby="share_program" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="share_program" style="color: #fff;">Share Program</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            
+            <div class="tab-content" id="myTabContent">
+              <div class="tab-pane fade show active" id="pembayaran" role="tabpanel" aria-labelledby="pembayaran-tab">
+                <div class="row">
+                  
+                  <div class="col-12 pt-3">
+                    <div class="row">
+                      <div class="col-4">
+                      <img src="https://img.icons8.com/color/90/000000/facebook-new.png" onclick="_fb();" alt="facebook" style="cursor:pointer"/>
+                      </div>
+                      <div class="col-4">
+                      <img src="https://img.icons8.com/color/90/000000/whatsapp--v1.png"  onclick="_whatapps();" alt="whatapps" style="cursor:pointer"/>
+                      </div>
+                      <div class="col-4">  
+                      <img src="https://img.icons8.com/color/90/000000/telegram-app--v1.png" onclick="_telegram();" alt="telegram" style="cursor:pointer"/>
+                      </div>
+                    </div>
+                    <script>
+                        var title = "<?php echo $pendanaan->nama_pendanaan ?>";
+                        // var deskripsi= "<?php echo $pendanaan->nama_pendanaan ?>";
+                        var deskripsi = window.location.href;
+                        var currentLocation = window.location;
+                        // console.log();
+                        var top = (screen.height - 570) / 2;
+                        var left = (screen.width - 570) / 2;
+                        var params = "menubar=no,toolbar=no,status=no,width=570,height=570,top=" + top + ",left=" + left;
+                        // console.log(encodeURI(title+deskripsi));
+                          function _fb(){
+                            var url="https://web.facebook.com/sharer.php?u=" + encodeURI(currentLocation);
+                            window.open(url,'NewWindow',params);
+                          }
+                          function _twitter(){
+                            var url="https://twitter.com/intent/tweet?url=" + encodeURI(currentLocation) + "&text="+encodeURI(deskripsi);
+                            window.open(url,'NewWindow',params);
+                            
+                          }
+                          function _whatapps(){
+                            var url="https://api.whatsapp.com/send?phone=&text=" + encodeURI(title +" "+deskripsi);
+                            window.open(url,'NewWindow',params);
+                          }
+                          function _telegram(){
+                            var url="https://telegram.me/share/url?url=" + encodeURI(currentLocation) + "&text=" +encodeURI(title + deskripsi);
+                            window.open(url,'NewWindow',params);
+                          }
+                      </script>
+                  </div>
+                </div>
+                
+              </div>
+              
+            </div>
+          </div>
+          
         </div>
       </div>
     </div>
