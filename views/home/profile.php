@@ -44,25 +44,33 @@
           if(kode_snap_<?= $pembayaran->id ?> == null){
             alert("Data Tidak Ditemukan");
           }else{
-            snap.pay('<?=$pembayaran->code?>', {
+            window.snap.pay('<?=$pembayaran->code?>', {
           // Optional
-          onSuccess: function(result){
-            /* You may add your own js here, this is just example */ 
-            // document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
-          },
-          // Optional
-          onPending: function(result){
-            /* You may add your own js here, this is just example */ 
-            // document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
-          },
-          // Optional
-          onError: function(result){
-            /* You may add your own js here, this is just example */ 
-            // document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
-          },
+          onSuccess: function(result) {
+        /* You may add your own js here, this is just example */
+        // document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
+        Swal.fire("Peringatan!", "Pembayaran Berhasil", "success").then((result) => {
+          window.location = "<?= Yii::$app->request->baseUrl . "/home/profile" ?>";
+        });
+        // alert("payment success!"); console.log(result);
+      },
+      // Optional
+      onPending: function(result) {
+        Swal.fire("Peringatan!", "Transaksi Menunggu Pembayaran", "success").then((result) => {
+          window.location = "<?= Yii::$app->request->baseUrl . "/home/profile" ?>";
+        });
+        /* You may add your own js here, this is just example */
+        // document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
+      },
+      // Optional
+      onError: function(result) {
+        /* You may add your own js here, this is just example */
+        // document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
+        Swal.fire("Peringatan!", "Pembayaran Gagal", "error");
+      },
       onClose: function() {
         /* You may add your own implementation here */
-        // Swal.fire("Peringatan!", "Anda Belum Menyelesaikan Pembayaran", "error");
+        Swal.fire("Peringatan!", "Anda Belum Menyelesaikan Pembayaran", "error");
       }
         });
           }
