@@ -299,6 +299,14 @@ abstract class Pendanaan extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
+    public function getAmanahs()
+    {
+        return $this->hasMany(\app\models\AmanahPendanaan::className(), ['pendanaan_id' => 'id']);
+    }
+    
+    /**
+     * @return \yii\db\ActiveQuery
+     */
     public function getKategoriPendanaan()
     {
         return $this->hasOne(\app\models\KategoriPendanaan::className(), ['id' => 'kategori_pendanaan_id']);
