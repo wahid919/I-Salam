@@ -127,6 +127,7 @@ $this->registerCss(".modal-content{border-radius: 10px}");
             ],
             
             \app\components\ActionApproveButton::getButtons(),
+            \app\components\ActionApproveButton::getButtonsTampil(),
 			/*'foto'*/
                 ],
                 ]); ?>

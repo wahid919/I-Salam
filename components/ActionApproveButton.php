@@ -92,6 +92,34 @@ use yii\helpers\Html;
             ];
         }
 
+        public static function getButtonsTampil()
+        {
+            return [
+                'class' => 'yii\grid\ActionColumn',
+                'template' => '{tampil_pendanaan}',
+                'header' => 'Tampil/Tidak',
+                'visible'=>\Yii::$app->user->identity->role_id ==1,
+                'buttons' => [
+                  'tampil_pendanaan' => function ($url, $model, $key) {
+                    if($model->status_tampil == 0){
+                      return Html::a("<i class='fa fa-check'></i>", ["tampil-pendanaan", "id"=>$model->id], [
+                          "class"=>"btn btn-success",
+                          "title"=>"Menampilkan Pendanaan",
+                          "data-confirm" => "Apakah Anda yakin ingin menampilkan pendanaan ini ?",
+                      ]);
+                    }elseif($model->status_tampil == 1){
+                      return Html::a("<i class='fa fa-times'></i>", ["tampil-pendanaan", "id"=>$model->id], [
+                        "class"=>"btn btn-danger",
+                        "title"=>"Tidak Tampil Pendanaan",
+                        "data-confirm" => "Apakah Anda yakin ingin tidak menampilkan pendanaan ini ?",
+                    ]);
+                    }
+                  },
+                ],
+                'contentOptions' => ['nowrap'=>'nowrap', 'style'=>'text-align:center;width:140px']
+            ];
+        }
+
         public static function getButtonsPembayaran()
         {
             return [
