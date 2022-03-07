@@ -243,7 +243,7 @@ abstract class Pendanaan extends \yii\db\ActiveRecord
     {
         return [
             [['uraian','deskripsi'], 'string'],
-            [['user_id', 'kategori_pendanaan_id', 'status_id','bank_id','noms','status_lembaran','jumlah_lembaran'], 'integer'],
+            [['user_id', 'kategori_pendanaan_id', 'status_id','bank_id','noms','status_lembaran','status_tampil','jumlah_lembaran'], 'integer'],
             [['pendanaan_berakhir','created_at'], 'safe'],
             [['user_id', 'kategori_pendanaan_id', 'status_id'], 'required'],
             [['nama_pendanaan', 'tempat', 'penerima_wakaf', 'foto','nama_nasabah','nama_perusahaan','foto_ktp','foto_kk','file_uraian','poster','nominal','nominal_lembaran','nomor_rekening'], 'string', 'max' => 255],
@@ -267,6 +267,7 @@ abstract class Pendanaan extends \yii\db\ActiveRecord
             'nominal' => 'Nominal',
             'pendanaan_berakhir' => 'Pendanaan Berakhir',
             'status_lembaran' => 'Status Lembaran(Aktif/Tidak)',
+            'status_tampil' => 'Status Tampil(Aktif/Tidak)',
             'nominal_lembaran' => 'Nominal Lembaran',
             'jumlah_lembaran' => 'Jumlah Lembaran',
             'bank_id' => 'Bank',
