@@ -43,7 +43,7 @@ use kartik\select2\Select2;
                         'class' => 'control-label'
                     ],
                     'options' => ['tag' => false]
-                ])->textInput(['maxlength' => true,'type'=>'number'])->label('2. Nomor Rekening'); ?>
+                ])->textInput(['maxlength' => 16,'type'=>'text'])->label('2. Nomor Rekening'); ?>
             </div>
         </div>
         <div class="row">
