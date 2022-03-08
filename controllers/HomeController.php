@@ -36,6 +36,7 @@ use Midtrans\Config;
 use yii\filters\VerbFilter;
 use yii\web\Response;
 use app\components\UploadFile;
+use app\models\AmanahPendanaan;
 use app\models\home\Registrasi as HomeRegistrasi;
 use app\models\KegiatanPendanaan;
 use app\models\Kontak;
@@ -91,7 +92,7 @@ class HomeController extends Controller
         ];
     }
 
-    public function actionPembayaran($id, $nominal, $ket)
+    public function actionPembayaran($id, $nominal,$amanah_pendanaan ,$ket)
     {
         $confirm = Yii::$app->user->identity->confirm;
         $status = Yii::$app->user->identity->status;
@@ -152,10 +153,11 @@ class HomeController extends Controller
                 $model->status_id = 5;
                 
                 $model->jenis = "wakaf";
+                $model->amanah_pendanaan = $amanah_pendanaan;
                 $shipping_address = array(
                     'first_name'    => $pendanaan->nama_nasabah,
                     'last_name'     => "(" . $pendanaan->nama_perusahaan . ")",
-                    // 'address'       => "Batu",
+                    // 'address'       => $amanah_pendanaan,
                     //     'city'          => "Jakarta",
                     //     'postal_code'   => "16602",
                     //     'phone'         => "081122334455",
@@ -1271,6 +1273,7 @@ class HomeController extends Controller
         $dana = Pembayaran::find()->where(['status_id' => 6, 'pendanaan_id' => $id])->sum('nominal');
         $agenda = AgendaPendanaan::find()->where(['pendanaan_id' => $id])->all();
         $kegiatans = KegiatanPendanaan::find()->where(['pendanaan_id' => $id])->orderBy(['id' => SORT_DESC])->one();
+        $amanah_pendanaan = AmanahPendanaan::find()->where(['pendanaan_id' => $id])->all();
 
         $kegiatan_pendanaans = KegiatanPendanaan::find()->where(['pendanaan_id' => $id])->orderBy(['id' => SORT_DESC])->limit(3)->all();
         $donatur = Pembayaran::find()->where(['status_id' => 6, 'pendanaan_id' => $id])->all();
@@ -1283,6 +1286,7 @@ class HomeController extends Controller
         // var_dump($kegiatan_pendanaans);die;
         return $this->render('detail-program', [
             'setting' => $setting,
+            'amanah_pendanaan' => $amanah_pendanaan,
             'kegiatans' => $kegiatans,
             'kegiatan_pendanaans' => $kegiatan_pendanaans,
             'donatur' => $donatur,

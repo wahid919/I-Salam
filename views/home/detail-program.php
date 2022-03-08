@@ -202,6 +202,16 @@ use yii\helpers\Url;
                       </tr>
                       </tbody>
                     </table>
+
+                    <p class="font-size-08">Amanah Wakaf :</p>
+                    <div class="row">
+                      <?php $i=0; foreach($amanah_pendanaan as $value){ ?>
+                    <div class="col-6">
+                        <input type="radio" id="amanah" name="amanah" value="<?= $value->amanah ?>" <?= $i==0 ? "checked" : "" ?>>
+                        <label for="amanah"><?= $value->amanah ?></label><br>
+                      </div>
+                      <?php $i++;} ?>
+                    </div>
                     <p class="font-size-08">Anda akan berwakaf dengan nominal sebesar :</p>
                     <div class="row">
                       <div class="col-6">
@@ -273,6 +283,15 @@ use yii\helpers\Url;
                       </tr>
                       </tbody>
                     </table>
+                    <p class="font-size-08">Amanah Wakaf :</p>
+                    <div class="row">
+                      <?php $i=0; foreach($amanah_pendanaan as $value){ ?>
+                    <div class="col-6">
+                        <input type="radio" id="amanah2" name="amanah2" value="<?= $value->amanah ?>" <?= $i==0 ? "checked" : "" ?>>
+                        <label for="amanah2"><?= $value->amanah ?></label><br>
+                      </div>
+                      <?php $i++;} ?>
+                    </div>
                     <p class="font-size-08">Anda akan berwakaf dengan nominal sebesar :<br />*Perlembar <?= \app\components\Angka::toReadableHarga($pendanaan->nominal_lembaran); ?></p>
                     <div class="row">
 
@@ -397,6 +416,17 @@ use yii\helpers\Url;
       var pendanaan = "<?php echo $pendanaan->id; ?>";
       document.querySelector("#bayarkan").addEventListener("click", () => {
         let nominal = document.querySelector("#nominal").getAttribute("value");
+        // let ele = document.querySelector("#amanah").getAttribute("value");
+        let ele = document.getElementsByName("amanah");
+        let amanah_pendanaan;
+        for(i = 0; i < ele.length; i++) {
+                  
+                  if(ele[i].type="radio") {
+                    
+                      if(ele[i].checked)
+                      amanah_pendanaan = ele[i].value;
+                  }
+              }
         if (nominal == null || nominal == "0" || nominal == 0) {
           alert("Anda Belum Mengisi Nominal Wakaf");
         }else if(nominal < 0 ){
@@ -405,19 +435,29 @@ use yii\helpers\Url;
           if(pendanaan == null){
           alert("Pendanaan Tidak Diketahui");
           }else{
-            window.location.href = `<?= Url::to(['/home/pembayaran', 'id' => $pendanaan->id]) ?>?nominal=${nominal}&ket=nominal`;
+            window.location.href = `<?= Url::to(['/home/pembayaran', 'id' => $pendanaan->id]) ?>?nominal=${nominal}&amanah_pendanaan=${amanah_pendanaan}&ket=nominal`;
           }
         }
       });
       document.querySelector("#bayarkan2").addEventListener("click", () => {
         let nominal2 = document.querySelector("#nominal2").getAttribute("value");
+        let ele2 = document.getElementsByName("amanah2");
+        let amanah_pendanaan2;
+        for(ii = 0; ii < ele2.length; ii++) {
+                  
+                  if(ele2[ii].type="radio") {
+                    
+                      if(ele2[ii].checked)
+                      amanah_pendanaan2 = ele2[ii].value;
+                  }
+              }
         if (nominal2 == null) {
           alert("Anda Belum Mengisi Nominal Wakaf");
         } else {
           if(pendanaan == null){
           alert("Pendanaan Tidak Diketahui");
           }else{
-            window.location.href = `<?= Url::to(['/home/pembayaran', 'id' => $pendanaan->id]) ?>?nominal=${nominal2}&ket=lembar`;
+            window.location.href = `<?= Url::to(['/home/pembayaran', 'id' => $pendanaan->id]) ?>?nominal=${nominal2}&amanah_pendanaan=${amanah_pendanaan2}&ket=lembar`;
           }
         }
       });
