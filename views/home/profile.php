@@ -7,7 +7,11 @@
         <div class="col-lg-8 col-md-6 col-sm-12 col-12 profile-section">
             <h3 class="text-isalam-1 font-weight-bold text-detail-program">Transaksi</h3>
             <div class="row">
-                <?php foreach ($pembayarans as $pembayaran) {
+                <?php
+
+            use yii\helpers\Url;
+
+ foreach ($pembayarans as $pembayaran) {
                     $code = $pembayaran->code; ?>
                     <div class="col-lg-6 col-md-6 col-sm-8 col-8 text-left border-bottom-3">
                         <p class="font-weight-bold"><?= $pembayaran->pendanaan->nama_pendanaan ?></p>
@@ -19,19 +23,26 @@
                         $status_pembayaran = $pembayaran->status->id;
                         if ($status_pembayaran == 1 || $status_pembayaran == 2) {
                             $status = "btn-info";
+                            $cancel_aktif = "tidak-aktif";
                         }
                         if ($status_pembayaran == 3 || $status_pembayaran == 4 || $status_pembayaran == 6) {
                             $status = "btn-success";
+                            $cancel_aktif = "tidak-aktif";
                         }
                         if ($status_pembayaran == 5 || $status_pembayaran == 9 || $status_pembayaran == 10) {
                             $status = "btn-warning";
+                            $cancel_aktif = "aktif";
                         }
                         if ($status_pembayaran == 7 || $status_pembayaran == 8) {
                             $status = "btn-danger";
+                            $cancel_aktif = "tidak-aktif";
                         }
                         ?>
-                        <button id="pay-button-<?=$pembayaran->id ?>" class="btn btn-sm btn-program <?= $status ?>"> <?= $pembayaran->status->name ?></button>
-                        <!-- <p><a href="#" class="btn btn-sm btn-program <?= $status ?>"><?= $pembayaran->status->name ?></a></p> -->
+                          <?php if($cancel_aktif == "aktif"){?>
+                          <button id="cancel-<?=$pembayaran->id ?>" class="btn btn-sm btn-program btn-danger" style="margin-top:2px;"><i class='fa fa-times'></i> Membatalkan Transaksi</button>
+                          <?php } ?>
+                          <button id="pay-button-<?=$pembayaran->id ?>" class="btn btn-sm btn-program <?= $status ?>" style="margin-top:2px;"> <?= $pembayaran->status->name ?></button>
+                          <!-- <p><a href="#" class="btn btn-sm btn-program <?= $status ?>"><?= $pembayaran->status->name ?></a></p> -->
                     </div>
 
 <!-- Production -->
@@ -77,6 +88,13 @@
         // SnapToken acquired from previous step
         
       };
+      document.querySelector("#cancel-<?=$pembayaran->id ?>").addEventListener("click", () => {
+        let text = "Apakah anda yakin ingin membatalkan transaksi ini?";
+        if (confirm(text) == true) {
+          window.location.href = `<?= Url::to(['/home/cancel-transaksi', 'id' => $pembayaran->id]) ?>`;
+          alert("Berhasil Membatalkan Transaksi");
+  }
+      });
     </script>
                 <?php } ?>
             </div>

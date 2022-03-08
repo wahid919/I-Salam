@@ -96,7 +96,7 @@ class PembayaranController extends \yii\rest\ActiveController
                 $a = $this->findMidtransProduction($wf->kode_transaksi);
 
                 if($a->status_code == "404"){
-                     $wf->status_id = 5;
+                     $wf->status_id = $wf->status_id;
                 }else{
                     if($a->transaction_status == "pending"){
                          $wf->status_id = 5;

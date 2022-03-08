@@ -80,7 +80,7 @@ class HomeController extends Controller
                         'allow' => true,
                     ],
                     [
-                        'actions' => ['logout', 'index', 'verifikasi-akun', 'kirim-otp', 'profile', 'edit-profile', 'bayar', 'pembayaran', 'pembayarans', 'chechkout', 'laporan-wakaf', 'notifikasi', ''], // add all actions to take guest to login page
+                        'actions' => ['logout', 'index', 'verifikasi-akun', 'kirim-otp', 'profile', 'edit-profile', 'bayar', 'pembayaran', 'pembayarans', 'chechkout', 'laporan-wakaf', 'notifikasi', 'cancel-transaksi'], // add all actions to take guest to login page
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -1164,7 +1164,7 @@ class HomeController extends Controller
         $pagination = new Pagination(['totalCount' => $count, 'pageSize' => 6]);
         $pembayarans = $query->offset($pagination->offset)
             ->limit($pagination->limit)
-            ->orderBy(['created_at' => SORT_DESC])
+            ->orderBy(['id' => SORT_DESC])
             ->all();
         foreach ($data_all as $data) {
             $wf = Pembayaran::find()->where(['id' => $data->id])->one();
@@ -1172,7 +1172,7 @@ class HomeController extends Controller
             $a = $this->findMidtransProduction($wf->kode_transaksi);
 
             if ($a->status_code == "404") {
-                $wf->status_id = 5;
+                $wf->status_id = $wf->status_id;
             } else {
                 if ($a->transaction_status == "pending") {
                     $wf->status_id = 5;
@@ -1203,6 +1203,51 @@ class HomeController extends Controller
             'pagination' => $pagination,
             'pembayarans' => $pembayarans
         ]);
+    }
+
+    public function actionCancelTransaksi($id){
+        $confirm = Yii::$app->user->identity->confirm;
+        $status = Yii::$app->user->identity->status;
+        $usr = Yii::$app->user->identity->id;
+        if ($confirm != 1 || $status != 1 || $usr == null) {
+            return $this->redirect(["home/index"]);
+        }
+        $wf = Pembayaran::findOne(['id'=>$id]);
+        $a = $this->findMidtransProductionCancel($wf->kode_transaksi);
+            $wf->status_id = 8;
+            $wf->tanggal_konfirmasi = date('Y-m-d H:i:s');
+            // if ($a->status_code == "404") {
+            //     $wf->status_id = 5;
+            // } else {
+            //     if ($a->transaction_status == "pending") {
+            //         $wf->status_id = 5;
+            //     } elseif ($a->transaction_status == "capture" || $a->transaction_status == "settlement") {
+            //         $wf->status_id = 6;
+            //         $wf->tanggal_konfirmasi = date('Y-m-d H:i:s');
+            //     } elseif ($a->transaction_status == "deny" || $a->transaction_status == "cancel" || $a->transaction_status == "expire") {
+            //         $wf->status_id = 8;
+            //         $wf->tanggal_konfirmasi = date('Y-m-d H:i:s');
+            //     }
+            // }
+
+            if ($a->status_code == "404") {
+                $wf->jenis_pembayaran_id = "Tidak Ditemukan";
+            } else {
+                if ($a->payment_type == "cstore") {
+                    $wf->jenis_pembayaran_id = $a->store;
+                } else {
+                    $wf->jenis_pembayaran_id = $a->payment_type;
+                }
+            }
+            if($wf->save()){
+                
+                Yii::$app->session->setFlash("success", "Berhasil Cancel Transaksi");
+            return $this->redirect(["home/profile"]);
+            }
+            
+            return $this->redirect(["home/profile"]);
+
+
     }
 
     public function actionEditProfile()
@@ -1471,6 +1516,33 @@ class HomeController extends Controller
             CURLOPT_FOLLOWLOCATION => true,
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => "GET",
+            CURLOPT_POSTFIELDS => "\n\n",
+            CURLOPT_HTTPHEADER => array(
+                "Accept: application/json",
+                "Content-Type: application/json",
+                "Authorization: Basic TWlkLXNlcnZlci1oV3hSekx0a3NmX0s4SUNhY3RjZ0Fwdl86"
+            ),
+        ));
+
+        $response = curl_exec($curl);
+
+        curl_close($curl);
+        $a = json_decode($response);
+        return $a;
+    }
+    protected function findMidtransProductionCancel($id)
+    {
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => "https://api.midtrans.com/v2/" . $id . "/cancel",
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => "",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "POST",
             CURLOPT_POSTFIELDS => "\n\n",
             CURLOPT_HTTPHEADER => array(
                 "Accept: application/json",
