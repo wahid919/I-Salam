@@ -28,7 +28,7 @@ class PembayaranController extends \yii\rest\ActiveController
         $parent = parent::behaviors();
         $parent['authentication'] = [
             "class" => "\app\components\CustomAuth",
-            "only" => ["bayar", "wakaf", "detail-wakaf", "status-midtrans","list-pewakaf"],
+            "only" => ["bayar", "wakaf", "detail-wakaf", "status-midtrans","list-pewakaf","cancel-wakaf"],
         ];
 
         return $parent;
@@ -42,6 +42,7 @@ class PembayaranController extends \yii\rest\ActiveController
             'upload-file' => ['POST'],
             'informasi' => ['GET'],
             'detail-wakaf' => ['GET'],
+            'cancel-wakaf' => ['POST'],
             'status-midtrans' => ['GET'],
             'wakaf' => ['GET'],
             'pewakaf' => ['GET'],
@@ -107,6 +108,62 @@ class PembayaranController extends \yii\rest\ActiveController
                          $wf->tanggal_konfirmasi = date('Y-m-d H:i:s');
                     }
                 }
+
+                if($a->status_code == "404"){
+                     $wf->jenis_pembayaran_id ="Tidak Ditemukan";
+                }else{
+                    if($a->payment_type == "cstore"){
+                         $wf->jenis_pembayaran_id = $a->store;
+                    }else{
+                         $wf->jenis_pembayaran_id = $a->payment_type;
+                    }
+                }
+                $wf->save();
+                $hasil  = 'https://app.midtrans.com/snap/v2/vtweb/'.$wf->code;
+                return [
+                    "success" => true,
+                    "message" => "Wakaf ",
+                    "data" => $wf,
+                    "code" => $wf->code,
+                    "url" => $hasil,
+                ];
+            }
+        } else {
+            return [
+                "success" => false,
+                "message" => "Data Wakaf Tidak Ditemukan",
+                "data" => null,
+            ];
+        }
+    }
+    public function actionCancelWakaf($id)
+    {
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $wf = Pembayaran::find()->where(['id' => $id])->one();
+        if ($wf != null) {
+            if ($wf->user_id != \Yii::$app->user->identity->id) {
+                return [
+                    "success" => true,
+                    "message" => "Mohon Maaf Data Tidak ditemukan",
+                    "data" => null,
+                ];
+            } else {
+                $a = $this->findMidtransProductionCancel($wf->kode_transaksi);
+                $wf->status_id = 8;
+                $wf->tanggal_konfirmasi = date('Y-m-d H:i:s');
+                // if($a->status_code == "404"){
+                //      $wf->status_id = 5;
+                // }else{
+                //     if($a->transaction_status == "pending"){
+                //          $wf->status_id = 5;
+                //     }elseif($a->transaction_status == "capture" || $a->transaction_status == "settlement" ){
+                //          $wf->status_id = 6;
+                //          $wf->tanggal_konfirmasi = date('Y-m-d H:i:s');
+                //     }elseif($a->transaction_status == "deny" || $a->transaction_status == "cancel" || $a->transaction_status == "expire" ){
+                //          $wf->status_id = 8;
+                //          $wf->tanggal_konfirmasi = date('Y-m-d H:i:s');
+                //     }
+                // }
 
                 if($a->status_code == "404"){
                      $wf->jenis_pembayaran_id ="Tidak Ditemukan";
@@ -599,6 +656,33 @@ class PembayaranController extends \yii\rest\ActiveController
             CURLOPT_FOLLOWLOCATION => true,
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => "GET",
+            CURLOPT_POSTFIELDS => "\n\n",
+            CURLOPT_HTTPHEADER => array(
+                "Accept: application/json",
+                "Content-Type: application/json",
+                "Authorization: Basic TWlkLXNlcnZlci1oV3hSekx0a3NmX0s4SUNhY3RjZ0Fwdl86"
+            ),
+        ));
+
+        $response = curl_exec($curl);
+
+        curl_close($curl);
+        $a = json_decode($response);
+        return $a;
+    }
+    protected function findMidtransProductionCancel($id)
+    {
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => "https://api.midtrans.com/v2/" . $id . "/cancel",
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => "",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "POST",
             CURLOPT_POSTFIELDS => "\n\n",
             CURLOPT_HTTPHEADER => array(
                 "Accept: application/json",
