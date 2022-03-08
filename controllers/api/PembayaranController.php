@@ -248,6 +248,12 @@ class PembayaranController extends \yii\rest\ActiveController
         }else{
             $model->keterangan = "";
         }
+        $amanah_pendanaan = $val['amanah_pendanaan'];
+        if($amanah_pendanaan != null){
+            $model->amanah_pendanaan = $amanah_pendanaan;
+        }else{
+            $model->amanah_pendanaan = "";
+        }
         if ($val['lembaran'] != 0) {
 
 
