@@ -2,10 +2,10 @@
       <div class="container">
         <h2 class="text-center" style="color:orange">Lebih Dekat Dengan Kami</h2>
         <div class="row text-center">
-          <div class="carousel owl-carousel carousel-arrows" data-slide="3" data-slide-md="2" data-slide-sm="1" data-autoplay="true" data-nav="true" data-dots="false" data-space="20" data-loop="true" data-speed="800">
-            <!-- fancybox item #1 -->
+        <div class="row mt-2">
             <?php foreach ($organisasis as $organisasi) { ?>
-              <div class="fancybox-item">
+        <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12 mt-3">
+          <div class="fancybox-item">
                 <div class="fancybox__content">
                   <div class="col-12 mx-auto">
                     <div class="service-item">
@@ -20,8 +20,10 @@
                   </div><!-- /.col-lg-4 -->
                 </div><!-- /.fancybox-content -->
               </div><!-- /.fancybox-item -->
-            <?php } ?>
-          </div><!-- /.carousel -->
+          <!-- </a> -->
+        </div>
+      <?php } ?>
+    </div>
         </div><!-- /.row -->
 
       </div><!-- /.container -->
