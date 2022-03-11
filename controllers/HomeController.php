@@ -76,7 +76,7 @@ class HomeController extends Controller
                 // 'only' => ['logout', 'design-bangunan'],
                 'rules' => [
                     [
-                        'actions' => ['login', 'registrasi', 'error', 'index', 'news', 'detail-berita', 'about', 'report', 'ziswaf', 'program', 'detail-program','program-zakat', 'detail-program-zakat','program-infak', 'detail-program-infak','program-sedekah', 'detail-program-sedekah', 'unduh-file-uraian', 'unduh-file-wakaf', 'lupa-password', 'ganti-password', 'visi', 'organisasi','lupa','kontak','cetak','latar-belakang','alamat-kantor','telp','map','pesan','medsos','privacy-policy'],
+                        'actions' => ['login', 'registrasi', 'error', 'index', 'news', 'detail-berita', 'about', 'report', 'ziswaf', 'program', 'detail-program','program-zakat', 'detail-program-zakat','program-infak', 'detail-program-infak','program-sedekah', 'detail-program-sedekah', 'unduh-file-uraian', 'unduh-file-wakaf', 'lupa-password', 'ganti-password', 'visi', 'organisasi','lupa','kontak','cetak','latar-belakang','alamat-kantor','telp','map','pesan','medsos','privacy-policy','cek-data'],
                         'allow' => true,
                     ],
                     [
@@ -569,7 +569,22 @@ class HomeController extends Controller
         // Yii::$app->session->setFlash("false", "Email Tidak Terdaftar");
                 return $this->redirect(Yii::$app->request->referrer);
     }
+    public function actionCekData()
+    {        
+        $model = Pembayaran::find()->where(['qr_code' => $_GET['code']])->one();
 
+        if($model != null)
+        {
+            $this->view->title = 'Lihat Data Pembayaran';
+        }
+        else 
+        {
+            $this->view->title = 'Data Tidak Ditemukan';
+        }
+        return $this->render('cek-data', [
+            'model' => $model,
+        ]);
+    }
     public function actionIndex()
     {
         date_default_timezone_set('Asia/Jakarta');

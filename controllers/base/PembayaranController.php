@@ -77,6 +77,12 @@ class PembayaranController extends Controller
         Url::remember();
         Tabs::rememberActiveState();
 
+        $data = Pembayaran::findOne(['id' => $id]);
+        if($data->status_id == 6){
+            if($data->qr_code == null || $data->link_qr == null){
+                $this->findQrcode($data->id);
+            }
+        }
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
@@ -284,6 +290,7 @@ class PembayaranController extends Controller
     public function actionCetak($id) {
         
                 $this->layout= false;
+                $this->view->title = 'Cetak Sertifikat';
         $model = Pembayaran::findOne(['id' => $id]);
         return $this->render('view-print', [
         'model' => $model,

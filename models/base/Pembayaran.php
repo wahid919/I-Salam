@@ -216,7 +216,7 @@ abstract class Pembayaran extends \yii\db\ActiveRecord
             [['nominal', 'user_id', 'pendanaan_id', 'status_id','jumlah_lembaran'], 'integer'],
             [['tanggal_upload_bukti', 'tanggal_konfirmasi'], 'safe'],
             [['keterangan','amanah_pendanaan'], 'string'],
-            [['nama', 'bukti_transaksi','jenis_pembayaran_id','code','jenis'], 'string', 'max' => 255],
+            [['nama', 'bukti_transaksi','jenis_pembayaran_id','code','jenis','qr_code','link_qr'], 'string', 'max' => 255],
             [['status_id'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\Status::className(), 'targetAttribute' => ['status_id' => 'id']],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\User::className(), 'targetAttribute' => ['user_id' => 'id']],
             [['pendanaan_id'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\Pendanaan::className(), 'targetAttribute' => ['pendanaan_id' => 'id']]
@@ -246,6 +246,8 @@ abstract class Pembayaran extends \yii\db\ActiveRecord
             'jenis' => 'Jenis', 
             'keterangan' => 'Keterangan',
             'amanah_pendanaan' => 'Amanah Pendanaan',
+            'qr_code' => 'Qr Code',
+            'link_qr' => 'Link Qr',
         ];
     }
 

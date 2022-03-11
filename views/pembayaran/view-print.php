@@ -1,3 +1,7 @@
+<?php
+
+use yii\helpers\Html;
+?>
 <!DOCTYPE html>
 <!-- Created by pdf2htmlEX (https://github.com/coolwanglu/pdf2htmlex) -->
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -26,7 +30,9 @@
     </div>
     <div id="page-container">
         <div id="pf1" class="pf w0 h0" data-page-no="1">
-            <div class="pc pc1 w0 h0"><img class="bi x0 y0 w0 h0" alt="" src="<?= \Yii::$app->request->baseUrl . "/tes/clear.png" ?>" />
+            <div class="pc pc1 w0 h0">
+            <!-- <p class="bi x0 y0 w0 h0" style="background-image: url('<?= \Yii::$app->request->baseUrl . "/tes/clear.png" ?>');"></p>     -->
+            <img class="bi x0 y0 w0 h0" alt="" src="<?= \Yii::$app->request->baseUrl . "/tes/clear.png" ?>" />
                 <!-- <div class="t m0 x1 h1 y1 ff1 fs0 fc0 sc0 ls0 ws0">I</div> -->
                 <div class="t m0 x2 h2 y2 ff2 fs1 fc1 sc0 ls1 ws0">Dengan<span class="ls2"> <span class="_ _0"></span><span class="ls3">ini<span class="ls4"> <span class="ls5">Saya,</span></span></span></span></div>
                 <div class="t m0 x2 h2 y3 ff2 fs1 fc1 sc0 ls6 ws0">Na<span class="ls7">m<span class="ls5">a</span>: </span><b><?=$model->nama ?></b></div>
@@ -138,13 +144,21 @@
                 <div class="t m0 x3 h1 y69 ff1 fs0 fc0 sc0 ls0 ws0">I</div>
                 <div class="t m0 x51 h1 y6a ff1 fs0 fc0 sc0 ls0 ws0">I</div>
                 <div class="t m0 x1c h9 y6b ff5 fs8 fc6 sc0 ls28 ws0">1</div> -->
+                <div class="t m1 x1c h15 y6b ff5 fs8 fc6 sc0 ls28 ws0"><?= Html::img(["uploads/qr-code/$model->qr_code.png"], ["width"=>"90"]); ?></div>
             </div>
             <div class="pi" data-data='{"ctm":[1.000000,0.000000,0.000000,1.000000,0.000000,0.000000]}'></div>
         </div>
     </div>
     <div class="loading-indicator">
-
-    </div>
+        
+        </div>
+        <!-- <div style="margin-left:35%">
+    
+            <div style="text-align: center;position:absolute;">
+                <?= Html::img(["uploads/qr-code/$model->qr_code.png"], ["width"=>"100"]); ?>
+                
+            </div>
+        </div> -->
 </body>
 
 </html>
