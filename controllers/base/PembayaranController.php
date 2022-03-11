@@ -22,6 +22,10 @@ use kartik\mpdf\Pdf;
 use yii\db\Query;
 use yii\web\UploadedFile;
 
+use Endroid\QrCode\ErrorCorrectionLevel;
+use Endroid\QrCode\LabelAlignment;
+use Endroid\QrCode\QrCode;
+use Endroid\QrCode\Response\QrCodeResponse;
 /**
  * PembayaranController implements the CRUD actions for Pembayaran model.
  */
@@ -278,57 +282,55 @@ class PembayaranController extends Controller
         }
     }
     public function actionCetak($id) {
-        $formatter = \Yii::$app->formatter;
-        $model = Pembayaran::findOne(['id' => $id]);
-        $content = $this->renderPartial('view-print',[
-            'model' => $model,
-    ]);
         
-        // setup kartik\mpdf\Pdf component
-        $pdf = new Pdf([
-            // set to use core fonts only
-            'mode' => Pdf::MODE_CORE, 
-            //Name file
-            'filename' => 'Akad Wakaf'."pdf",
-            // LEGAL paper format
-            'format' => Pdf::FORMAT_LEGAL, 
-            // portrait orientation
-            'orientation' => Pdf::ORIENT_PORTRAIT, 
-            // stream to browser inline
-            'destination' => Pdf::DEST_BROWSER, 
-            // your html content input
-            'content' => $content,  
-            'marginHeader' => 0,
-            'marginFooter' => 1,
-            'marginTop' => 1,
-            'marginBottom' => 5,
-            'marginLeft' => 0,
-            'marginRight' => 0,
-            // format content from your own css file if needed or use the
-            // enhanced bootstrap css built by Krajee for mPDF formatting 
-            'cssFile' => '@vendor/kartik-v/yii2-mpdf/src/assets/kv-mpdf-bootstrap.min.css',
-            // any css to be embedded if required
-            // 'cssInline' => '.kv-heading-1{font-size:25px}', 
-            'cssInline' => 'body { font-family: irannastaliq; font-size: 17px; }.page-break {display: none;};
-            .kv-heading-1{font-size:17px}table{width: 100%;line-height: inherit;text-align: left; border-collapse: collapse;}table, td, th {margin-left:50px;margin-right:50px;},fa { font-family: fontawesome;} @media print{
-                .page-break{display: block;page-break-before: always;}
-            }',
-             // set mPDF properties on the fly
-             'options' => [               
-                'defaultheaderline' => 0,  //for header
-                 'defaultfooterline' => 0,  //for footer
-            ],
-             // call mPDF methods on the fly
-            'methods' => [
-                'SetTitle'=>'Print', 
-                'SetHeader' => $this->renderPartial('header_gambar'),
-              //   // 'SetHeader'=>['AMONG TANI FOUNDATION'],
-              //   'SetFooter'=>$this->renderPartial('footer_gambar'),
-                
-            ]
+                $this->layout= false;
+        $model = Pembayaran::findOne(['id' => $id]);
+        return $this->render('view-print', [
+        'model' => $model,
         ]);
-        return $pdf->render(); 
-    }
+
+        }
+        protected function findQrcode($id) {
+
+        $model = Pembayaran::findOne(['id' => $id]);
+
+
+        $string = Yii::$app->security->generateRandomString(20);
+        if (file_exists(Yii::getAlias("@app/web/uploads/qr-code")) == false) {
+        mkdir(Yii::getAlias("@app/web/uploads/qr-code"), 0777, true);
+        }
+        $url = //current domain name
+        Url::base('http') . '/home/cek-data?code=';
+        $valueQr = $url . $string;
+
+        $isi_teks = $valueQr;
+        $namafile = $string.".png";
+        $tempdir = "uploads/qr-code/"; 
+        $qrCode = new QrCode();
+        // Set Text
+        $qrCode->setText($isi_teks);
+        $qrCode->setWriterByName('png');
+        $qrCode->setMargin(10);
+        $qrCode->setEncoding('UTF-8');
+        $qrCode->setErrorCorrectionLevel(new ErrorCorrectionLevel(ErrorCorrectionLevel::HIGH));
+        // Set Color
+        $qrCode->setForegroundColor(['r' => 0, 'g' => 0, 'b' => 0, 'a' => 0]);
+        $qrCode->setBackgroundColor(['r' => 255, 'g' => 255, 'b' => 255, 'a' => 0]);
+        //Set Logo
+        // $qrCode->setLogoPath('dk.png');
+        // $qrCode->setLogoSize(100, 100);
+        // $qrCode->setRoundBlockSize(true);
+        $qrCode->setValidateResult(false);
+        // $qrCode->setWriterOptions(['exclude_xml_declaration' => true]);
+
+        // Save it to a file
+        $qrCode->writeFile($tempdir.$namafile);
+
+        $model->qr_code = $string;
+        $model->link_qr = $valueQr;
+        $model->save();
+
+        }
 
     public function actionExport(){
         extract($_GET);
