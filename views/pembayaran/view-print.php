@@ -20,7 +20,7 @@ use yii\helpers\Html;
             theViewer.defaultViewer = new theViewer.Viewer({});
         } catch (e) {}
     </script>
-    <title></title>
+    <title>Sertifikat Wakaf</title>
 </head>
 
 <body>
