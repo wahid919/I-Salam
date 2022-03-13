@@ -41,6 +41,7 @@ use yii\helpers\Html;
     }
 </style>
 
+<div style='text-align:center;width:100%'><h2>Login</h2> <p>Silahkan mengisi Data Anda untuk login</p></div>
 <?php $form = ActiveForm::begin([
     'id' => 'FormLogin',
     'layout' => 'horizontal',

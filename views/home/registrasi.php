@@ -39,6 +39,7 @@ use yii\bootstrap\ActiveForm;
         border-radius: 1rem
     }
 </style>
+<div style='text-align:center;width:100%'><h2>Mendaftar</h2> <p>Silahkan mengisi Data Anda untuk mendaftar</p></div>
 
 <?php $form = ActiveForm::begin([
     'id' => 'FormRegister',
