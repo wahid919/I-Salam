@@ -150,7 +150,7 @@ use yii\bootstrap\ActiveForm;
 <?php
 \app\components\Modal::begin([
     'id' => 'modal-registrasi',
-    'header' => '<div style=\'text-align:center;width:100%\'><h2>Mendaftar</h2> <p>Silahkan mengisi Data Anda untuk mendaftar</p></div>'
+    'header' => '<div style=\'text-align:center;width:100%\'><h2>I-Salam</h2></div>'
 ]);
 ?>
 <div id="modal-body"></div>
@@ -159,7 +159,7 @@ use yii\bootstrap\ActiveForm;
 <?php
 \app\components\Modal::begin([
     'id' => 'modal-login',
-    'header' => '<div style=\'text-align:center;width:100%\'><h2>Login</h2> <p>Silahkan mengisi Data Anda untuk login</p></div>'
+    'header' => '<div style=\'text-align:center;width:100%\'><h2>I-salam</h2></div>'
 ]);
 ?>
 <div id="modal-body2"></div>
@@ -193,6 +193,16 @@ use yii\bootstrap\ActiveForm;
     zoomOffset: -1,
     accessToken: 'pk.eyJ1IjoiZGVmcmluZHIiLCJhIjoiY2s4ZTN5ZjM0MDFrNzNsdG1tNXk2M2dlMSJ9.YXJM0PTu8PSsCCtYVjJNmw'
 }).addTo(map);
+var map2 = L.map("map-canvas2").setView([lat, lng], 13);
+    marker2 = L.marker([lat, lng]).addTo(map2);
+    L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+    maxZoom: 18,
+    id: 'mapbox/streets-v11',
+    tileSize: 512,
+    zoomOffset: -1,
+    accessToken: 'pk.eyJ1IjoiZGVmcmluZHIiLCJhIjoiY2s4ZTN5ZjM0MDFrNzNsdG1tNXk2M2dlMSJ9.YXJM0PTu8PSsCCtYVjJNmw'
+}).addTo(map2);
 </script>
 <script>
     $(window).ready(() => {
