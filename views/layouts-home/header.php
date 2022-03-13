@@ -78,7 +78,9 @@ $relativeHomeUrl = $_SERVER['REQUEST_URI'];
                 echo "active";
                }elseif($relativeHomeUrl == "/web/home/organisasi"){
                 echo "active";
-               }elseif($relativeHomeUrl == "/web/home/kontak"){
+               }elseif($relativeHomeUrl == "/web/home/latar-belakang"){
+                echo "active";
+               }elseif($relativeHomeUrl == "/web/home/program"){
                 echo "active";
                } 
              
@@ -106,10 +108,10 @@ $relativeHomeUrl = $_SERVER['REQUEST_URI'];
             </ul>
           </li>
           <li class="nav__item">
-            <a href="<?= \Yii::$app->request->baseUrl . "/home/program?kategori=Sosial" ?>" class="nav__item-link">Wakaf Sosial</a>
+            <a href="<?= \Yii::$app->request->baseUrl . "/home/program?kategori=Sosial" ?>" class="nav__item-link <?php if($relativeHomeUrl == "/web/home/program?kategori=Sosial"){ echo "active"; } ?>">Wakaf Sosial</a>
           </li>
           <li class="nav__item">
-            <a href="<?= \Yii::$app->request->baseUrl . "/home/program?kategori=Produktif" ?>" class="nav__item-link">Wakaf Produktif</a>
+            <a href="<?= \Yii::$app->request->baseUrl . "/home/program?kategori=Produktif" ?>" class="nav__item-link" <?php if($relativeHomeUrl == "/web/home/program?kategori=Produktif"){ echo "active"; } ?>>Wakaf Produktif</a>
           </li>
 
           <li class="nav__item with-dropdown">
