@@ -80,12 +80,12 @@ $this->title = 'Setting ' . $model->nama_web;
              },
          ],
          [
-            'attribute' => 'ikut_wakaf',
-            'header'=> 'Download Cara Ikut Wakaf',
+            'attribute' => 'daftar_wakaf',
+            'header'=> 'Download Cara Daftar Wakaf',
             'format' =>'raw',
             'value' => function($model){
-                if($model->ikut_wakaf != null){
-                    return Html::a("<i class='fa fa-download'></i>".' Unduh Cara ikut wakaf', ["unduh", "id"=>$model->id], [
+                if($model->daftar_wakaf != null){
+                    return Html::a("<i class='fa fa-download'></i>".' Unduh Cara daftar wakaf', ["unduh", "id"=>$model->id], [
                         "class"=>"btn btn-primary",
                         "title"=>"Unduh File",
                         "data-confirm" => "Apakah Anda akan mengunduh File ini ?",
@@ -114,6 +114,26 @@ $this->title = 'Setting ' . $model->nama_web;
         ],
         [
             'attribute' => 'misi',
+            'format' => 'html',
+        ],
+        [
+            'attribute' => 'latar_belakang',
+            'format' => 'html',
+        ],
+        [
+            'attribute' => 'aturan_wakaf',
+            'format' => 'html',
+        ],
+        [
+            'attribute' => 'fiqih_wakaf',
+            'format' => 'html',
+        ],
+        [
+            'attribute' => 'regulasi_wakaf',
+            'format' => 'html',
+        ],
+        [
+            'attribute' => 'pesan',
             'format' => 'html',
         ],
         [

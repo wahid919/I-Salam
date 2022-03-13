@@ -197,6 +197,7 @@ class SettingController extends Controller
         $oldpin = $model->bg_pin;
         $oldikut = $model->ikut_wakaf;
         $oldftk = $model->banner;
+        $olddaftar_wakaf = $model->daftar_wakaf;
 
         if ($model->load($_POST)) {
             $url = $model->youtube_link;
@@ -226,6 +227,32 @@ class SettingController extends Controller
                 }
             } else {
                 $model->logo = $oldlogo;
+            }
+
+            $daftar_wakaf = UploadedFile::getInstance($model, 'daftar_wakaf');
+            if ($daftar_wakaf != NULL) {
+                # store the source file name
+                $model->daftar_wakaf = $daftar_wakaf->name;
+                $arr = explode(".", $daftar_wakaf->name);
+                $extension = end($arr);
+
+                # generate a unique file name
+                $model->daftar_wakaf = Yii::$app->security->generateRandomString() . ".{$extension}";
+
+                # the path to save file
+                if (file_exists(Yii::getAlias("@app/web/uploads/setting/")) == false) {
+                    mkdir(Yii::getAlias("@app/web/uploads/setting/"), 0777, true);
+                }
+                $path = Yii::getAlias("@app/web/uploads/setting/") . $model->daftar_wakaf;
+                if ($olddaftar_wakaf != NULL) {
+
+                    $daftar_wakaf->saveAs($path);
+                    unlink(Yii::$app->basePath . '/web/uploads/setting/' . $olddaftar_wakaf);
+                } else {
+                    $daftar_wakaf->saveAs($path);
+                }
+            } else {
+                $model->daftar_wakaf = $olddaftar_wakaf;
             }
 
             // if ($ikut_wakaf != NULL) {

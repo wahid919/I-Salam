@@ -40,6 +40,26 @@ use kartik\file\FileInput;
         selector: 'textarea#setting-deskripsi_video',
         height : '400',
     });
+    tinymce.init({
+        selector: 'textarea#setting-pesan',
+        height : '400',
+    });
+    tinymce.init({
+        selector: 'textarea#setting-latar_belakang',
+        height : '400',
+    });
+    tinymce.init({
+        selector: 'textarea#setting-aturan_wakaf',
+        height : '400',
+    });
+    tinymce.init({
+        selector: 'textarea#setting-fiqih_wakaf',
+        height : '400',
+    });
+    tinymce.init({
+        selector: 'textarea#setting-regulasi_wakaf',
+        height : '400',
+    });
 </script>
 
 <div class="box box-info">
@@ -336,6 +356,86 @@ use kartik\file\FileInput;
                     'options' => ['tag' => false]
                 ])->textarea(['rows' => 6]) ?>
             </div>
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                <?= $form->field($model, 'latar_belakang', [
+                    'template' => '
+                        {label}
+                        {input}
+                        {error}
+                    ',
+                    'inputOptions' => [
+                        'class' => 'form-control'
+                    ],
+                    'labelOptions' => [
+                        'class' => 'control-label'
+                    ],
+                    'options' => ['tag' => false]
+                ])->textarea(['rows' => 6]) ?>
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                <?= $form->field($model, 'aturan_wakaf', [
+                    'template' => '
+                        {label}
+                        {input}
+                        {error}
+                    ',
+                    'inputOptions' => [
+                        'class' => 'form-control'
+                    ],
+                    'labelOptions' => [
+                        'class' => 'control-label'
+                    ],
+                    'options' => ['tag' => false]
+                ])->textarea(['rows' => 6]) ?>
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                <?= $form->field($model, 'fiqih_wakaf', [
+                    'template' => '
+                        {label}
+                        {input}
+                        {error}
+                    ',
+                    'inputOptions' => [
+                        'class' => 'form-control'
+                    ],
+                    'labelOptions' => [
+                        'class' => 'control-label'
+                    ],
+                    'options' => ['tag' => false]
+                ])->textarea(['rows' => 6]) ?>
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                <?= $form->field($model, 'regulasi_wakaf', [
+                    'template' => '
+                        {label}
+                        {input}
+                        {error}
+                    ',
+                    'inputOptions' => [
+                        'class' => 'form-control'
+                    ],
+                    'labelOptions' => [
+                        'class' => 'control-label'
+                    ],
+                    'options' => ['tag' => false]
+                ])->textarea(['rows' => 6]) ?>
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                <?= $form->field($model, 'pesan', [
+                    'template' => '
+                        {label}
+                        {input}
+                        {error}
+                    ',
+                    'inputOptions' => [
+                        'class' => 'form-control'
+                    ],
+                    'labelOptions' => [
+                        'class' => 'control-label'
+                    ],
+                    'options' => ['tag' => false]
+                ])->textarea(['rows' => 6]) ?>
+            </div>
         </div>
 
         <div class="row">
@@ -448,7 +548,7 @@ use kartik\file\FileInput;
                 ]); ?>
             </div>
             <div class="col-sm-12 col-md-6 col-lg-6">
-                <?= $form->field($model, 'ikut_wakaf', [
+                <?= $form->field($model, 'daftar_wakaf', [
                     'template' => '
                                 {label}
                                 {input}
@@ -465,7 +565,7 @@ use kartik\file\FileInput;
                     'options' => ['accept' => 'file/*'],
                     'pluginOptions' => [
                         'allowedFileExtensions' => ['png', 'jpg', 'jpeg', 'pdf', 'doc', 'docx'],
-                        'maxFileSize' => 6500,
+                        'maxFileSize' => 7500,
                         'dropZoneEnabled' => false,
                         'showCaption' => true,
                         'showRemove' => false,
@@ -475,7 +575,7 @@ use kartik\file\FileInput;
                 ]); ?>
             </div>
             <div class="col-md-12 col-lg-12 mb-12">
-                <b>Cari Lokasi</b> : <input id="searchTextField" class="form-control" type="text" size="50" style="text-align: left;width:100%;direction: ltr;margin-bottom:1rem;">
+                <!-- <b>Cari Lokasi</b> : <input id="searchTextField" class="form-control" type="text" size="50" style="text-align: left;width:100%;direction: ltr;margin-bottom:1rem;"> -->
                 <div id="map_canvas"></div>
             </div>
             <?= $form->field($model, 'longitude', \app\components\Constant::COLUMN(2, false))->textInput(['type' => 'hidden', 'maxlength' => true]) ?>
