@@ -79,9 +79,11 @@
         // let ele = document.querySelector("#amanah").getAttribute("value");
         let tarif = 2.5;
         let hasil = parseInt(nominal*tarif/100);
+        let nilai_akhir = formatRupiah(hasil,'Rp .');
         // alert(hasil);
         // alert(formatRupiah(hasil,'Rp .'))
-        document.getElementById("nilai").value = "12321";
+        // document.getElementById("nilai").value = tarif;
+        document.getElementById('nilai').innerHTML=nilai_akhir;
         
         
         
