@@ -36,6 +36,7 @@ use Midtrans\Config;
 use yii\filters\VerbFilter;
 use yii\web\Response;
 use app\components\UploadFile;
+use app\models\Afliasi;
 use app\models\AmanahPendanaan;
 use app\models\home\Registrasi as HomeRegistrasi;
 use app\models\KegiatanPendanaan;
@@ -82,7 +83,7 @@ class HomeController extends Controller
                          'detail-program-sedekah', 'unduh-file-uraian', 'unduh-file-wakaf', 'lupa-password', 
                          'ganti-password', 'visi', 'organisasi','lupa','kontak','cetak','latar-belakang',
                          'alamat-kantor','telp','map','pesan','medsos','privacy-policy','cek-data',
-                         'aturan-wakaf','fiqih-wakaf','regulasi-wakaf'],
+                         'aturan-wakaf','fiqih-wakaf','regulasi-wakaf','kalkulator-zakat','daftar-wakaf','afiliasi'],
                         'allow' => true,
                     ],
                     [
@@ -1898,6 +1899,103 @@ class HomeController extends Controller
         ]);
     }
 
+    public function actionKalkulatorZakat()
+    {
+        $setting = Setting::find()->one();
+        $icon = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->logo;
+        $bg_login = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->bg_login;
+        $bg = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->bg_pin;
+
+
+        if (isset($_GET['kategori'])) {
+            $kategori = $_GET['kategori'];
+            $get_id = KategoriPendanaan::find()->where(['name' => $kategori])->one();
+            $query = Pendanaan::find()->where(['status_tampil' => 1, 'kategori_pendanaan_id' => $get_id]);
+            $count = $query->count();
+            $pagination = new Pagination(['totalCount' => $count, 'pageSize' => 9]);
+            $pendanaans = $query->offset($pagination->offset)
+                ->limit($pagination->limit)
+                ->all();
+        } else {
+            $query = Pendanaan::find()->where(['status_tampil' => 1]);
+            $count = $query->count();
+            $pagination = new Pagination(['totalCount' => $count, 'pageSize' => 9]);
+            $pendanaans = $query->offset($pagination->offset)
+                ->limit($pagination->limit)
+                ->all();
+        }
+
+        $summary = Constant::getPaginationSummary($pagination, $count);
+
+        $organisasis = Organisasi::find()->where(['flag' => 1])->all();
+        $kategori_pendanaans = KategoriPendanaan::find()->all();
+        $count_program = Pendanaan::find()->count();
+        $count_wakif = User::find()->where(['role_id' => 5])->count();
+
+        return $this->render('kalkulator_zakat', [
+            'setting' => $setting,
+            'count_program' => $count_program,
+            'count_wakif' => $count_wakif,
+            'organisasis' => $organisasis,
+            'pendanaans' => $pendanaans,
+            'kategori_pendanaans' => $kategori_pendanaans,
+            'icon' => $icon,
+            'bg_login' => $bg_login,
+            'bg' => $bg,
+            'pagination' => $pagination,
+            'summary' => $summary,
+        ]);
+    }
+    public function actionAfiliasi()
+    {
+        $setting = Setting::find()->one();
+        $icon = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->logo;
+        $bg_login = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->bg_login;
+        $bg = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->bg_pin;
+
+
+        if (isset($_GET['kategori'])) {
+            $kategori = $_GET['kategori'];
+            $get_id = KategoriPendanaan::find()->where(['name' => $kategori])->one();
+            $query = Pendanaan::find()->where(['status_tampil' => 1, 'kategori_pendanaan_id' => $get_id]);
+            $count = $query->count();
+            $pagination = new Pagination(['totalCount' => $count, 'pageSize' => 9]);
+            $pendanaans = $query->offset($pagination->offset)
+                ->limit($pagination->limit)
+                ->all();
+        } else {
+            $query = Pendanaan::find()->where(['status_tampil' => 1]);
+            $count = $query->count();
+            $pagination = new Pagination(['totalCount' => $count, 'pageSize' => 9]);
+            $pendanaans = $query->offset($pagination->offset)
+                ->limit($pagination->limit)
+                ->all();
+        }
+
+        $summary = Constant::getPaginationSummary($pagination, $count);
+
+        $organisasis = Organisasi::find()->where(['flag' => 1])->all();
+        $kategori_pendanaans = KategoriPendanaan::find()->all();
+        $count_program = Pendanaan::find()->count();
+        $count_wakif = User::find()->where(['role_id' => 5])->count();
+        $afiliasis = Afliasi::find()->all();
+
+        return $this->render('afiliasi', [
+            'setting' => $setting,
+            'afiliasis' => $afiliasis,
+            'count_program' => $count_program,
+            'count_wakif' => $count_wakif,
+            'organisasis' => $organisasis,
+            'pendanaans' => $pendanaans,
+            'kategori_pendanaans' => $kategori_pendanaans,
+            'icon' => $icon,
+            'bg_login' => $bg_login,
+            'bg' => $bg,
+            'pagination' => $pagination,
+            'summary' => $summary,
+        ]);
+    }
+
     public function actionProgram()
     {
         $setting = Setting::find()->one();
@@ -2107,6 +2205,23 @@ class HomeController extends Controller
         $model = Setting::find()->one();
         //    var_dump($model);die;
         $file = $model->ikut_wakaf;
+        // $model->tanggal_received=date('Y-m-d H:i:s');
+        $path = Yii::getAlias("@app/web/uploads/setting/") . $file;
+        $arr = explode(".", $file);
+        $extension = end($arr);
+        $nama_file = "Cara Mengikuti Wakaf ." . $extension;
+
+        if (file_exists($path)) {
+            return Yii::$app->response->sendFile($path, $nama_file);
+        } else {
+            throw new \yii\web\NotFoundHttpException("{$path} is not found!");
+        }
+    }
+    public function actionDaftarWakaf()
+    {
+        $model = Setting::find()->one();
+        //    var_dump($model);die;
+        $file = $model->daftar_wakaf;
         // $model->tanggal_received=date('Y-m-d H:i:s');
         $path = Yii::getAlias("@app/web/uploads/setting/") . $file;
         $arr = explode(".", $file);
