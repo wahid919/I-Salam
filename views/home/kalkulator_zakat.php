@@ -36,10 +36,10 @@
                               <div class="input-group-text bg-white border-r5 font-weight-bold" style="color: #afafaf;border-color: #787878;">Rp </div>
                             </div>
                             <input type="number" class="form-control select-wakaf" id="nominal3" name="nominal3" style="border-color: #787878;" placeholder="Masukkan Uang Anda" required>
-                            <button id="clear3" class="btn btn-danger btn-sm" type="button" style="height: calc(1.5em + 0.75rem + 2px);
+                            <!-- <button id="clear3" class="btn btn-danger btn-sm" type="button" style="height: calc(1.5em + 0.75rem + 2px);
                             line-height: 34px;
                             width: 60px;background-color:firebrick;color:white;border-radius:0px;">
-                            X</button>
+                            X</button> -->
                           </div>
                         </div>
                         
