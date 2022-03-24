@@ -882,7 +882,9 @@ class HomeController extends Controller
                     $query->orderBy(['updated_at' => SORT_DESC]);
                     break;
                 case 3:
-                    $query->andWhere(['kategori_berita_id' => $kategori->id]);
+                    // $query->andWhere(['kategori_berita_id' => $kategori->id]);
+                    
+                    $query->orderBy(['view_count' => SORT_DESC]);
                     break;
                 case 4:
                     $query->orderBy(['created_at' => SORT_DESC]);
@@ -1638,6 +1640,12 @@ class HomeController extends Controller
                 } elseif ($a->transaction_status == "deny" || $a->transaction_status == "cancel" || $a->transaction_status == "expire") {
                     $wf->status_id = 8;
                     $wf->tanggal_konfirmasi = date('Y-m-d H:i:s');
+                } elseif ($a->transaction_status == "cancel") {
+                    $wf->status_id = 12;
+                    $wf->tanggal_konfirmasi = date('Y-m-d H:i:s');
+                } elseif ($a->transaction_status == "expire") {
+                    $wf->status_id = 13;
+                    $wf->tanggal_konfirmasi = date('Y-m-d H:i:s');
                 }
             }
 
@@ -1670,7 +1678,7 @@ class HomeController extends Controller
         }
         $wf = Pembayaran::findOne(['id'=>$id]);
         $a = $this->findMidtransProductionCancel($wf->kode_transaksi);
-            $wf->status_id = 8;
+            $wf->status_id = 12;
             $wf->tanggal_konfirmasi = date('Y-m-d H:i:s');
             // if ($a->status_code == "404") {
             //     $wf->status_id = 5;
@@ -1740,10 +1748,10 @@ class HomeController extends Controller
                     goto end;
                 }
                 $model->photo_url = $response->filename;
-                if ($model->photo_url != null) {
-                    unlink(Yii::getAlias("@app/web/uploads/") . $oldPhotoUrl);
-                }
-                $this->deleteOne($oldPhotoUrl);
+                // if ($model->photo_url != null) {
+                //     unlink(Yii::getAlias("@app/web/uploads/user_images/") . $oldPhotoUrl);
+                // }
+                // $this->deleteOne($oldPhotoUrl);
             } else {
                 $model->photo_url = $oldPhotoUrl;
             }

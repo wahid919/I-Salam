@@ -1,4 +1,21 @@
 <hr class="mt-0">
+<!-- display success message -->
+<?php if (Yii::$app->session->hasFlash('success')) : ?>
+            <div class="alert alert-success alert-dismissable">
+              <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+              <p><i class="icon fa fa-check"></i>Saved!</p>
+              <?= Yii::$app->session->getFlash('success') ?>
+            </div>
+          <?php endif; ?>
+
+          <!-- display error message -->
+          <?php if (Yii::$app->session->hasFlash('error')) : ?>
+            <div class="alert alert-danger alert-dismissable">
+              <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+              <h4><i class="icon fa fa-check"></i>Saved!</h4>
+              <?= Yii::$app->session->getFlash('error') ?>
+            </div>
+          <?php endif; ?>
 <div class="container">
     <div class="row">
         <div class="col-lg-4 col-md-6 col-sm-12 col-12">
@@ -33,7 +50,7 @@
                             $status = "btn-warning";
                             $cancel_aktif = "aktif";
                         }
-                        if ($status_pembayaran == 7 || $status_pembayaran == 8) {
+                        if ($status_pembayaran == 7 || $status_pembayaran == 8 || $status_pembayaran == 12 || $status_pembayaran == 13 ) {
                             $status = "btn-danger";
                             $cancel_aktif = "tidak-aktif";
                         }

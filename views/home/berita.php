@@ -162,8 +162,9 @@ $this->registerCss($css) ?>
     } else {
       params["_sort"] = event.target.value;
     }
-    const url = new URL(`<?= Url::to(['/home/news'], true) ?>`);
-    url.search = new URLSearchParams(params);
+    let dt = event.target.value;
+    const url = new URL(`<?= Url::to(['/home/news?sort='], true) ?>`)+dt;
+    // url.search = new URLSearchParams(params);
     console.log(url)
     window.location.href = url;
   })
