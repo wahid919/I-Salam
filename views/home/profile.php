@@ -55,7 +55,7 @@
                             $cancel_aktif = "tidak-aktif";
                         }
                         ?>
-                          <?php if($cancel_aktif == "aktif"){?>
+                          <?php if($cancel_aktif == "aktif" && $sts =="Ada"){?>
                           <button id="cancel-<?=$pembayaran->id ?>" class="btn btn-sm btn-program btn-danger" style="margin-top:2px;"><i class='fa fa-times'></i> Membatalkan Transaksi</button>
                           <?php } ?>
                           <button id="pay-button-<?=$pembayaran->id ?>" class="btn btn-sm btn-program <?= $status ?>" style="margin-top:2px;"> <?= $pembayaran->status->name ?></button>

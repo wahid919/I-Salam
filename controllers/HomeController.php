@@ -1631,21 +1631,27 @@ class HomeController extends Controller
 
             if ($a->status_code == "404") {
                 $wf->status_id = $wf->status_id;
+                $sts = "Tidak Ada";
             } else {
                 if ($a->transaction_status == "pending") {
                     $wf->status_id = 5;
+                    $sts = "Ada";
                 } elseif ($a->transaction_status == "capture" || $a->transaction_status == "settlement") {
                     $wf->status_id = 6;
                     $wf->tanggal_konfirmasi = date('Y-m-d H:i:s');
+                    $sts = "Ada";
                 } elseif ($a->transaction_status == "deny" || $a->transaction_status == "cancel" || $a->transaction_status == "expire") {
                     $wf->status_id = 8;
                     $wf->tanggal_konfirmasi = date('Y-m-d H:i:s');
+                    $sts = "Ada";
                 } elseif ($a->transaction_status == "cancel") {
                     $wf->status_id = 12;
                     $wf->tanggal_konfirmasi = date('Y-m-d H:i:s');
+                    $sts = "Ada";
                 } elseif ($a->transaction_status == "expire") {
                     $wf->status_id = 13;
                     $wf->tanggal_konfirmasi = date('Y-m-d H:i:s');
+                    $sts = "Ada";
                 }
             }
 
@@ -1663,6 +1669,7 @@ class HomeController extends Controller
 
         return $this->render('profile', [
             'setting' => $setting,
+            'sts' => $sts,
             'icon' => $icon,
             'pagination' => $pagination,
             'pembayarans' => $pembayarans
