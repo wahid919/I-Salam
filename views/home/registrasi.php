@@ -39,6 +39,7 @@ use yii\bootstrap\ActiveForm;
         border-radius: 1rem
     }
 </style>
+<div style='text-align:center;width:100%'><h2>Mendaftar</h2> <p>Silahkan mengisi Data Anda untuk mendaftar</p></div>
 
 <?php $form = ActiveForm::begin([
     'id' => 'FormRegister',
@@ -53,7 +54,7 @@ use yii\bootstrap\ActiveForm;
         "onkeydown" => "this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');",
         "onkeyup" => "this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');",
     ])->label("No HP") ?>
-    <?= $form->field($model, "username", Constant::COLUMN(1))->textInput()->label("Email") ?>
+    <?= $form->field($model, "username", Constant::COLUMN(1))->textInput(['type'=>'email'])->label("Email") ?>
     <?= $form->field($model, "password", Constant::COLUMN(2))->passwordInput() ?>
     <?= $form->field($model, "konfirmasi_password", Constant::COLUMN(2))->passwordInput() ?>
     <?= $form->field($model, "pin", Constant::COLUMN(2))->passwordInput() ?>

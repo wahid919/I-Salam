@@ -60,6 +60,7 @@ class UserController extends \yii\rest\ActiveController
     {
         $username = !empty($_POST['username']) ? $_POST['username'] : '';
         $password = !empty($_POST['password']) ? $_POST['password'] : '';
+        $fcm_token = !empty($_POST['fcm_token']) ? $_POST['fcm_token'] : '';
         $result = [];
         // validasi jika kosong
         if (empty($username) || empty($password)) {
@@ -86,6 +87,9 @@ class UserController extends \yii\rest\ActiveController
                     }else{
                         $generate_random_string = SSOToken::generateToken();
                         $user->secret_token = $generate_random_string;
+                        if(isset($fcm_token)){
+                            $user->fcm_token = $fcm_token;
+                        }
                         $user->save();
                         
                         $result['success'] = true;
@@ -391,11 +395,23 @@ class UserController extends \yii\rest\ActiveController
         $photo_url = $user->photo_url;
         $image = UploadedFile::getInstanceByName("photo_url");
         if ($image) {
-            $response = $this->uploadImage($image, "user");
-            if ($response->success == false) {
-                throw new HttpException(419, "Gambar gagal diunggah");
-            }
-            $user->photo_url = $response->filename;
+            $user->photo_url = $image->name;
+                $arr = explode(".", $image->name);
+                $extension = end($arr);
+
+                # generate a unique file name
+                $user->photo_url = Yii::$app->security->generateRandomString() . ".{$extension}";
+                // if (file_exists(Yii::getAlias("@app/web/uploads/user_image")) == false) {
+                //     mkdir(Yii::getAlias("@app/web/uploads/user_image"), 0777, true);
+                //  }
+                # the path to save file
+                $path = Yii::getAlias("@app/web/uploads/") . $user->photo_url;
+                $image->saveAs($path);
+            // $response = $this->uploadImage($image, "user");
+            // if ($response->success == false) {
+            //     throw new HttpException(419, "Gambar gagal diunggah");
+            // }
+            // $user->photo_url = $response->filename;
         } else {
             $user->photo_url = $photo_url;
         }
@@ -405,7 +421,7 @@ class UserController extends \yii\rest\ActiveController
             $user->name = $val['name'];
         }
         // var_dump($user->name);die;
-        if($val['confirm_password'] == null && $val['new_password'] == null && $password == null){
+        if($val['confirm_password'] == "" && $val['new_password'] == "" && $password == ""){
             $user->password = $old;
         }else{
             $user->password = Yii::$app->security->generatePasswordHash($val['confirm_password']);
@@ -415,7 +431,9 @@ class UserController extends \yii\rest\ActiveController
         if($val['no_hp'] != null){
             $check = User::findOne(['nomor_handphone' => $val['no_hp']]);
             if ($check != null) {
-            return ['success' => false, 'message' => 'No Telp telah digunakan', 'data' => null];
+                if($check->id != $user->id){
+                    return ['success' => false, 'message' => 'No Telp telah digunakan', 'data' => null];
+                }
         }
             $user->nomor_handphone = $val['no_hp'];
 

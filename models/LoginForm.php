@@ -29,12 +29,12 @@ class LoginForm extends Model
             ['rememberMe', 'boolean'],
             // password is validated by validatePassword()
             ['password', 'validatePassword'],
-            [
-                ['reCaptcha'], \himiklab\yii2\recaptcha\ReCaptchaValidator3::className(),
-                'secret' => Yii::$app->params['recaptcha3.secretKey'], // unnecessary if reСaptcha is already configured
-                'threshold' => 0.5,
-                'action' => 'login',
-            ],
+            // [
+            //     ['reCaptcha'], \himiklab\yii2\recaptcha\ReCaptchaValidator3::className(),
+            //     'secret' => Yii::$app->params['recaptcha3.secretKey'], // unnecessary if reСaptcha is already configured
+            //     'threshold' => 0.5,
+            //     'action' => 'login',
+            // ],
         ];
     }
 

@@ -19,7 +19,37 @@ use Yii;
 abstract class Slides extends \yii\db\ActiveRecord
 {
 
+    public function fields()
+    {
+        $parent = parent::fields();
 
+        
+        if (isset($parent['gambar'])) {
+            unset($parent['gambar']);
+            // $parent['_gambar'] = function ($model) {
+            //     return $model->gambar;
+            // };
+            $parent['gambar'] = function ($model) {
+                $file = $model->gambar;
+                // $model->tanggal_received=date('Y-m-d H:i:s');
+                return $path = "http://i-salam.id/web/uploads/slides/" . $file;
+            };
+            
+        }
+        if (!isset($parent['aksi'])) {
+            unset($parent['aksi']);
+            // $parent['_link'] = function ($model) {
+            //     return $model->link;
+            // };
+            $parent['aksi'] = function ($model) {
+                // $model->tanggal_received=date('Y-m-d H:i:s');
+                return $model->link;
+            };
+            
+        }
+        
+        return $parent;
+    }
 
     /**
      * @inheritdoc
@@ -36,6 +66,7 @@ abstract class Slides extends \yii\db\ActiveRecord
     {
         return [
             [['judul', 'sub_judul'], 'required'],
+            [['link'], 'string'],
             [['status'], 'integer'],
             [['judul', 'sub_judul', 'gambar'], 'string', 'max' => 255]
         ];

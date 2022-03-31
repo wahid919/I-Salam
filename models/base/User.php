@@ -39,7 +39,7 @@ class User extends \yii\db\ActiveRecord
 
         if (isset($parent['photo_url'])) {
             unset($parent['photo_url']);
-            $parent['photo_url'] = function ($model) {
+            $parent['photo_user'] = function ($model) {
                 return Yii::getAlias("@file/$model->photo_url");
             };
         }
@@ -52,6 +52,24 @@ class User extends \yii\db\ActiveRecord
                     return true;
                 }
             };
+        }
+        if(!isset($parent['total_wakaf'])){
+            unset($parent['total_wakaf']);
+            $parent['total_wakaf'] = function($model){
+                $pembayar =  \app\models\Pembayaran::find()->where(['user_id'=>$model->id,'status_id'=>6])->sum('nominal');
+                return $pembayar;
+            };
+        }
+        if (!isset($parent['jumlah_wakaf'])) {
+            unset($parent['jumlah_wakaf']);
+            // $parent['_jumlah_wakaf'] = function ($model) {
+            //     return $model->jumlah_wakaf;
+            // };
+            $parent['jumlah_wakaf'] = function ($model) {
+                $pembayar =  \app\models\Pembayaran::find()->where(['user_id'=>$model->id,'status_id'=>6])->count();
+                return $pembayar;
+            };
+            
         }
 
 

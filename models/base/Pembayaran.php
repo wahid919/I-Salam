@@ -8,6 +8,7 @@ use Yii;
 use app\models\JenisPembayaran;
 use yii\behaviors\TimestampBehavior;
 use yii\db\Expression;
+use yii\helpers\Url;
 
 /**
  * This is the base-model class for table "pembayaran".
@@ -60,10 +61,32 @@ abstract class Pembayaran extends \yii\db\ActiveRecord
             unset($parent['url']);
             
             $parent['url'] = function ($model) {
-                return 'https://app.sandbox.midtrans.com/snap/v2/vtweb/'.$model->code;
+                return 'https://app.midtrans.com/snap/v2/vtweb/'.$model->code;
             };
         }
-
+        if (isset($parent['jenis'])) {
+            unset($parent['jenis']);
+            
+            $parent['jenis_pembayaran_pendanaan'] = function ($model) {
+                return $model->jenis;
+            };
+        }
+        if (!isset($parent['link_ikrar'])) {
+            unset($parent['link_ikrar']);
+            // $parent['_link_ikrar'] = function ($model) {
+            //     return $model->link_ikrar;
+            // };
+            $parent['link_ikrar'] = function ($model) {
+                $pembayar =  \app\models\Pembayaran::find()->where(['id'=>$model->id])->one();
+                if($pembayar->status_id == 6){
+                    $byr = Url::to(['home/cetak', 'id' => $pembayar->kode_transaksi]);
+                }else{
+                    $byr = "-";
+                }
+                return $byr;
+            };
+            
+        }
         if (isset($parent['status_id'])) {
             unset($parent['status_id']);
             
@@ -71,7 +94,7 @@ abstract class Pembayaran extends \yii\db\ActiveRecord
                 $curl = curl_init();
 
                 curl_setopt_array($curl, array(
-                    CURLOPT_URL => "https://api.sandbox.midtrans.com/v2/" . $model->kode_transaksi . "/status",
+                    CURLOPT_URL => "https://api.midtrans.com/v2/" . $model->kode_transaksi . "/status",
                     CURLOPT_RETURNTRANSFER => true,
                     CURLOPT_ENCODING => "",
                     CURLOPT_MAXREDIRS => 10,
@@ -83,7 +106,7 @@ abstract class Pembayaran extends \yii\db\ActiveRecord
                     CURLOPT_HTTPHEADER => array(
                         "Accept: application/json",
                         "Content-Type: application/json",
-                        "Authorization: Basic U0ItTWlkLXNlcnZlci1MV1RfNVJHdkhsUk9sSWJtYUU4SzBudGI6"
+                        "Authorization: Basic TWlkLXNlcnZlci1oV3hSekx0a3NmX0s4SUNhY3RjZ0Fwdl86"
                     ),
                 ));
         
@@ -111,7 +134,7 @@ abstract class Pembayaran extends \yii\db\ActiveRecord
                 $curl = curl_init();
 
                 curl_setopt_array($curl, array(
-                    CURLOPT_URL => "https://api.sandbox.midtrans.com/v2/" . $model->kode_transaksi . "/status",
+                    CURLOPT_URL => "https://api.midtrans.com/v2/" . $model->kode_transaksi . "/status",
                     CURLOPT_RETURNTRANSFER => true,
                     CURLOPT_ENCODING => "",
                     CURLOPT_MAXREDIRS => 10,
@@ -123,7 +146,7 @@ abstract class Pembayaran extends \yii\db\ActiveRecord
                     CURLOPT_HTTPHEADER => array(
                         "Accept: application/json",
                         "Content-Type: application/json",
-                        "Authorization: Basic U0ItTWlkLXNlcnZlci1MV1RfNVJHdkhsUk9sSWJtYUU4SzBudGI6"
+                        "Authorization: Basic TWlkLXNlcnZlci1oV3hSekx0a3NmX0s4SUNhY3RjZ0Fwdl86"
                     ),
                 ));
         
@@ -141,6 +164,17 @@ abstract class Pembayaran extends \yii\db\ActiveRecord
                     }
                 }
             };
+        }
+        if (!isset($parent['status_transaksi'])) {
+            unset($parent['status_transaksi']);
+            // $parent['_status_transaksi'] = function ($model) {
+            //     return $model->status_transaksi;
+            // };
+            $parent['status_transaksi'] = function ($model) {
+                $pembayar =  \app\models\Status::find()->where(['id'=>$model->status_id])->one();
+                return $pembayar;
+            };
+            
         }
         unset($parent['updated_at']);
         unset($parent['created_at']);
@@ -181,7 +215,8 @@ abstract class Pembayaran extends \yii\db\ActiveRecord
             [['nama', 'nominal', 'kode_transaksi', 'user_id', 'pendanaan_id', 'status_id'], 'required'],
             [['nominal', 'user_id', 'pendanaan_id', 'status_id','jumlah_lembaran'], 'integer'],
             [['tanggal_upload_bukti', 'tanggal_konfirmasi'], 'safe'],
-            [['nama', 'bukti_transaksi','jenis_pembayaran_id','code'], 'string', 'max' => 255],
+            [['keterangan','amanah_pendanaan'], 'string'],
+            [['nama', 'bukti_transaksi','jenis_pembayaran_id','code','jenis','qr_code','link_qr'], 'string', 'max' => 255],
             [['status_id'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\Status::className(), 'targetAttribute' => ['status_id' => 'id']],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\User::className(), 'targetAttribute' => ['user_id' => 'id']],
             [['pendanaan_id'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\Pendanaan::className(), 'targetAttribute' => ['pendanaan_id' => 'id']]
@@ -208,6 +243,11 @@ abstract class Pembayaran extends \yii\db\ActiveRecord
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
             'status_id' => 'Status',
+            'jenis' => 'Jenis', 
+            'keterangan' => 'Keterangan',
+            'amanah_pendanaan' => 'Amanah Pendanaan',
+            'qr_code' => 'Qr Code',
+            'link_qr' => 'Link Qr',
         ];
     }
 

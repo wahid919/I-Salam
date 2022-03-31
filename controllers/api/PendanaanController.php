@@ -82,7 +82,7 @@ class PendanaanController extends \yii\rest\ActiveController
                 "data" => $pendanaans,
             ];
         }else{
-            $pendanaans = Pendanaan::find()->where(['status_id' => 2])->all();
+            $pendanaans = Pendanaan::find()->where(['status_tampil' => 1])->all();
             return [
                 "success" => true,
                 "message" => "List Pendanaan All",

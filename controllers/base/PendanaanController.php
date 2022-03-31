@@ -4,8 +4,11 @@
 
 namespace app\controllers\base;
 
+use app\components\ActionSendFcm;
 use app\components\Angka;
 use app\components\Tanggal;
+use app\components\SendWa;
+use app\components\UploadFile;
 use Yii;
 use app\models\Pendanaan;
 use app\models\Notifikasi;
@@ -30,7 +33,8 @@ use yii\web\UploadedFile;
  */
 class PendanaanController extends Controller
 {
-
+   
+use UploadFile;
 
    /**
     * @var boolean whether to enable CSRF validation for the actions in this controller.
@@ -202,21 +206,28 @@ class PendanaanController extends Controller
 
             $posters = UploadedFile::getInstance($model, 'poster');
             if ($posters != NULL) {
+               $response = $this->uploadPoster($posters);
+                if ($response->success == false) {
+                    Yii::$app->session->setFlash('danger', 'Gagal Upload Foto');
+                    // goto end;
+                    return $this->render('create', ['model' => $model]);
+                }
+                $model->poster = $response->filename;
                # store the source posters name
-               $model->poster = $posters->name;
-               $arr = explode(".", $posters->name);
-               $extension = end($arr);
+               // $model->poster = $posters->name;
+               // $arr = explode(".", $posters->name);
+               // $extension = end($arr);
 
-               # generate a unique posters name
-               $model->poster = "poster/".Yii::$app->security->generateRandomString() . ".{$extension}";
+               // # generate a unique posters name
+               // $model->poster = "poster/".Yii::$app->security->generateRandomString() . ".{$extension}";
 
-               # the path to save posters
-               // unlink(Yii::getAlias("@app/web/uploads/pengajuan/") . $oldFile);
-               if (file_exists(Yii::getAlias("@app/web/uploads/")) == false) {
-                  mkdir(Yii::getAlias("@app/web/uploads/"), 0777, true);
-               }
-               $path = Yii::getAlias("@app/web/uploads/") . $model->poster;
-               $posters->saveAs($path);
+               // # the path to save posters
+               // // unlink(Yii::getAlias("@app/web/uploads/pengajuan/") . $oldFile);
+               // if (file_exists(Yii::getAlias("@app/web/uploads/")) == false) {
+               //    mkdir(Yii::getAlias("@app/web/uploads/"), 0777, true);
+               // }
+               // $path = Yii::getAlias("@app/web/uploads/") . $model->poster;
+               // $posters->saveAs($path);
             }
             $model->created_at = date('Y-m-d H:i:s');
             if ($model->save()) {
@@ -265,10 +276,85 @@ class PendanaanController extends Controller
                'success',
                'Pendanaan Telah Disetujui!'
             );
+            $usrs = User::find()->where(['<>','fcm_token',""])->all();
+                    foreach ($usrs as $value) {
+                        $user = User::findOne(['id'=>$value->id]);
+                        ActionSendFcm::getMessage($value->fcm_token,"program",$model->id,"Program Baru",$model->nama_pendanaan);
+                    }
          } else {
             \Yii::$app->getSession()->setFlash(
                'danger',
                'Pendanaan Gagal Disetujui!'
+            );
+         }
+         return $this->redirect(['index']);
+      }
+   }
+   public function actionTampilPendanaan($id)
+   {
+      $model = $this->findModel($_GET['id']);
+      //return print_r($model);
+      if ($model) {
+         $oldStatus = $model->status_tampil;
+         if($oldStatus == 0){
+            $newStatus = 1;
+            $text =  \Yii::$app->getSession()->setFlash(
+               'success',
+               'Pendanaan Telah Ditampilkan!'
+            );
+         }else{
+            $newStatus = 0;
+            $text =  \Yii::$app->getSession()->setFlash(
+               'success',
+               'Pendanaan Telah Tidak Ditampilkan!'
+            );
+         }
+         $model->status_tampil = $newStatus;
+         if ($model->save()) {
+           echo $text;
+           
+         } else {
+            \Yii::$app->getSession()->setFlash(
+               'danger',
+               'Pendanaan Gagal Ditampilkan!'
+            );
+         }
+         return $this->redirect(['index']);
+      }
+   }
+   public function actionBack($id)
+   {
+      $model = $this->findModel($_GET['id']);
+      
+      //return print_r($model);
+      if ($model) {
+         $oldStatus = $model->status_id;
+         if($oldStatus == 2){
+            $newStatus = 1;
+         }elseif($oldStatus == 4){
+            $newStatus = 2;
+         }elseif($oldStatus == 3){
+            $newStatus = 4;
+            $oldCair = Pencairan::findOne(['pendanaan_id'=>$model->id]);
+            $oldCair->delete();
+         }elseif($oldStatus == 11){
+            $newStatus = 3;
+            $oldPenyaluran = Penyaluran::findOne(['id_pendanaan'=>$model->id]);
+            $oldPenyaluran->delete();
+         }elseif($oldStatus == 7){
+            $newStatus = 1;
+         }
+         $model->status_id = $newStatus;
+         if ($model->save()) {
+            \Yii::$app->getSession()->setFlash(
+               'success',
+               'Status Pendanaan Telah Dikembalikan!'
+            );
+           
+         } else {
+            \Yii::$app->getSession()->setFlash(
+               'danger',
+               'Status Pendanaan Gagal Diperbarui!'
             );
          }
          return $this->redirect(['index']);
@@ -300,12 +386,20 @@ class PendanaanController extends Controller
             if ($model->save()) {
                $pembayar = Pembayaran::find()->where(['pendanaan_id'=>$model->id,'status_id'=>6])->all();
             foreach($pembayar as $value){
+               $user = User::findOne(['id'=>$value->user_id]);
+               $msg = "Pendanaan ".$model->nama_pendanaan." Telah di cairkan";
                $notifikasi = new Notifikasi;
                $notifikasi->message = "Pendanaan ".$model->nama_pendanaan." Telah di cairkan";
                $notifikasi->user_id = $value->user_id;
                $notifikasi->flag = 1;
                $notifikasi->date=date('Y-m-d H:i:s');
                $notifikasi->save();
+
+               $phone_s = substr_replace($user->nomor_handphone, '62', 0, 1);
+               SendWa::send($phone_s,$msg);
+               if($user->fcm_token != ""){
+                  ActionSendFcm::getMessage($user->fcm_token,"program",$model->id,"Program Telah Dicairkan",$msg);
+               }
             }
                $notifikasi2 = new Notifikasi;
             $notifikasi2->message = "Pendanaan ".$model->nama_pendanaan." Telah Anda Cairkan";
@@ -345,13 +439,20 @@ class PendanaanController extends Controller
                $cair->tanggal_penyaluran = date('Y-m-d H:i:s');
                $cair->save();
                $pembayar = Pembayaran::find()->where(['pendanaan_id'=>$model->id,'status_id'=>6])->all();
-            foreach($pembayar as $value){
+               foreach($pembayar as $value){
+                  $user = User::findOne(['id'=>$value->user_id]);
+               $msg = "Uang Pendanaan ".$model->nama_pendanaan." Telah di Disalurkan";
                $notifikasi = new Notifikasi;
                $notifikasi->message = "Uang Pendanaan ".$model->nama_pendanaan." Telah di Disalurkan";
                $notifikasi->user_id = $value->user_id;
                $notifikasi->flag = 1;
                $notifikasi->date=date('Y-m-d H:i:s');
                $notifikasi->save();
+               $phone_s = substr_replace($user->nomor_handphone, '62', 0, 1);
+               SendWa::send($phone_s,$msg);
+               if($user->fcm_token != null){
+                  ActionSendFcm::getMessage($user->fcm_token,"program",$model->id,"Uang Program Telah Disalurkan",$msg);
+               }
             }
                $notifikasi2 = new Notifikasi;
             $notifikasi2->message = "Uang Pendanaan ".$model->nama_pendanaan." Telah Anda Salurkan";
@@ -386,12 +487,21 @@ class PendanaanController extends Controller
          $model->status_id = 4;
          $pembayar = Pembayaran::find()->where(['pendanaan_id'=>$model->id,'status_id'=>6])->all();
          foreach($pembayar as $value){
+            $user = User::find()->where(['id'=>$value->user_id])->one();
+            $msg = "Pendanaan ".$model->nama_pendanaan." Telah selesai";
             $notifikasi = new Notifikasi;
             $notifikasi->message = "Pendanaan ".$model->nama_pendanaan." Telah selesai";
             $notifikasi->user_id = $value->user_id;
             $notifikasi->flag = 1;
             $notifikasi->date=date('Y-m-d H:i:s');
             $notifikasi->save();
+            $phone_s = substr_replace($user->nomor_handphone, '62', 0, 1);
+            // var_dump($phone_s);die;
+            SendWa::send($phone_s,$msg);
+            if($user->fcm_token != ""){
+               ActionSendFcm::getMessage($user->fcm_token,"program",$model->id,"Progress Program",$msg);
+            }
+
          }
          
          if ($model->save()) {
@@ -726,11 +836,17 @@ class PendanaanController extends Controller
    }
    public function actionExport(){
       extract($_GET);
-      $tgl1 = $t1.' 00:00:01';
-      $tgl2 = $t2.' 23:59:59';
+      $tt = date_create($t1);
+      $tt1 = date_format($tt,"Y-m-d");
+      
+      $ttt = date_create($t2);
+      $tt2 = date_format($ttt,"Y-m-d");
+      
+      $tgl1 = $tt1.' 00:00:01';
+      $tgl2 = $tt2.' 23:59:59';
       // $tgl2 = date('Y-m-d', strtotime($t1.'+ 1 days')).' 02:00:00';
       $query = new Query();
-      $query->select(['pendanaan.nama_pendanaan as nm_pendanaan','pendanaan.nominal as nominal','sum(pembayaran.nominal) as jml','pendanaan.created_at as tgl_buat','pendanaan.pendanaan_berakhir as tgl_berakhir','status.name as status_name'])
+      $query->select(['pendanaan.id as id_pendanaan','pendanaan.nama_pendanaan as nm_pendanaan','pendanaan.nominal as nominal','pendanaan.created_at as tgl_buat','pendanaan.pendanaan_berakhir as tgl_berakhir','status.name as status_name'])
                           ->from('pendanaan')
                           ->join('LEFT JOIN',
                               'pembayaran',
@@ -739,8 +855,8 @@ class PendanaanController extends Controller
                           ->join('LEFT JOIN',
                               'status',
                               'status.id = pendanaan.status_id'
-                          )->where(['between', 'pembayaran.created_at', "$tgl1", "$tgl2"])
-                          ->andWhere(['pembayaran.status_id'=>6])
+                          )->where(['between', 'pendanaan.created_at', "$tgl1", "$tgl2"])
+                          ->groupBy(['pendanaan.id'])
                         ;
       $command = $query->createCommand();
       $mdl = $command->queryAll();
@@ -759,7 +875,7 @@ class PendanaanController extends Controller
       $objPHPExcel->getActiveSheet()->getColumnDimension('F')->setWidth(40);
       $objPHPExcel->getActiveSheet()->getColumnDimension('G')->setWidth(30);
 
-      $objPHPExcel->getActiveSheet()->setTitle('Laporan Barang')
+      $objPHPExcel->getActiveSheet()->setTitle('Laporan Pendanaan')
           ->setCellValue('A1', 'NO')
           ->setCellValue('B1', 'Nama Pendanaan')
           ->setCellValue('C1', 'Nominal')
@@ -771,10 +887,13 @@ class PendanaanController extends Controller
       $row = 2;
       $itm = $mdlitm;
       foreach ($mdl as $m) {
+         
+         $bayar = \app\models\Pembayaran::find()
+         ->where(['pendanaan_id'=>$m['id_pendanaan']])->andWhere(['status_id'=>6])->sum('nominal');
           $objPHPExcel->getActiveSheet()->setCellValue('A' . $row, $count);
           $objPHPExcel->getActiveSheet()->setCellValue('B' . $row, $m['nm_pendanaan']);
           $objPHPExcel->getActiveSheet()->setCellValue('C' . $row, 'Rp '.Angka::toReadableAngka($m['nominal'],FALSE));
-          $objPHPExcel->getActiveSheet()->setCellValue('D' . $row, 'Rp '.Angka::toReadableAngka($m['jml'],FALSE));
+          $objPHPExcel->getActiveSheet()->setCellValue('D' . $row, 'Rp '.Angka::toReadableAngka($bayar,FALSE));
           $objPHPExcel->getActiveSheet()->setCellValue('E' . $row, Tanggal::toReadableDate($m['tgl_buat'],FALSE));
           $objPHPExcel->getActiveSheet()->setCellValue('F' . $row, Tanggal::toReadableDate($m['tgl_berakhir'],FALSE));
           $objPHPExcel->getActiveSheet()->setCellValue('G' . $row, $m['status_name']);
@@ -796,6 +915,80 @@ class PendanaanController extends Controller
       $objWriter->save('php://output');
       ob_end_clean();
   }
+  public function actionExportPdf() {
+   extract($_GET);
+   $tt = date_create($t1);
+      $tt1 = date_format($tt,"Y-m-d");
+      
+      $ttt = date_create($t2);
+      $tt2 = date_format($ttt,"Y-m-d");
+      
+      $tgl1 = $tt1.' 00:00:01';
+      $tgl2 = $tt2.' 23:59:59';
+      // $tgl2 = date('Y-m-d', strtotime($t1.'+ 1 days')).' 02:00:00';
+      $query = new Query();
+      $query->select(['pendanaan.id as id_pendanaan','pendanaan.nama_pendanaan as nm_pendanaan','pendanaan.nominal as nominal','pendanaan.created_at as tgl_buat','pendanaan.pendanaan_berakhir as tgl_berakhir','status.name as status_name'])
+                          ->from('pendanaan')
+                          ->join('LEFT JOIN',
+                              'pembayaran',
+                              'pembayaran.pendanaan_id = pendanaan.id'
+                          )
+                          ->join('LEFT JOIN',
+                              'status',
+                              'status.id = pendanaan.status_id'
+                          )->where(['between', 'pendanaan.created_at', "$tgl1", "$tgl2"])
+                          ->groupBy(['pendanaan.id'])
+                        ;
+      $command = $query->createCommand();
+      $mdl = $command->queryAll();
+   $content = $this->renderPartial('view-print-export',[
+       'mdl' => $mdl,
+       'tgl1' => $tgl1,
+       'tgl2' => $tgl2,
+]);
+   
+$filename = "Download LaporanPendanaan" . $tgl1."-". $tgl2 .".pdf";
+   // setup kartik\mpdf\Pdf component
+   $pdf = new Pdf([
+       // set to use core fonts only
+       'mode' => Pdf::MODE_CORE, 
+       //Name file
+       'filename' => $filename,
+       // LEGAL paper format
+       'format' => Pdf::FORMAT_LETTER, 
+       // portrait orientation
+       'orientation' => Pdf::ORIENT_PORTRAIT, 
+       // stream to browser inline
+       'destination' => Pdf::DEST_BROWSER, 
+       // your html content input
+       'content' => $content,  
+       'marginHeader' => 0,
+       'marginFooter' => 1,
+       'marginTop' => 5,
+       'marginBottom' => 5,
+       'marginLeft' => 0,
+       'marginRight' => 0,
+       // format content from your own css file if needed or use the
+       // enhanced bootstrap css built by Krajee for mPDF formatting 
+       'cssFile' => '@vendor/kartik-v/yii2-mpdf/src/assets/kv-mpdf-bootstrap.min.css',
+       // any css to be embedded if required
+       // 'cssInline' => '.kv-heading-1{font-size:25px}', 
+       'cssInline' => 'body { font-family: irannastaliq; font-size: 17px; }.page-break {display: none;};
+       .kv-heading-1{font-size:17px}table{width: 100%;line-height: inherit;text-align: left; border-collapse: collapse;}table, td, th {margin-left:50px;margin-right:50px;},fa { font-family: fontawesome;} @media print{
+           .page-break{display: block;page-break-before: always;}
+       }',
+        // set mPDF properties on the fly
+        'options' => [               
+           'defaultheaderline' => 0,  //for header
+            'defaultfooterline' => 0,  //for footer
+       ],
+        // call mPDF methods on the fly
+       'methods' => [
+           'SetTitle'=>'Print', 
+       ]
+   ]);
+   return $pdf->render(); 
+}
    public function actionExports($id)
     {
        

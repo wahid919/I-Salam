@@ -6,10 +6,12 @@ namespace app\controllers\api;
  * This is the class for REST controller "PembayaranController".
  */
 
+use app\components\ActionSendFcm;
 use app\models\Pembayaran;
 use app\models\Pendanaan;
 use app\models\JenisPembayaran;
 use app\models\Pencairan;
+use app\models\User;
 use Midtrans\ActionMidtrans;
 use Yii;
 use yii\filters\AccessControl;
@@ -26,7 +28,7 @@ class PembayaranController extends \yii\rest\ActiveController
         $parent = parent::behaviors();
         $parent['authentication'] = [
             "class" => "\app\components\CustomAuth",
-            "only" => ["bayar", "wakaf", "detail-wakaf", "status-midtrans"],
+            "only" => ["bayar", "wakaf", "detail-wakaf", "status-midtrans","list-pewakaf","cancel-wakaf"],
         ];
 
         return $parent;
@@ -40,8 +42,11 @@ class PembayaranController extends \yii\rest\ActiveController
             'upload-file' => ['POST'],
             'informasi' => ['GET'],
             'detail-wakaf' => ['GET'],
+            'cancel-wakaf' => ['POST'],
             'status-midtrans' => ['GET'],
             'wakaf' => ['GET'],
+            'pewakaf' => ['GET'],
+            'list-pewakaf' => ['GET'],
         ];
     }
 
@@ -91,7 +96,7 @@ class PembayaranController extends \yii\rest\ActiveController
                 $a = $this->findMidtransProduction($wf->kode_transaksi);
 
                 if($a->status_code == "404"){
-                     $wf->status_id = 5;
+                     $wf->status_id = $wf->status_id;
                 }else{
                     if($a->transaction_status == "pending"){
                          $wf->status_id = 5;
@@ -114,7 +119,63 @@ class PembayaranController extends \yii\rest\ActiveController
                     }
                 }
                 $wf->save();
-                $hasil  = 'https://app.sandbox.midtrans.com/snap/v2/vtweb/'.$wf->code;
+                $hasil  = 'https://app.midtrans.com/snap/v2/vtweb/'.$wf->code;
+                return [
+                    "success" => true,
+                    "message" => "Wakaf ",
+                    "data" => $wf,
+                    "code" => $wf->code,
+                    "url" => $hasil,
+                ];
+            }
+        } else {
+            return [
+                "success" => false,
+                "message" => "Data Wakaf Tidak Ditemukan",
+                "data" => null,
+            ];
+        }
+    }
+    public function actionCancelWakaf($id)
+    {
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $wf = Pembayaran::find()->where(['id' => $id])->one();
+        if ($wf != null) {
+            if ($wf->user_id != \Yii::$app->user->identity->id) {
+                return [
+                    "success" => true,
+                    "message" => "Mohon Maaf Data Tidak ditemukan",
+                    "data" => null,
+                ];
+            } else {
+                $a = $this->findMidtransProductionCancel($wf->kode_transaksi);
+                $wf->status_id = 8;
+                $wf->tanggal_konfirmasi = date('Y-m-d H:i:s');
+                // if($a->status_code == "404"){
+                //      $wf->status_id = 5;
+                // }else{
+                //     if($a->transaction_status == "pending"){
+                //          $wf->status_id = 5;
+                //     }elseif($a->transaction_status == "capture" || $a->transaction_status == "settlement" ){
+                //          $wf->status_id = 6;
+                //          $wf->tanggal_konfirmasi = date('Y-m-d H:i:s');
+                //     }elseif($a->transaction_status == "deny" || $a->transaction_status == "cancel" || $a->transaction_status == "expire" ){
+                //          $wf->status_id = 8;
+                //          $wf->tanggal_konfirmasi = date('Y-m-d H:i:s');
+                //     }
+                // }
+
+                if($a->status_code == "404"){
+                     $wf->jenis_pembayaran_id ="Tidak Ditemukan";
+                }else{
+                    if($a->payment_type == "cstore"){
+                         $wf->jenis_pembayaran_id = $a->store;
+                    }else{
+                         $wf->jenis_pembayaran_id = $a->payment_type;
+                    }
+                }
+                $wf->save();
+                $hasil  = 'https://app.midtrans.com/snap/v2/vtweb/'.$wf->code;
                 return [
                     "success" => true,
                     "message" => "Wakaf ",
@@ -132,10 +193,89 @@ class PembayaranController extends \yii\rest\ActiveController
         }
     }
 
+    public function actionPewakaf()
+    {
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $wfs = Pembayaran::find()->where(['read' => 0])->all();
+        if ($wfs != null) {
+                foreach($wfs as $wf){
+                    $a = $this->findMidtransProduction($wf->kode_transaksi);
+    
+                    if($a->status_code == "404"){
+                         $wf->status_id = 5;
+                         $wf->read = 1;
+                         $msg = "Data Transaksi Tidak Ditemukan";
+                    }else{
+                        if($a->transaction_status == "pending"){
+                             $wf->status_id = 5;
+                             $msg = "Anda Belum Melakukan Pembayaran";
+                        }elseif($a->transaction_status == "capture" || $a->transaction_status == "settlement" ){
+                             $wf->status_id = 6;
+                             $wf->tanggal_konfirmasi = date('Y-m-d H:i:s');
+                             $msg = "Pembayaran Berhasil";
+                             $wf->read = 1;
+                        }elseif($a->transaction_status == "deny" || $a->transaction_status == "cancel" || $a->transaction_status == "expire" ){
+                             $wf->status_id = 8;
+                             $wf->tanggal_konfirmasi = date('Y-m-d H:i:s');
+                             $msg = "Pembayaran Gagal";
+                             $wf->read = 1;
+                             
+                        }
+                    }
+    
+                    if($a->status_code == "404"){
+                         $wf->jenis_pembayaran_id ="Tidak Ditemukan";
+                    }else{
+                        if($a->payment_type == "cstore"){
+                             $wf->jenis_pembayaran_id = $a->store;
+                        }else{
+                             $wf->jenis_pembayaran_id = $a->payment_type;
+                        }
+                    }   
+                    if($wf->save()){
+                        $user = User::findOne(['id'=>$wf->user_id]);
+                        if($user->fcm_token != ""){
+                            ActionSendFcm::getMessage($user->fcm_token,"Pembayaran",$wf->id,"Status Pembayaran",$msg);
+                        }
+                        return [
+                            "success" => true,
+                            "message" => "Berhasil Ganti Status Pembayaran",
+                            "data" => $wf,
+                            // "code" => $wf->code,
+                            // "url" => $hasil,
+                        ];
+
+                    }
+                    // else{
+                    //     return [
+                    //         "success" => false,
+                    //         "message" => "Gagal Ganti Status Pembayaran",
+                    //         "data" => $wf,
+                    //         // "code" => $wf->code,
+                    //         // "url" => $hasil,
+                    //     ];
+                    // }
+                    // $hasil  = 'https://app.midtrans.com/snap/v2/vtweb/'.$wf->code;
+                }
+            
+        } else {
+            return [
+                "success" => false,
+                "message" => "Data Tidak Ada",
+                "data" => null,
+            ];
+        }
+    }
+
     public function actionBayar()
     {
         Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         $val = \yii::$app->request->post();
+        $data = Pembayaran::find()->where(['status_id'=>5,'user_id'=>\Yii::$app->user->identity->id])->count();
+        if($data != 0){
+
+            return ['success' => false, 'message' => 'Mohon Selesaikan Pembayaran Anda Sebelumnya', 'data' => []];
+        }
         $model = new Pembayaran();
 
         $order_id_midtrans = rand();
@@ -152,6 +292,25 @@ class PembayaranController extends \yii\rest\ActiveController
         $pendanaan = \app\models\Pendanaan::find()
             ->where(['id' => $val['pendanaan_id']])->one();
         $model->nama = $val['nama'];
+        $kt = $val['kategori'];
+        if($kt == ""){
+            $ket = "wakaf";
+        }else{
+            $ket = $val['kategori'];
+        }
+
+        $keterangan = $val['keterangan'];
+        if($keterangan != null){
+            $model->keterangan = $keterangan;
+        }else{
+            $model->keterangan = "";
+        }
+        $amanah_pendanaan = $val['amanah_pendanaan'];
+        if($amanah_pendanaan != null){
+            $model->amanah_pendanaan = $amanah_pendanaan;
+        }else{
+            $model->amanah_pendanaan = "";
+        }
         if ($val['lembaran'] != 0) {
 
 
@@ -185,6 +344,7 @@ class PembayaranController extends \yii\rest\ActiveController
         $model->jenis_pembayaran_id = $val['jenis_pembayaran_id'] ?? '';
         $model->user_id = \Yii::$app->user->identity->id;
         $model->status_id = 5;
+        $model->jenis =$ket;
         // $model->tanggal_pembayaran = date('Y-m-d');
         $bukti_transaksis = UploadedFile::getInstanceByName('bukti_transaksi');
 
@@ -209,7 +369,7 @@ class PembayaranController extends \yii\rest\ActiveController
 
         $hasil_code = \app\components\ActionMidtrans::toReadableOrder($item1_details, $transaction_details, $customer_details);
         $model->code = $hasil_code;
-        $hasil = 'https://app.sandbox.midtrans.com/snap/v2/vtweb/'.$hasil_code;
+        $hasil = 'https://app.midtrans.com/snap/v2/vtweb/'.$hasil_code;
         if ($model->validate()) {
             $model->save();
 
@@ -435,6 +595,27 @@ class PembayaranController extends \yii\rest\ActiveController
             echo $th->getMessage();
         }
     }
+    public function actionListPewakaf($id)
+    {
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $pembayar =  \app\models\Pembayaran::find()->where(['pendanaan_id'=>$id,'status_id'=>6])->all();
+        if ($pembayar != null) {
+            
+
+                return [
+                    "success" => true,
+                    "message" => "Wakaf",
+                    "data" => $pembayar,
+                ];
+            
+        } else {
+            return [
+                "success" => false,
+                "message" => "Belum Ada Pewakaf",
+                "data" => null,
+            ];
+        }
+    }
     protected function findMidtrans($id)
     {
         $curl = curl_init();
@@ -475,6 +656,33 @@ class PembayaranController extends \yii\rest\ActiveController
             CURLOPT_FOLLOWLOCATION => true,
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => "GET",
+            CURLOPT_POSTFIELDS => "\n\n",
+            CURLOPT_HTTPHEADER => array(
+                "Accept: application/json",
+                "Content-Type: application/json",
+                "Authorization: Basic TWlkLXNlcnZlci1oV3hSekx0a3NmX0s4SUNhY3RjZ0Fwdl86"
+            ),
+        ));
+
+        $response = curl_exec($curl);
+
+        curl_close($curl);
+        $a = json_decode($response);
+        return $a;
+    }
+    protected function findMidtransProductionCancel($id)
+    {
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => "https://api.midtrans.com/v2/" . $id . "/cancel",
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => "",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "POST",
             CURLOPT_POSTFIELDS => "\n\n",
             CURLOPT_HTTPHEADER => array(
                 "Accept: application/json",

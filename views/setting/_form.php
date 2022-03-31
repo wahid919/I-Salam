@@ -40,6 +40,26 @@ use kartik\file\FileInput;
         selector: 'textarea#setting-deskripsi_video',
         height : '400',
     });
+    tinymce.init({
+        selector: 'textarea#setting-pesan',
+        height : '400',
+    });
+    tinymce.init({
+        selector: 'textarea#setting-latar_belakang',
+        height : '400',
+    });
+    tinymce.init({
+        selector: 'textarea#setting-aturan_wakaf',
+        height : '400',
+    });
+    tinymce.init({
+        selector: 'textarea#setting-fiqih_wakaf',
+        height : '400',
+    });
+    tinymce.init({
+        selector: 'textarea#setting-regulasi_wakaf',
+        height : '400',
+    });
 </script>
 
 <div class="box box-info">
@@ -336,6 +356,86 @@ use kartik\file\FileInput;
                     'options' => ['tag' => false]
                 ])->textarea(['rows' => 6]) ?>
             </div>
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                <?= $form->field($model, 'latar_belakang', [
+                    'template' => '
+                        {label}
+                        {input}
+                        {error}
+                    ',
+                    'inputOptions' => [
+                        'class' => 'form-control'
+                    ],
+                    'labelOptions' => [
+                        'class' => 'control-label'
+                    ],
+                    'options' => ['tag' => false]
+                ])->textarea(['rows' => 6]) ?>
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                <?= $form->field($model, 'aturan_wakaf', [
+                    'template' => '
+                        {label}
+                        {input}
+                        {error}
+                    ',
+                    'inputOptions' => [
+                        'class' => 'form-control'
+                    ],
+                    'labelOptions' => [
+                        'class' => 'control-label'
+                    ],
+                    'options' => ['tag' => false]
+                ])->textarea(['rows' => 6]) ?>
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                <?= $form->field($model, 'fiqih_wakaf', [
+                    'template' => '
+                        {label}
+                        {input}
+                        {error}
+                    ',
+                    'inputOptions' => [
+                        'class' => 'form-control'
+                    ],
+                    'labelOptions' => [
+                        'class' => 'control-label'
+                    ],
+                    'options' => ['tag' => false]
+                ])->textarea(['rows' => 6]) ?>
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                <?= $form->field($model, 'regulasi_wakaf', [
+                    'template' => '
+                        {label}
+                        {input}
+                        {error}
+                    ',
+                    'inputOptions' => [
+                        'class' => 'form-control'
+                    ],
+                    'labelOptions' => [
+                        'class' => 'control-label'
+                    ],
+                    'options' => ['tag' => false]
+                ])->textarea(['rows' => 6]) ?>
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                <?= $form->field($model, 'pesan', [
+                    'template' => '
+                        {label}
+                        {input}
+                        {error}
+                    ',
+                    'inputOptions' => [
+                        'class' => 'form-control'
+                    ],
+                    'labelOptions' => [
+                        'class' => 'control-label'
+                    ],
+                    'options' => ['tag' => false]
+                ])->textarea(['rows' => 6]) ?>
+            </div>
         </div>
 
         <div class="row">
@@ -448,7 +548,7 @@ use kartik\file\FileInput;
                 ]); ?>
             </div>
             <div class="col-sm-12 col-md-6 col-lg-6">
-                <?= $form->field($model, 'ikut_wakaf', [
+                <?= $form->field($model, 'daftar_wakaf', [
                     'template' => '
                                 {label}
                                 {input}
@@ -465,7 +565,7 @@ use kartik\file\FileInput;
                     'options' => ['accept' => 'file/*'],
                     'pluginOptions' => [
                         'allowedFileExtensions' => ['png', 'jpg', 'jpeg', 'pdf', 'doc', 'docx'],
-                        'maxFileSize' => 6500,
+                        'maxFileSize' => 7500,
                         'dropZoneEnabled' => false,
                         'showCaption' => true,
                         'showRemove' => false,
@@ -475,7 +575,7 @@ use kartik\file\FileInput;
                 ]); ?>
             </div>
             <div class="col-md-12 col-lg-12 mb-12">
-                <b>Cari Lokasi</b> : <input id="searchTextField" class="form-control" type="text" size="50" style="text-align: left;width:100%;direction: ltr;margin-bottom:1rem;">
+                <!-- <b>Cari Lokasi</b> : <input id="searchTextField" class="form-control" type="text" size="50" style="text-align: left;width:100%;direction: ltr;margin-bottom:1rem;"> -->
                 <div id="map_canvas"></div>
             </div>
             <?= $form->field($model, 'longitude', \app\components\Constant::COLUMN(2, false))->textInput(['type' => 'hidden', 'maxlength' => true]) ?>
@@ -503,73 +603,41 @@ let id_lat = $('#setting-latitude'),
     id_lng = $('#setting-longitude'),
     lat = (id_lat.val() != "") ? id_lat.val() : -7.883065,
     lng = (id_lng.val() != "")  ? id_lng.val() : 112.533447,
-    latlng = new google.maps.LatLng(lat, lng);
-let mapOptions = {
-        center: new google.maps.LatLng(lat, lng),
-        zoom: 10,
-        mapTypeId: google.maps.MapTypeId.ROADMAP,
-        panControl: true,
-        panControlOptions: {
-            position: google.maps.ControlPosition.TOP_RIGHT
-        },
-        zoomControl: true,
-        zoomControlOptions: {
-            style: google.maps.ZoomControlStyle.LARGE,
-            position: google.maps.ControlPosition.TOP_left
-        }
-    },
-    map = new google.maps.Map(document.getElementById('map_canvas'), mapOptions),
-    marker = new google.maps.Marker({
-        position: latlng,
-        map: map,
+    
+    maps2 = L.map("map_canvas").setView([lat, lng], 13);
+        // document.getElementById("latitudepenerima").value = posisiTitik.lat();
+        // document.getElementById("longitudepenerima").value = posisiTitik.lng();
+        marker2 = L.marker([lat, lng]).addTo(maps2);
+    function onMapClickPenerima(e) {
+            // alert(this.getLatLng());
+            
+            maps2.setView(e.latlng, 15);
+        document.getElementById("setting-latitude").value = e.latlng.lat;
+        document.getElementById("setting-longitude").value = e.latlng.lng;
+        let lat = e.latlng.lat;
+        let lon = e.latlng.lng;
+        $.get('https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat='+lat+'&lon='+lon, function(data){
+    // console.log(data.address.road);
+    
+    // document.getElementById("alamatPenerimaKiramBarang<?=$penerima?>").value = data.address.road;
     });
-let input = document.getElementById('searchTextField');
-let autocomplete = new google.maps.places.Autocomplete(input, {
-    types: ["geocode"]
-});
-autocomplete.bindTo('bounds', map);
-let infowindow = new google.maps.InfoWindow();
-google.maps.event.addListener(autocomplete, 'place_changed', function(event) {
-        infowindow.close();
-        let place = autocomplete.getPlace();
-        if (place.geometry.viewport) {
-            map.fitBounds(place.geometry.viewport);
-        } else {
-            map.setCenter(place.geometry.location);
-            map.setZoom(17);
-        }
-        moveMarker(place.name, place.geometry.location);
-        id_lat.val(place.geometry.location.lat());
-        id_lng.val(place.geometry.location.lng());
-        let pass = document.getElementById('searchTextField').value;
-        $('#masterpuskesmas-alamat').val(pass);
-    });
-    google.maps.event.addListener(map, 'click', function(event) {
-        id_lat.val(event.latLng.lat());
-        id_lng.val(event.latLng.lng());
-        infowindow.close();
-        let geocoder = new google.maps.Geocoder();
-        geocoder.geocode({
-            "latLng": event.latLng
-        }, function(results, status) {
-            // console.log(results, status);
-            if (status == google.maps.GeocoderStatus.OK) {
-                // console.log(results);
-                let lat = results[0].geometry.location.lat(),
-                    lng = results[0].geometry.location.lng(),
-                    placeName = results[0].address_components[0].long_name,
-                    latlng = new google.maps.LatLng(lat, lng);
-                moveMarker(placeName, latlng);
-                $("#searchTextField").val(results[0].formatted_address);
-                $('#masterpuskesmas-alamat').val(results[0].formatted_address);
-            }
-        });
-    });
-    function moveMarker(placeName, latlng) {
-        marker.setPosition(latlng);
-        infowindow.setContent(placeName);
-        //infowindow.open(map, marker);
+    // console.log(marker2);
+        if (marker2) { // check
+          maps2.removeLayer(marker2); // remove
     }
+      marker2 = L.marker([e.latlng.lat, e.latlng.lng]).addTo(maps2);
+    
+    
+}
+maps2.on('click', onMapClickPenerima);
+        L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+    maxZoom: 18,
+    id: 'mapbox/streets-v11',
+    tileSize: 512,
+    zoomOffset: -1,
+    accessToken: 'pk.eyJ1IjoiZGVmcmluZHIiLCJhIjoiY2s4ZTN5ZjM0MDFrNzNsdG1tNXk2M2dlMSJ9.YXJM0PTu8PSsCCtYVjJNmw'
+}).addTo(maps2);
 });
 JS;
 

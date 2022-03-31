@@ -18,7 +18,7 @@ use yii\helpers\Html;
         {
             return [
                 'class' => 'yii\grid\ActionColumn',
-                'template' => '{approve-pendanaan} {cancel} {pendanaan-selesai} {pendanaan-cair} {export} {penyaluran_pendanaan}',
+                'template' => '{approve-pendanaan} {cancel} {pendanaan-selesai} {pendanaan-cair} {export} {penyaluran_pendanaan} {back}',
                 'header' => 'Pendanaan',
                 'visible'=>\Yii::$app->user->identity->role_id ==1,
                 'buttons' => [
@@ -40,7 +40,15 @@ use yii\helpers\Html;
                     ]);
                     }
                 },
-
+                'back' => function ($url, $model, $key) {
+                  if($model->status_id != 1){
+                    return Html::a("<i class='fa fa-rotate-left'></i>", ["back", "id"=>$model->id], [
+                        "class"=>"btn btn-danger",
+                        "title"=>"Status Kembali",
+                        "data-confirm" => "Apakah Anda yakin mengembalikan status pendanaan ini ?",
+                    ]);
+                  }
+                },
                 'pendanaan-selesai' => function ($url, $model, $key) {
                     if($model->status_id ==2){
                       return Html::a("<i class='fa fa-check'></i>", ["pendanaan-selesai", "id"=>$model->id], [
@@ -79,6 +87,34 @@ use yii\helpers\Html;
                     }
                   },
     
+                ],
+                'contentOptions' => ['nowrap'=>'nowrap', 'style'=>'text-align:center;width:140px']
+            ];
+        }
+
+        public static function getButtonsTampil()
+        {
+            return [
+                'class' => 'yii\grid\ActionColumn',
+                'template' => '{tampil_pendanaan}',
+                'header' => 'Tampil/Tidak',
+                'visible'=>\Yii::$app->user->identity->role_id ==1,
+                'buttons' => [
+                  'tampil_pendanaan' => function ($url, $model, $key) {
+                    if($model->status_tampil == 0){
+                      return Html::a("<i class='fa fa-check'></i>", ["tampil-pendanaan", "id"=>$model->id], [
+                          "class"=>"btn btn-success",
+                          "title"=>"Menampilkan Pendanaan",
+                          "data-confirm" => "Apakah Anda yakin ingin menampilkan pendanaan ini ?",
+                      ]);
+                    }elseif($model->status_tampil == 1){
+                      return Html::a("<i class='fa fa-times'></i>", ["tampil-pendanaan", "id"=>$model->id], [
+                        "class"=>"btn btn-danger",
+                        "title"=>"Tidak Tampil Pendanaan",
+                        "data-confirm" => "Apakah Anda yakin ingin tidak menampilkan pendanaan ini ?",
+                    ]);
+                    }
+                  },
                 ],
                 'contentOptions' => ['nowrap'=>'nowrap', 'style'=>'text-align:center;width:140px']
             ];

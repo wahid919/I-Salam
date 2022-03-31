@@ -236,20 +236,20 @@ $this->title = 'Pendanaan ' . $model->nama_pendanaan;
                         'lastPageLabel'  => 'Last'
                     ],
                     'columns' => [
-                        [
-                            'class'      => 'yii\grid\ActionColumn',
-                            'template'   => '{view} {update}',
-                            'contentOptions' => ['nowrap' => 'nowrap'],
-                            'urlCreator' => function ($action, $model, $key, $index) {
-                                // using the column name as key, not mapping to 'id' like the standard generator
-                                $params = is_array($key) ? $key : [$model->primaryKey()[0] => (string) $key];
-                                $params[0] = 'pembayaran' . '/' . $action;
-                                $params['Pembayaran'] = ['pendanaan_id' => $model->primaryKey()[0]];
-                                return $params;
-                            },
-                            'buttons'    => [],
-                            'controller' => 'pembayaran'
-                        ],
+                        // [
+                        //     'class'      => 'yii\grid\ActionColumn',
+                        //     'template'   => '{view} {update}',
+                        //     'contentOptions' => ['nowrap' => 'nowrap'],
+                        //     'urlCreator' => function ($action, $model, $key, $index) {
+                        //         // using the column name as key, not mapping to 'id' like the standard generator
+                        //         $params = is_array($key) ? $key : [$model->primaryKey()[0] => (string) $key];
+                        //         $params[0] = 'pembayaran' . '/' . $action;
+                        //         $params['Pembayaran'] = ['pendanaan_id' => $model->primaryKey()[0]];
+                        //         return $params;
+                        //     },
+                        //     'buttons'    => [],
+                        //     'controller' => 'pembayaran'
+                        // ],
                         'nama',
                         [
                             'attribute' => 'nominal',
@@ -304,7 +304,8 @@ $this->title = 'Pendanaan ' . $model->nama_pendanaan;
                             'attribute' => 'status_id',
                             'value' => function ($model) {
                                 if ($rel = $model->status) {
-                                    return Html::a($rel->name, ['status/view', 'id' => $rel->id,], ['data-pjax' => 0]);
+                                    // return Html::a($rel->name, ['status/view', 'id' => $rel->id,], ['data-pjax' => 0]);
+                                    return $rel->name;
                                 } else {
                                     return '';
                                 }
@@ -316,7 +317,52 @@ $this->title = 'Pendanaan ' . $model->nama_pendanaan;
                 . '</div>' ?>
             <?php Pjax::end() ?>
             <?php $this->endBlock() ?>
-
+            <?php $this->beginBlock('Amanahs'); ?>
+            <div style='position: relative'>
+                <div style='position:absolute; right: 0px; top :0px;'>
+                <?= Html::a(
+            '<span class="glyphicon glyphicon-plus"></span> ' . 'Tambah Baru' . ' Amanah Pendanaan',
+            ['amanah-pendanaan/create', 'Amanahs' => ['pendanaan_id' => $model->id]],
+            ['class'=>'btn btn-success btn-xs']
+        ); ?>
+                </div>
+            </div><?php Pjax::begin(['id' => 'pjax-Amanahs', 'enableReplaceState' => false, 'linkSelector' => '#pjax-Amanahs ul.pagination a, th a', 'clientOptions' => ['pjax:success' => 'function(){alert("yo")}']]) ?>
+            <?= '<div class="table-responsive">'
+                . \yii\grid\GridView::widget([
+                    'layout' => '{summary}{pager}<br/>{items}{pager}',
+                    'dataProvider' => new \yii\data\ActiveDataProvider([
+                        'query' => $model->getAmanahs(),
+                        'pagination' => [
+                            'pageSize' => 20,
+                            'pageParam' => 'page-Amanahs',
+                        ]
+                    ]),
+                    'pager'        => [
+                        'class'          => yii\widgets\LinkPager::className(),
+                        'firstPageLabel' => 'First',
+                        'lastPageLabel'  => 'Last'
+                    ],
+                    'columns' => [
+                        [
+                            'class'      => 'yii\grid\ActionColumn',
+                            'template'   => '{update} {delete}',
+                            'contentOptions' => ['nowrap' => 'nowrap'],
+                            'urlCreator' => function ($action, $model, $key, $index) {
+                                // using the column name as key, not mapping to 'id' like the standard generator
+                                $params = is_array($key) ? $key : [$model->primaryKey()[0] => (string) $key];
+                                $params[0] = 'amanah-pendanaan' . '/' . $action;
+                                $params['AmanahPendanaan'] = ['pendanaan_id' => $model->primaryKey()[0]];
+                                return $params;
+                            },
+                            'buttons'    => [],
+                            'controller' => 'amanah-pendanaan'
+                        ],
+                        'amanah:ntext',
+                    ]
+                ])
+                . '</div>' ?>
+            <?php Pjax::end() ?>
+            <?php $this->endBlock() ?>
 
             <?= Tabs::widget(
                 [
@@ -329,6 +375,10 @@ $this->title = 'Pendanaan ' . $model->nama_pendanaan;
                     ], [
                         'content' => $this->blocks['Pembayarans'],
                         'label'   => '<small>Pembayarans <span class="badge badge-default">' . count($model->getPembayarans()->asArray()->all()) . '</span></small>',
+                        'active'  => false,
+                    ],[
+                        'content' => $this->blocks['Amanahs'],
+                        'label'   => '<small>Amanah Pendanaan <span class="badge badge-default">' . count($model->getAmanahs()->asArray()->all()) . '</span></small>',
                         'active'  => false,
                     ],]
                 ]

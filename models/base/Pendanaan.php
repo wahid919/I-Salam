@@ -95,7 +95,7 @@ abstract class Pendanaan extends \yii\db\ActiveRecord
             // $parent['_kategori_pendanaan_id'] = function ($model) {
             //     return $model->kategori_pendanaan_id;
             // };
-            $parent['kategori_pendanaaan'] = function ($model) {
+            $parent['kategori_pendanaan'] = function ($model) {
                 return $model->kategoriPendanaan;
             };
         }
@@ -156,6 +156,32 @@ abstract class Pendanaan extends \yii\db\ActiveRecord
             };
             
         }
+        if (!isset($parent['jumlah_pewakaf'])) {
+            unset($parent['jumlah_pewakaf']);
+            // $parent['_jumlah_pewakaf'] = function ($model) {
+            //     return $model->jumlah_pewakaf;
+            // };
+            $parent['jumlah_pewakaf'] = function ($model) {
+                $pembayar =  \app\models\Pembayaran::find()->where(['pendanaan_id'=>$model->id,'status_id'=>6])->count();
+                return $pembayar;
+            };
+            
+        }
+        if (!isset($parent['dana_terkumpul'])) {
+            unset($parent['dana_terkumpul']);
+            // $parent['_dana_terkumpul'] = function ($model) {
+            //     return $model->dana_terkumpul;
+            // };
+            $parent['dana_terkumpul'] = function ($model) {
+                $pembayar =  \app\models\Pembayaran::find()->where(['pendanaan_id'=>$model->id,'status_id'=>6])->sum('nominal');
+                if($pembayar != null){
+                    return $pembayar;
+                }else{
+                    return "0";
+                }
+            };
+            
+        }
         if(!isset($parent['berakhir_dalam'])){
             unset($parent['berakhir_dalam']);
 
@@ -171,6 +197,14 @@ abstract class Pendanaan extends \yii\db\ActiveRecord
 
             $parent['created_at'] = function ($model){
                return \app\components\Tanggal::toReadableDate($model->created_at);
+            };
+        }
+        if(!isset($parent['link'])){
+            unset($parent['link']);
+
+            $parent['link'] = function ($model){
+                $link = "https://i-salam.id/web/home/detail-program/".$model->id;
+            return $link;
             };
         }
         // $file = $model->file_uraian;
@@ -209,10 +243,10 @@ abstract class Pendanaan extends \yii\db\ActiveRecord
     {
         return [
             [['uraian','deskripsi'], 'string'],
-            [['user_id', 'kategori_pendanaan_id', 'status_id','bank_id','noms','nomor_rekening','status_lembaran','jumlah_lembaran'], 'integer'],
+            [['user_id', 'kategori_pendanaan_id', 'status_id','bank_id','noms','status_lembaran','status_tampil','jumlah_lembaran'], 'integer'],
             [['pendanaan_berakhir','created_at'], 'safe'],
             [['user_id', 'kategori_pendanaan_id', 'status_id'], 'required'],
-            [['nama_pendanaan', 'tempat', 'penerima_wakaf', 'foto','nama_nasabah','nama_perusahaan','foto_ktp','foto_kk','file_uraian','poster','nominal','nominal_lembaran'], 'string', 'max' => 255],
+            [['nama_pendanaan', 'tempat', 'penerima_wakaf', 'foto','nama_nasabah','nama_perusahaan','foto_ktp','foto_kk','file_uraian','poster','nominal','nominal_lembaran','nomor_rekening'], 'string', 'max' => 255],
             [['kategori_pendanaan_id'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\KategoriPendanaan::className(), 'targetAttribute' => ['kategori_pendanaan_id' => 'id']],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\User::className(), 'targetAttribute' => ['user_id' => 'id']],
             [['status_id'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\Status::className(), 'targetAttribute' => ['status_id' => 'id']],
@@ -233,6 +267,7 @@ abstract class Pendanaan extends \yii\db\ActiveRecord
             'nominal' => 'Nominal',
             'pendanaan_berakhir' => 'Pendanaan Berakhir',
             'status_lembaran' => 'Status Lembaran(Aktif/Tidak)',
+            'status_tampil' => 'Status Tampil(Aktif/Tidak)',
             'nominal_lembaran' => 'Nominal Lembaran',
             'jumlah_lembaran' => 'Jumlah Lembaran',
             'bank_id' => 'Bank',
@@ -261,6 +296,14 @@ abstract class Pendanaan extends \yii\db\ActiveRecord
         return $this->hasMany(\app\models\Pembayaran::className(), ['pendanaan_id' => 'id']);
     }
 
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getAmanahs()
+    {
+        return $this->hasMany(\app\models\AmanahPendanaan::className(), ['pendanaan_id' => 'id']);
+    }
+    
     /**
      * @return \yii\db\ActiveQuery
      */

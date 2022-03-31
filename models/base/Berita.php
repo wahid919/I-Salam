@@ -6,6 +6,7 @@ namespace app\models\base;
 
 use Yii;
 use yii\behaviors\TimestampBehavior;
+use yii\helpers\Url;
 
 /**
  * This is the base-model class for table "berita".
@@ -26,7 +27,84 @@ use yii\behaviors\TimestampBehavior;
 abstract class Berita extends \yii\db\ActiveRecord
 {
 
+    public function fields()
+    {
+        $parent = parent::fields();
 
+        
+
+        if (isset($parent['user_id'])) {
+            unset($parent['user_id']);
+            // $parent['_user_id'] = function ($model) {
+            //     return $model->user_id;
+            // };
+            $parent['user'] = function ($model) {
+                return $model->user->name;
+            };
+        }
+
+        if (isset($parent['kategori_berita_id'])) {
+            unset($parent['kategori_berita_id']);
+            // $parent['_kategori_berita_id'] = function ($model) {
+            //     return $model->kategori_berita_id;
+            // };
+            $parent['kategori_berita'] = function ($model) {
+                return $model->kategoriBerita;
+            };
+        }
+        if (isset($parent['gambar'])) {
+            unset($parent['gambar']);
+            // $parent['_gambar'] = function ($model) {
+            //     return $model->gambar;
+            // };
+            $parent['gambar'] = function ($model) {
+                $file = $model->gambar;
+                // $model->tanggal_received=date('Y-m-d H:i:s');
+                return $path = "http://i-salam.id/web/uploads/berita/" . $file;
+            };
+            
+        }
+        if (!isset($parent['full_link'])) {
+            unset($parent['full_link']);
+            // $parent['_full_link'] = function ($model) {
+            //     return $model->full_link;
+            // };
+            $parent['full_link'] = function ($model) {
+                $path = "http://i-salam.id/web/detail-berita?id=";
+                $pembayar = Url::to(['home/detail-berita', 'id' => $model->slug]);
+                return $pembayar;
+            };
+            
+        }
+        // if (isset($parent['isi'])) {
+        //     unset($parent['isi']);
+        //     // $parent['_isi'] = function ($model) {
+        //     //     return $model->isi;
+        //     // };
+        //     $parent['isi'] = function ($model) {
+        //         $text = strip_tags($model->isi);
+        //         // $model->tanggal_received=date('Y-m-d H:i:s');
+        //         return $text;
+        //     };
+            
+        // }
+        if(isset($parent['view_count'])){
+            unset($parent['view_count']);
+
+            $parent['dilihat'] = function ($model){
+            $interval = $model->view_count;
+            return $interval." kali";
+            };
+        }
+        if(isset($parent['created_at'])){
+            unset($parent['created_at']);
+
+            $parent['created_at'] = function ($model){
+               return \app\components\Tanggal::toReadableDate($model->created_at,false);
+            };
+        }
+        return $parent;
+    }
 
     /**
      * @inheritdoc

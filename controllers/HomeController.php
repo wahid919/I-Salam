@@ -36,12 +36,16 @@ use Midtrans\Config;
 use yii\filters\VerbFilter;
 use yii\web\Response;
 use app\components\UploadFile;
+use app\models\Afliasi;
+use app\models\AmanahPendanaan;
 use app\models\home\Registrasi as HomeRegistrasi;
 use app\models\KegiatanPendanaan;
+use app\models\Kontak;
 use app\models\LoginForm;
 use app\models\Notifikasi;
 use app\models\Otp;
 use app\models\Slides;
+use kartik\mpdf\Pdf;
 use yii\db\Expression;
 use yii\web\UploadedFile;
 
@@ -73,11 +77,17 @@ class HomeController extends Controller
                 // 'only' => ['logout', 'design-bangunan'],
                 'rules' => [
                     [
-                        'actions' => ['login', 'registrasi', 'error', 'index', 'news', 'detail-berita', 'about', 'report', 'ziswaf', 'program', 'detail-program', 'unduh-file-uraian', 'unduh-file-wakaf', 'lupa-password', 'ganti-password', 'visi', 'misi','lupa'],
+                        'actions' => ['login', 'registrasi', 'error', 'index', 'news', 'detail-berita',
+                        'about', 'report', 'ziswaf', 'program', 'detail-program','program-zakat', 
+                        'detail-program-zakat','program-infak', 'detail-program-infak','program-sedekah',
+                         'detail-program-sedekah', 'unduh-file-uraian', 'unduh-file-wakaf', 'lupa-password', 
+                         'ganti-password', 'visi', 'organisasi','lupa','kontak','cetak','latar-belakang',
+                         'alamat-kantor','telp','map','pesan','medsos','privacy-policy','cek-data',
+                         'aturan-wakaf','fiqih-wakaf','regulasi-wakaf','kalkulator-zakat','daftar-wakaf','afiliasi'],
                         'allow' => true,
                     ],
                     [
-                        'actions' => ['logout', 'index', 'verifikasi-akun', 'kirim-otp', 'profile', 'edit-profile', 'bayar', 'pembayaran', 'pembayarans', 'chechkout', 'laporan-wakaf', 'notifikasi', ''], // add all actions to take guest to login page
+                        'actions' => ['logout', 'index', 'verifikasi-akun', 'kirim-otp', 'profile', 'edit-profile', 'bayar', 'pembayaran', 'pembayarans', 'chechkout', 'laporan-wakaf', 'notifikasi', 'cancel-transaksi'], // add all actions to take guest to login page
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -88,8 +98,12 @@ class HomeController extends Controller
 
         ];
     }
+    public function actionPrivacyPolicy(){
+        return $this->render('privacy', [
+        ]);
+    }
 
-    public function actionPembayaran($id, $nominal, $ket)
+    public function actionPembayaran($id, $nominal,$amanah_pendanaan ,$ket)
     {
         $confirm = Yii::$app->user->identity->confirm;
         $status = Yii::$app->user->identity->status;
@@ -128,7 +142,7 @@ class HomeController extends Controller
                         'quantity' => 1,
                         'name' => $pendanaan->nama_pendanaan . "(Lembaran)"
                     );
-                } else {
+                } elseif($ket = "nominal") {
                     $model->jumlah_lembaran = 0;
                     $model->nominal = (int)$nominal;
                     $transaction_details = array(
@@ -142,17 +156,103 @@ class HomeController extends Controller
                         'quantity' => 1,
                         'name' => $pendanaan->nama_pendanaan . "(Non Lembaran)"
                     );
+                } elseif($ket = "lembar-zakat") {
+                    $model->jumlah_lembaran = 0;
+                    $model->nominal = (int)$nominal;
+                    $transaction_details = array(
+                        'order_id' => $order_id_midtrans,
+                        'gross_amount' => (int)$nominal, // no decimal allowed for creditcard
+                    );
+                    // Optional
+                    $item1_details = array(
+                        'id' => '1',
+                        'price' => (int)$nominal,
+                        'quantity' => 1,
+                        'name' => $pendanaan->nama_pendanaan . "(Lembaran Zakat)"
+                    );
+                } elseif($ket = "nominal-zakat") {
+                    $model->jumlah_lembaran = 0;
+                    $model->nominal = (int)$nominal;
+                    $transaction_details = array(
+                        'order_id' => $order_id_midtrans,
+                        'gross_amount' => (int)$nominal, // no decimal allowed for creditcard
+                    );
+                    // Optional
+                    $item1_details = array(
+                        'id' => '1',
+                        'price' => (int)$nominal,
+                        'quantity' => 1,
+                        'name' => $pendanaan->nama_pendanaan . "(Non Lembaran Zakat)"
+                    );
+                }elseif($ket = "lembar-infak") {
+                    $model->jumlah_lembaran = 0;
+                    $model->nominal = (int)$nominal;
+                    $transaction_details = array(
+                        'order_id' => $order_id_midtrans,
+                        'gross_amount' => (int)$nominal, // no decimal allowed for creditcard
+                    );
+                    // Optional
+                    $item1_details = array(
+                        'id' => '1',
+                        'price' => (int)$nominal,
+                        'quantity' => 1,
+                        'name' => $pendanaan->nama_pendanaan . "(Lembaran Infak)"
+                    );
+                } elseif($ket = "nominal-infak") {
+                    $model->jumlah_lembaran = 0;
+                    $model->nominal = (int)$nominal;
+                    $transaction_details = array(
+                        'order_id' => $order_id_midtrans,
+                        'gross_amount' => (int)$nominal, // no decimal allowed for creditcard
+                    );
+                    // Optional
+                    $item1_details = array(
+                        'id' => '1',
+                        'price' => (int)$nominal,
+                        'quantity' => 1,
+                        'name' => $pendanaan->nama_pendanaan . "(Non Lembaran Infak)"
+                    );
+                }elseif($ket = "lembar-sedekah") {
+                    $model->jumlah_lembaran = 0;
+                    $model->nominal = (int)$nominal;
+                    $transaction_details = array(
+                        'order_id' => $order_id_midtrans,
+                        'gross_amount' => (int)$nominal, // no decimal allowed for creditcard
+                    );
+                    // Optional
+                    $item1_details = array(
+                        'id' => '1',
+                        'price' => (int)$nominal,
+                        'quantity' => 1,
+                        'name' => $pendanaan->nama_pendanaan . "(Lembaran Sedekah)"
+                    );
+                } elseif($ket = "nominal-sedekah") {
+                    $model->jumlah_lembaran = 0;
+                    $model->nominal = (int)$nominal;
+                    $transaction_details = array(
+                        'order_id' => $order_id_midtrans,
+                        'gross_amount' => (int)$nominal, // no decimal allowed for creditcard
+                    );
+                    // Optional
+                    $item1_details = array(
+                        'id' => '1',
+                        'price' => (int)$nominal,
+                        'quantity' => 1,
+                        'name' => $pendanaan->nama_pendanaan . "(Non Lembaran Sedekah)"
+                    );
                 }
 
                 // $model->jenis_pembayaran_id = $val['jenis_pembayaran_id'] ?? '';
                 // $model->user_id = \Yii::$app->user->identity->id;
                 $model->user_id = \Yii::$app->user->identity->id;;
                 $model->status_id = 5;
-
+                
+                $model->jenis = "wakaf";
+                $model->amanah_pendanaan = $amanah_pendanaan;
                 $shipping_address = array(
                     'first_name'    => $pendanaan->nama_nasabah,
                     'last_name'     => "(" . $pendanaan->nama_perusahaan . ")",
-                    // 'address'       => "Batu",
+                    // 'address'       => $amanah_pendanaan,
                     //     'city'          => "Jakarta",
                     //     'postal_code'   => "16602",
                     //     'phone'         => "081122334455",
@@ -248,7 +348,7 @@ class HomeController extends Controller
                     );
                 } else {
 
-                    return $this->redirect('ziswaf');
+                    return $this->redirect('index');
                 }
 
 
@@ -257,7 +357,7 @@ class HomeController extends Controller
                 // $model->user_id = \Yii::$app->user->identity->id;
                 $model->user_id = \Yii::$app->user->identity->id;
                 $model->status_id = 5;
-
+                $model->jenis = $keterangan;
                 $shipping_address = array(
                     'first_name'    => $pendanaan->nama_nasabah,
                     'last_name'     => "(" . $pendanaan->nama_perusahaan . ")",
@@ -322,9 +422,9 @@ class HomeController extends Controller
         $count_wakif = User::find()->where(['role_id' => 5])->count();
         $model = new HubungiKami;
         $testimonials = Testimonials::find()->all();
-        $pendanaans = Pendanaan::find()->where(['status_id' => 2])->limit(6)->all();
+        $pendanaans = Pendanaan::find()->where(['status_tampil' => 1])->limit(6)->all();
 
-        $list_pendanaans = Pendanaan::find()->where(['status_id' => 2])->all();
+        $list_pendanaans = Pendanaan::find()->where(['status_tampil' => 1])->all();
         $news = Berita::find()->limit(6)->all();
 
         $slides = Slides::find()->where(['status' => 1])->orderBy(new Expression('rand()'))->one();
@@ -408,7 +508,9 @@ class HomeController extends Controller
                 Yii::$app->session->setFlash("success", "Login berhasil");
                 return $this->redirect(Yii::$app->request->referrer);
             }
-            Yii::$app->session->setFlash("error", "Login gagal. Validasi data tidak valid : " . Constant::flattenError($model->getErrors()));
+            
+            Yii::$app->session->setFlash("error", "Login gagal. Validasi data tidak valid");
+            // Yii::$app->session->setFlash("error", "Login gagal. Validasi data tidak valid : " . Constant::flattenError($model->getErrors()));
             return $this->redirect(Yii::$app->request->referrer);
         } else {
             Yii::$app->session->setFlash("error", "Login gagal");
@@ -474,7 +576,22 @@ class HomeController extends Controller
         // Yii::$app->session->setFlash("false", "Email Tidak Terdaftar");
                 return $this->redirect(Yii::$app->request->referrer);
     }
+    public function actionCekData()
+    {        
+        $model = Pembayaran::find()->where(['qr_code' => $_GET['code']])->one();
 
+        if($model != null)
+        {
+            $this->view->title = 'Lihat Data Pembayaran';
+        }
+        else 
+        {
+            $this->view->title = 'Data Tidak Ditemukan';
+        }
+        return $this->render('cek-data', [
+            'model' => $model,
+        ]);
+    }
     public function actionIndex()
     {
         date_default_timezone_set('Asia/Jakarta');
@@ -495,10 +612,10 @@ class HomeController extends Controller
         $count_wakif = User::find()->where(['role_id' => 5])->count();
         // $model = new HubungiKami;
         $testimonials = Testimonials::find()->all();
-        $pendanaans = Pendanaan::find()->where(['status_id' => 2])->limit(6)->all();
+        $pendanaans = Pendanaan::find()->where(['status_tampil' => 1])->limit(6)->all();
         $slides = Slides::find()->where(['status' => 1])->orderBy(new Expression('rand()'))->one();
 
-        $list_pendanaans = Pendanaan::find()->where(['status_id' => 2])->all();
+        $list_pendanaans = Pendanaan::find()->where(['status_tampil' => 1])->all();
         $news = Berita::find()->limit(6)->all();
 
 
@@ -765,7 +882,9 @@ class HomeController extends Controller
                     $query->orderBy(['updated_at' => SORT_DESC]);
                     break;
                 case 3:
-                    $query->andWhere(['kategori_berita_id' => $kategori->id]);
+                    // $query->andWhere(['kategori_berita_id' => $kategori->id]);
+                    
+                    $query->orderBy(['view_count' => SORT_DESC]);
                     break;
                 case 4:
                     $query->orderBy(['created_at' => SORT_DESC]);
@@ -916,7 +1035,7 @@ class HomeController extends Controller
         ]);
     }
 
-    public function actionMisi()
+    public function actionLatarBelakang()
     {
         $setting = Setting::find()->one();
         $icon = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->logo;
@@ -937,10 +1056,395 @@ class HomeController extends Controller
             } else {
                 Yii::$app->session->setFlash('error', "Data tidak berhasil disimpan.");
             }
-            return $this->redirect(['home/misi']);
+            return $this->redirect(['home/visi']);
         }
 
-        return $this->render('misi', [
+        return $this->render('latar_belakang', [
+            'setting' => $setting,
+            'count_program' => $count_program,
+            'count_wakif' => $count_wakif,
+            'organisasis' => $organisasis,
+            'lembagas' => $lembagas,
+            'icon' => $icon,
+            'bg_login' => $bg_login,
+            'bg' => $bg,
+            'model' => $model
+        ]);
+    }
+
+    public function actionOrganisasi()
+    {
+        $setting = Setting::find()->one();
+        $icon = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->logo;
+        $bg_login = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->bg_login;
+        $bg = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->bg_pin;
+        $organisasis = Organisasi::find()->where(['flag' => 1])->all();
+        $lembagas = LembagaPenerima::find()->where(['flag' => 1])->all();
+        $count_program = Pendanaan::find()->count();
+        $count_wakif = User::find()->where(['role_id' => 5])->count();
+        $model = new HubungiKami;
+
+
+        if ($model->load($_POST)) {
+            $model->status = 0;
+
+            if ($model->save()) {
+                Yii::$app->session->setFlash('success', "Data berhasil disimpan.");
+            } else {
+                Yii::$app->session->setFlash('error', "Data tidak berhasil disimpan.");
+            }
+            return $this->redirect(['home/organisasi']);
+        }
+
+        return $this->render('struktur_organisasi', [
+            'setting' => $setting,
+            'count_program' => $count_program,
+            'count_wakif' => $count_wakif,
+            'organisasis' => $organisasis,
+            'lembagas' => $lembagas,
+            'icon' => $icon,
+            'bg_login' => $bg_login,
+            'bg' => $bg,
+            'model' => $model
+        ]);
+    }
+
+    public function actionKontak()
+    {
+        $setting = Setting::find()->one();
+        $icon = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->logo;
+        $bg_login = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->bg_login;
+        $bg = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->bg_pin;
+        $organisasis = Organisasi::find()->where(['flag' => 1])->all();
+        $lembagas = LembagaPenerima::find()->where(['flag' => 1])->all();
+        $count_program = Pendanaan::find()->count();
+        $count_wakif = User::find()->where(['role_id' => 5])->count();
+        $model = new HubungiKami;
+        $kontaks = Kontak::find()->all();
+
+
+        if ($model->load($_POST)) {
+            $model->status = 0;
+
+            if ($model->save()) {
+                Yii::$app->session->setFlash('success', "Data berhasil disimpan.");
+            } else {
+                Yii::$app->session->setFlash('error', "Data tidak berhasil disimpan.");
+            }
+            return $this->redirect(['home/kontak']);
+        }
+
+        return $this->render('kontak', [
+            'kontaks' => $kontaks,
+            'setting' => $setting,
+            'count_program' => $count_program,
+            'count_wakif' => $count_wakif,
+            'organisasis' => $organisasis,
+            'lembagas' => $lembagas,
+            'icon' => $icon,
+            'bg_login' => $bg_login,
+            'bg' => $bg,
+            'model' => $model
+        ]);
+    }
+
+    public function actionAlamatKantor()
+    {
+        $setting = Setting::find()->one();
+        $icon = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->logo;
+        $bg_login = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->bg_login;
+        $bg = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->bg_pin;
+        $organisasis = Organisasi::find()->where(['flag' => 1])->all();
+        $lembagas = LembagaPenerima::find()->where(['flag' => 1])->all();
+        $count_program = Pendanaan::find()->count();
+        $count_wakif = User::find()->where(['role_id' => 5])->count();
+        $model = new HubungiKami;
+        $kontaks = Kontak::find()->all();
+
+
+        // if ($model->load($_POST)) {
+        //     $model->status = 0;
+
+        //     if ($model->save()) {
+        //         Yii::$app->session->setFlash('success', "Data berhasil disimpan.");
+        //     } else {
+        //         Yii::$app->session->setFlash('error', "Data tidak berhasil disimpan.");
+        //     }
+        //     return $this->redirect(['home/kontak']);
+        // }
+
+        return $this->render('alamat_kantor', [
+            'kontaks' => $kontaks,
+            'setting' => $setting,
+            'count_program' => $count_program,
+            'count_wakif' => $count_wakif,
+            'organisasis' => $organisasis,
+            'lembagas' => $lembagas,
+            'icon' => $icon,
+            'bg_login' => $bg_login,
+            'bg' => $bg,
+            'model' => $model
+        ]);
+    }
+    public function actionAturanWakaf()
+    {
+        $setting = Setting::find()->one();
+        $icon = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->logo;
+        $bg_login = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->bg_login;
+        $bg = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->bg_pin;
+        $organisasis = Organisasi::find()->where(['flag' => 1])->all();
+        $lembagas = LembagaPenerima::find()->where(['flag' => 1])->all();
+        $count_program = Pendanaan::find()->count();
+        $count_wakif = User::find()->where(['role_id' => 5])->count();
+        $model = new HubungiKami;
+        $kontaks = Kontak::find()->all();
+
+
+        // if ($model->load($_POST)) {
+        //     $model->status = 0;
+
+        //     if ($model->save()) {
+        //         Yii::$app->session->setFlash('success', "Data berhasil disimpan.");
+        //     } else {
+        //         Yii::$app->session->setFlash('error', "Data tidak berhasil disimpan.");
+        //     }
+        //     return $this->redirect(['home/kontak']);
+        // }
+
+        return $this->render('aturan_wakaf', [
+            'kontaks' => $kontaks,
+            'setting' => $setting,
+            'count_program' => $count_program,
+            'count_wakif' => $count_wakif,
+            'organisasis' => $organisasis,
+            'lembagas' => $lembagas,
+            'icon' => $icon,
+            'bg_login' => $bg_login,
+            'bg' => $bg,
+            'model' => $model
+        ]);
+    }
+    public function actionFiqihWakaf()
+    {
+        $setting = Setting::find()->one();
+        $icon = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->logo;
+        $bg_login = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->bg_login;
+        $bg = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->bg_pin;
+        $organisasis = Organisasi::find()->where(['flag' => 1])->all();
+        $lembagas = LembagaPenerima::find()->where(['flag' => 1])->all();
+        $count_program = Pendanaan::find()->count();
+        $count_wakif = User::find()->where(['role_id' => 5])->count();
+        $model = new HubungiKami;
+        $kontaks = Kontak::find()->all();
+
+
+        // if ($model->load($_POST)) {
+        //     $model->status = 0;
+
+        //     if ($model->save()) {
+        //         Yii::$app->session->setFlash('success', "Data berhasil disimpan.");
+        //     } else {
+        //         Yii::$app->session->setFlash('error', "Data tidak berhasil disimpan.");
+        //     }
+        //     return $this->redirect(['home/kontak']);
+        // }
+
+        return $this->render('fiqih_wakaf', [
+            'kontaks' => $kontaks,
+            'setting' => $setting,
+            'count_program' => $count_program,
+            'count_wakif' => $count_wakif,
+            'organisasis' => $organisasis,
+            'lembagas' => $lembagas,
+            'icon' => $icon,
+            'bg_login' => $bg_login,
+            'bg' => $bg,
+            'model' => $model
+        ]);
+    }
+    public function actionRegulasiWakaf()
+    {
+        $setting = Setting::find()->one();
+        $icon = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->logo;
+        $bg_login = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->bg_login;
+        $bg = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->bg_pin;
+        $organisasis = Organisasi::find()->where(['flag' => 1])->all();
+        $lembagas = LembagaPenerima::find()->where(['flag' => 1])->all();
+        $count_program = Pendanaan::find()->count();
+        $count_wakif = User::find()->where(['role_id' => 5])->count();
+        $model = new HubungiKami;
+        $kontaks = Kontak::find()->all();
+
+
+        // if ($model->load($_POST)) {
+        //     $model->status = 0;
+
+        //     if ($model->save()) {
+        //         Yii::$app->session->setFlash('success', "Data berhasil disimpan.");
+        //     } else {
+        //         Yii::$app->session->setFlash('error', "Data tidak berhasil disimpan.");
+        //     }
+        //     return $this->redirect(['home/kontak']);
+        // }
+
+        return $this->render('regulasi_wakaf', [
+            'kontaks' => $kontaks,
+            'setting' => $setting,
+            'count_program' => $count_program,
+            'count_wakif' => $count_wakif,
+            'organisasis' => $organisasis,
+            'lembagas' => $lembagas,
+            'icon' => $icon,
+            'bg_login' => $bg_login,
+            'bg' => $bg,
+            'model' => $model
+        ]);
+    }
+
+    public function actionTelp()
+    {
+        $setting = Setting::find()->one();
+        $icon = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->logo;
+        $bg_login = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->bg_login;
+        $bg = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->bg_pin;
+        $organisasis = Organisasi::find()->where(['flag' => 1])->all();
+        $lembagas = LembagaPenerima::find()->where(['flag' => 1])->all();
+        $count_program = Pendanaan::find()->count();
+        $count_wakif = User::find()->where(['role_id' => 5])->count();
+        $model = new HubungiKami;
+        $kontaks = Kontak::find()->all();
+
+
+        // if ($model->load($_POST)) {
+        //     $model->status = 0;
+
+        //     if ($model->save()) {
+        //         Yii::$app->session->setFlash('success', "Data berhasil disimpan.");
+        //     } else {
+        //         Yii::$app->session->setFlash('error', "Data tidak berhasil disimpan.");
+        //     }
+        //     return $this->redirect(['home/kontak']);
+        // }
+
+        return $this->render('telp', [
+            'kontaks' => $kontaks,
+            'setting' => $setting,
+            'count_program' => $count_program,
+            'count_wakif' => $count_wakif,
+            'organisasis' => $organisasis,
+            'lembagas' => $lembagas,
+            'icon' => $icon,
+            'bg_login' => $bg_login,
+            'bg' => $bg,
+            'model' => $model
+        ]);
+    }
+
+    public function actionMap()
+    {
+        $setting = Setting::find()->one();
+        $icon = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->logo;
+        $bg_login = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->bg_login;
+        $bg = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->bg_pin;
+        $organisasis = Organisasi::find()->where(['flag' => 1])->all();
+        $lembagas = LembagaPenerima::find()->where(['flag' => 1])->all();
+        $count_program = Pendanaan::find()->count();
+        $count_wakif = User::find()->where(['role_id' => 5])->count();
+        $model = new HubungiKami;
+        $kontaks = Kontak::find()->all();
+
+
+        // if ($model->load($_POST)) {
+        //     $model->status = 0;
+
+        //     if ($model->save()) {
+        //         Yii::$app->session->setFlash('success', "Data berhasil disimpan.");
+        //     } else {
+        //         Yii::$app->session->setFlash('error', "Data tidak berhasil disimpan.");
+        //     }
+        //     return $this->redirect(['home/kontak']);
+        // }
+
+        return $this->render('map', [
+            'kontaks' => $kontaks,
+            'setting' => $setting,
+            'count_program' => $count_program,
+            'count_wakif' => $count_wakif,
+            'organisasis' => $organisasis,
+            'lembagas' => $lembagas,
+            'icon' => $icon,
+            'bg_login' => $bg_login,
+            'bg' => $bg,
+            'model' => $model
+        ]);
+    }
+
+    public function actionPesan()
+    {
+        $setting = Setting::find()->one();
+        $icon = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->logo;
+        $bg_login = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->bg_login;
+        $bg = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->bg_pin;
+        $organisasis = Organisasi::find()->where(['flag' => 1])->all();
+        $lembagas = LembagaPenerima::find()->where(['flag' => 1])->all();
+        $count_program = Pendanaan::find()->count();
+        $count_wakif = User::find()->where(['role_id' => 5])->count();
+        $model = new HubungiKami;
+        $kontaks = Kontak::find()->all();
+
+
+        // if ($model->load($_POST)) {
+        //     $model->status = 0;
+
+        //     if ($model->save()) {
+        //         Yii::$app->session->setFlash('success', "Data berhasil disimpan.");
+        //     } else {
+        //         Yii::$app->session->setFlash('error', "Data tidak berhasil disimpan.");
+        //     }
+        //     return $this->redirect(['home/kontak']);
+        // }
+
+        return $this->render('pesan', [
+            'kontaks' => $kontaks,
+            'setting' => $setting,
+            'count_program' => $count_program,
+            'count_wakif' => $count_wakif,
+            'organisasis' => $organisasis,
+            'lembagas' => $lembagas,
+            'icon' => $icon,
+            'bg_login' => $bg_login,
+            'bg' => $bg,
+            'model' => $model
+        ]);
+    }
+
+    public function actionMedsos()
+    {
+        $setting = Setting::find()->one();
+        $icon = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->logo;
+        $bg_login = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->bg_login;
+        $bg = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->bg_pin;
+        $organisasis = Organisasi::find()->where(['flag' => 1])->all();
+        $lembagas = LembagaPenerima::find()->where(['flag' => 1])->all();
+        $count_program = Pendanaan::find()->count();
+        $count_wakif = User::find()->where(['role_id' => 5])->count();
+        $model = new HubungiKami;
+        $kontaks = Kontak::find()->all();
+
+
+        // if ($model->load($_POST)) {
+        //     $model->status = 0;
+
+        //     if ($model->save()) {
+        //         Yii::$app->session->setFlash('success', "Data berhasil disimpan.");
+        //     } else {
+        //         Yii::$app->session->setFlash('error', "Data tidak berhasil disimpan.");
+        //     }
+        //     return $this->redirect(['home/kontak']);
+        // }
+
+        return $this->render('medsos', [
+            'kontaks' => $kontaks,
             'setting' => $setting,
             'count_program' => $count_program,
             'count_wakif' => $count_wakif,
@@ -1045,7 +1549,7 @@ class HomeController extends Controller
     public function actionZiswaf()
     {
         $setting = Setting::find()->one();
-        $pendanaans = Pendanaan::find()->where(['status_id' => 2])->all();
+        $pendanaans = Pendanaan::find()->where(['status_tampil' => 1])->all();
         $icon = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->logo;
 
         return $this->render('ziswaf', [
@@ -1118,7 +1622,7 @@ class HomeController extends Controller
         $pagination = new Pagination(['totalCount' => $count, 'pageSize' => 6]);
         $pembayarans = $query->offset($pagination->offset)
             ->limit($pagination->limit)
-            ->orderBy(['created_at' => SORT_DESC])
+            ->orderBy(['id' => SORT_DESC])
             ->all();
         foreach ($data_all as $data) {
             $wf = Pembayaran::find()->where(['id' => $data->id])->one();
@@ -1126,16 +1630,28 @@ class HomeController extends Controller
             $a = $this->findMidtransProduction($wf->kode_transaksi);
 
             if ($a->status_code == "404") {
-                $wf->status_id = 5;
+                $wf->status_id = $wf->status_id;
+                $sts = "Tidak Ada";
             } else {
                 if ($a->transaction_status == "pending") {
                     $wf->status_id = 5;
+                    $sts = "Ada";
                 } elseif ($a->transaction_status == "capture" || $a->transaction_status == "settlement") {
                     $wf->status_id = 6;
                     $wf->tanggal_konfirmasi = date('Y-m-d H:i:s');
+                    $sts = "Ada";
                 } elseif ($a->transaction_status == "deny" || $a->transaction_status == "cancel" || $a->transaction_status == "expire") {
                     $wf->status_id = 8;
                     $wf->tanggal_konfirmasi = date('Y-m-d H:i:s');
+                    $sts = "Ada";
+                } elseif ($a->transaction_status == "cancel") {
+                    $wf->status_id = 12;
+                    $wf->tanggal_konfirmasi = date('Y-m-d H:i:s');
+                    $sts = "Ada";
+                } elseif ($a->transaction_status == "expire") {
+                    $wf->status_id = 13;
+                    $wf->tanggal_konfirmasi = date('Y-m-d H:i:s');
+                    $sts = "Ada";
                 }
             }
 
@@ -1153,10 +1669,56 @@ class HomeController extends Controller
 
         return $this->render('profile', [
             'setting' => $setting,
+            'sts' => $sts,
             'icon' => $icon,
             'pagination' => $pagination,
             'pembayarans' => $pembayarans
         ]);
+    }
+
+    public function actionCancelTransaksi($id){
+        $confirm = Yii::$app->user->identity->confirm;
+        $status = Yii::$app->user->identity->status;
+        $usr = Yii::$app->user->identity->id;
+        if ($confirm != 1 || $status != 1 || $usr == null) {
+            return $this->redirect(["home/index"]);
+        }
+        $wf = Pembayaran::findOne(['id'=>$id]);
+        $a = $this->findMidtransProductionCancel($wf->kode_transaksi);
+            $wf->status_id = 12;
+            $wf->tanggal_konfirmasi = date('Y-m-d H:i:s');
+            // if ($a->status_code == "404") {
+            //     $wf->status_id = 5;
+            // } else {
+            //     if ($a->transaction_status == "pending") {
+            //         $wf->status_id = 5;
+            //     } elseif ($a->transaction_status == "capture" || $a->transaction_status == "settlement") {
+            //         $wf->status_id = 6;
+            //         $wf->tanggal_konfirmasi = date('Y-m-d H:i:s');
+            //     } elseif ($a->transaction_status == "deny" || $a->transaction_status == "cancel" || $a->transaction_status == "expire") {
+            //         $wf->status_id = 8;
+            //         $wf->tanggal_konfirmasi = date('Y-m-d H:i:s');
+            //     }
+            // }
+
+            if ($a->status_code == "404") {
+                $wf->jenis_pembayaran_id = "Tidak Ditemukan";
+            } else {
+                if ($a->payment_type == "cstore") {
+                    $wf->jenis_pembayaran_id = $a->store;
+                } else {
+                    $wf->jenis_pembayaran_id = $a->payment_type;
+                }
+            }
+            if($wf->save()){
+                
+                Yii::$app->session->setFlash("success", "Berhasil Cancel Transaksi");
+            return $this->redirect(["home/profile"]);
+            }
+            
+            return $this->redirect(["home/profile"]);
+
+
     }
 
     public function actionEditProfile()
@@ -1193,10 +1755,10 @@ class HomeController extends Controller
                     goto end;
                 }
                 $model->photo_url = $response->filename;
-                if ($model->photo_url != null) {
-                    unlink(Yii::getAlias("@app/web/uploads/") . $oldPhotoUrl);
-                }
-                $this->deleteOne($oldPhotoUrl);
+                // if ($model->photo_url != null) {
+                //     unlink(Yii::getAlias("@app/web/uploads/user_images/") . $oldPhotoUrl);
+                // }
+                // $this->deleteOne($oldPhotoUrl);
             } else {
                 $model->photo_url = $oldPhotoUrl;
             }
@@ -1227,6 +1789,7 @@ class HomeController extends Controller
         $dana = Pembayaran::find()->where(['status_id' => 6, 'pendanaan_id' => $id])->sum('nominal');
         $agenda = AgendaPendanaan::find()->where(['pendanaan_id' => $id])->all();
         $kegiatans = KegiatanPendanaan::find()->where(['pendanaan_id' => $id])->orderBy(['id' => SORT_DESC])->one();
+        $amanah_pendanaan = AmanahPendanaan::find()->where(['pendanaan_id' => $id])->all();
 
         $kegiatan_pendanaans = KegiatanPendanaan::find()->where(['pendanaan_id' => $id])->orderBy(['id' => SORT_DESC])->limit(3)->all();
         $donatur = Pembayaran::find()->where(['status_id' => 6, 'pendanaan_id' => $id])->all();
@@ -1239,6 +1802,7 @@ class HomeController extends Controller
         // var_dump($kegiatan_pendanaans);die;
         return $this->render('detail-program', [
             'setting' => $setting,
+            'amanah_pendanaan' => $amanah_pendanaan,
             'kegiatans' => $kegiatans,
             'kegiatan_pendanaans' => $kegiatan_pendanaans,
             'donatur' => $donatur,
@@ -1248,6 +1812,202 @@ class HomeController extends Controller
             'interval' => $interval,
             'icon' => $icon,
             'pendanaan' => $pendanaan,
+        ]);
+    }
+    public function actionDetailProgramZakat($id)
+    {
+        $setting = Setting::find()->one();
+        $icon = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->logo;
+        $pendanaan = Pendanaan::findOne($id);
+        $dana = Pembayaran::find()->where(['status_id' => 6, 'pendanaan_id' => $id])->sum('nominal');
+        $agenda = AgendaPendanaan::find()->where(['pendanaan_id' => $id])->all();
+        $kegiatans = KegiatanPendanaan::find()->where(['pendanaan_id' => $id])->orderBy(['id' => SORT_DESC])->one();
+        $amanah_pendanaan = AmanahPendanaan::find()->where(['pendanaan_id' => $id])->all();
+
+        $kegiatan_pendanaans = KegiatanPendanaan::find()->where(['pendanaan_id' => $id])->orderBy(['id' => SORT_DESC])->limit(3)->all();
+        $donatur = Pembayaran::find()->where(['status_id' => 6, 'pendanaan_id' => $id])->all();
+        $persen = $dana / $pendanaan->nominal * 100;
+        $datetime1 =  new DateTime($pendanaan->pendanaan_berakhir);
+        $datetime2 =  new Datetime(date("Y-m-d H:i:s"));
+        $interval = $datetime1->diff($datetime2)->days;
+
+        if ($pendanaan == null) throw new HttpException(404);
+        // var_dump($kegiatan_pendanaans);die;
+        return $this->render('detail-program-zakat', [
+            'setting' => $setting,
+            'amanah_pendanaan' => $amanah_pendanaan,
+            'kegiatans' => $kegiatans,
+            'kegiatan_pendanaans' => $kegiatan_pendanaans,
+            'donatur' => $donatur,
+            'dana' => $dana,
+            'agenda' => $agenda,
+            'persen' => $persen,
+            'interval' => $interval,
+            'icon' => $icon,
+            'pendanaan' => $pendanaan,
+        ]);
+    }
+    public function actionDetailProgramInfak($id)
+    {
+        $setting = Setting::find()->one();
+        $icon = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->logo;
+        $pendanaan = Pendanaan::findOne($id);
+        $dana = Pembayaran::find()->where(['status_id' => 6, 'pendanaan_id' => $id])->sum('nominal');
+        $agenda = AgendaPendanaan::find()->where(['pendanaan_id' => $id])->all();
+        $kegiatans = KegiatanPendanaan::find()->where(['pendanaan_id' => $id])->orderBy(['id' => SORT_DESC])->one();
+        $amanah_pendanaan = AmanahPendanaan::find()->where(['pendanaan_id' => $id])->all();
+
+        $kegiatan_pendanaans = KegiatanPendanaan::find()->where(['pendanaan_id' => $id])->orderBy(['id' => SORT_DESC])->limit(3)->all();
+        $donatur = Pembayaran::find()->where(['status_id' => 6, 'pendanaan_id' => $id])->all();
+        $persen = $dana / $pendanaan->nominal * 100;
+        $datetime1 =  new DateTime($pendanaan->pendanaan_berakhir);
+        $datetime2 =  new Datetime(date("Y-m-d H:i:s"));
+        $interval = $datetime1->diff($datetime2)->days;
+
+        if ($pendanaan == null) throw new HttpException(404);
+        // var_dump($kegiatan_pendanaans);die;
+        return $this->render('detail-program-infak', [
+            'setting' => $setting,
+            'amanah_pendanaan' => $amanah_pendanaan,
+            'kegiatans' => $kegiatans,
+            'kegiatan_pendanaans' => $kegiatan_pendanaans,
+            'donatur' => $donatur,
+            'dana' => $dana,
+            'agenda' => $agenda,
+            'persen' => $persen,
+            'interval' => $interval,
+            'icon' => $icon,
+            'pendanaan' => $pendanaan,
+        ]);
+    }
+    public function actionDetailProgramSedekah($id)
+    {
+        $setting = Setting::find()->one();
+        $icon = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->logo;
+        $pendanaan = Pendanaan::findOne($id);
+        $dana = Pembayaran::find()->where(['status_id' => 6, 'pendanaan_id' => $id])->sum('nominal');
+        $agenda = AgendaPendanaan::find()->where(['pendanaan_id' => $id])->all();
+        $kegiatans = KegiatanPendanaan::find()->where(['pendanaan_id' => $id])->orderBy(['id' => SORT_DESC])->one();
+        $amanah_pendanaan = AmanahPendanaan::find()->where(['pendanaan_id' => $id])->all();
+
+        $kegiatan_pendanaans = KegiatanPendanaan::find()->where(['pendanaan_id' => $id])->orderBy(['id' => SORT_DESC])->limit(3)->all();
+        $donatur = Pembayaran::find()->where(['status_id' => 6, 'pendanaan_id' => $id])->all();
+        $persen = $dana / $pendanaan->nominal * 100;
+        $datetime1 =  new DateTime($pendanaan->pendanaan_berakhir);
+        $datetime2 =  new Datetime(date("Y-m-d H:i:s"));
+        $interval = $datetime1->diff($datetime2)->days;
+
+        if ($pendanaan == null) throw new HttpException(404);
+        // var_dump($kegiatan_pendanaans);die;
+        return $this->render('detail-program-sedekah', [
+            'setting' => $setting,
+            'amanah_pendanaan' => $amanah_pendanaan,
+            'kegiatans' => $kegiatans,
+            'kegiatan_pendanaans' => $kegiatan_pendanaans,
+            'donatur' => $donatur,
+            'dana' => $dana,
+            'agenda' => $agenda,
+            'persen' => $persen,
+            'interval' => $interval,
+            'icon' => $icon,
+            'pendanaan' => $pendanaan,
+        ]);
+    }
+
+    public function actionKalkulatorZakat()
+    {
+        $setting = Setting::find()->one();
+        $icon = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->logo;
+        $bg_login = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->bg_login;
+        $bg = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->bg_pin;
+
+
+        if (isset($_GET['kategori'])) {
+            $kategori = $_GET['kategori'];
+            $get_id = KategoriPendanaan::find()->where(['name' => $kategori])->one();
+            $query = Pendanaan::find()->where(['status_tampil' => 1, 'kategori_pendanaan_id' => $get_id]);
+            $count = $query->count();
+            $pagination = new Pagination(['totalCount' => $count, 'pageSize' => 9]);
+            $pendanaans = $query->offset($pagination->offset)
+                ->limit($pagination->limit)
+                ->all();
+        } else {
+            $query = Pendanaan::find()->where(['status_tampil' => 1]);
+            $count = $query->count();
+            $pagination = new Pagination(['totalCount' => $count, 'pageSize' => 9]);
+            $pendanaans = $query->offset($pagination->offset)
+                ->limit($pagination->limit)
+                ->all();
+        }
+
+        $summary = Constant::getPaginationSummary($pagination, $count);
+
+        $organisasis = Organisasi::find()->where(['flag' => 1])->all();
+        $kategori_pendanaans = KategoriPendanaan::find()->all();
+        $count_program = Pendanaan::find()->count();
+        $count_wakif = User::find()->where(['role_id' => 5])->count();
+
+        return $this->render('kalkulator_zakat', [
+            'setting' => $setting,
+            'count_program' => $count_program,
+            'count_wakif' => $count_wakif,
+            'organisasis' => $organisasis,
+            'pendanaans' => $pendanaans,
+            'kategori_pendanaans' => $kategori_pendanaans,
+            'icon' => $icon,
+            'bg_login' => $bg_login,
+            'bg' => $bg,
+            'pagination' => $pagination,
+            'summary' => $summary,
+        ]);
+    }
+    public function actionAfiliasi()
+    {
+        $setting = Setting::find()->one();
+        $icon = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->logo;
+        $bg_login = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->bg_login;
+        $bg = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->bg_pin;
+
+
+        if (isset($_GET['kategori'])) {
+            $kategori = $_GET['kategori'];
+            $get_id = KategoriPendanaan::find()->where(['name' => $kategori])->one();
+            $query = Pendanaan::find()->where(['status_tampil' => 1, 'kategori_pendanaan_id' => $get_id]);
+            $count = $query->count();
+            $pagination = new Pagination(['totalCount' => $count, 'pageSize' => 9]);
+            $pendanaans = $query->offset($pagination->offset)
+                ->limit($pagination->limit)
+                ->all();
+        } else {
+            $query = Pendanaan::find()->where(['status_tampil' => 1]);
+            $count = $query->count();
+            $pagination = new Pagination(['totalCount' => $count, 'pageSize' => 9]);
+            $pendanaans = $query->offset($pagination->offset)
+                ->limit($pagination->limit)
+                ->all();
+        }
+
+        $summary = Constant::getPaginationSummary($pagination, $count);
+
+        $organisasis = Organisasi::find()->where(['flag' => 1])->all();
+        $kategori_pendanaans = KategoriPendanaan::find()->all();
+        $count_program = Pendanaan::find()->count();
+        $count_wakif = User::find()->where(['role_id' => 5])->count();
+        $afiliasis = Afliasi::find()->all();
+
+        return $this->render('afiliasi', [
+            'setting' => $setting,
+            'afiliasis' => $afiliasis,
+            'count_program' => $count_program,
+            'count_wakif' => $count_wakif,
+            'organisasis' => $organisasis,
+            'pendanaans' => $pendanaans,
+            'kategori_pendanaans' => $kategori_pendanaans,
+            'icon' => $icon,
+            'bg_login' => $bg_login,
+            'bg' => $bg,
+            'pagination' => $pagination,
+            'summary' => $summary,
         ]);
     }
 
@@ -1262,14 +2022,14 @@ class HomeController extends Controller
         if (isset($_GET['kategori'])) {
             $kategori = $_GET['kategori'];
             $get_id = KategoriPendanaan::find()->where(['name' => $kategori])->one();
-            $query = Pendanaan::find()->where(['status_id' => 2, 'kategori_pendanaan_id' => $get_id]);
+            $query = Pendanaan::find()->where(['status_tampil' => 1, 'kategori_pendanaan_id' => $get_id]);
             $count = $query->count();
             $pagination = new Pagination(['totalCount' => $count, 'pageSize' => 9]);
             $pendanaans = $query->offset($pagination->offset)
                 ->limit($pagination->limit)
                 ->all();
         } else {
-            $query = Pendanaan::find()->where(['status_id' => 2]);
+            $query = Pendanaan::find()->where(['status_tampil' => 1]);
             $count = $query->count();
             $pagination = new Pagination(['totalCount' => $count, 'pageSize' => 9]);
             $pendanaans = $query->offset($pagination->offset)
@@ -1285,6 +2045,147 @@ class HomeController extends Controller
         $count_wakif = User::find()->where(['role_id' => 5])->count();
 
         return $this->render('program', [
+            'setting' => $setting,
+            'count_program' => $count_program,
+            'count_wakif' => $count_wakif,
+            'organisasis' => $organisasis,
+            'pendanaans' => $pendanaans,
+            'kategori_pendanaans' => $kategori_pendanaans,
+            'icon' => $icon,
+            'bg_login' => $bg_login,
+            'bg' => $bg,
+            'pagination' => $pagination,
+            'summary' => $summary,
+        ]);
+    }
+    public function actionProgramZakat()
+    {
+        $setting = Setting::find()->one();
+        $icon = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->logo;
+        $bg_login = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->bg_login;
+        $bg = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->bg_pin;
+
+
+        if (isset($_GET['kategori'])) {
+            $kategori = $_GET['kategori'];
+            $get_id = KategoriPendanaan::find()->where(['name' => $kategori])->one();
+            $query = Pendanaan::find()->where(['status_tampil' => 1, 'kategori_pendanaan_id' => $get_id]);
+            $count = $query->count();
+            $pagination = new Pagination(['totalCount' => $count, 'pageSize' => 9]);
+            $pendanaans = $query->offset($pagination->offset)
+                ->limit($pagination->limit)
+                ->all();
+        } else {
+            $query = Pendanaan::find()->where(['status_tampil' => 1]);
+            $count = $query->count();
+            $pagination = new Pagination(['totalCount' => $count, 'pageSize' => 9]);
+            $pendanaans = $query->offset($pagination->offset)
+                ->limit($pagination->limit)
+                ->all();
+        }
+
+        $summary = Constant::getPaginationSummary($pagination, $count);
+
+        $organisasis = Organisasi::find()->where(['flag' => 1])->all();
+        $kategori_pendanaans = KategoriPendanaan::find()->all();
+        $count_program = Pendanaan::find()->count();
+        $count_wakif = User::find()->where(['role_id' => 5])->count();
+
+        return $this->render('program-zakat', [
+            'setting' => $setting,
+            'count_program' => $count_program,
+            'count_wakif' => $count_wakif,
+            'organisasis' => $organisasis,
+            'pendanaans' => $pendanaans,
+            'kategori_pendanaans' => $kategori_pendanaans,
+            'icon' => $icon,
+            'bg_login' => $bg_login,
+            'bg' => $bg,
+            'pagination' => $pagination,
+            'summary' => $summary,
+        ]);
+    }
+    public function actionProgramInfak()
+    {
+        $setting = Setting::find()->one();
+        $icon = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->logo;
+        $bg_login = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->bg_login;
+        $bg = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->bg_pin;
+
+
+        if (isset($_GET['kategori'])) {
+            $kategori = $_GET['kategori'];
+            $get_id = KategoriPendanaan::find()->where(['name' => $kategori])->one();
+            $query = Pendanaan::find()->where(['status_tampil' => 1, 'kategori_pendanaan_id' => $get_id]);
+            $count = $query->count();
+            $pagination = new Pagination(['totalCount' => $count, 'pageSize' => 9]);
+            $pendanaans = $query->offset($pagination->offset)
+                ->limit($pagination->limit)
+                ->all();
+        } else {
+            $query = Pendanaan::find()->where(['status_tampil' => 1]);
+            $count = $query->count();
+            $pagination = new Pagination(['totalCount' => $count, 'pageSize' => 9]);
+            $pendanaans = $query->offset($pagination->offset)
+                ->limit($pagination->limit)
+                ->all();
+        }
+
+        $summary = Constant::getPaginationSummary($pagination, $count);
+
+        $organisasis = Organisasi::find()->where(['flag' => 1])->all();
+        $kategori_pendanaans = KategoriPendanaan::find()->all();
+        $count_program = Pendanaan::find()->count();
+        $count_wakif = User::find()->where(['role_id' => 5])->count();
+
+        return $this->render('program-infak', [
+            'setting' => $setting,
+            'count_program' => $count_program,
+            'count_wakif' => $count_wakif,
+            'organisasis' => $organisasis,
+            'pendanaans' => $pendanaans,
+            'kategori_pendanaans' => $kategori_pendanaans,
+            'icon' => $icon,
+            'bg_login' => $bg_login,
+            'bg' => $bg,
+            'pagination' => $pagination,
+            'summary' => $summary,
+        ]);
+    }
+    public function actionProgramSedekah()
+    {
+        $setting = Setting::find()->one();
+        $icon = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->logo;
+        $bg_login = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->bg_login;
+        $bg = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->bg_pin;
+
+
+        if (isset($_GET['kategori'])) {
+            $kategori = $_GET['kategori'];
+            $get_id = KategoriPendanaan::find()->where(['name' => $kategori])->one();
+            $query = Pendanaan::find()->where(['status_tampil' => 1, 'kategori_pendanaan_id' => $get_id]);
+            $count = $query->count();
+            $pagination = new Pagination(['totalCount' => $count, 'pageSize' => 9]);
+            $pendanaans = $query->offset($pagination->offset)
+                ->limit($pagination->limit)
+                ->all();
+        } else {
+            $query = Pendanaan::find()->where(['status_tampil' => 1]);
+            $count = $query->count();
+            $pagination = new Pagination(['totalCount' => $count, 'pageSize' => 9]);
+            $pendanaans = $query->offset($pagination->offset)
+                ->limit($pagination->limit)
+                ->all();
+        }
+
+        $summary = Constant::getPaginationSummary($pagination, $count);
+
+        $organisasis = Organisasi::find()->where(['flag' => 1])->all();
+        $kategori_pendanaans = KategoriPendanaan::find()->all();
+        $count_program = Pendanaan::find()->count();
+        $count_wakif = User::find()->where(['role_id' => 5])->count();
+
+        return $this->render('program-sedekah', [
             'setting' => $setting,
             'count_program' => $count_program,
             'count_wakif' => $count_wakif,
@@ -1331,6 +2232,75 @@ class HomeController extends Controller
             throw new \yii\web\NotFoundHttpException("{$path} is not found!");
         }
     }
+    public function actionDaftarWakaf()
+    {
+        $model = Setting::find()->one();
+        //    var_dump($model);die;
+        $file = $model->daftar_wakaf;
+        // $model->tanggal_received=date('Y-m-d H:i:s');
+        $path = Yii::getAlias("@app/web/uploads/setting/") . $file;
+        $arr = explode(".", $file);
+        $extension = end($arr);
+        $nama_file = "Cara Mengikuti Wakaf ." . $extension;
+
+        if (file_exists($path)) {
+            return Yii::$app->response->sendFile($path, $nama_file);
+        } else {
+            throw new \yii\web\NotFoundHttpException("{$path} is not found!");
+        }
+    }
+    public function actionCetak($id) {
+        $formatter = \Yii::$app->formatter;
+        $model = Pembayaran::findOne(['kode_transaksi' => $id]);
+        $content = $this->renderPartial('view-print',[
+            'model' => $model,
+    ]);
+        
+        // setup kartik\mpdf\Pdf component
+        $pdf = new Pdf([
+            // set to use core fonts only
+            'mode' => Pdf::MODE_CORE, 
+            //Name file
+            'filename' => 'Akad Wakaf'."pdf",
+            // LEGAL paper format
+            'format' => Pdf::FORMAT_LEGAL, 
+            // portrait orientation
+            'orientation' => Pdf::ORIENT_PORTRAIT, 
+            // stream to browser inline
+            'destination' => Pdf::DEST_BROWSER, 
+            // your html content input
+            'content' => $content,  
+            'marginHeader' => 0,
+            'marginFooter' => 1,
+            'marginTop' => 1,
+            'marginBottom' => 5,
+            'marginLeft' => 0,
+            'marginRight' => 0,
+            // format content from your own css file if needed or use the
+            // enhanced bootstrap css built by Krajee for mPDF formatting 
+            'cssFile' => '@vendor/kartik-v/yii2-mpdf/src/assets/kv-mpdf-bootstrap.min.css',
+            // any css to be embedded if required
+            // 'cssInline' => '.kv-heading-1{font-size:25px}', 
+            'cssInline' => 'body { font-family: irannastaliq; font-size: 17px; }.page-break {display: none;};
+            .kv-heading-1{font-size:17px}table{width: 100%;line-height: inherit;text-align: left; border-collapse: collapse;}table, td, th {margin-left:50px;margin-right:50px;},fa { font-family: fontawesome;} @media print{
+                .page-break{display: block;page-break-before: always;}
+            }',
+             // set mPDF properties on the fly
+             'options' => [               
+                'defaultheaderline' => 0,  //for header
+                 'defaultfooterline' => 0,  //for footer
+            ],
+             // call mPDF methods on the fly
+            'methods' => [
+                'SetTitle'=>'Print', 
+                'SetHeader' => $this->renderPartial('header_gambar'),
+              //   // 'SetHeader'=>['AMONG TANI FOUNDATION'],
+              //   'SetFooter'=>$this->renderPartial('footer_gambar'),
+                
+            ]
+        ]);
+        return $pdf->render(); 
+    }
     protected function findMidtrans($id)
     {
         $curl = curl_init();
@@ -1371,6 +2341,33 @@ class HomeController extends Controller
             CURLOPT_FOLLOWLOCATION => true,
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => "GET",
+            CURLOPT_POSTFIELDS => "\n\n",
+            CURLOPT_HTTPHEADER => array(
+                "Accept: application/json",
+                "Content-Type: application/json",
+                "Authorization: Basic TWlkLXNlcnZlci1oV3hSekx0a3NmX0s4SUNhY3RjZ0Fwdl86"
+            ),
+        ));
+
+        $response = curl_exec($curl);
+
+        curl_close($curl);
+        $a = json_decode($response);
+        return $a;
+    }
+    protected function findMidtransProductionCancel($id)
+    {
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => "https://api.midtrans.com/v2/" . $id . "/cancel",
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => "",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "POST",
             CURLOPT_POSTFIELDS => "\n\n",
             CURLOPT_HTTPHEADER => array(
                 "Accept: application/json",

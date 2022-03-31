@@ -41,6 +41,7 @@ use yii\helpers\Html;
     }
 </style>
 
+<div style='text-align:center;width:100%'><h2>Login</h2> <p>Silahkan mengisi Data Anda untuk login</p></div>
 <?php $form = ActiveForm::begin([
     'id' => 'FormLogin',
     'layout' => 'horizontal',
@@ -49,7 +50,7 @@ use yii\helpers\Html;
 ]);
 ?>
 <div class="row">
-    <?= $form->field($model, "username", Constant::COLUMN(1))->textInput()->label("Email") ?>
+    <?= $form->field($model, "username", Constant::COLUMN(1))->textInput(['type' => 'email'])->label("Email") ?>
     <?= $form->field($model, "password", Constant::COLUMN(1))->passwordInput() ?>
     <?= $form->field($model, 'reCaptcha', ["template" => "{input}"])->widget(
         \app\components\ReCaptcha3::className(),
@@ -59,7 +60,7 @@ use yii\helpers\Html;
         ]
     ) ?>
     <div class="col-12 pb-4 ml-4">
-        <a id="btn-forgot" style="color: blue;">Lupa Password</a>
+        <a id="btn-forgot" style="color: blue;cursor:pointer">Lupa Password</a>
     </div>
     <div class="col-md-12">
         <div class="col-md-12">

@@ -4,6 +4,7 @@
 
 namespace app\controllers\base;
 
+use app\components\ActionSendFcm;
 use app\components\UploadFile;
 use app\models\Berita;
 use app\models\search\BeritaSearch;
@@ -13,6 +14,7 @@ use yii\helpers\Url;
 use yii\filters\AccessControl;
 use dmstr\bootstrap\Tabs;
 use app\models\Action;
+use app\models\User;
 use Yii;
 use yii\web\UploadedFile;
 
@@ -79,6 +81,7 @@ use UploadFile;
      */
     public function actionCreate()
     {
+        // var_dump(ActionSendFcm::getMessage("ExponentPushToken[dvs18uMElj10c0yIBKLDFl]","Berita","23","Berita Baru","Tes var_dump"));die;
         $model = new Berita;
 
         try {
@@ -112,6 +115,12 @@ use UploadFile;
                 //     $gambar->saveAs($path);
                 // }
                 if ($model->save()) {
+                    $usrs = User::find()->where(['<>','fcm_token',""])->all();
+                    foreach ($usrs as $value) {
+                        $user = User::findOne(['id'=>$value->id]);
+                        ActionSendFcm::getMessage($value->fcm_token,"berita",$model->id,"Berita Baru",$model->judul);
+                        // var_dump(ActionSendFcm::getMessage($value->fcm_token,$model->id,"Berita Baru",$model->judul));die;
+                    }
                     return $this->redirect(['view', 'id' => $model->id]);
                 }
             } elseif (!\Yii::$app->request->isPost) {

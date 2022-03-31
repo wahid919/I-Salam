@@ -1,12 +1,30 @@
 <?php
 
+use app\models\Pembayaran;
 use richardfan\widget\JSRegister;
 use yii\helpers\Url;
 use yii\bootstrap\ActiveForm;
 use yii\helpers\Html;
 ?>
+          <!-- display success message -->
+          <?php if (Yii::$app->session->hasFlash('success')) : ?>
+            <div class="alert alert-success alert-dismissable">
+              <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+              <p><i class="icon fa fa-check"></i>Saved!</p>
+              <?= Yii::$app->session->getFlash('success') ?>
+            </div>
+          <?php endif; ?>
 
-<section id="header" class="header-wakaf bg-overlay pt-120 pb-120">
+          <!-- display error message -->
+          <?php if (Yii::$app->session->hasFlash('error')) : ?>
+            <div class="alert alert-danger alert-dismissable">
+              <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+              <h4><i class="icon fa fa-check"></i>Saved!</h4>
+              <?= Yii::$app->session->getFlash('error') ?>
+            </div>
+          <?php endif; ?>
+
+<section id="header" class="header-wakaf bg-overlay pt-120 pb-50">
   <div class="bg-img"><img src="<?= Yii::$app->request->baseUrl . '/uploads/slides/' . $slides->gambar ?>" alt="background"></div>
   <div class="">
     <div class="row">
@@ -100,10 +118,10 @@ use yii\helpers\Html;
                     </div>
                   </div>
                   <div class="col-12">
-                    <?php if (!\Yii::$app->user->isGuest) { ?>
-                      <a id="btn-user-login" class="nav__item-link" style="color: black;">Infak Sekarang</a>
-                    <?php } else { ?>
+                     <?php if (!\Yii::$app->user->isGuest) { ?>
                       <button type="submit" class="btn-sm btn-block text-white font-weight-bold" style="height: 3rem;background-color: #f1a502;" id="bayarkan2">Infak Sekarang</button>
+                    <?php } else { ?>
+                      <button type="button" class="btn-sm btn-block text-white font-weight-bold" style="height: 3rem;background-color: #f1a502;" id="btn-user-login2">Infak Sekarang</button>
                     <?php
                     } ?>
                   </div>
@@ -427,7 +445,9 @@ if (!\Yii::$app->user->isGuest) {
 }
 ?>
 
-<?php if (!\Yii::$app->user->isGuest) { ?>
+<?php if (!\Yii::$app->user->isGuest) { 
+  $pembayar = Pembayaran::find()->where(['status_id' => 5,'user_id' => \Yii::$app->user->identity->id])->count();
+  ?>
   <script>
     function myFunction(e) {
       document.getElementById("pendanaan_wakaf").value = e.target.value
@@ -457,11 +477,15 @@ if (!\Yii::$app->user->isGuest) {
         if (nominal == null) {
           alert("Anda Belum Mengisi Nominal Pendanaan");
         } else {
-
+          let pembayaran = <?php echo $pembayar ?>;
+          if(pembayaran == 0){
           let ket = "wakaf";
-          var base_url = window.origin + "/isalam/web/home/pembayarans/" + dana + "?nominal=" + nominal + "&keterangan=" + ket;
+          var base_url = window.origin + "/web/home/pembayarans/" + dana + "?nominal=" + nominal + "&keterangan=" + ket;
           // console.log(base_url);
           window.location.href = base_url;
+          }else{
+            alert("Mohon Selesaikan Pembayaran Anda Terlebih Dahulu");
+          }
         }
       }
 
@@ -477,10 +501,15 @@ if (!\Yii::$app->user->isGuest) {
 
           alert("Anda Belum Mengisi Nominal Infak");
         } else {
+          let pembayaran2 = <?php echo $pembayar ?>;
+          if(pembayaran2 == 0){
           let ket2 = "infak";
-          var base_url2 = window.origin + "/isalam/web/home/pembayarans/" + dana2 + "?nominal=" + nominal2 + "&keterangan=" + ket2;
+          var base_url2 = window.origin + "/web/home/pembayarans/" + dana2 + "?nominal=" + nominal2 + "&keterangan=" + ket2;
           //   console.log(base_url);
           window.location.href = base_url2;
+          }else{
+            alert("Mohon Selesaikan Pembayaran Anda Terlebih Dahulu");
+          }
         }
       }
     });
