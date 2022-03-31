@@ -2559,7 +2559,7 @@ textarea.form-control {
     text-transform: capitalize;
     display: block;
     position: relative;
-    color: #787878 !important;
+    color: #787878;
     line-height: 100px;
     letter-spacing: 0.4px;
 }

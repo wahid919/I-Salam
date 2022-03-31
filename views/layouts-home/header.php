@@ -1,11 +1,40 @@
 <?php
+use yii\helpers\Html;
+use yii\helpers\Url;
 
 $setting = app\models\Setting::find()->one();
 $icons = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->logo;
 $categories = app\models\KategoriBerita::find()->all();
 $kategori_pendanaans = app\models\KategoriPendanaan::find()->all();
 
-$relativeHomeUrl = $_SERVER['REQUEST_URI'];
+// $relativeHomeUrl = $_SERVER['REQUEST_URI'];
+if (function_exists("checkCurrentNav") == false) {
+  function checkCurrentNav($target, $withindex = false)
+  {
+      $text = "";
+      $current_url = Url::current();
+      if ($withindex) $current_url .= "/index";
+
+      if (is_array($target)) {
+          foreach ($target as $item) {
+              $item = Url::to([$item]);
+              if (stripos($current_url, $item) !== false) {
+                  $text = "active";
+              }
+
+              if ($text != "") break;
+          }
+      } else {
+          $target = Url::to([$target]);
+          if ($withindex) $target .= "/index";
+          if (stripos($current_url, $target) !== false) {
+              $text = "active";
+          }
+      }
+
+      return $text;
+  }
+}
 
 // var_dump($relativeHomeUrl);die;
 ?>
@@ -16,6 +45,9 @@ $relativeHomeUrl = $_SERVER['REQUEST_URI'];
     padding-left: 15px;
     margin-left: -10px;
     ;
+  }
+  .active {
+    color : #00f !important;
   }
 @media screen and (min-width: 768px) {
   .dalam{
@@ -51,17 +83,17 @@ $relativeHomeUrl = $_SERVER['REQUEST_URI'];
             </li>
           <?php } else { ?>
             <li class="nav__item">
-              <a href="<?= Yii::$app->request->baseUrl . "/home/profile" ?>" class="nav__item-link" style="color: black;">Akun Saya</a>
+              <a href="<?= Url::to(["home/profile"], true) ?>" class="nav__item-link <?= checkCurrentNav('/home/profile', true) ?>" style="color: black;">Akun Saya</a>
             </li><!-- /.nav-item -->
             <li class="nav__item">
-              <a href="<?= Yii::$app->request->baseUrl . "/site/logout" ?>" class="nav__item-link" style="color: black;">Logout</a>
+              <a href="<?= Url::to(["site/logout"], true) ?>" class="nav__item-link" style="color: black;">Logout</a>
             </li><!-- /.nav-item -->
           <?php } ?>
 
           <?php if (Yii::$app->user->identity->role_id == 1) { ?>
 
             <li class="nav__item">
-            <a href="<?= Yii::$app->request->baseUrl . "/site/index" ?>" class="nav__item-link" style="color: black;">Halaman Admin</a>
+            <a href="<?= Url::to(["site/index"], true) ?>" class="nav__item-link <?= checkCurrentNav('/site/index', true) ?>" style="color: black;">Halaman Admin</a>
             </li>
           <?php } ?>
         </ul><!-- /.navbar-nav -->
@@ -82,7 +114,7 @@ $relativeHomeUrl = $_SERVER['REQUEST_URI'];
           <div class="dalam">
           <?php if (Yii::$app->user->identity->id == null) { ?>
             <!-- <li class="nav__item">
-              <a href="<?= Yii::$app->request->baseUrl . "/site/login" ?>" class="nav__item-link" style="color: black;">Login</a>
+              <a href="<?= Yii::$app->request->baseUrl . "/site/login" ?>" class="nav__item-link <?= checkCurrentNav('/home', true) ?>" style="color: black;">Login</a>
             </li> -->
             <li class="nav__item">
               <a id="btn-login" class="nav__item-link" style="color: black;cursor:pointer">Login</a>
@@ -92,36 +124,26 @@ $relativeHomeUrl = $_SERVER['REQUEST_URI'];
             </li>
           <?php } else { ?>
             <li class="nav__item">
-              <a href="<?= Yii::$app->request->baseUrl . "/home/profile" ?>" class="nav__item-link" style="color: black;">Akun Saya</a>
+              <a href="<?= Url::to(["home/profile"], true) ?>" class="nav__item-link <?= checkCurrentNav('/home/profile', true) ?>" style="color: black;">Akun Saya</a>
             </li><!-- /.nav-item -->
             <li class="nav__item">
-              <a href="<?= Yii::$app->request->baseUrl . "/site/logout" ?>" class="nav__item-link" style="color: black;">Logout</a>
+              <a href="<?= Url::to(["site/logout"], true) ?>" class="nav__item-link" style="color: black;">Logout</a>
             </li><!-- /.nav-item -->
           <?php } ?>
 
           <?php if (Yii::$app->user->identity->role_id == 1) { ?>
 
             <li class="nav__item">
-            <a href="<?= Yii::$app->request->baseUrl . "/site/index" ?>" class="nav__item-link" style="color: black;">Halaman Admin</a>
+            <a href="<?= Url::to(["site/index"], true) ?>" class="nav__item-link <?= checkCurrentNav('/site/index', true) ?>" style="color: black;">Halaman Admin</a>
             </li>
           <?php } ?>
           </div>
           <li class="nav__item">
-            <a href="<?= Yii::$app->request->baseUrl ?>" class="nav__item-link <?php if($relativeHomeUrl == "/web/"){ echo "active"; } ?>">Beranda</a>
+            <a href="<?= Url::to(["home"], true) ?>" class="nav__item-link <?= checkCurrentNav('/home', true) ?>">Beranda</a>
           </li><!-- /.nav-item -->
           <li class="nav__item with-dropdown">
-            <a href="<?= \Yii::$app->request->baseUrl . "/home#" ?>" class="dropdown-toggle nav__item-link <?php
-             if($relativeHomeUrl == "/web/home/visi"){
-                echo "active";
-               }elseif($relativeHomeUrl == "/web/home/organisasi"){
-                echo "active";
-               }elseif($relativeHomeUrl == "/web/home/latar-belakang"){
-                echo "active";
-               }elseif($relativeHomeUrl == "/web/home/program"){
-                echo "active";
-               } 
-             
-             ?>">
+            <a href="<?= Url::to(["home/index"], true) ?>" class="dropdown-toggle nav__item-link 
+            <?= checkCurrentNav(["/home/index", "/home/organisasi", "/home/latar-belakang", "/home/program"]) ?>">
               <div class="d-none d-lg-block">
                 Tentang Kami <i class="fa fa-angle-down"></i>
               </div>
@@ -131,24 +153,24 @@ $relativeHomeUrl = $_SERVER['REQUEST_URI'];
             </a>
             <i class="fa fa-angle-right" data-toggle="dropdown"></i>
             <ul class="dropdown-menu">
-              <li class="nav__item"><a href="<?= \Yii::$app->request->baseUrl . "/home/latar-belakang" ?>" class="nav__item-link text-dark">Latar Belakang</a></li>
+              <li class="nav__item"><a href="<?= Url::to(["home/latar-belakang"], true) ?>" class="nav__item-link text-dark <?= checkCurrentNav('/home/latar-belakang', true) ?>">Latar Belakang</a></li>
 
-              <li class="nav__item"><a href="<?= \Yii::$app->request->baseUrl . "/home/visi" ?>" class="nav__item-link text-dark">Visi Misi</a></li>
+              <li class="nav__item"><a href="<?= Url::to(["home/visi"], true) ?>" class="nav__item-link text-dark  <?= checkCurrentNav('/home/visi', true) ?>">Visi Misi</a></li>
 
-              <li class="nav__item"><a href="<?= \Yii::$app->request->baseUrl . "/home/organisasi" ?>" class="nav__item-link text-dark">Organisasi</a></li>
+              <li class="nav__item"><a href="<?= Url::to(["home/organisasi"], true) ?>" class="nav__item-link text-dark  <?= checkCurrentNav('/home/organisasi', true) ?>">Organisasi</a></li>
 
-              <!-- <li class="nav__item"><a href="<?= \Yii::$app->request->baseUrl . "/home/kontak" ?>" class="nav__item-link text-dark">Kontak</a></li> -->
+              <!-- <li class="nav__item"><a href="<?= \Yii::$app->request->baseUrl . "/home/kontak" ?>" class="nav__item-link text-dark  <?= checkCurrentNav('/home/latar-belakang', true) ?>">Kontak</a></li> -->
 
               <li class="nav__item">
-            <a href="<?= Yii::$app->request->baseUrl . "/home/program" ?>" class="nav__item-link <?php if($relativeHomeUrl == "/web/home/program"){ echo "active"; } ?>">Program</a>
+            <a href="<?= Url::to(["home/program"], true) ?>" class="nav__item-link  <?= checkCurrentNav('/home/program', true) ?>">Program</a>
           </li>
             </ul>
           </li>
           <li class="nav__item">
-            <a href="<?= \Yii::$app->request->baseUrl . "/home/program?kategori=Sosial" ?>" class="nav__item-link <?php if($relativeHomeUrl == "/web/home/program?kategori=Sosial"){ echo "active"; } ?>">Wakaf Sosial</a>
+            <a href="<?= Url::to(["home/program?kategori=Sosial"], true) ?>" class="nav__item-link <?= checkCurrentNav('/home/program?kategori=Sosial', true) ?>">Wakaf Sosial</a>
           </li>
           <li class="nav__item">
-            <a href="<?= \Yii::$app->request->baseUrl . "/home/program?kategori=Produktif" ?>" class="nav__item-link" <?php if($relativeHomeUrl == "/web/home/program?kategori=Produktif"){ echo "active"; } ?>>Wakaf Produktif</a>
+            <a href="<?= Url::to(["home/program?kategori=Produktif"], true) ?>" class="nav__item-link <?= checkCurrentNav('/home/program?kategori=Produktif', true) ?>">Wakaf Produktif</a>
           </li>
 
           <li class="nav__item with-dropdown">
@@ -162,13 +184,13 @@ $relativeHomeUrl = $_SERVER['REQUEST_URI'];
             </a>
             <i class="fa fa-angle-right" data-toggle="dropdown"></i>
             <ul class="dropdown-menu">
-              <li class="nav__item"><a href="<?= \Yii::$app->request->baseUrl . "/home/program-zakat" ?>" class="nav__item-link text-dark">Zakat</a></li>
+              <li class="nav__item"><a href="<?= Url::to(["home/program-zakat"], true) ?>" class="nav__item-link text-dark  <?= checkCurrentNav('/home/program-zakat', true) ?>">Zakat</a></li>
 
-              <li class="nav__item"><a href="<?= \Yii::$app->request->baseUrl . "/home/program-infak" ?>" class="nav__item-link text-dark">Infak</a></li>
+              <li class="nav__item"><a href="<?= Url::to(["home/program-infak"], true) ?>" class="nav__item-link text-dark  <?= checkCurrentNav('/home/program-infak', true) ?>">Infak</a></li>
 
-              <li class="nav__item"><a href="<?= \Yii::$app->request->baseUrl . "/home/program-sedekah" ?>" class="nav__item-link text-dark">Sedekah</a></li>
+              <li class="nav__item"><a href="<?= Url::to(["home/program-sedekah"], true) ?>" class="nav__item-link text-dark  <?= checkCurrentNav('/home/program-sedekah', true) ?>">Sedekah</a></li>
 
-              <li class="nav__item"><a href="<?= \Yii::$app->request->baseUrl . "/home/kalkulator-zakat" ?>" class="nav__item-link text-dark">Kalkulator Zakat</a></li>
+              <li class="nav__item"><a href="<?= Url::to(["home/program-zakat"], true) ?>" class="nav__item-link text-dark  <?= checkCurrentNav('/home/program-zakat', true) ?>">Kalkulator Zakat</a></li>
 
             </ul>
           </li>
@@ -183,9 +205,9 @@ $relativeHomeUrl = $_SERVER['REQUEST_URI'];
             </a>
             <i class="fa fa-angle-right" data-toggle="dropdown"></i>
             <ul class="dropdown-menu">
-              <li class="nav__item"><a href="<?= \Yii::$app->request->baseUrl . "/home/afiliasi" ?>" class="nav__item-link text-dark">Afiliasi</a></li>
+              <li class="nav__item"><a href="<?= Url::to(["home/afiliasi"], true) ?>" class="nav__item-link text-dark  <?= checkCurrentNav('/home/afiliasi', true) ?>">Afiliasi</a></li>
 
-              <li class="nav__item"><a href="<?= \Yii::$app->request->baseUrl . "/home/daftar-wakaf" ?>" class="nav__item-link text-dark">Daftar Wakaf</a></li>
+              <li class="nav__item"><a href="<?= Url::to(["home/daftar-wakaf"], true) ?>" class="nav__item-link text-dark  <?= checkCurrentNav('/home/daftar-wakaf', true) ?>">Daftar Wakaf</a></li>
 
             </ul>
           </li>
