@@ -2582,7 +2582,7 @@ textarea.form-control {
 
 .navbar .nav__item .nav__item-link.active:before,
 .navbar .nav__item .nav__item-link:hover:before {
-    width: 100%;
+    /* width: 100%; */
 }
 
 .navbar .dropdown-toggle:after {

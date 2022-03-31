@@ -1,40 +1,11 @@
 <?php
-use yii\helpers\Url;
 
 $setting = app\models\Setting::find()->one();
 $icons = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->logo;
 $categories = app\models\KategoriBerita::find()->all();
 $kategori_pendanaans = app\models\KategoriPendanaan::find()->all();
 
-// $relativeHomeUrl = $_SERVER['REQUEST_URI'];
-if (function_exists("checkCurrentNav") == false) {
-  function checkCurrentNav($target, $withindex = false)
-  {
-      $text = "";
-      // $current_url = Url::current();
-      $current_url = $_SERVER['REQUEST_URI'];
-      if ($withindex) $current_url .= "/index";
-
-      if (is_array($target)) {
-          foreach ($target as $item) {
-              $item = Url::to([$item]);
-              if (stripos($current_url, $item) !== false) {
-                  $text = "active";
-              }
-
-              if ($text != "") break;
-          }
-      } else {
-          $target = Url::to([$target]);
-          if ($withindex) $target .= "/index";
-          if (stripos($current_url, $target) !== false) {
-              $text = "active";
-          }
-      }
-
-      return $text;
-  }
-}
+$relativeHomeUrl = $_SERVER['REQUEST_URI'];
 
 // var_dump($relativeHomeUrl);die;
 ?>
@@ -46,20 +17,12 @@ if (function_exists("checkCurrentNav") == false) {
     margin-left: -10px;
     ;
   }
-  .active {
-    color : #ffc107 !important;
-  }
-  
-@media screen and (min-width: 769px) {
+@media screen and (min-width: 768px) {
   .dalam{
     display: none;
   }
-
-.logo-header{
-    margin-left: 0px;
-  }
 }
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 767px) {
 .awal{
   display: none;
 }
@@ -88,7 +51,7 @@ if (function_exists("checkCurrentNav") == false) {
             </li>
           <?php } else { ?>
             <li class="nav__item">
-              <a href="<?= Yii::$app->request->baseUrl . "/home/profile" ?>" class="nav__item-link <?= checkCurrentNav('/home/profile', true) ?>" style="color: black;">Akun Saya</a>
+              <a href="<?= Yii::$app->request->baseUrl . "/home/profile" ?>" class="nav__item-link" style="color: black;">Akun Saya</a>
             </li><!-- /.nav-item -->
             <li class="nav__item">
               <a href="<?= Yii::$app->request->baseUrl . "/site/logout" ?>" class="nav__item-link" style="color: black;">Logout</a>
@@ -129,7 +92,7 @@ if (function_exists("checkCurrentNav") == false) {
             </li>
           <?php } else { ?>
             <li class="nav__item">
-              <a href="<?= Yii::$app->request->baseUrl . "/home/profile" ?>" class="nav__item-link <?= checkCurrentNav('/home/profile', true) ?>" style="color: black;">Akun Saya</a>
+              <a href="<?= Yii::$app->request->baseUrl . "/home/profile" ?>" class="nav__item-link" style="color: black;">Akun Saya</a>
             </li><!-- /.nav-item -->
             <li class="nav__item">
               <a href="<?= Yii::$app->request->baseUrl . "/site/logout" ?>" class="nav__item-link" style="color: black;">Logout</a>
@@ -144,11 +107,21 @@ if (function_exists("checkCurrentNav") == false) {
           <?php } ?>
           </div>
           <li class="nav__item">
-            <a href="<?= Yii::$app->request->baseUrl."/home" ?>" class="nav__item-link <?= checkCurrentNav(["/home"]) ?>">Beranda</a>
+            <a href="<?= Yii::$app->request->baseUrl ?>" class="nav__item-link <?php if($relativeHomeUrl == "/web/"){ echo "active"; } ?>">Beranda</a>
           </li><!-- /.nav-item -->
           <li class="nav__item with-dropdown">
-            <a href="<?= \Yii::$app->request->baseUrl . "/home#" ?>" class="dropdown-toggle nav__item-link
-            <?= checkCurrentNav(["/home/organisasi", "/home/latar-belakang", "/home/program","/home/visi"]) ?>">
+            <a href="<?= \Yii::$app->request->baseUrl . "/home#" ?>" class="dropdown-toggle nav__item-link <?php
+             if($relativeHomeUrl == "/web/home/visi"){
+                echo "active";
+               }elseif($relativeHomeUrl == "/web/home/organisasi"){
+                echo "active";
+               }elseif($relativeHomeUrl == "/web/home/latar-belakang"){
+                echo "active";
+               }elseif($relativeHomeUrl == "/web/home/program"){
+                echo "active";
+               } 
+             
+             ?>">
               <div class="d-none d-lg-block">
                 Tentang Kami <i class="fa fa-angle-down"></i>
               </div>
@@ -167,20 +140,19 @@ if (function_exists("checkCurrentNav") == false) {
               <!-- <li class="nav__item"><a href="<?= \Yii::$app->request->baseUrl . "/home/kontak" ?>" class="nav__item-link text-dark">Kontak</a></li> -->
 
               <li class="nav__item">
-            <a href="<?= Yii::$app->request->baseUrl . "/home/program" ?>" class="nav__item-link">Program</a>
+            <a href="<?= Yii::$app->request->baseUrl . "/home/program" ?>" class="nav__item-link <?php if($relativeHomeUrl == "/web/home/program"){ echo "active"; } ?>">Program</a>
           </li>
             </ul>
           </li>
           <li class="nav__item">
-            <a href="<?= \Yii::$app->request->baseUrl . "/home/program?kategori=Sosial" ?>" class="nav__item-link <?= checkCurrentNav('/home/program?kategori=Sosial', true) ?>">Wakaf Sosial</a>
+            <a href="<?= \Yii::$app->request->baseUrl . "/home/program?kategori=Sosial" ?>" class="nav__item-link <?php if($relativeHomeUrl == "/web/home/program?kategori=Sosial"){ echo "active"; } ?>">Wakaf Sosial</a>
           </li>
           <li class="nav__item">
-            <a href="<?= \Yii::$app->request->baseUrl . "/home/program?kategori=Produktif" ?>" class="nav__item-link <?= checkCurrentNav('/home/program?kategori=Produktif', true) ?>">Wakaf Produktif</a>
+            <a href="<?= \Yii::$app->request->baseUrl . "/home/program?kategori=Produktif" ?>" class="nav__item-link" <?php if($relativeHomeUrl == "/web/home/program?kategori=Produktif"){ echo "active"; } ?>>Wakaf Produktif</a>
           </li>
 
           <li class="nav__item with-dropdown">
-            <a href="<?= \Yii::$app->request->baseUrl . "/home#" ?>" class="dropdown-toggle nav__item-link
-            <?= checkCurrentNav(["/home/program-zakat", "/home/program-infak", "/home/program-sedekah", "/home/kalkulator-zakat"]) ?>">
+            <a href="<?= \Yii::$app->request->baseUrl . "/home#" ?>" class="dropdown-toggle nav__item-link">
               <div class="d-none d-lg-block">
                 ZIS <i class="fa fa-angle-down"></i>
               </div>
@@ -201,8 +173,7 @@ if (function_exists("checkCurrentNav") == false) {
             </ul>
           </li>
           <li class="nav__item with-dropdown">
-            <a href="<?= \Yii::$app->request->baseUrl . "/home#" ?>" class="dropdown-toggle nav__item-link
-            <?= checkCurrentNav(["/home/afiliasi", "/home/daftar-wakaf"]) ?>">
+            <a href="<?= \Yii::$app->request->baseUrl . "/home#" ?>" class="dropdown-toggle nav__item-link">
               <div class="d-none d-lg-block">
                 Layanan <i class="fa fa-angle-down"></i>
               </div>
@@ -219,8 +190,7 @@ if (function_exists("checkCurrentNav") == false) {
             </ul>
           </li>
           <li class="nav__item with-dropdown">
-            <a href="<?= \Yii::$app->request->baseUrl . "/home#" ?>" class="dropdown-toggle nav__item-link
-            <?= checkCurrentNav(["/home/regulasi-wakaf", "/home/aturan-wakaf","/home/fiqih-wakaf"]) ?>">
+            <a href="<?= \Yii::$app->request->baseUrl . "/home#" ?>" class="dropdown-toggle nav__item-link">
               <div class="d-none d-lg-block">
                 Literasi <i class="fa fa-angle-down"></i>
               </div>
@@ -246,12 +216,11 @@ if (function_exists("checkCurrentNav") == false) {
             <a href="<?= Yii::$app->request->baseUrl . "/home/program" ?>" class="nav__item-link <?php if($relativeHomeUrl == "/web/home/program"){ echo "active"; } ?>">Wakaf</a>
           </li> -->
           <li class="nav__item">
-            <a href="<?= Yii::$app->request->baseUrl . "/news" ?>" class="nav__item-link <?= checkCurrentNav(["/home/news", "/detail-berita"]) ?>">Berita</a>
+            <a href="<?= Yii::$app->request->baseUrl . "/home/news" ?>" class="nav__item-link <?php if($relativeHomeUrl == "/web/home/news"){ echo "active"; } ?>">Berita</a>
           </li>
 
           <li class="nav__item with-dropdown">
-            <a href="<?= \Yii::$app->request->baseUrl . "/home#" ?>" class="dropdown-toggle nav__item-link
-            <?= checkCurrentNav(["/home/alamat-kantor", "/home/telp","/home/map","/home/pesan","/home/medsos"]) ?>">
+            <a href="<?= \Yii::$app->request->baseUrl . "/home#" ?>" class="dropdown-toggle nav__item-link">
               <div class="d-none d-lg-block">
                 Kontak Kami <i class="fa fa-angle-down"></i>
               </div>
@@ -301,7 +270,9 @@ if (function_exists("checkCurrentNav") == false) {
             <i class="fa fa-angle-right" data-toggle="dropdown"></i>
             <ul class="dropdown-menu">
               <li class="nav__item"><a href="<?= \Yii::$app->request->baseUrl . "/home/rekening" ?>" class="nav__item-link text-dark">Daftar Rekening</a></li>
+
               <li class="nav__item"><a href="<?= \Yii::$app->request->baseUrl . "/home/report" ?>" class="nav__item-link text-dark">Anual Report</a></li>
+
             </ul>
           </li> -->
           <!-- <li class="nav__item">
