@@ -17,9 +17,19 @@ $relativeHomeUrl = $_SERVER['REQUEST_URI'];
     margin-left: -10px;
     ;
   }
+@media screen and (min-width: 768px) {
+  .dalam{
+    display: none;
+  }
+}
+@media screen and (max-width: 767px) {
+.awal{
+  display: none;
+}
+}
 </style>
 <header id="header" class="header header-transparent">
-  <nav class="navbar navbar-expand-lg sticky-navbar">
+  <nav class="navbar navbar-expand-lg sticky-navbar awal">
     <div class="container">
       
       <!-- <button class="navbar-toggler" type="button">
@@ -69,6 +79,33 @@ $relativeHomeUrl = $_SERVER['REQUEST_URI'];
       </button>
       <div class="collapse navbar-collapse" id="mainNavigation">
         <ul class="navbar-nav ml-auto">
+          <div class="dalam">
+          <?php if (Yii::$app->user->identity->id == null) { ?>
+            <!-- <li class="nav__item">
+              <a href="<?= Yii::$app->request->baseUrl . "/site/login" ?>" class="nav__item-link" style="color: black;">Login</a>
+            </li> -->
+            <li class="nav__item">
+              <a id="btn-login" class="nav__item-link" style="color: black;cursor:pointer">Login</a>
+            </li>
+            <li class="nav__item">
+              <a id="btn-registrasi" class="nav__item-link" style="color: black;cursor:pointer">Daftar</a>
+            </li>
+          <?php } else { ?>
+            <li class="nav__item">
+              <a href="<?= Yii::$app->request->baseUrl . "/home/profile" ?>" class="nav__item-link" style="color: black;">Akun Saya</a>
+            </li><!-- /.nav-item -->
+            <li class="nav__item">
+              <a href="<?= Yii::$app->request->baseUrl . "/site/logout" ?>" class="nav__item-link" style="color: black;">Logout</a>
+            </li><!-- /.nav-item -->
+          <?php } ?>
+
+          <?php if (Yii::$app->user->identity->role_id == 1) { ?>
+
+            <li class="nav__item">
+            <a href="<?= Yii::$app->request->baseUrl . "/site/index" ?>" class="nav__item-link" style="color: black;">Halaman Admin</a>
+            </li>
+          <?php } ?>
+          </div>
           <li class="nav__item">
             <a href="<?= Yii::$app->request->baseUrl ?>" class="nav__item-link <?php if($relativeHomeUrl == "/web/"){ echo "active"; } ?>">Beranda</a>
           </li><!-- /.nav-item -->
