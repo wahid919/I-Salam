@@ -127,7 +127,7 @@ class HomeController extends Controller
                 // $model->nama = Yii::$app->user->identity->name;
                 $model->nama = $name;
                 if ($ket == "lembar") {
-
+                    $dt ="wakaf";
                     $model->jumlah_lembaran = (int)$nominal;
                     $total = (int)$nominal * $pendanaan->nominal_lembaran;
                     $model->nominal = (int)$total;
@@ -142,7 +142,8 @@ class HomeController extends Controller
                         'quantity' => 1,
                         'name' => $pendanaan->nama_pendanaan . "(Lembaran)"
                     );
-                } elseif($ket = "nominal") {
+                } elseif($ket == "nominal") {
+                    $dt = "wakaf";
                     $model->jumlah_lembaran = 0;
                     $model->nominal = (int)$nominal;
                     $transaction_details = array(
@@ -156,7 +157,8 @@ class HomeController extends Controller
                         'quantity' => 1,
                         'name' => $pendanaan->nama_pendanaan . "(Non Lembaran)"
                     );
-                } elseif($ket = "lembar-zakat") {
+                } elseif($ket == "lembar-zakat") {
+                    $dt = "zakat";
                     $model->jumlah_lembaran = 0;
                     $model->nominal = (int)$nominal;
                     $transaction_details = array(
@@ -170,7 +172,8 @@ class HomeController extends Controller
                         'quantity' => 1,
                         'name' => $pendanaan->nama_pendanaan . "(Lembaran Zakat)"
                     );
-                } elseif($ket = "nominal-zakat") {
+                } elseif($ket == "nominal-zakat") {
+                    $dt = "zakat";
                     $model->jumlah_lembaran = 0;
                     $model->nominal = (int)$nominal;
                     $transaction_details = array(
@@ -184,7 +187,8 @@ class HomeController extends Controller
                         'quantity' => 1,
                         'name' => $pendanaan->nama_pendanaan . "(Non Lembaran Zakat)"
                     );
-                }elseif($ket = "lembar-infak") {
+                }elseif($ket == "lembar-infak") {
+                   $dt = "infak";
                     $model->jumlah_lembaran = 0;
                     $model->nominal = (int)$nominal;
                     $transaction_details = array(
@@ -198,7 +202,8 @@ class HomeController extends Controller
                         'quantity' => 1,
                         'name' => $pendanaan->nama_pendanaan . "(Lembaran Infak)"
                     );
-                } elseif($ket = "nominal-infak") {
+                } elseif($ket == "nominal-infak") {
+                    $dt = "infak";
                     $model->jumlah_lembaran = 0;
                     $model->nominal = (int)$nominal;
                     $transaction_details = array(
@@ -212,7 +217,8 @@ class HomeController extends Controller
                         'quantity' => 1,
                         'name' => $pendanaan->nama_pendanaan . "(Non Lembaran Infak)"
                     );
-                }elseif($ket = "lembar-sedekah") {
+                }elseif($ket == "lembar-sedekah") {
+                   $dt = "sedekah";
                     $model->jumlah_lembaran = 0;
                     $model->nominal = (int)$nominal;
                     $transaction_details = array(
@@ -226,7 +232,8 @@ class HomeController extends Controller
                         'quantity' => 1,
                         'name' => $pendanaan->nama_pendanaan . "(Lembaran Sedekah)"
                     );
-                } elseif($ket = "nominal-sedekah") {
+                } elseif($ket == "nominal-sedekah") {
+                    $dt = "sedekah";
                     $model->jumlah_lembaran = 0;
                     $model->nominal = (int)$nominal;
                     $transaction_details = array(
@@ -247,7 +254,7 @@ class HomeController extends Controller
                 $model->user_id = \Yii::$app->user->identity->id;;
                 $model->status_id = 5;
                 
-                $model->jenis = "wakaf";
+                $model->jenis = $dt;
                 $model->amanah_pendanaan = $amanah_pendanaan;
                 $shipping_address = array(
                     'first_name'    => $pendanaan->nama_nasabah,
