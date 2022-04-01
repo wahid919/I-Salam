@@ -1,10 +1,15 @@
 <?php
+
+use app\models\Pendanaan;
 use yii\helpers\Url;
+use yii\db\Expression;
 
 $setting = app\models\Setting::find()->one();
 $icons = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->logo;
 $categories = app\models\KategoriBerita::find()->all();
 $kategori_pendanaans = app\models\KategoriPendanaan::find()->all();
+
+$wakaf = Pendanaan::find()->where(['status_tampil' => 1])->orderBy(new Expression('rand()'))->one();
 
 // $relativeHomeUrl = $_SERVER['REQUEST_URI'];
 if (function_exists("checkCurrentNav") == false) {
@@ -343,6 +348,10 @@ if (function_exists("checkCurrentNav") == false) {
               <li class="nav__item"><a href="<?= \Yii::$app->request->baseUrl . "/home/medsos" ?>" class="nav__item-link text-dark">Medsos</a></li>
 
             </ul>
+          </li>
+
+          <li class="nav__item">
+            <a href="<?= Url::to(["detail-program", "id" => $wakaf->id]) ?>" class="nav__item-link active">Wakaf Sekarang</a>
           </li>
           <!-- <li class="nav__item with-dropdown">
             <a href="<?= \Yii::$app->request->baseUrl . "/home/news/" ?>" class="dropdown-toggle nav__item-link">
