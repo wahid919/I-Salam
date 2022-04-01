@@ -320,6 +320,14 @@ var map2 = L.map("map-canvas2").setView([lat, lng], 13);
         }
     })
 </script>
-
+<script type="text/javascript">
+$(document).ready(function(){
+  $('.dropdown-submenu a.test').on("click", function(e){
+    $(this).next('ul').toggle();
+    e.stopPropagation();
+    e.preventDefault();
+  });
+});
+</script>
 </html>
 <?php $this->endPage() ?>

@@ -49,7 +49,23 @@ if (function_exists("checkCurrentNav") == false) {
   .active {
     color : #ffc107 !important;
   }
-  
+  .dropdown-submenu {
+  position: relative;
+}
+
+.dropdown-submenu .dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -1px;
+}
+.test{
+  text-transform: capitalize;
+    font-weight: 400;
+    line-height: 40px !important;
+    white-space: nowrap;
+    position: relative;
+  border-bottom: 1px solid #eaeaea;
+}
 @media screen and (min-width: 769px) {
   .dalam{
     display: none;
@@ -166,19 +182,74 @@ if (function_exists("checkCurrentNav") == false) {
 
               <!-- <li class="nav__item"><a href="<?= \Yii::$app->request->baseUrl . "/home/kontak" ?>" class="nav__item-link text-dark">Kontak</a></li> -->
 
-              <li class="nav__item">
+              <!-- <li class="nav__item">
             <a href="<?= Yii::$app->request->baseUrl . "/home/program" ?>" class="nav__item-link">Program</a>
-          </li>
+          </li> -->
+
+          <li class="nav__item dropdown-submenu">
+        <a class="test" tabindex="-1" href="#">Program <span class="caret"></span></a>
+        <ul class="dropdown-menu">
+          <li class="nav__item"><a tabindex="-1" href="<?= Yii::$app->request->baseUrl . "/home/program" ?> "class="nav__item-link text-dark">Semua Program</a></li>
+          <li class="nav__item"><a tabindex="-1" href="<?= \Yii::$app->request->baseUrl . "/home/program?kategori=Sosial" ?> "class="nav__item-link text-dark">Wakaf Sosial</a></li>
+          <li class="nav__item"><a tabindex="-1" href="<?= \Yii::$app->request->baseUrl . "/home/program?kategori=Produktif" ?> "class="nav__item-link text-dark">Wakaf Produktif</a></li>
+          <!-- <li class="nav__item dropdown-submenu">
+            <a class="test" href="#">Another dropdown <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li class="nav__item"><a href="#">3rd level dropdown</a></li>
+              <li class="nav__item"><a href="#">3rd level dropdown</a></li>
+            </ul>
+          </li> -->
+        </ul>
+      </li>
+      <li class="nav__item dropdown-submenu">
+        <a class="test" tabindex="-1" href="#">ZIS <span class="caret"></span></a>
+        <ul class="dropdown-menu">
+          <!-- <li class="nav__item"><a tabindex="-1" href="<?= Yii::$app->request->baseUrl . "/home/program" ?>">Semua Program</a></li>
+          <li class="nav__item"><a tabindex="-1" href="<?= \Yii::$app->request->baseUrl . "/home/program?kategori=Sosial" ?>">Wakaf Sosial</a></li>
+          <li class="nav__item"><a tabindex="-1" href="<?= \Yii::$app->request->baseUrl . "/home/program?kategori=Produktif" ?>">Wakaf Produktif</a></li> -->
+          <li class="nav__item"><a tabindex="-1" href="<?= \Yii::$app->request->baseUrl . "/home/program-zakat" ?>" class="nav__item-link text-dark">Zakat</a></li>
+
+              <li class="nav__item"><a tabindex="-1" href="<?= \Yii::$app->request->baseUrl . "/home/program-infak" ?>" class="nav__item-link text-dark">Infak</a></li>
+
+              <li class="nav__item"><a tabindex="-1" href="<?= \Yii::$app->request->baseUrl . "/home/program-sedekah" ?>" class="nav__item-link text-dark">Sedekah</a></li>
+
+              <li class="nav__item"><a tabindex="-1" href="<?= \Yii::$app->request->baseUrl . "/home/kalkulator-zakat" ?>" class="nav__item-link text-dark">Kalkulator Zakat</a></li>
+
+          <!-- <li class="nav__item dropdown-submenu">
+            <a class="test" href="#">Another dropdown <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li class="nav__item"><a href="#">3rd level dropdown</a></li>
+              <li class="nav__item"><a href="#">3rd level dropdown</a></li>
+            </ul>
+          </li> -->
+        </ul>
+      </li>
+      
+          <!-- <li class="nav__item dropdown-submenu">
+        <a class="test" tabindex="-1" href="#">New dropdown <span class="caret"></span></a>
+        <ul class="dropdown-menu">
+          <li class="nav__item"><a tabindex="-1" href="#">2nd level dropdown</a></li>
+          <li class="nav__item"><a tabindex="-1" href="#">2nd level dropdown</a></li>
+          <li class="nav__item dropdown-submenu">
+            <a class="test" href="#">Another dropdown <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li class="nav__item"><a href="#">3rd level dropdown</a></li>
+              <li class="nav__item"><a href="#">3rd level dropdown</a></li>
             </ul>
           </li>
-          <li class="nav__item">
+        </ul>
+      </li> -->
+
+            </ul>
+          </li>
+          <!-- <li class="nav__item">
             <a href="<?= \Yii::$app->request->baseUrl . "/home/program?kategori=Sosial" ?>" class="nav__item-link <?= checkCurrentNav('/home/program?kategori=Sosial', true) ?>">Wakaf Sosial</a>
           </li>
           <li class="nav__item">
             <a href="<?= \Yii::$app->request->baseUrl . "/home/program?kategori=Produktif" ?>" class="nav__item-link <?= checkCurrentNav('/home/program?kategori=Produktif', true) ?>">Wakaf Produktif</a>
-          </li>
+          </li> -->
 
-          <li class="nav__item with-dropdown">
+          <!-- <li class="nav__item with-dropdown">
             <a href="<?= \Yii::$app->request->baseUrl . "/home#" ?>" class="dropdown-toggle nav__item-link
             <?= checkCurrentNav(["/home/program-zakat", "/home/program-infak", "/home/program-sedekah", "/home/kalkulator-zakat"]) ?>">
               <div class="d-none d-lg-block">
@@ -199,7 +270,7 @@ if (function_exists("checkCurrentNav") == false) {
               <li class="nav__item"><a href="<?= \Yii::$app->request->baseUrl . "/home/kalkulator-zakat" ?>" class="nav__item-link text-dark">Kalkulator Zakat</a></li>
 
             </ul>
-          </li>
+          </li> -->
           <li class="nav__item with-dropdown">
             <a href="<?= \Yii::$app->request->baseUrl . "/home#" ?>" class="dropdown-toggle nav__item-link
             <?= checkCurrentNav(["/home/afiliasi", "/home/daftar-wakaf"]) ?>">
@@ -314,3 +385,14 @@ if (function_exists("checkCurrentNav") == false) {
     </div><!-- /.container -->
   </nav><!-- /.navabr -->
 </header><!-- /.Header -->
+
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script> -->
+<!-- <script type="text/javascript">
+$(document).ready(function(){
+  $('.dropdown-submenu a.test').on("click", function(e){
+    $(this).next('ul').toggle();
+    e.stopPropagation();
+    e.preventDefault();
+  });
+});
+</script> -->
