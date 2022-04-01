@@ -2,6 +2,18 @@
 $setting = app\models\Setting::find()->one();
 $icons = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->logo;
 ?>
+<style>
+  @media screen and (min-width: 769px) {
+  .ikuti{
+    padding-top: 3rem!important;
+  }
+}
+@media screen and (max-width: 768px) {
+.copyy{
+  text-align: center;
+}
+}
+</style>
 <footer id="footer" class="footer mt-4">
   <div class="footer-newsletter">
     <div class="container">
@@ -25,7 +37,7 @@ $icons = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->logo;
         <div class="col-12 col-sm-12 col-md-5 col-lg-4 footer__widget footer__widget-about">
           <div class="footer__widget-content">
             <h5 class="mt-0 mb-1 text-footer-about" style="color:orange;">Lebih Dekat dengan Kami</h5>
-            <p>Ikuti Sosial Media Kami untuk Informasi lebih update dan Terbaru.</p>
+            <p class="ikuti">Ikuti Sosial Media Kami untuk Informasi lebih update dan Terbaru.</p>
             <ul class="contact__list list-unstyled">
               <center>
 
@@ -52,7 +64,7 @@ $icons = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->logo;
     <div class="container">
       <div class="row align-items-center">
         <div class="col-sm-12 col-md-6 col-lg-6">
-          <div class="footer__copyright">
+          <div class="footer__copyright copyy">
             <span>&copy;<?= date('Y'); ?> <?= $setting->nama_web ?> </span>
           </div><!-- /.Footer-copyright -->
         </div><!-- /.col-lg-6 -->
