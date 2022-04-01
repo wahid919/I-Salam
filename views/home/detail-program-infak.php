@@ -439,7 +439,12 @@ use yii\helpers\Url;
           if(pendanaan == null){
           alert("Pendanaan Tidak Diketahui");
           }else{
-            window.location.href = `<?= Url::to(['/home/pembayaran', 'id' => $pendanaan->id]) ?>?nominal=${nominal}&amanah_pendanaan=${amanah_pendanaan}&ket=nominal-infak`;
+            if(nominal <10000){
+              alert("Minimal Rp 10.000");
+
+            }else{
+              window.location.href = `<?= Url::to(['/home/pembayaran', 'id' => $pendanaan->id]) ?>?nominal=${nominal}&amanah_pendanaan=${amanah_pendanaan}&ket=nominal-infak`;
+            }
           }
         }
       });

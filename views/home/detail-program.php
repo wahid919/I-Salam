@@ -237,7 +237,7 @@ use yii\helpers\Url;
                           <div class="input-group-prepend mr-2" style="height:calc(1.5em + .75rem + 2px);">
                             <div class="input-group-text bg-white border-r5 font-weight-bold" style="color: #afafaf;border-color: #787878;">Rp</div>
                           </div>
-                          <input type="number" class="form-control select-wakaf" id="nominal" name="nominal" style="border-color: #787878;" placeholder="Minimal Wakaf Rp. 10.000" required>
+                          <input type="number" class="form-control select-wakaf" id="nominal" name="nominal" onkeyup="myFunction()" onkeydown="myFunction()" style="border-color: #787878;" placeholder="Minimal Wakaf Rp. 10.000" required>
                           <button id="clear" class="btn btn-danger btn-sm" type="button" style="height: calc(1.5em + 0.75rem + 2px);
                           line-height: 34px;
                           width: 60px;background-color:firebrick;color:white;border-radius:0px;">
@@ -248,6 +248,10 @@ use yii\helpers\Url;
                   </div>
                 </div>
                 <script>
+                  function myFunction() {
+  let x = document.getElementById("nominal");
+  x.value = x.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');
+}
                   let hasils =document.querySelector('#nominal');
     window.addEventListener('load', () => {
         const button = document.querySelector('#clear');
@@ -435,7 +439,12 @@ use yii\helpers\Url;
           if(pendanaan == null){
           alert("Pendanaan Tidak Diketahui");
           }else{
-            window.location.href = `<?= Url::to(['/home/pembayaran', 'id' => $pendanaan->id]) ?>?nominal=${nominal}&amanah_pendanaan=${amanah_pendanaan}&ket=nominal`;
+            if(nominal <10000){
+              alert("Minimal Rp 10.000");
+
+            }else{
+              window.location.href = `<?= Url::to(['/home/pembayaran', 'id' => $pendanaan->id]) ?>?nominal=${nominal}&amanah_pendanaan=${amanah_pendanaan}&ket=nominal`;
+            }
           }
         }
       });
