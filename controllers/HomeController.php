@@ -1738,7 +1738,21 @@ class HomeController extends Controller
 
         if ($model->load($_POST)) {
             //password
+            if($model->nomor_handphone != ""){
+                if (strlen($model->nomor_handphone) < 10) {
+                    Yii::$app->session->setFlash("error", "Gagal Update Profile ,Nomor Handphone minimal 10 angka");
+                    
+                    return $this->redirect(['profile']);
+                }
+                
+            $model->nomor_handphone = Constant::purifyPhone($model->nomor_handphone);
+            }
             if ($model->password != "") {
+                if (strlen($model->password) < 4) {
+                    Yii::$app->session->setFlash("error", "Gagal Update Profile ,Password minimal 4 karakter");
+                    
+                    return $this->redirect(['profile']);
+                }
                 $model->password = \Yii::$app->security->generatePasswordHash($model->password);
             } else {
                 $model->password = $oldMd5Password;
