@@ -22,7 +22,7 @@
             <?= $this->render('component/sidemenu-profile') ?>
         </div>
         <div class="col-lg-8 col-md-6 col-sm-12 col-12 profile-section">
-            <h3 class="text-isalam-1 font-weight-bold text-detail-program">Transaksi</h3>
+            <h3 class="text-isalam-1 font-weight-bold text-detail-program">Transaksi Saya</h3>
             <div class="row">
                 <?php
 
