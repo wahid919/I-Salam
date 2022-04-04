@@ -83,7 +83,8 @@ class HomeController extends Controller
                          'detail-program-sedekah', 'unduh-file-uraian', 'unduh-file-wakaf', 'lupa-password', 
                          'ganti-password', 'visi', 'organisasi','lupa','kontak','cetak','latar-belakang',
                          'alamat-kantor','telp','map','pesan','medsos','privacy-policy','cek-data',
-                         'aturan-wakaf','fiqih-wakaf','regulasi-wakaf','kalkulator-zakat','daftar-wakaf','afiliasi'],
+                         'aturan-wakaf','fiqih-wakaf','regulasi-wakaf','kalkulator-zakat','daftar-wakaf','afiliasi',
+                        'transaksi-wakaf','transaksi-zis'],
                         'allow' => true,
                     ],
                     [
@@ -1628,6 +1629,7 @@ class HomeController extends Controller
         $count = $query->count();
         $pagination = new Pagination(['totalCount' => $count, 'pageSize' => 6]);
         $pembayarans = $query->offset($pagination->offset)
+        ->where(['user_id' => Yii::$app->user->identity->id])
             ->limit($pagination->limit)
             ->orderBy(['id' => SORT_DESC])
             ->all();
@@ -1675,6 +1677,152 @@ class HomeController extends Controller
         }
 
         return $this->render('profile', [
+            'setting' => $setting,
+            'sts' => $sts,
+            'icon' => $icon,
+            'pagination' => $pagination,
+            'pembayarans' => $pembayarans
+        ]);
+    }
+    public function actionTransaksiZis()
+    {
+        $confirm = Yii::$app->user->identity->confirm;
+        $status = Yii::$app->user->identity->status;
+        if ($confirm != 1 || $status != 1) {
+            return $this->redirect(["home/index"]);
+        }
+        $setting = Setting::find()->one();
+        $icon = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->logo;
+        $data_all = Pembayaran::find()->where(['user_id' => Yii::$app->user->identity->id])->andWhere(['<>','jenis','wakaf'])->all();
+
+        $query = Pembayaran::find()->where(['user_id' => Yii::$app->user->identity->id])->andWhere(['<>','jenis','wakaf']);
+        $count = $query->count();
+        $pagination = new Pagination(['totalCount' => $count, 'pageSize' => 6]);
+        $pembayarans = $query->offset($pagination->offset)
+            ->where(['<>','jenis','wakaf'])
+            ->andWhere(['user_id' => Yii::$app->user->identity->id])
+            ->limit($pagination->limit)
+            ->orderBy(['id' => SORT_DESC])
+            ->all();
+        foreach ($data_all as $data) {
+            $wf = Pembayaran::find()->where(['id' => $data->id])->one();
+            // $a = $this->findMidtrans($wf->kode_transaksi);
+            $a = $this->findMidtransProduction($wf->kode_transaksi);
+
+            if ($a->status_code == "404") {
+                $wf->status_id = $wf->status_id;
+                $sts = "Tidak Ada";
+            } else {
+                if ($a->transaction_status == "pending") {
+                    $wf->status_id = 5;
+                    $sts = "Ada";
+                } elseif ($a->transaction_status == "capture" || $a->transaction_status == "settlement") {
+                    $wf->status_id = 6;
+                    $wf->tanggal_konfirmasi = date('Y-m-d H:i:s');
+                    $sts = "Ada";
+                } elseif ($a->transaction_status == "deny" || $a->transaction_status == "cancel" || $a->transaction_status == "expire") {
+                    $wf->status_id = 8;
+                    $wf->tanggal_konfirmasi = date('Y-m-d H:i:s');
+                    $sts = "Ada";
+                } elseif ($a->transaction_status == "cancel") {
+                    $wf->status_id = 12;
+                    $wf->tanggal_konfirmasi = date('Y-m-d H:i:s');
+                    $sts = "Ada";
+                } elseif ($a->transaction_status == "expire") {
+                    $wf->status_id = 13;
+                    $wf->tanggal_konfirmasi = date('Y-m-d H:i:s');
+                    $sts = "Ada";
+                }
+            }
+
+            if ($a->status_code == "404") {
+                $wf->jenis_pembayaran_id = "Tidak Ditemukan";
+            } else {
+                if ($a->payment_type == "cstore") {
+                    $wf->jenis_pembayaran_id = $a->store;
+                } else {
+                    $wf->jenis_pembayaran_id = $a->payment_type;
+                }
+            }
+            $wf->save();
+        }
+
+        return $this->render('transaksi-zis', [
+            'setting' => $setting,
+            'sts' => $sts,
+            'icon' => $icon,
+            'pagination' => $pagination,
+            'pembayarans' => $pembayarans
+        ]);
+    }
+    public function actionTransaksiWakaf()
+    {
+        $confirm = Yii::$app->user->identity->confirm;
+        $status = Yii::$app->user->identity->status;
+        if ($confirm != 1 || $status != 1) {
+            return $this->redirect(["home/index"]);
+        }
+        $setting = Setting::find()->one();
+        $icon = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->logo;
+        $data_all = Pembayaran::find()->where(['user_id' => Yii::$app->user->identity->id,'jenis'=>'wakaf'])->all();
+
+        $query = Pembayaran::find()->where(['user_id' => Yii::$app->user->identity->id,'jenis'=>'wakaf']);
+        $count = $query->count();
+        $pagination = new Pagination(['totalCount' => $count, 'pageSize' => 6]);
+        $pembayarans = $query->offset($pagination->offset)
+            ->where(['jenis'=>'wakaf'])
+            ->andWhere(['user_id' => Yii::$app->user->identity->id])
+            ->limit($pagination->limit)
+            ->orderBy(['id' => SORT_DESC])
+            ->all();
+            // $a= $pembayarans->createCommand()->getRawSql();
+            // var_dump($a);die;
+
+
+        foreach ($data_all as $data) {
+            $wf = Pembayaran::find()->where(['id' => $data->id])->one();
+            // $a = $this->findMidtrans($wf->kode_transaksi);
+            $a = $this->findMidtransProduction($wf->kode_transaksi);
+
+            if ($a->status_code == "404") {
+                $wf->status_id = $wf->status_id;
+                $sts = "Tidak Ada";
+            } else {
+                if ($a->transaction_status == "pending") {
+                    $wf->status_id = 5;
+                    $sts = "Ada";
+                } elseif ($a->transaction_status == "capture" || $a->transaction_status == "settlement") {
+                    $wf->status_id = 6;
+                    $wf->tanggal_konfirmasi = date('Y-m-d H:i:s');
+                    $sts = "Ada";
+                } elseif ($a->transaction_status == "deny" || $a->transaction_status == "cancel" || $a->transaction_status == "expire") {
+                    $wf->status_id = 8;
+                    $wf->tanggal_konfirmasi = date('Y-m-d H:i:s');
+                    $sts = "Ada";
+                } elseif ($a->transaction_status == "cancel") {
+                    $wf->status_id = 12;
+                    $wf->tanggal_konfirmasi = date('Y-m-d H:i:s');
+                    $sts = "Ada";
+                } elseif ($a->transaction_status == "expire") {
+                    $wf->status_id = 13;
+                    $wf->tanggal_konfirmasi = date('Y-m-d H:i:s');
+                    $sts = "Ada";
+                }
+            }
+
+            if ($a->status_code == "404") {
+                $wf->jenis_pembayaran_id = "Tidak Ditemukan";
+            } else {
+                if ($a->payment_type == "cstore") {
+                    $wf->jenis_pembayaran_id = $a->store;
+                } else {
+                    $wf->jenis_pembayaran_id = $a->payment_type;
+                }
+            }
+            $wf->save();
+        }
+
+        return $this->render('transaksi-wakaf', [
             'setting' => $setting,
             'sts' => $sts,
             'icon' => $icon,

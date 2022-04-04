@@ -351,7 +351,7 @@ if (function_exists("checkCurrentNav") == false) {
           </li>
 
           <li class="nav__item">
-            <a href="<?= Url::to(["detail-program", "id" => $wakaf->id]) ?>" class="nav__item-link active">Wakaf Sekarang</a>
+            <a href="<?= Url::to(["detail-program", "id" => $wakaf->id]) ?>" class="nav__item-link">Wakaf Sekarang</a>
           </li>
           <!-- <li class="nav__item with-dropdown">
             <a href="<?= \Yii::$app->request->baseUrl . "/home/news/" ?>" class="dropdown-toggle nav__item-link">

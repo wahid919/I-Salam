@@ -21,7 +21,11 @@
                     <tbody>
                         <tr class="border-bottom-3">
                             <td class="text-left w-10"><i class="fas fa-chart-bar fa-lg"></i></td>
-                            <td class="text-left"><a href="<?= \Yii::$app->request->BaseUrl ?>/home/profile">Transaksi</a></td>
+                            <td class="text-left"><a href="<?= \Yii::$app->request->BaseUrl ?>/home/transaksi-wakaf">Transaksi Wakaf</a></td>
+                        </tr>
+                        <tr class="border-bottom-3">
+                            <td class="text-left w-10"><i class="fas fa-chart-bar fa-lg"></i></td>
+                            <td class="text-left"><a href="<?= \Yii::$app->request->BaseUrl ?>/home/transaksi-zis">Transaksi Zis</a></td>
                         </tr>
                         <tr class="border-bottom-3">
                             <td class="text-left w-10"><i class="far fa-bell fa-lg"></i></td>
