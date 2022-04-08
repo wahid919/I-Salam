@@ -1,9 +1,7 @@
 <?php
-use \yii\web\Request;
+
 require_once 'Custom.php';
 $params = require(__DIR__ . '/params.php');
-
-$baseUrl = str_replace('/web', '', (new Request)->getBaseUrl());
 
 $config = [
     'id' => 'basic',
@@ -21,7 +19,6 @@ $config = [
             'secretV3' => Yii::$app->params['recaptcha3.secretKey'],
         ],
         'request' => [
-            'baseUrl' => $baseUrl,
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'secret',
         ],
