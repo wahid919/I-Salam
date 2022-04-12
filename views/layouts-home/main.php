@@ -252,7 +252,24 @@ var map2 = L.map("map-canvas2").setView([lat, lng], 13);
                     $("#modal-login").attr("class", "fade modal");
                 })
             });
-
+            $('#btn-user-registrasi').on('click', async () => {
+                let response = await fetch("<?= Url::to(['/registrasi'], false) ?>", {
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                });
+                response = await response.text();
+                var parser = new DOMParser();
+                var doc = parser.parseFromString(response, 'text/html');
+                $("#modal-body").html(response);
+                // $("#modal-registrasi").modal("show")
+                $("#modal-registrasi").attr("style", "padding-right: 17px; display: block;overflow:auto")
+                $("#modal-registrasi").attr("class", "fade modal show");
+                document.querySelector("#modal-registrasi .close").addEventListener("click", () => {
+                    $("#modal-registrasi").removeAttr("style")
+                    $("#modal-registrasi").attr("class", "fade modal");
+                })
+            });
             $('#btn-registrasi').on('click', async () => {
                 let response = await fetch("<?= Url::to(['/registrasi'], false) ?>", {
                     headers: {
