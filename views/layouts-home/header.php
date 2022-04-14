@@ -16,8 +16,8 @@ if (function_exists("checkCurrentNav") == false) {
   function checkCurrentNav($target, $withindex = false)
   {
       $text = "";
-      // $current_url = Url::current();
-      $current_url = $_SERVER['REQUEST_URI'];
+      $current_url = Url::current();
+      // $current_url = $_SERVER['REQUEST_URI'];
       if ($withindex) $current_url .= "/index";
 
       if (is_array($target)) {
