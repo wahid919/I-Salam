@@ -54,8 +54,8 @@ use yii\bootstrap\ActiveForm;
         }
 
         #modal-registrasi .modal-body {
-            background: whitesmoke;
-            border-radius: 2rem;
+            background: white;
+            border-radius: 1.5rem;
             margin-bottom: 2rem;
         }
 
@@ -86,8 +86,8 @@ use yii\bootstrap\ActiveForm;
         }
 
         #modal-login .modal-body {
-            background: whitesmoke;
-            border-radius: 2rem;
+            background: white;
+            border-radius: 1.5rem;
             margin-bottom: 2rem;
         }
 
@@ -117,8 +117,8 @@ use yii\bootstrap\ActiveForm;
         }
 
         #modal-forgot .modal-body {
-            background: whitesmoke;
-            border-radius: 2rem;
+            background: white;
+            border-radius: 1.5rem;
             margin-bottom: 2rem;
         }
 
@@ -150,7 +150,7 @@ use yii\bootstrap\ActiveForm;
 <?php
 \app\components\Modal::begin([
     'id' => 'modal-registrasi',
-    'header' => '<div style=\'text-align:center;width:100%\'><h2> iSalam</h2></div>'
+    'header' => '<div style=\'text-align:center;width:100%\'><h2 style="text-transform: inherit;"> iSalam</h2></div>'
 ]);
 ?>
 <div id="modal-body"></div>
@@ -159,7 +159,7 @@ use yii\bootstrap\ActiveForm;
 <?php
 \app\components\Modal::begin([
     'id' => 'modal-login',
-    'header' => '<div style=\'text-align:center;width:100%\'><h2> iSalam</h2></div>'
+    'header' => '<div style=\'text-align:center;width:100%\'><h2 style="text-transform: inherit;"> iSalam</h2></div>'
 ]);
 ?>
 <div id="modal-body2"></div>
@@ -168,7 +168,7 @@ use yii\bootstrap\ActiveForm;
 <?php
 \app\components\Modal::begin([
     'id' => 'modal-forgot',
-    'header' => '<div style=\'text-align:center;width:100%\'><h2> iSalam</h2></div>'
+    'header' => '<div style=\'text-align:center;width:100%\'><h2 style="text-transform: inherit;"> iSalam</h2></div>'
 ]);
 ?>
 <div id="modal-body3"></div>

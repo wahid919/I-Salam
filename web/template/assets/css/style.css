@@ -2533,6 +2533,7 @@ textarea.form-control {
     -ms-transform: rotate(-45deg);
     -o-transform: rotate(-45deg);
     transform: rotate(-45deg);
+    margin-top: 25%;
 }
 
 .navbar .navbar-toggler.actived .menu-lines:after {
@@ -2542,6 +2543,7 @@ textarea.form-control {
     -ms-transform: rotate(45deg);
     -o-transform: rotate(45deg);
     transform: rotate(45deg);
+    margin-top: 25%;
 }
 
 .navbar .nav__item {
