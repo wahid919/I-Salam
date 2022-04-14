@@ -47,7 +47,7 @@ if (function_exists("checkCurrentNav") == false) {
   .navbar .nav__item .nav__item-link {
     color: #282828;
     line-height: 30px !important;
-    padding-left: 15px;
+    padding-left: 9px;
     margin-left: -10px;
     ;
   }
@@ -73,6 +73,20 @@ if (function_exists("checkCurrentNav") == false) {
 }
 .btn-sm{
   font-size: 13px!important;
+}
+.dropdown-submenu.right-submenu>a:after {
+  -webkit-transform: rotate(180deg);
+    display: block;
+    content: " ";
+    float: right;
+    width: 0;
+    height: 0;
+    border-color: transparent;
+    border-style: solid;
+    border-width: 5px 5px 5px 0;
+    border-right-color: #2a2a2a;
+    margin-top: 12px;
+    margin-left: -10px;
 }
 @media screen and (min-width: 769px) {
   .dalam{
@@ -103,12 +117,19 @@ if (function_exists("checkCurrentNav") == false) {
 }
 @media screen and (max-width:991px){
   .ml-auto{
-    margin-left: 2%!important;
+    margin-left: 4%!important;
   }
   .navbar .navbar-nav {
         /* margin: 0 !important; */
      /* margin-left: 2%; */
      margin-right: 2%!important;
+    }
+    .navbar .dropdown-menu .nav__item .nav__item-link {
+    padding-left: 9px;
+    border-bottom: none;
+    }
+    .test{
+      border-bottom: none;
     }
 }
 }
@@ -116,7 +137,7 @@ if (function_exists("checkCurrentNav") == false) {
 <header id="header" class="header header-transparent">
   <nav class="navbar navbar-expand-lg sticky-navbar">
     <div class="container">
-      <a href="<?= Yii::$app->request->baseUrl ?>" style="font-family: cursive;font-size:large">
+      <a href="<?= Yii::$app->request->baseUrl ?>" style="font-family: cursive;font-size:large;color:#d07404">
         <img src="<?= $icons ?>" class="logo-header logo-light" alt="logo">
         <img src="<?= $icons ?>" class="logo-header logo-dark" alt="logo">
         I-Salam
@@ -154,7 +175,7 @@ if (function_exists("checkCurrentNav") == false) {
               <li class="nav__item"><a href="<?= Yii::$app->request->baseUrl . "/home/program" ?> "class="nav__item-link text-dark">Semua Program Wakaf</a></li>
               <li class="nav__item"><a href="<?= \Yii::$app->request->baseUrl . "/home/program?kategori=Sosial" ?> "class="nav__item-link text-dark">Wakaf Sosial</a></li>
               <li class="nav__item"><a href="<?= \Yii::$app->request->baseUrl . "/home/program?kategori=Produktif" ?> "class="nav__item-link text-dark">Wakaf Produktif</a></li>
-              <li class="nav__item dropdown-submenu">
+              <li class="nav__item dropdown-submenu right-submenu">
         <a class="test" tabindex="-1" href="#">Lainnya <span class="caret"></span></a>
         <ul class="dropdown-menu">
           <li class="nav__item"><a tabindex="-1" href="<?= \Yii::$app->request->baseUrl . "/home/program-zakat" ?>" class="nav__item-link text-dark">Zakat</a></li>
