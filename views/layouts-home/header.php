@@ -71,6 +71,9 @@ if (function_exists("checkCurrentNav") == false) {
     position: relative;
   border-bottom: 1px solid #eaeaea;
 }
+.btn-sm{
+  font-size: 13px!important;
+}
 @media screen and (min-width: 769px) {
   .dalam{
     display: none;
@@ -82,9 +85,9 @@ if (function_exists("checkCurrentNav") == false) {
 .logo-header{
     margin-left: 0px;
   }
-.sekarang{
+/* .sekarang{
   margin-left: 1%;
-}
+} */
 .sekarang-mobile{
   display: none;
 }
@@ -98,6 +101,16 @@ if (function_exists("checkCurrentNav") == false) {
   /* margin-left: 4%;
   margin-right: 4%; */
 }
+@media screen and (max-width:991px){
+  .ml-auto{
+    margin-left: 2%!important;
+  }
+  .navbar .navbar-nav {
+        /* margin: 0 !important; */
+     /* margin-left: 2%; */
+     margin-right: 2%!important;
+    }
+}
 }
 </style>
 <header id="header" class="header header-transparent">
@@ -109,7 +122,7 @@ if (function_exists("checkCurrentNav") == false) {
         I-Salam
       </a>
       <div class="sekarang-mobile" style="margin-right: auto;margin-left:auto">
-        <a href="<?= Url::to(["detail-program", "id" => $wakaf->id]) ?>"><button class="btn-sm btn-block text-white font-weight-bold text-left" style="background-color: #f1a502;">Wakaf Sekarang</button></a>
+        <a href="<?= Url::to(["detail-program", "id" => $wakaf->id]) ?>"><button class="btn-sm btn-block text-white font-weight-bold text-left" style="background-color: #f1a502;border-radius:6.4px;">Wakaf Sekarang</button></a>
       </div>
       <button class="navbar-toggler" type="button">
         <span class="menu-lines"><span></span></span>
@@ -205,8 +218,8 @@ if (function_exists("checkCurrentNav") == false) {
             <a href="<?= Yii::$app->request->baseUrl . "/news" ?>" class="nav__item-link <?= checkCurrentNav(["/home/news", "/detail-berita"]) ?>">Berita</a>
           </li>
 
-          <div class="awal">
-          <li class="nav__item with-dropdown">
+          <!-- <div class="awal"> -->
+          <li class="nav__item with-dropdown awal">
             <a href="<?= \Yii::$app->request->baseUrl . "/home#" ?>" class="dropdown-toggle nav__item-link
             <?= checkCurrentNav(["/home/alamat-kantor", "/home/telp","/home/map","/home/pesan","/home/medsos"]) ?>">
               <div class="d-none d-lg-block">
@@ -245,13 +258,13 @@ if (function_exists("checkCurrentNav") == false) {
           
             </ul>
           </li>
-        </div>
+        <!-- </div> -->
           
-          <div class="sekarang">
-            <li class="nav__item">
-              <a href="<?= Url::to(["detail-program", "id" => $wakaf->id]) ?>"><button class="btn-sm btn-block text-white font-weight-bold" style="background-color: #f1a502;">Wakaf Sekarang</button></a>
+          <!-- <div class="sekarang"> -->
+            <li class="nav__item sekarang">
+              <a href="<?= Url::to(["detail-program", "id" => $wakaf->id]) ?>"><button class="btn-sm btn-block text-white font-weight-bold" style="background-color: #f1a502;border-radius:6.4px;">Wakaf Sekarang</button></a>
             </li>
-          </div>
+          <!-- </div> -->
          <div class="akun" style="margin-top: 2%;">
            <div class="row" style="margin-left: auto;margin-right:auto">
          <?php if (Yii::$app->user->identity->id == null) { ?>
@@ -272,10 +285,10 @@ if (function_exists("checkCurrentNav") == false) {
               <div class="col-4">
               <a href="<?= Yii::$app->request->baseUrl . "/home/profile" ?>" class="nav__item-link <?= checkCurrentNav('/home/profile', true) ?>" style="color: black;"><button class="btn-sm btn-block text-white font-weight-bold" style="background-color: #f1a502;">Akun Saya</button></a>
             </div>
-            <div class="col-4">
+            <div class="col-5" style="padding-right: 10px;padding-left: 10px;">
               <a href="<?= Yii::$app->request->baseUrl . "/site/index" ?>" class="nav__item-link" style="color: black;"><button class="btn-sm btn-block text-white font-weight-bold" style="background-color: #f1a502;">Halaman Admin</button></a>
             </div>
-            <div class="col-4">
+            <div class="col-3">
               <a href="<?= Yii::$app->request->baseUrl . "/site/logout" ?>" class="nav__item-link" style="color: black;"><button class="btn-sm btn-block text-white font-weight-bold" style="background-color: #f1a502;">Logout</button></a>
               </div>
               <?php }else{ ?>

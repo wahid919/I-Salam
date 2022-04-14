@@ -3236,7 +3236,9 @@ textarea.form-control {
         display: block;
     }
     .navbar .navbar-nav {
-        margin: 0 !important;
+        /* margin: 0 !important; */
+     /* margin-left: 2%; */
+     margin-right: 2%;
     }
     .navbar .nav__item {
         margin-right: 0;
