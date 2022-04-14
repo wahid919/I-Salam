@@ -150,7 +150,7 @@ use yii\bootstrap\ActiveForm;
 <?php
 \app\components\Modal::begin([
     'id' => 'modal-registrasi',
-    'header' => '<div style=\'text-align:center;width:100%\'><h2>I-Salam</h2></div>'
+    'header' => '<div style=\'text-align:center;width:100%\'><h2> iSalam</h2></div>'
 ]);
 ?>
 <div id="modal-body"></div>
@@ -159,7 +159,7 @@ use yii\bootstrap\ActiveForm;
 <?php
 \app\components\Modal::begin([
     'id' => 'modal-login',
-    'header' => '<div style=\'text-align:center;width:100%\'><h2>I-salam</h2></div>'
+    'header' => '<div style=\'text-align:center;width:100%\'><h2> iSalam</h2></div>'
 ]);
 ?>
 <div id="modal-body2"></div>
@@ -168,7 +168,7 @@ use yii\bootstrap\ActiveForm;
 <?php
 \app\components\Modal::begin([
     'id' => 'modal-forgot',
-    'header' => '<div style=\'text-align:center;width:100%\'><h2>Lupa Password</h2> <p>Silahkan mengisi Data Anda</p></div>'
+    'header' => '<div style=\'text-align:center;width:100%\'><h2> iSalam</h2></div>'
 ]);
 ?>
 <div id="modal-body3"></div>

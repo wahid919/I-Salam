@@ -57,6 +57,7 @@ $fieldOptions2 = [
     }
 </style>
 
+<div style='text-align:center;width:100%'><h2>Lupa Password</h2> <p style="color: #a5a5a5;">Silahkan mengisi Data Anda</p></div>
 <?php $form = ActiveForm::begin([
     'id' => 'forgot-form',
     'layout' => 'horizontal',
