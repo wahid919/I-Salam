@@ -418,15 +418,15 @@ if (function_exists("checkCurrentNav") == false) {
                       <!-- <div class="row"> -->
                       <div class="col-6">
                         <label for="nama_header">Nama</label>
-                        <input type="text"class="form-control select-wakaf"  name="nama_header" id="nama_header" required>
+                        <input type="text"class="form-control select-wakaf"  name="nama_header" id="nama_header" onkeyup="myFunctionname_header()" onkeydown="myFunctionname_header()" required>
                       </div>
                       <div class="col-6">
                         <label for="email_header">Email</label>
-                        <input type="email"class="form-control select-wakaf"  name="email_header" id="email_header" required>
+                        <input type="email"class="form-control select-wakaf"  name="email_header" id="email_header" onkeyup="myFunctionemail_header()" onkeydown="myFunctionemail_header()" required>
                       </div>
                       <div class="col-12">
                         <label for="phone_header">Phone</label>
-                        <input type="number"class="form-control select-wakaf"  name="phone_header" id="phone_header" required>
+                        <input type="number"class="form-control select-wakaf"  name="phone_header" id="phone_header" onkeyup="myFunctionphone_header()" onkeydown="myFunctionphone_header()" required>
                       </div>
                       <!-- </div> -->
                       <div class="col-12 mt-2">
@@ -448,6 +448,30 @@ if (function_exists("checkCurrentNav") == false) {
                   function myFunction_header() {
   let x = document.getElementById("nominal_header");
   x.value = x.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');
+}
+                  function myFunctionname_header() {
+  let x = document.getElementById("nama_header");
+  x.addEventListener('keyup', function(e) {
+        // console.log(this.value);
+        x.setAttribute("value", this.value);
+      });
+  // x.value = x.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');
+}
+                  function myFunctionemail_header() {
+  let x = document.getElementById("email_header");
+  x.addEventListener('keyup', function(e) {
+        // console.log(this.value);
+        x.setAttribute("value", this.value);
+      });
+}
+                function myFunctionphone_header() {
+  let x = document.getElementById("phone_header");
+  x.addEventListener('keyup', function(e) {
+        // console.log(this.value);
+        x.setAttribute("value", this.value);
+      });
+  x.value = x.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');
+  
 }
                   let hasils_header =document.querySelector('#nominal_header');
     window.addEventListener('load', () => {
@@ -497,15 +521,15 @@ if (function_exists("checkCurrentNav") == false) {
                     <div class="row">
                     <div class="col-6">
                         <label for="nama2_header">Nama</label>
-                        <input type="text"class="form-control select-wakaf"  name="nama2_header" id="nama2_header" required>
+                        <input type="text"class="form-control select-wakaf"  name="nama2_header" id="nama2_header" onkeyup="myFunctionname2_header()" onkeydown="myFunctionname2_header()" required>
                       </div>
                       <div class="col-6">
                         <label for="email2_header">Email</label>
-                        <input type="email"class="form-control select-wakaf"  name="email2_header" id="email2_header" required>
+                        <input type="email"class="form-control select-wakaf"  name="email2_header" id="email2_header" onkeyup="myFunctionemail2_header()" onkeydown="myFunctionemail2_header()" required>
                       </div>
                       <div class="col-12">
                         <label for="phone2_header">Phone</label>
-                        <input type="number"class="form-control select-wakaf"  name="phone2_header" id="phone2_header" required>
+                        <input type="number"class="form-control select-wakaf"  name="phone2_header" id="phone2_header" onkeyup="myFunctionphone3_header()" onkeydown="myFunctionphone3_header()" required>
                       </div>
                       <div class="col-12 mt-2">
                         <div class="input-group mb-2">
@@ -531,6 +555,30 @@ if (function_exists("checkCurrentNav") == false) {
             </div>
           </div>
           <script>
+            function myFunctionname2_header() {
+  let x = document.getElementById("nama2_header");
+  x.addEventListener('keyup', function(e) {
+        // console.log(this.value);
+        x.setAttribute("value", this.value);
+      });
+  // x.value = x.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');
+}
+                  function myFunctionemail2_header() {
+  let x = document.getElementById("email2_header");
+  x.addEventListener('keyup', function(e) {
+        // console.log(this.value);
+        x.setAttribute("value", this.value);
+      });
+}
+                function myFunctionphone2_header() {
+  let x = document.getElementById("phone2_header");
+  x.addEventListener('keyup', function(e) {
+        // console.log(this.value);
+        x.setAttribute("value", this.value);
+      });
+  x.value = x.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');
+  
+}
                   let hasils2_header =document.querySelector('#nominal2_header');
     window.addEventListener('load', () => {
         const button = document.querySelector('#clear2_header');
