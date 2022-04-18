@@ -418,15 +418,15 @@ if (function_exists("checkCurrentNav") == false) {
                       <!-- <div class="row"> -->
                       <div class="col-6">
                         <label for="nama_header">Nama</label>
-                        <input type="text"class="form-control select-wakaf"  name="nama_header" id="nama_header" onkeyup="myFunctionname_header()" onkeydown="myFunctionname_header()" required>
+                        <input type="text"class="form-control select-wakaf"  name="nama_header" id="nama_header" style="border-color: #787878;" onkeyup="myFunctionname_header()" onkeydown="myFunctionname_header()" required>
                       </div>
                       <div class="col-6">
                         <label for="email_header">Email</label>
-                        <input type="email"class="form-control select-wakaf"  name="email_header" id="email_header" onkeyup="myFunctionemail_header()" onkeydown="myFunctionemail_header()" required>
+                        <input type="email"class="form-control select-wakaf"  name="email_header" id="email_header" style="border-color: #787878;" onkeyup="myFunctionemail_header()" onkeydown="myFunctionemail_header()" required>
                       </div>
-                      <div class="col-12">
-                        <label for="phone_header">Phone</label>
-                        <input type="number"class="form-control select-wakaf"  name="phone_header" id="phone_header" onkeyup="myFunctionphone_header()" onkeydown="myFunctionphone_header()" required>
+                      <div class="col-12" style="margin-bottom: 5px;margin-top:5px;">
+                        <label for="phone_header">Nomor Telepon</label>
+                        <input type="number"class="form-control select-wakaf"  name="phone_header" id="phone_header" style="border-color: #787878;" onkeyup="myFunctionphone_header()" onkeydown="myFunctionphone_header()" required>
                       </div>
                       <!-- </div> -->
                       <div class="col-12 mt-2">
@@ -521,15 +521,15 @@ if (function_exists("checkCurrentNav") == false) {
                     <div class="row">
                     <div class="col-6">
                         <label for="nama2_header">Nama</label>
-                        <input type="text"class="form-control select-wakaf"  name="nama2_header" id="nama2_header" onkeyup="myFunctionname2_header()" onkeydown="myFunctionname2_header()" required>
+                        <input type="text"class="form-control select-wakaf"  name="nama2_header" id="nama2_header" style="border-color: #787878;" onkeyup="myFunctionname2_header()" onkeydown="myFunctionname2_header()" required>
                       </div>
                       <div class="col-6">
                         <label for="email2_header">Email</label>
-                        <input type="email"class="form-control select-wakaf"  name="email2_header" id="email2_header" onkeyup="myFunctionemail2_header()" onkeydown="myFunctionemail2_header()" required>
+                        <input type="email"class="form-control select-wakaf"  name="email2_header" id="email2_header" style="border-color: #787878;" onkeyup="myFunctionemail2_header()" onkeydown="myFunctionemail2_header()" required>
                       </div>
-                      <div class="col-12">
-                        <label for="phone2_header">Phone</label>
-                        <input type="number"class="form-control select-wakaf"  name="phone2_header" id="phone2_header" onkeyup="myFunctionphone3_header()" onkeydown="myFunctionphone3_header()" required>
+                      <div class="col-12" style="margin-bottom: 5px;margin-top:5px;">
+                        <label for="phone2_header">Nomor Telepon</label>
+                        <input type="number"class="form-control select-wakaf"  name="phone2_header" id="phone2_header" style="border-color: #787878;" onkeyup="myFunctionphone3_header()" onkeydown="myFunctionphone3_header()" required>
                       </div>
                       <div class="col-12 mt-2">
                         <div class="input-group mb-2">
