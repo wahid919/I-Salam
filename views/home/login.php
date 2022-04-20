@@ -38,8 +38,8 @@ use yii\helpers\Html;
     .btn-registrasi {
         width: 100%;
         border-radius: 1rem;
-        background-color: #f1a502;
-        border-color: #f1a502;
+        background-color: #d07400;
+        border-color: #d07400;
     }
     label{
         color: #a5a5a5;

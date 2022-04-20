@@ -137,7 +137,7 @@ use yii\helpers\Url;
                     <?php if (!\Yii::$app->user->isGuest) { ?>
                       <a href="#" class="btn btn-sm btn-program btn-block" data-toggle="modal" data-target="#mulaiwakaf" style="padding: 10px !important;">Mulai Wakaf</a>
                     <?php } else { ?>
-                      <button type="button" class="btn-sm btn-block text-white font-weight-bold" style="height: 3rem;background-color: #f1a502;" id="btn-user-login">Mulai Wakaf</button>
+                      <button type="button" class="btn-sm btn-block text-white font-weight-bold" style="height: 3rem;background-color: #d07400;" id="btn-user-login">Mulai Wakaf</button>
                     <?php
                     } ?>
               </div>

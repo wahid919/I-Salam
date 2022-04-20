@@ -1495,8 +1495,8 @@ h6 {
 }
 
 .btn-program {
-    background-color: orange;
-    border: orange;
+    background-color: #d07400;
+    border: #d07400;
     width: auto;
     height: auto;
     border-radius: 7px;
@@ -1506,15 +1506,15 @@ h6 {
 .btn-program:active,
 .btn-program:focus,
 .btn-program:hover {
-    background-color: #ff5e14;
+    background-color: #d07400;
     color: #fff;
 }
 
 .btn-program.btn-hover2:active,
 .btn-program.btn-hover2:focus,
 .btn-program.btn-hover2:hover {
-    background-color: orange;
-    color: #ff5e14;
+    background-color: #d07400;
+    color: #d07400;
     border-color: #ffffff;
 }
 
@@ -2448,6 +2448,37 @@ textarea.form-control {
     z-index: 1010;
 }
 
+@media only screen and (max-width: 991px) {
+    .header {
+        position: fixed;
+        overflow: hidden;
+        z-index: 1010;
+        top: 0;
+        width: 100%;
+        background-color: #ffffff;
+    }
+    /* .header-wakaf{
+        padding: 15px 25px 20px;
+    } */
+    .header+.header-wakaf {
+        margin-top: 17%;
+        /* padding-top: 60px; */
+    }
+    .navbar {
+        padding: 15px 25px 20px;
+        height: 100px;
+        max-height: 100px;
+        background-color: #ffffff;
+        border-bottom: 1px solid #ededed;
+    }
+    
+    .navbar>.container,
+    .navbar>.container-fluid {
+        position: fixed !important;
+        height: 100px;
+    }
+    
+}
 
 /* Navbar */
 
