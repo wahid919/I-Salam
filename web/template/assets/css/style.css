@@ -2475,7 +2475,7 @@ textarea.form-control {
 
 .navbar>.container,
 .navbar>.container-fluid {
-    position: relative;
+    position: fixed !important;
     height: 100px;
 }
 
