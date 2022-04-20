@@ -38,12 +38,16 @@ use yii\helpers\Html;
     .btn-registrasi {
         width: 100%;
         border-radius: 1rem;
-        background-color: #d07400;
-        border-color: #d07400;
+        background-color: #f1a401;
+        border-color: #f1a401;
     }
     label{
         color: #a5a5a5;
     }
+    .btn-primary:hover {
+  background-color: #d07400; /* Green */
+border-color: #d07400;
+}
 </style>
 
 <div style='text-align:center;width:100%'><h2>Login</h2> <p style="color: #a5a5a5;">Silahkan mengisi Data Anda untuk login</p></div>

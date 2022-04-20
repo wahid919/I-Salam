@@ -58,7 +58,7 @@ use yii\helpers\Html;
               <div class="form-group">
                 <div class="row">
                   <div class="col-lg-6 col-md-6 col-sm-12 col-12">
-                    <label for="Wakaf" style="font-size: 1.4rem;color: #d07400;margin-top: 10px;">Ayo Mulai Wakaf</label>
+                    <label for="Wakaf" style="font-size: 1.4rem;color: #f1a401;margin-top: 10px;">Ayo Mulai Wakaf</label>
                   </div>
                   <div class="col-lg-6 col-md-6 col-sm-12 col-12">
                     <select class="form-control select-wakaf border-r5 shadow-r2" id="select-category" style="overflow: scroll;" onchange="myFunction(event)">
@@ -87,9 +87,9 @@ use yii\helpers\Html;
                   </div>
                   <div class="col-12">
                     <?php if (!\Yii::$app->user->isGuest) { ?>
-                      <button type="submit" class="btn-sm btn-block text-white font-weight-bold" style="height: 3rem;background-color: #d07400;" id="bayarkan">Wakaf Sekarang</button>
+                      <button type="submit" class="btn-sm btn-block text-white font-weight-bold" style="height: 3rem;background-color: #f1a401;" id="bayarkan">Wakaf Sekarang</button>
                     <?php } else { ?>
-                      <button type="button" class="btn-sm btn-block text-white font-weight-bold" style="height: 3rem;background-color: #d07400;" id="btn-user-login">Wakaf Sekarang</button>
+                      <button type="button" class="btn-sm btn-block text-white font-weight-bold" style="height: 3rem;background-color: #f1a401;" id="btn-user-login">Wakaf Sekarang</button>
                     <?php
                     } ?>
                   </div>
@@ -102,7 +102,7 @@ use yii\helpers\Html;
               <div class="form-group">
                 <div class="row">
                   <div class="col-lg-6 col-md-6 col-sm-12 col-12">
-                    <label for="Infak" style="font-size: 1.4rem;color: #d07400;margin-top: 10px;">Ayo Mulai Infak</label>
+                    <label for="Infak" style="font-size: 1.4rem;color: #f1a401;margin-top: 10px;">Ayo Mulai Infak</label>
                   </div>
                   <div class="col-lg-6 col-md-6 col-sm-12 col-12">
                     <select class="form-control select-wakaf border-r5 shadow-r2" id="select-category" style="overflow: scroll;" onchange="myFunction2(event)">
@@ -129,9 +129,9 @@ use yii\helpers\Html;
                   </div>
                   <div class="col-12">
                      <?php if (!\Yii::$app->user->isGuest) { ?>
-                      <button type="submit" class="btn-sm btn-block text-white font-weight-bold" style="height: 3rem;background-color: #d07400;" id="bayarkan2">Infak Sekarang</button>
+                      <button type="submit" class="btn-sm btn-block text-white font-weight-bold" style="height: 3rem;background-color: #f1a401;" id="bayarkan2">Infak Sekarang</button>
                     <?php } else { ?>
-                      <button type="button" class="btn-sm btn-block text-white font-weight-bold" style="height: 3rem;background-color: #d07400;" id="btn-user-login2">Infak Sekarang</button>
+                      <button type="button" class="btn-sm btn-block text-white font-weight-bold" style="height: 3rem;background-color: #f1a401;" id="btn-user-login2">Infak Sekarang</button>
                     <?php
                     } ?>
                   </div>
