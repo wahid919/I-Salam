@@ -17,6 +17,33 @@ use yii\helpers\Url;
     }
   }
 </style>
+<!-- display success message -->
+<?php if (Yii::$app->session->hasFlash('success')) : ?>
+            <script>
+            swal("Sukses", "<?= Yii::$app->session->getFlash('success') ?>", "success",{
+              buttons:false
+            })
+  </script>
+            <!-- <div class="alert alert-success alert-dismissable">
+              <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+              <p><i class="icon fa fa-check"></i>Saved!</p>
+              <?= Yii::$app->session->getFlash('success') ?>
+            </div> -->
+          <?php endif; ?>
+
+          <!-- display error message -->
+          <?php if (Yii::$app->session->hasFlash('error')) : ?>
+            <script>
+            swal("Gagal", "<?= Yii::$app->session->getFlash('error') ?>", "error",{
+              buttons:false
+            })
+  </script>
+            <!-- <div class="alert alert-danger alert-dismissable">
+              <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+              <h4><i class="icon fa fa-check"></i>Saved!</h4>
+              <?= Yii::$app->session->getFlash('error') ?>
+            </div> -->
+          <?php endif; ?>
 <hr class="mt-0">
 <section id="blogSingle" class="blog blog-single pt-50 pb-50">
   <div class="container">

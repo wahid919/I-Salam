@@ -26,6 +26,9 @@ use yii\bootstrap\ActiveForm;
     <?= Html::csrfMetaTags() ?>
     <title><?= Html::encode($setting->judul_web) ?></title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script src=
+"https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.0/sweetalert.min.js">
+  </script>
     <?php \app\assets\HomeAsset::register($this); ?>
     <script>
         var baseUrl = "<?= Yii::$app->urlManager->baseUrl ?>";

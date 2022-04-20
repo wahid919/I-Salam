@@ -140,7 +140,7 @@ if (function_exists("checkCurrentNav") == false) {
 <header id="header" class="header header-transparent">
   <nav class="navbar navbar-expand-lg sticky-navbar">
     <div class="container">
-      <a href="<?= Yii::$app->request->baseUrl ?>" style="font-family: cursive;font-size:large;color:#d07404">
+      <a href="<?= Yii::$app->request->baseUrl."/home" ?>" style="font-family: cursive;font-size:large;color:#d07404">
         <img src="<?= $icons ?>" class="logo-header logo-light" alt="logo">
         <img src="<?= $icons ?>" class="logo-header logo-dark" alt="logo">
         I-Salam
@@ -312,13 +312,13 @@ if (function_exists("checkCurrentNav") == false) {
           <?php } else { ?>
             
             <?php if (Yii::$app->user->identity->role_id == 1) { ?>
-              <div class="col-4">
+              <div class="col-4" style="padding-top: 15px;">
               <a href="<?= Yii::$app->request->baseUrl . "/home/profile" ?>" class="nav__item-link <?= checkCurrentNav('/home/profile', true) ?>" style="color: black;"><button class="btn-sm btn-block text-white font-weight-bold" style="background-color: #d07400;">Akun Saya</button></a>
             </div>
-            <div class="col-5" style="padding-right: 10px;padding-left: 10px;">
+            <div class="col-5" style="padding-right: 10px;padding-left: 10px;padding-top: 15px;">
               <a href="<?= Yii::$app->request->baseUrl . "/site/index" ?>" class="nav__item-link" style="color: black;"><button class="btn-sm btn-block text-white font-weight-bold" style="background-color: #d07400;">Halaman Admin</button></a>
             </div>
-            <div class="col-3">
+            <div class="col-3" style="padding-top: 15px;">
               <a href="<?= Yii::$app->request->baseUrl . "/site/logout" ?>" class="nav__item-link" style="color: black;"><button class="btn-sm btn-block text-white font-weight-bold" style="background-color: #d07400;">Logout</button></a>
               </div>
               <?php }else{ ?>
