@@ -37,11 +37,16 @@ use yii\helpers\Html;
 
     .btn-registrasi {
         width: 100%;
-        border-radius: 1rem
+        border-radius: 1rem;
+        background-color: #f1a502;
+        border-color: #f1a502;
+    }
+    label{
+        color: #a5a5a5;
     }
 </style>
 
-<div style='text-align:center;width:100%'><h2>Login</h2> <p>Silahkan mengisi Data Anda untuk login</p></div>
+<div style='text-align:center;width:100%'><h2>Login</h2> <p style="color: #a5a5a5;">Silahkan mengisi Data Anda untuk login</p></div>
 <?php $form = ActiveForm::begin([
     'id' => 'FormLogin',
     'layout' => 'horizontal',
@@ -60,7 +65,7 @@ use yii\helpers\Html;
         ]
     ) ?>
     <div class="col-12 pb-4 ml-4">
-        <a id="btn-forgot" style="color: blue;cursor:pointer">Lupa Password</a>
+        <a id="btn-forgot" style="color:#a5a5a5;cursor:pointer">Lupa Password</a>
     </div>
     <div class="col-md-12">
         <div class="col-md-12">

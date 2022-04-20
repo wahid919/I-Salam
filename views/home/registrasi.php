@@ -36,10 +36,15 @@ use yii\bootstrap\ActiveForm;
 
     .btn-registrasi {
         width: 100%;
-        border-radius: 1rem
+        border-radius: 1rem;
+        background-color: #f1a502;
+        border-color: #f1a502;
+    }
+    label{
+        color: #a5a5a5;
     }
 </style>
-<div style='text-align:center;width:100%'><h2>Mendaftar</h2> <p>Silahkan mengisi Data Anda untuk mendaftar</p></div>
+<div style='text-align:center;width:100%'><h2>Mendaftar</h2> <p style="color: #a5a5a5;">Silahkan mengisi Data Anda untuk mendaftar</p></div>
 
 <?php $form = ActiveForm::begin([
     'id' => 'FormRegister',

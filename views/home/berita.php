@@ -1,4 +1,5 @@
 <?php
+// var_dump($_GET['sort']);die;
 $css = <<<CSS
 .owl-nav {
     position: absolute;
@@ -89,11 +90,32 @@ $this->registerCss($css) ?>
         </div>
         <div class="col-lg-3 col-md-12 text-left mt-1">
           <select class="header-sort" name="_sort" id="_sort">
-            <option value="" <?= $_GET['_sort'] == null ? "selected" : "" ?>><?= Yii::t("cruds", "Pilih Pengurutan Berita") ?></option>
-            <option value="1" <?= $_GET['_sort'] == 1 ? "selected" : "" ?>><?= Yii::t("cruds", "Terbaru Dibuat") ?></option>
-            <option value="2" <?= $_GET['_sort'] == 2 ? "selected" : "" ?>><?= Yii::t("cruds", "Terbaru Diubah") ?></option>
-            <option value="3" <?= $_GET['_sort'] == 3 ? "selected" : "" ?>><?= Yii::t("cruds", "Paling Banyak Dilihat") ?></option>
-            <option value="4" <?= $_GET['_sort'] == 4 ? "selected" : "" ?>><?= Yii::t("cruds", "Paling Lama") ?></option>
+            <option value="" <?php 
+            if($_GET['sort'] == NULL){
+              echo "selected";
+            }
+            //  $_GET['_sort'] = "" ? "selected" : "" 
+             ?>><?= Yii::t("cruds", "Pilih Pengurutan Berita") ?></option>
+            <option value="1" <?php 
+            if($_GET['sort'] == 1){
+              echo "selected";
+            }
+            ?>><?=Yii::t("cruds", "Terbaru Dibuat") ?></option>
+            <option value="2" <?php
+             if($_GET['sort'] == 2){
+              echo "selected";
+            }
+             ?>><?= Yii::t("cruds", "Terbaru Diubah") ?></option>
+            <option value="3" <?php
+             if($_GET['sort'] == 3){
+              echo "selected";
+            }
+             ?>><?= Yii::t("cruds", "Paling Banyak Dilihat") ?></option>
+            <option value="4" <?php 
+            if($_GET['sort'] == 4){
+              echo "selected";
+            }
+            ?>><?= Yii::t("cruds", "Paling Lama") ?></option>
           </select>
         </div>
       </div>

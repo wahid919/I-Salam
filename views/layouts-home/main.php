@@ -54,8 +54,8 @@ use yii\bootstrap\ActiveForm;
         }
 
         #modal-registrasi .modal-body {
-            background: whitesmoke;
-            border-radius: 2rem;
+            background: white;
+            border-radius: 1.5rem;
             margin-bottom: 2rem;
         }
 
@@ -86,8 +86,8 @@ use yii\bootstrap\ActiveForm;
         }
 
         #modal-login .modal-body {
-            background: whitesmoke;
-            border-radius: 2rem;
+            background: white;
+            border-radius: 1.5rem;
             margin-bottom: 2rem;
         }
 
@@ -117,8 +117,8 @@ use yii\bootstrap\ActiveForm;
         }
 
         #modal-forgot .modal-body {
-            background: whitesmoke;
-            border-radius: 2rem;
+            background: white;
+            border-radius: 1.5rem;
             margin-bottom: 2rem;
         }
 
@@ -150,7 +150,7 @@ use yii\bootstrap\ActiveForm;
 <?php
 \app\components\Modal::begin([
     'id' => 'modal-registrasi',
-    'header' => '<div style=\'text-align:center;width:100%\'><h2>I-Salam</h2></div>'
+    'header' => '<div style=\'text-align:center;width:100%\'><h2 style="text-transform: inherit;"> iSalam</h2></div>'
 ]);
 ?>
 <div id="modal-body"></div>
@@ -159,7 +159,7 @@ use yii\bootstrap\ActiveForm;
 <?php
 \app\components\Modal::begin([
     'id' => 'modal-login',
-    'header' => '<div style=\'text-align:center;width:100%\'><h2>I-salam</h2></div>'
+    'header' => '<div style=\'text-align:center;width:100%\'><h2 style="text-transform: inherit;"> iSalam</h2></div>'
 ]);
 ?>
 <div id="modal-body2"></div>
@@ -168,7 +168,7 @@ use yii\bootstrap\ActiveForm;
 <?php
 \app\components\Modal::begin([
     'id' => 'modal-forgot',
-    'header' => '<div style=\'text-align:center;width:100%\'><h2>Lupa Password</h2> <p>Silahkan mengisi Data Anda</p></div>'
+    'header' => '<div style=\'text-align:center;width:100%\'><h2 style="text-transform: inherit;"> iSalam</h2></div>'
 ]);
 ?>
 <div id="modal-body3"></div>
@@ -230,6 +230,28 @@ var map2 = L.map("map-canvas2").setView([lat, lng], 13);
                     $("#modal-login").attr("class", "fade modal");
                 })
             });
+            $('#btn-user-login-header').on('click', async () => {
+                let response = await fetch("<?= Url::to(['/login'], false) ?>", {
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                });
+                response = await response.text();
+                var parser = new DOMParser();
+                var doc = parser.parseFromString(response, 'text/html');
+                $("#modal-body2").html(response);
+                // $("#modal-login").modal("show")
+                $("#modal-login").attr("style", "padding-right: 17px; display: block;overflow:auto")
+                $("#modal-login").attr("class", "fade modal show");
+                document.querySelector("#modal-login .close").addEventListener("click", () => {
+                    $("#modal-login").removeAttr("style")
+                    $("#modal-login").attr("class", "fade modal");
+                })
+                document.querySelector("#modal-login #btn-forgot").addEventListener("click", async () => {
+                    $("#modal-login").removeAttr("style")
+                    $("#modal-login").attr("class", "fade modal");
+                })
+            });
             $('#btn-user-login2').on('click', async () => {
                 let response = await fetch("<?= Url::to(['/login'], false) ?>", {
                     headers: {
@@ -252,7 +274,24 @@ var map2 = L.map("map-canvas2").setView([lat, lng], 13);
                     $("#modal-login").attr("class", "fade modal");
                 })
             });
-
+            $('#btn-user-registrasi').on('click', async () => {
+                let response = await fetch("<?= Url::to(['/registrasi'], false) ?>", {
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                });
+                response = await response.text();
+                var parser = new DOMParser();
+                var doc = parser.parseFromString(response, 'text/html');
+                $("#modal-body").html(response);
+                // $("#modal-registrasi").modal("show")
+                $("#modal-registrasi").attr("style", "padding-right: 17px; display: block;overflow:auto")
+                $("#modal-registrasi").attr("class", "fade modal show");
+                document.querySelector("#modal-registrasi .close").addEventListener("click", () => {
+                    $("#modal-registrasi").removeAttr("style")
+                    $("#modal-registrasi").attr("class", "fade modal");
+                })
+            });
             $('#btn-registrasi').on('click', async () => {
                 let response = await fetch("<?= Url::to(['/registrasi'], false) ?>", {
                     headers: {

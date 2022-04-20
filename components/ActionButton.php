@@ -55,16 +55,16 @@ class ActionButton
                 if($model->flag == 0){
                     return Html::a("<i class='fa fa-check'></i>", ["delete", "id"=>$model->id], [
                         "class"=>"btn btn-success",
-                        "title"=>"Hapus Data",
-                        "data-confirm" => "Apakah Anda yakin ingin menghapus data ini ?",
+                        "title"=>"Aktifkan Data",
+                        "data-confirm" => "Apakah Anda yakin ingin Mengaktifkan data ini ?",
                         //"data-method" => "GET"
                     ]);
 
                 }else{
                     return Html::a("<i class='fa fa-times'></i>", ["delete", "id"=>$model->id], [
                         "class"=>"btn btn-danger",
-                        "title"=>"Aktifkan Data",
-                        "data-confirm" => "Apakah Anda yakin ingin Mengaktifkan data ini ?",
+                        "title"=>"Nonaktif Data",
+                        "data-confirm" => "Apakah Anda yakin ingin menonaktifkan data ini ?",
                         //"data-method" => "GET"
                     ]);
                 }

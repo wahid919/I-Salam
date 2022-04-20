@@ -2533,6 +2533,7 @@ textarea.form-control {
     -ms-transform: rotate(-45deg);
     -o-transform: rotate(-45deg);
     transform: rotate(-45deg);
+    margin-top: 25%;
 }
 
 .navbar .navbar-toggler.actived .menu-lines:after {
@@ -2542,11 +2543,12 @@ textarea.form-control {
     -ms-transform: rotate(45deg);
     -o-transform: rotate(45deg);
     transform: rotate(45deg);
+    margin-top: 25%;
 }
 
 .navbar .nav__item {
     position: relative;
-    margin-right: 29px;
+    margin-right: 45px;
 }
 
 .navbar .nav__item:last-child {
@@ -3236,7 +3238,9 @@ textarea.form-control {
         display: block;
     }
     .navbar .navbar-nav {
-        margin: 0 !important;
+        /* margin: 0 !important; */
+     /* margin-left: 2%; */
+     margin-right: 2%;
     }
     .navbar .nav__item {
         margin-right: 0;

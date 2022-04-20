@@ -84,7 +84,7 @@ class HomeController extends Controller
                          'ganti-password', 'visi', 'organisasi','lupa','kontak','cetak','latar-belakang',
                          'alamat-kantor','telp','map','pesan','medsos','privacy-policy','cek-data',
                          'aturan-wakaf','fiqih-wakaf','regulasi-wakaf','kalkulator-zakat','daftar-wakaf','afiliasi',
-                        'transaksi-wakaf','transaksi-zis'],
+                        'transaksi-wakaf','transaksi-zis','pembayaran-header','bayar-header'],
                         'allow' => true,
                     ],
                     [
@@ -2366,6 +2366,251 @@ class HomeController extends Controller
             'bg' => $bg,
             'pagination' => $pagination,
             'summary' => $summary,
+        ]);
+    }
+    public function actionPembayaranHeader($id, $nominal,$amanah_pendanaan,$nama,$email,$phone ,$ket)
+    {
+        
+        $pendanaan = \app\models\Pendanaan::find()
+            ->where(['id' => $id])->one();
+        // Required
+        if ($pendanaan != null) {
+            if ($nominal) {
+                $name = $nama;
+                // $name = "Tes";
+                $model = new Pembayaran();
+
+                $order_id_midtrans = rand();
+                $model->pendanaan_id = $pendanaan->id;
+                // $model->kode_transaksi = Yii::$app->security->generateRandomString(10) . date('dmYHis');
+                $model->kode_transaksi = $order_id_midtrans;
+
+                // $model->nama = Yii::$app->user->identity->name;
+                $model->nama = $name;
+                if ($ket == "lembar") {
+                    $dt ="wakaf";
+                    $model->jumlah_lembaran = (int)$nominal;
+                    $total = (int)$nominal * $pendanaan->nominal_lembaran;
+                    $model->nominal = (int)$total;
+                    $transaction_details = array(
+                        'order_id' => $order_id_midtrans,
+                        'gross_amount' => (int)$total, // no decimal allowed for creditcard
+                    );
+                    // Optional 
+                    $item1_details = array(
+                        'id' => '1',
+                        'price' => (int)$total,
+                        'quantity' => 1,
+                        'name' => $pendanaan->nama_pendanaan . "(Lembaran)"
+                    );
+                } elseif($ket == "nominal") {
+                    $dt = "wakaf";
+                    $model->jumlah_lembaran = 0;
+                    $model->nominal = (int)$nominal;
+                    $transaction_details = array(
+                        'order_id' => $order_id_midtrans,
+                        'gross_amount' => (int)$nominal, // no decimal allowed for creditcard
+                    );
+                    // Optional
+                    $item1_details = array(
+                        'id' => '1',
+                        'price' => (int)$nominal,
+                        'quantity' => 1,
+                        'name' => $pendanaan->nama_pendanaan . "(Non Lembaran)"
+                    );
+                } elseif($ket == "lembar-zakat") {
+                    $dt = "zakat";
+                    $model->jumlah_lembaran = 0;
+                    $model->nominal = (int)$nominal;
+                    $transaction_details = array(
+                        'order_id' => $order_id_midtrans,
+                        'gross_amount' => (int)$nominal, // no decimal allowed for creditcard
+                    );
+                    // Optional
+                    $item1_details = array(
+                        'id' => '1',
+                        'price' => (int)$nominal,
+                        'quantity' => 1,
+                        'name' => $pendanaan->nama_pendanaan . "(Lembaran Zakat)"
+                    );
+                } elseif($ket == "nominal-zakat") {
+                    $dt = "zakat";
+                    $model->jumlah_lembaran = 0;
+                    $model->nominal = (int)$nominal;
+                    $transaction_details = array(
+                        'order_id' => $order_id_midtrans,
+                        'gross_amount' => (int)$nominal, // no decimal allowed for creditcard
+                    );
+                    // Optional
+                    $item1_details = array(
+                        'id' => '1',
+                        'price' => (int)$nominal,
+                        'quantity' => 1,
+                        'name' => $pendanaan->nama_pendanaan . "(Non Lembaran Zakat)"
+                    );
+                }elseif($ket == "lembar-infak") {
+                   $dt = "infak";
+                    $model->jumlah_lembaran = 0;
+                    $model->nominal = (int)$nominal;
+                    $transaction_details = array(
+                        'order_id' => $order_id_midtrans,
+                        'gross_amount' => (int)$nominal, // no decimal allowed for creditcard
+                    );
+                    // Optional
+                    $item1_details = array(
+                        'id' => '1',
+                        'price' => (int)$nominal,
+                        'quantity' => 1,
+                        'name' => $pendanaan->nama_pendanaan . "(Lembaran Infak)"
+                    );
+                } elseif($ket == "nominal-infak") {
+                    $dt = "infak";
+                    $model->jumlah_lembaran = 0;
+                    $model->nominal = (int)$nominal;
+                    $transaction_details = array(
+                        'order_id' => $order_id_midtrans,
+                        'gross_amount' => (int)$nominal, // no decimal allowed for creditcard
+                    );
+                    // Optional
+                    $item1_details = array(
+                        'id' => '1',
+                        'price' => (int)$nominal,
+                        'quantity' => 1,
+                        'name' => $pendanaan->nama_pendanaan . "(Non Lembaran Infak)"
+                    );
+                }elseif($ket == "lembar-sedekah") {
+                   $dt = "sedekah";
+                    $model->jumlah_lembaran = 0;
+                    $model->nominal = (int)$nominal;
+                    $transaction_details = array(
+                        'order_id' => $order_id_midtrans,
+                        'gross_amount' => (int)$nominal, // no decimal allowed for creditcard
+                    );
+                    // Optional
+                    $item1_details = array(
+                        'id' => '1',
+                        'price' => (int)$nominal,
+                        'quantity' => 1,
+                        'name' => $pendanaan->nama_pendanaan . "(Lembaran Sedekah)"
+                    );
+                } elseif($ket == "nominal-sedekah") {
+                    $dt = "sedekah";
+                    $model->jumlah_lembaran = 0;
+                    $model->nominal = (int)$nominal;
+                    $transaction_details = array(
+                        'order_id' => $order_id_midtrans,
+                        'gross_amount' => (int)$nominal, // no decimal allowed for creditcard
+                    );
+                    // Optional
+                    $item1_details = array(
+                        'id' => '1',
+                        'price' => (int)$nominal,
+                        'quantity' => 1,
+                        'name' => $pendanaan->nama_pendanaan . "(Non Lembaran Sedekah)"
+                    );
+                }
+
+                // $model->jenis_pembayaran_id = $val['jenis_pembayaran_id'] ?? '';
+                // $model->user_id = \Yii::$app->user->identity->id;
+                $model->user_id = 92;
+                $model->status_id = 5;
+                
+                $model->jenis = $dt;
+                $model->amanah_pendanaan = $amanah_pendanaan;
+                $shipping_address = array(
+                    'first_name'    => $pendanaan->nama_nasabah,
+                    'last_name'     => "(" . $pendanaan->nama_perusahaan . ")",
+                    // 'address'       => $amanah_pendanaan,
+                    //     'city'          => "Jakarta",
+                    //     'postal_code'   => "16602",
+                    //     'phone'         => "081122334455",
+                    'country_code'  => 'IDN'
+                );
+                $nomor_handphone = $phone;
+                $customer_details = array(
+                    'first_name'    => $name,
+                    'last_name'     => "(" . $name . ")",
+                    'email'         => $email,
+                    'phone'         => $nomor_handphone,
+                    'billing_address'  => $shipping_address,
+                    'shipping_address' => $shipping_address
+                );
+
+                $hasil_code = \app\components\ActionMidtrans::toReadableOrder($item1_details, $transaction_details, $customer_details);
+                $model->code = $hasil_code;
+                $hasil = 'https://app.sandbox.midtrans.com/snap/v2/vtweb/' . $hasil_code;
+
+                // var_dump($hasil_code);
+                // die;
+                if ($model->validate()) {
+                    $model->save();
+                    // $this->layout= false;
+
+                    return $this->redirect(['bayar-header', 'id' => $model->id]);
+                    // return ['success' => true, 'message' => 'success', 'data' => $model, 'code' => $hasil_code,'url'=>$hasil];
+                } else {
+
+                    return $this->redirect(['detail_program', 'id' => $pendanaan->id]);
+                    // return ['success' => false, 'message' => 'gagal', 'data' => $model->getErrors()];
+                }
+            }
+
+            return $this->redirect(['detail_program', 'id' => $pendanaan->id]);
+            // return ["success" => false, "message" => "Nominal belum diatur"];
+
+        } else {
+            return $this->redirect('program');
+        }
+    }
+    public function actionBayarHeader($id)
+    {
+        $pembayaran = Pembayaran::findOne(['id' => $id]);
+        $setting = Setting::find()->one();
+        $icon = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->logo;
+        $bg_login = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->bg_login;
+        $bg = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->bg_pin;
+        $organisasis = Organisasi::find()->where(['flag' => 1])->all();
+        $lembagas = LembagaPenerima::find()->where(['flag' => 1])->all();
+        $count_program = Pendanaan::find()->count();
+        $count_wakif = User::find()->where(['role_id' => 5])->count();
+        $model = new HubungiKami;
+        $testimonials = Testimonials::find()->all();
+        $pendanaans = Pendanaan::find()->where(['status_tampil' => 1])->limit(6)->all();
+
+        $list_pendanaans = Pendanaan::find()->where(['status_tampil' => 1])->all();
+        $news = Berita::find()->limit(6)->all();
+
+        $slides = Slides::find()->where(['status' => 1])->orderBy(new Expression('rand()'))->one();
+
+        if ($model->load($_POST)) {
+            $model->status = 0;
+
+            if ($model->save()) {
+                Yii::$app->session->setFlash('success', "Data berhasil disimpan.");
+                return $this->redirect(['home/index']);
+            } else {
+                Yii::$app->session->setFlash('error', "Data tidak berhasil disimpan.");
+                return $this->redirect(['home/index']);
+            }
+        }
+
+        return $this->render('bayar-header', [
+            'setting' => $setting,
+            // 'snapToken' => $snapToken,
+            'pembayaran' => $pembayaran,
+            'count_program' => $count_program,
+            'count_wakif' => $count_wakif,
+            'organisasis' => $organisasis,
+            'lembagas' => $lembagas,
+            'icon' => $icon,
+            'bg_login' => $bg_login,
+            'bg' => $bg,
+            'testimonials' => $testimonials,
+            'model' => $model,
+            'pendanaans' => $pendanaans,
+            'list_pendanaans' => $list_pendanaans,
+            'news' => $news,
+            'slides' => $slides
         ]);
     }
     public function actionUnduhFileUraian($id)
