@@ -2191,26 +2191,25 @@ class HomeController extends Controller
         if (isset($_GET['kategori'])) {
             $kategori = $_GET['kategori'];
             $get_id = KategoriPendanaan::find()->where(['name' => $kategori])->one();
-            $query = Pendanaan::find()->where(['status_tampil' => 1, 'kategori_pendanaan_id' => $get_id]);
+            $query = Pendanaan::find()->where(['status_tampil' => 1, 'kategori_pendanaan_id' => $get_id,'is_wakaf'=>1]);
             $count = $query->count();
             $pagination = new Pagination(['totalCount' => $count, 'pageSize' => 9]);
             $pendanaans = $query->offset($pagination->offset)
                 ->limit($pagination->limit)
                 ->all();
         } else {
-            $query = Pendanaan::find()->where(['status_tampil' => 1]);
+            $query = Pendanaan::find()->where(['status_tampil' => 1,'is_wakaf'=>1]);
             $count = $query->count();
             $pagination = new Pagination(['totalCount' => $count, 'pageSize' => 9]);
             $pendanaans = $query->offset($pagination->offset)
                 ->limit($pagination->limit)
                 ->all();
         }
-
         $summary = Constant::getPaginationSummary($pagination, $count);
 
         $organisasis = Organisasi::find()->where(['flag' => 1])->all();
         $kategori_pendanaans = KategoriPendanaan::find()->all();
-        $count_program = Pendanaan::find()->count();
+        $count_program = Pendanaan::find()->where(['is_wakaf'=>1])->count();
         $count_wakif = User::find()->where(['role_id' => 5])->count();
 
         return $this->render('program', [
@@ -2238,14 +2237,14 @@ class HomeController extends Controller
         if (isset($_GET['kategori'])) {
             $kategori = $_GET['kategori'];
             $get_id = KategoriPendanaan::find()->where(['name' => $kategori])->one();
-            $query = Pendanaan::find()->where(['status_tampil' => 1, 'kategori_pendanaan_id' => $get_id]);
+            $query = Pendanaan::find()->where(['status_tampil' => 1, 'kategori_pendanaan_id' => $get_id,'is_zakat'=>1]);
             $count = $query->count();
             $pagination = new Pagination(['totalCount' => $count, 'pageSize' => 9]);
             $pendanaans = $query->offset($pagination->offset)
                 ->limit($pagination->limit)
                 ->all();
         } else {
-            $query = Pendanaan::find()->where(['status_tampil' => 1]);
+            $query = Pendanaan::find()->where(['status_tampil' => 1,'is_zakat'=>1]);
             $count = $query->count();
             $pagination = new Pagination(['totalCount' => $count, 'pageSize' => 9]);
             $pendanaans = $query->offset($pagination->offset)
@@ -2257,7 +2256,7 @@ class HomeController extends Controller
 
         $organisasis = Organisasi::find()->where(['flag' => 1])->all();
         $kategori_pendanaans = KategoriPendanaan::find()->all();
-        $count_program = Pendanaan::find()->count();
+        $count_program = Pendanaan::find()->where(['is_zakat'=>1])->count();
         $count_wakif = User::find()->where(['role_id' => 5])->count();
 
         return $this->render('program-zakat', [
@@ -2285,14 +2284,14 @@ class HomeController extends Controller
         if (isset($_GET['kategori'])) {
             $kategori = $_GET['kategori'];
             $get_id = KategoriPendanaan::find()->where(['name' => $kategori])->one();
-            $query = Pendanaan::find()->where(['status_tampil' => 1, 'kategori_pendanaan_id' => $get_id]);
+            $query = Pendanaan::find()->where(['status_tampil' => 1, 'kategori_pendanaan_id' => $get_id,'is_infak'=>1]);
             $count = $query->count();
             $pagination = new Pagination(['totalCount' => $count, 'pageSize' => 9]);
             $pendanaans = $query->offset($pagination->offset)
                 ->limit($pagination->limit)
                 ->all();
         } else {
-            $query = Pendanaan::find()->where(['status_tampil' => 1]);
+            $query = Pendanaan::find()->where(['status_tampil' => 1,'is_infak'=>1]);
             $count = $query->count();
             $pagination = new Pagination(['totalCount' => $count, 'pageSize' => 9]);
             $pendanaans = $query->offset($pagination->offset)
@@ -2304,7 +2303,7 @@ class HomeController extends Controller
 
         $organisasis = Organisasi::find()->where(['flag' => 1])->all();
         $kategori_pendanaans = KategoriPendanaan::find()->all();
-        $count_program = Pendanaan::find()->count();
+        $count_program = Pendanaan::find()->where(['is_infak'=>1])->count();
         $count_wakif = User::find()->where(['role_id' => 5])->count();
 
         return $this->render('program-infak', [
@@ -2332,14 +2331,14 @@ class HomeController extends Controller
         if (isset($_GET['kategori'])) {
             $kategori = $_GET['kategori'];
             $get_id = KategoriPendanaan::find()->where(['name' => $kategori])->one();
-            $query = Pendanaan::find()->where(['status_tampil' => 1, 'kategori_pendanaan_id' => $get_id]);
+            $query = Pendanaan::find()->where(['status_tampil' => 1, 'kategori_pendanaan_id' => $get_id,'is_sedekah'=>1]);
             $count = $query->count();
             $pagination = new Pagination(['totalCount' => $count, 'pageSize' => 9]);
             $pendanaans = $query->offset($pagination->offset)
                 ->limit($pagination->limit)
                 ->all();
         } else {
-            $query = Pendanaan::find()->where(['status_tampil' => 1]);
+            $query = Pendanaan::find()->where(['status_tampil' => 1,'is_sedekah'=>1]);
             $count = $query->count();
             $pagination = new Pagination(['totalCount' => $count, 'pageSize' => 9]);
             $pendanaans = $query->offset($pagination->offset)
@@ -2351,7 +2350,7 @@ class HomeController extends Controller
 
         $organisasis = Organisasi::find()->where(['flag' => 1])->all();
         $kategori_pendanaans = KategoriPendanaan::find()->all();
-        $count_program = Pendanaan::find()->count();
+        $count_program = Pendanaan::find()->where(['is_sedekah'=>1])->count();
         $count_wakif = User::find()->where(['role_id' => 5])->count();
 
         return $this->render('program-sedekah', [

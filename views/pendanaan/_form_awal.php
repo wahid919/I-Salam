@@ -213,3 +213,69 @@ $this->registerJs("
                 ])->label('9. Nominal Perlembar'); ?>
             </div>
         </div>
+        <div class="row">
+            <div class="col-lg-3">
+                <?= $form->field($model, 'is_wakaf', [
+                    'template' => '
+                    {label}
+                    {input}
+                    {error}
+                    ',
+                    'inputOptions' => [
+                        'class' => 'form-control'
+                    ],
+                    'labelOptions' => [
+                        'class' => 'control-label'
+                    ],
+                    'options' => ['tag' => false]
+                ])->dropDownList(['1' => 'Aktif', '0' => 'Tidak'],['prompt'=>'Silahkan Pilih Aktif/Tidak'])->label('10. Wakaf'); ?>
+            </div>
+            <div class="col-lg-3">
+                <?= $form->field($model, 'is_zakat', [
+                    'template' => '
+                    {label}
+                    {input}
+                    {error}
+                    ',
+                    'inputOptions' => [
+                        'class' => 'form-control'
+                    ],
+                    'labelOptions' => [
+                        'class' => 'control-label'
+                    ],
+                    'options' => ['tag' => false]
+                ])->dropDownList(['1' => 'Aktif', '0' => 'Tidak'],['prompt'=>'Silahkan Pilih Aktif/Tidak'])->label('11. Zakat'); ?>
+            </div>
+            <div class="col-lg-3">
+                <?= $form->field($model, 'is_infak', [
+                    'template' => '
+                    {label}
+                    {input}
+                    {error}
+                    ',
+                    'inputOptions' => [
+                        'class' => 'form-control'
+                    ],
+                    'labelOptions' => [
+                        'class' => 'control-label'
+                    ],
+                    'options' => ['tag' => false]
+                ])->dropDownList(['1' => 'Aktif', '0' => 'Tidak'],['prompt'=>'Silahkan Pilih Aktif/Tidak'])->label('12. Infak'); ?>
+            </div>
+            <div class="col-lg-3">
+                <?= $form->field($model, 'is_sedekah', [
+                    'template' => '
+                    {label}
+                    {input}
+                    {error}
+                    ',
+                    'inputOptions' => [
+                        'class' => 'form-control'
+                    ],
+                    'labelOptions' => [
+                        'class' => 'control-label'
+                    ],
+                    'options' => ['tag' => false]
+                ])->dropDownList(['1' => 'Aktif', '0' => 'Tidak'],['prompt'=>'Silahkan Pilih Aktif/Tidak'])->label('13. Sedekah'); ?>
+            </div>
+        </div>

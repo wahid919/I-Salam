@@ -199,6 +199,50 @@ abstract class Pendanaan extends \yii\db\ActiveRecord
                return \app\components\Tanggal::toReadableDate($model->created_at);
             };
         }
+        if(isset($parent['is_zakat'])){
+            unset($parent['is_zakat']);
+
+            $parent['is_zakat'] = function ($model){
+                if($model->is_zakat == 1){
+                    return true;
+                }else{
+                    return false;
+                }
+            };
+        }
+        if(isset($parent['is_wakaf'])){
+            unset($parent['is_wakaf']);
+
+            $parent['is_wakaf'] = function ($model){
+                if($model->is_wakaf == 1){
+                    return true;
+                }else{
+                    return false;
+                }
+            };
+        }
+        if(isset($parent['is_infak'])){
+            unset($parent['is_infak']);
+
+            $parent['is_infak'] = function ($model){
+                if($model->is_infak == 1){
+                    return true;
+                }else{
+                    return false;
+                }
+            };
+        }
+        if(isset($parent['is_sedekah'])){
+            unset($parent['is_sedekah']);
+
+            $parent['is_sedekah'] = function ($model){
+                if($model->is_sedekah == 1){
+                    return true;
+                }else{
+                    return false;
+                }
+            };
+        }
         if(!isset($parent['link'])){
             unset($parent['link']);
 
@@ -243,7 +287,7 @@ abstract class Pendanaan extends \yii\db\ActiveRecord
     {
         return [
             [['uraian','deskripsi'], 'string'],
-            [['user_id', 'kategori_pendanaan_id', 'status_id','bank_id','noms','status_lembaran','status_tampil','jumlah_lembaran'], 'integer'],
+            [['user_id', 'kategori_pendanaan_id', 'status_id','bank_id','noms','status_lembaran','status_tampil','is_wakaf','is_zakat','is_infak','is_sedekah','jumlah_lembaran'], 'integer'],
             [['pendanaan_berakhir','created_at'], 'safe'],
             [['user_id', 'kategori_pendanaan_id', 'status_id'], 'required'],
             [['nama_pendanaan', 'tempat', 'penerima_wakaf', 'foto','nama_nasabah','nama_perusahaan','foto_ktp','foto_kk','file_uraian','poster','nominal','nominal_lembaran','nomor_rekening'], 'string', 'max' => 255],
@@ -268,6 +312,10 @@ abstract class Pendanaan extends \yii\db\ActiveRecord
             'pendanaan_berakhir' => 'Pendanaan Berakhir',
             'status_lembaran' => 'Status Lembaran(Aktif/Tidak)',
             'status_tampil' => 'Status Tampil(Aktif/Tidak)',
+            'is_wakaf' => 'Wakaf(Aktif/Tidak)',
+            'is_zakat' => 'Zakat(Aktif/Tidak)',
+            'is_infak' => 'Infak(Aktif/Tidak)',
+            'is_sedekah' => 'Sedekah(Aktif/Tidak)',
             'nominal_lembaran' => 'Nominal Lembaran',
             'jumlah_lembaran' => 'Jumlah Lembaran',
             'bank_id' => 'Bank',

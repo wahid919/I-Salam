@@ -153,6 +153,58 @@ $this->title = 'Pendanaan ' . $model->nama_pendanaan;
                         }
                     ],
                     [
+                        'class' => yii\grid\DataColumn::className(),
+                        'attribute' => 'is_wakaf',
+                        'format' => 'raw',
+                        'value' => function ($model) {
+                            if ($model->is_wakaf == 1) {
+
+                                return '<span class="label label-success">Wakaf Aktif</span>';
+                            } else {
+                                return '<span class="label label-danger">Wakaf Tidak Aktif</span>';
+                            }
+                        }
+                    ],
+                    [
+                        'class' => yii\grid\DataColumn::className(),
+                        'attribute' => 'is_zakat',
+                        'format' => 'raw',
+                        'value' => function ($model) {
+                            if ($model->is_zakat == 1) {
+
+                                return '<span class="label label-success">Zakat Aktif</span>';
+                            } else {
+                                return '<span class="label label-danger">Zakat Tidak Aktif</span>';
+                            }
+                        }
+                    ],
+                    [
+                        'class' => yii\grid\DataColumn::className(),
+                        'attribute' => 'is_infak',
+                        'format' => 'raw',
+                        'value' => function ($model) {
+                            if ($model->is_infak == 1) {
+
+                                return '<span class="label label-success">Infak Aktif</span>';
+                            } else {
+                                return '<span class="label label-danger">Infak Tidak Aktif</span>';
+                            }
+                        }
+                    ],
+                    [
+                        'class' => yii\grid\DataColumn::className(),
+                        'attribute' => 'is_sedekah',
+                        'format' => 'raw',
+                        'value' => function ($model) {
+                            if ($model->is_sedekah == 1) {
+
+                                return '<span class="label label-success">Sedekah Aktif</span>';
+                            } else {
+                                return '<span class="label label-danger">Sedekah Tidak Aktif</span>';
+                            }
+                        }
+                    ],
+                    [
                         'attribute' => 'foto',
                         'format' => 'html',
                         'value' => function ($model) {
