@@ -9,6 +9,14 @@ use app\components\Angka;
 use app\models\KegiatanPendanaan;
 use yii\helpers\Url;
 ?>
+<style>
+  @media only screen and (min-width: 320px) and (max-width: 767px){
+
+    .pt-50 {
+      padding-top: 20% !important;
+    }
+  }
+</style>
 <hr class="mt-0">
 <section id="blogSingle" class="blog blog-single pt-50 pb-50">
   <div class="container">
