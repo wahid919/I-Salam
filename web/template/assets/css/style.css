@@ -2448,6 +2448,19 @@ textarea.form-control {
     z-index: 1010;
 }
 
+@media only screen and (max-width: 991px) {
+    .header {
+        position: fixed;
+        overflow: hidden;
+        z-index: 1010;
+        top: 0;
+        width: 100%;
+    }
+    .header+.header-wakaf {
+        padding-top: 60px;
+    }
+}
+
 
 /* Navbar */
 
@@ -3239,8 +3252,8 @@ textarea.form-control {
     }
     .navbar .navbar-nav {
         /* margin: 0 !important; */
-     /* margin-left: 2%; */
-     margin-right: 2%;
+        /* margin-left: 2%; */
+        margin-right: 2%;
     }
     .navbar .nav__item {
         margin-right: 0;
