@@ -51,7 +51,7 @@ use yii\helpers\Url;
       <div class="row">
         <div class="col-lg-6 col-md-6 col-sm-12 col-12">
           <div class="program1__big-img">
-            <img class="border-r10" alt="program 1" src="<?= \Yii::$app->request->baseUrl . "/uploads/" . $pendanaan->poster ?>" style="max-height: 500px;">
+            <img class="border-r10" alt="program 1" src="<?= \Yii::$app->request->baseUrl . "/uploads/" . $pendanaan->poster ?>" style="height: 350px;width:350px">
           </div>
           <div class="program1__img-wrap d-none">
             <!-- <?php if ($kegiatan_pendanaans == null) { ?>
