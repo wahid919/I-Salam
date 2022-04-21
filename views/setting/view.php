@@ -137,6 +137,10 @@ $this->title = 'Setting ' . $model->nama_web;
             'format' => 'html',
         ],
         [
+            'attribute' => 'text_apk',
+            'format' => 'html',
+        ],
+        [
             'attribute' =>'instagram',
             'format' =>'html',
             'value' =>function($model) {

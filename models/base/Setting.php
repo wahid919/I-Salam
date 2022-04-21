@@ -60,7 +60,7 @@ abstract class Setting extends \yii\db\ActiveRecord
         return [
             [['pin'], 'integer'],
             [['nama_web','judul_web', 'alamat', 'slogan_web'], 'required'],
-            [['alamat', 'slogan_web','banner','tentang_kami','visi','misi','ikut_wakaf', 'youtube_link','judul_video','deskripsi_video','latar_belakang','fiqih_wakaf','regulasi_wakaf','aturan_wakaf'], 'string'],
+            [['alamat', 'slogan_web','banner','tentang_kami','visi','misi','ikut_wakaf', 'youtube_link','judul_video','deskripsi_video','latar_belakang','fiqih_wakaf','regulasi_wakaf','aturan_wakaf','pesan','text_apk'], 'string'],
             [['logo', 'bg_login', 'bg_pin', 'link_download_apk', 'link_download_apk_marketing', 'nama_web','latitude','longitude','facebook','twitter','instagram','telegram','daftar_wakaf'], 'string', 'max' => 255]
         ];
     }
@@ -94,6 +94,7 @@ abstract class Setting extends \yii\db\ActiveRecord
             'youtube_link' => 'Link Youtube',
             'judul_video' => 'Judul Video',
             'deskripsi_video' => 'Deskripsi Video',
+            'text_apk' => 'Text Aplikasi Wakaf',
         ];
     }
 

@@ -436,6 +436,22 @@ use kartik\file\FileInput;
                     'options' => ['tag' => false]
                 ])->textarea(['rows' => 6]) ?>
             </div>
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                <?= $form->field($model, 'text_apk', [
+                    'template' => '
+                        {label}
+                        {input}
+                        {error}
+                    ',
+                    'inputOptions' => [
+                        'class' => 'form-control'
+                    ],
+                    'labelOptions' => [
+                        'class' => 'control-label'
+                    ],
+                    'options' => ['tag' => false]
+                ])->textarea(['rows' => 6])->label('Text Aplikasi Wakaf') ?>
+            </div>
         </div>
 
         <div class="row">

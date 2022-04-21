@@ -220,7 +220,7 @@ if (function_exists("checkCurrentNav") == false) {
           </li>
           <li class="nav__item with-dropdown">
             <a href="<?= \Yii::$app->request->baseUrl . "/home#" ?>" class="dropdown-toggle nav__item-link
-            <?= checkCurrentNav(["/home/regulasi-wakaf", "/home/aturan-wakaf","/home/fiqih-wakaf"]) ?>">
+            <?= checkCurrentNav(["/home/regulasi-wakaf", "/home/aturan-wakaf","/home/fiqih-wakaf","/home/aplikasi-wakaf"]) ?>">
               <div class="d-none d-lg-block">
                 Panduan <i class="fa fa-angle-down"></i>
               </div>
@@ -236,7 +236,8 @@ if (function_exists("checkCurrentNav") == false) {
 
               <li class="nav__item"><a href="<?= \Yii::$app->request->baseUrl . "/home/fiqih-wakaf" ?>" class="nav__item-link text-dark">Fikih Wakaf</a></li>
               
-              <li class="nav__item"><a href="<?= $setting->link_download_apk ?>" class="nav__item-link text-dark" target="_blank">Aplikasi Wakaf iSalam</a></li>
+              <li class="nav__item"><a href="<?= \Yii::$app->request->baseUrl . "/home/aplikasi-wakaf" ?>" class="nav__item-link text-dark">Aplikasi Wakaf iSalam</a></li>
+              <!-- <li class="nav__item"><a href="<?= $setting->link_download_apk ?>" class="nav__item-link text-dark" target="_blank">Aplikasi Wakaf iSalam</a></li> -->
 
             </ul>
           </li>
