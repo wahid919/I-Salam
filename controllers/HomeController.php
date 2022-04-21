@@ -152,12 +152,21 @@ class HomeController extends Controller
                         'gross_amount' => (int)$nominal, // no decimal allowed for creditcard
                     );
                     // Optional
-                    $item1_details = array(
-                        'id' => '1',
-                        'price' => (int)$nominal,
-                        'quantity' => 1,
-                        'name' => $pendanaan->nama_pendanaan . "(Non Lembaran)"
-                    );
+                    if($pendanaan->status_lembaran == 1){
+                        $item1_details = array(
+                            'id' => '1',
+                            'price' => (int)$nominal,
+                            'quantity' => 1,
+                            'name' => $pendanaan->nama_pendanaan . "(Non Lembaran)"
+                        );
+                    }else{
+                        $item1_details = array(
+                            'id' => '1',
+                            'price' => (int)$nominal,
+                            'quantity' => 1,
+                            'name' => $pendanaan->nama_pendanaan
+                        );
+                    }
                 } elseif($ket == "lembar-zakat") {
                     $dt = "zakat";
                     $model->jumlah_lembaran = 0;
