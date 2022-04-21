@@ -1,20 +1,30 @@
 <hr class="mt-0">
 <!-- display success message -->
 <?php if (Yii::$app->session->hasFlash('success')) : ?>
-            <div class="alert alert-success alert-dismissable">
+            <script>
+            swal("Sukses", "<?= Yii::$app->session->getFlash('success') ?>", "success",{
+              buttons:false
+            })
+  </script>
+            <!-- <div class="alert alert-success alert-dismissable">
               <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
               <p><i class="icon fa fa-check"></i>Saved!</p>
               <?= Yii::$app->session->getFlash('success') ?>
-            </div>
+            </div> -->
           <?php endif; ?>
 
           <!-- display error message -->
           <?php if (Yii::$app->session->hasFlash('error')) : ?>
-            <div class="alert alert-danger alert-dismissable">
+            <script>
+            swal("Gagal", "<?= Yii::$app->session->getFlash('error') ?>", "error",{
+              buttons:false
+            })
+  </script>
+            <!-- <div class="alert alert-danger alert-dismissable">
               <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
               <h4><i class="icon fa fa-check"></i>Saved!</h4>
               <?= Yii::$app->session->getFlash('error') ?>
-            </div>
+            </div> -->
           <?php endif; ?>
 <div class="container">
     <div class="row">
@@ -22,7 +32,7 @@
             <?= $this->render('component/sidemenu-profile') ?>
         </div>
         <div class="col-lg-8 col-md-6 col-sm-12 col-12 profile-section">
-            <h3 class="text-isalam-1 font-weight-bold text-detail-program">Transaksi Saya</h3>
+            <h3 class="text-isalam-1 font-weight-bold text-detail-program">Transaksi</h3>
             <div class="row">
                 <?php
 

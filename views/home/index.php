@@ -239,7 +239,7 @@ use yii\helpers\Html;
             <!-- <a href="<?= \Yii::$app->request->baseUrl . "/home/detail-berita?id=" . $berita->slug ?>"> -->
             <div class="card shadow-br2" style="border-radius: 15px;">
               <!-- <img src="" class="card-img-top" alt="..."> -->
-              <div class="team-img" style="background-image: url(<?= \Yii::$app->request->baseUrl . "/uploads/" . $pendanaan->poster ?>);border-radius: 15px;">
+              <div class="team-img" style="background-image: url(<?= \Yii::$app->request->baseUrl . "/uploads/" . $pendanaan->poster ?>);border-radius: 15px;width:200px;margin-left:auto;margin-right:auto;margin-top:1%;">
               </div>
               <div class="card-body">
                 <h6 class="card-title"><?= $pendanaan->nama_pendanaan ?></h6>

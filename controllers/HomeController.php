@@ -1649,7 +1649,7 @@ class HomeController extends Controller
                     $wf->status_id = 6;
                     $wf->tanggal_konfirmasi = date('Y-m-d H:i:s');
                     $sts = "Ada";
-                } elseif ($a->transaction_status == "deny" || $a->transaction_status == "cancel" || $a->transaction_status == "expire") {
+                } elseif ($a->transaction_status == "deny" || $a->transaction_status == "expire") {
                     $wf->status_id = 8;
                     $wf->tanggal_konfirmasi = date('Y-m-d H:i:s');
                     $sts = "Ada";
