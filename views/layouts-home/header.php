@@ -312,7 +312,7 @@ if (function_exists("checkCurrentNav") == false) {
           <?php } else { ?>
             
             <?php if (Yii::$app->user->identity->role_id == 1) { ?>
-              <div class="d-flex">
+              <div class="d-flex flex-wrap justify-content-center">
 
                 <!-- <div class="col-sm-4" style="padding-top: 15px;"> -->
                   <div  style="padding-right: 10px;padding-left: 10px;padding-top: 15px;">
