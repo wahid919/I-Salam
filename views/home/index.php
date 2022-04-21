@@ -87,9 +87,9 @@ use yii\helpers\Html;
                   </div>
                   <div class="col-12">
                     <?php if (!\Yii::$app->user->isGuest) { ?>
-                      <button type="submit" class="btn-sm btn-block text-white font-weight-bold" style="height: 3rem;background-color: #f1a401;" id="bayarkan">Wakaf Sekarang</button>
+                      <button type="submit" class="btn-sm btn-program btn-block text-white font-weight-bold" style="height: 3rem;width:100%" id="bayarkan">Wakaf Sekarang</button>
                     <?php } else { ?>
-                      <button type="button" class="btn-sm btn-block text-white font-weight-bold" style="height: 3rem;background-color: #f1a401;" id="btn-user-login">Wakaf Sekarang</button>
+                      <button type="button" class="btn-sm btn-program btn-block text-white font-weight-bold" style="height: 3rem;width:100%" id="btn-user-login">Wakaf Sekarang</button>
                     <?php
                     } ?>
                   </div>
@@ -129,9 +129,9 @@ use yii\helpers\Html;
                   </div>
                   <div class="col-12">
                      <?php if (!\Yii::$app->user->isGuest) { ?>
-                      <button type="submit" class="btn-sm btn-block text-white font-weight-bold" style="height: 3rem;background-color: #f1a401;" id="bayarkan2">Infak Sekarang</button>
+                      <button type="submit" class="btn-sm btn-program btn-block text-white font-weight-bold" style="height: 3rem;width:100%;" id="bayarkan2">Infak Sekarang</button>
                     <?php } else { ?>
-                      <button type="button" class="btn-sm btn-block text-white font-weight-bold" style="height: 3rem;background-color: #f1a401;" id="btn-user-login2">Infak Sekarang</button>
+                      <button type="button" class="btn-sm btn-program btn-block text-white font-weight-bold" style="height: 3rem;width:100%;" id="btn-user-login2">Infak Sekarang</button>
                     <?php
                     } ?>
                   </div>

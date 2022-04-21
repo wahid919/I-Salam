@@ -90,14 +90,14 @@ use yii\helpers\Url;
                   <tr>
                     <th style="color:#787878" scope="col">Kategori</th>
                     <th style="color:#787878" scope="col">Tempat</th>
-                    <!-- <th style="color:#787878" scope="col">Penerima Wakaf</th> -->
+                    <th style="color:#787878" scope="col">Penerima Wakaf</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
                     <td class="font-weight-bold text-isalam-1 font-size-08"><?= $pendanaan->kategoriPendanaan->name ?></td>
                     <td class="font-weight-bold text-isalam-1 font-size-08"><?= $pendanaan->tempat ?></td>
-                    <!-- <td class="font-weight-bold text-isalam-1 font-size-08"><?= $pendanaan->penerima_wakaf ?></td> -->
+                    <td class="font-weight-bold text-isalam-1 font-size-08"><?= $pendanaan->penerima_wakaf ?></td>
                   </tr>
                 </tbody>
               </table>
@@ -115,12 +115,12 @@ use yii\helpers\Url;
                     <td class="font-weight-bold text-isalam-1 font-size-08"><?= $pendanaan->kategoriPendanaan->name ?></td>
                     <td class="font-weight-bold text-isalam-1 font-size-08"><?= $pendanaan->tempat ?></td>
                   </tr>
-                  <!-- <tr>
+                  <tr>
                     <th colspan="2" style="color:#787878">Penerima Wakaf</th>
                   </tr>
                   <tr>
                     <td colspan="2" class="font-weight-bold text-isalam-1 font-size-08"><?= $pendanaan->penerima_wakaf ?></td>
-                  </tr> -->
+                  </tr>
                 </tbody>
               </table>
             </div>
@@ -175,7 +175,7 @@ use yii\helpers\Url;
                     if($pembayar == 0){ ?>
                     <a href="#" class="btn btn-sm btn-program btn-block" data-toggle="modal" data-target="#mulaiwakaf" style="padding: 10px !important;">Mulai Wakaf</a>
                     <?php }else{ ?>
-                      <button type="submit" class="btn-sm btn-block text-white font-weight-bold" style="height: 3rem;background-color: #d07400;" id="status_pembayaran">Mulai Wakaf</button>
+                      <button type="submit" class="btn-sm btn-program btn-block text-white font-weight-bold" style="height: 3rem;width:100%;" id="status_pembayaran">Mulai Wakaf</button>
                       <script>
                       document.querySelector("#status_pembayaran").addEventListener("click", () => {
                       alert("Mohon Selesaikan Pembayaran Anda Terlebih Dahulu");
@@ -185,11 +185,11 @@ use yii\helpers\Url;
                     <?php } else { ?>
                       <div class="row">
                         <div class="col-6">
-                          <button type="button" class="btn-sm btn-block text-white font-weight-bold" style="border-radius:7px;height: 3rem;background-color: #d07400;" id="btn-user-login">Login</button>
+                          <button type="button" class="btn-sm btn-program btn-block text-white font-weight-bold" style="border-radius:7px;height: 3rem;width:100%;" id="btn-user-login">Login</button>
                         </div>
                         <div class="col-6">
                           <a href="#" data-toggle="modal" data-target="#mulaiwakafheader">
-                            <button class="btn-sm btn-block text-white font-weight-bold" style="border-radius:7px;height: 3rem;background-color: #d07400;">Mulai Wakaf</button>
+                            <button class="btn-sm btn-program btn-block text-white font-weight-bold" style="width:100%;border-radius:7px;height: 3rem;">Mulai Wakaf</button>
                           </a>
                         </div>
                       </div>

@@ -35,7 +35,7 @@
       ?>
         <div class="col-lg-4 col-md-6 mt-3">
           <!-- <a href="<?= \Yii::$app->request->baseUrl . "/home/detail-berita?id=" . $berita->slug ?>"> -->
-          <div class="card shadow-br2" style="border-radius: 15px;">
+          <div class="card shadow-br2" style="border-radius: 15px;width:200px;margin-left:auto;margin-right:auto;">
             <!-- <img src="" class="card-img-top" alt="..."> -->
             <a href="<?= Url::to(["detail-program", "id" => $pendanaan->id]) ?>"><div class="team-img" style="background-image: url(<?= \Yii::$app->request->baseUrl . "/uploads/" . $pendanaan->poster ?>);border-radius: 15px;"></div>
             </div>

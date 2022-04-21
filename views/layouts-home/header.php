@@ -148,7 +148,7 @@ if (function_exists("checkCurrentNav") == false) {
       <div class="sekarang-mobile" style="margin-right: auto;margin-left:auto">
         <a href="<?= Url::to(["program"]) ?>">
       <!-- <a href="#" data-toggle="modal" data-target="#mulaiwakafheader"> -->
-        <button class="btn-sm btn-block text-white font-weight-bold text-left" style="background-color: #f1a401;border-radius:6.4px;">Wakaf Sekarang</button>
+        <button class="btn-sm btn-program btn-block text-white font-weight-bold text-left" style="width:100%;border-radius:6.4px;">Wakaf Sekarang</button>
       </a>
       </div>
       <button class="navbar-toggler" type="button">
@@ -291,7 +291,7 @@ if (function_exists("checkCurrentNav") == false) {
             <li class="nav__item sekarang">
               <a href="<?= Url::to(["program"]) ?>">
               <!-- <a href="#" data-toggle="modal" data-target="#mulaiwakafheader"> -->
-              <button class="btn-sm btn-block text-white font-weight-bold" style="background-color: #f1a401;border-radius:6.4px;">Wakaf Sekarang</button>
+              <button class="btn-sm btn-program btn-block text-white font-weight-bold" style="width:100%;border-radius:6.4px;">Wakaf Sekarang</button>
             </a>
             </li>
           <!-- </div> -->
@@ -303,11 +303,11 @@ if (function_exists("checkCurrentNav") == false) {
               <a href="<?= Yii::$app->request->baseUrl . "/site/login" ?>" class="nav__item-link" style="color: black;">Login</a>
             </li> -->
             <div class="col-6">
-              <button type="button" class="btn-sm btn-block text-white font-weight-bold" style="background-color: #f1a401;" id="btn-user-login-header">Login</button>
+              <button type="button" class="btn-sm btn-program btn-block text-white font-weight-bold" style="width:100%" id="btn-user-login-header">Login</button>
             </div>
 
             <div class="col-6">
-              <button type="button" class="btn-sm btn-block text-white font-weight-bold" style="background-color: #f1a401;" id="btn-user-registrasi">Daftar</button>
+              <button type="button" class="btn-sm btn-program btn-block text-white font-weight-bold" style="width:100%" id="btn-user-registrasi">Daftar</button>
             </div>
           <?php } else { ?>
             
@@ -316,25 +316,25 @@ if (function_exists("checkCurrentNav") == false) {
 
                 <!-- <div class="col-sm-4" style="padding-top: 15px;"> -->
                   <div  style="padding-right: 10px;padding-left: 10px;padding-top: 15px;">
-                    <a href="<?= Yii::$app->request->baseUrl . "/home/profile" ?>" class="nav__item-link <?= checkCurrentNav('/home/profile', true) ?>" style="color: black;"><button class="btn-sm btn-block text-white font-weight-bold" style="background-color: #f1a401;">Akun Saya</button></a>
+                    <a href="<?= Yii::$app->request->baseUrl . "/home/profile" ?>" class="nav__item-link <?= checkCurrentNav('/home/profile', true) ?>" style="color: black;"><button class="btn-sm btn-program btn-block text-white font-weight-bold" style="width:100%">Akun Saya</button></a>
             </div>
             <div  style="padding-right: 10px;padding-left: 10px;padding-top: 15px;">
               <!-- <div class="col-sm-4"> -->
-                <a href="<?= Yii::$app->request->baseUrl . "/site/index" ?>" class="nav__item-link" style="color: black;"><button class="btn-sm btn-block text-white font-weight-bold" style="background-color: #f1a401;">Halaman Admin</button></a>
+                <a href="<?= Yii::$app->request->baseUrl . "/site/index" ?>" class="nav__item-link" style="color: black;"><button class="btn-sm btn-program btn-block text-white font-weight-bold" style="width:100%">Halaman Admin</button></a>
               </div>
               <div  style="padding-right: 10px;padding-left: 10px;padding-top: 15px;">
                 <!-- <div class="col-sm-4" style="padding-top: 15px;"> -->
-                  <a href="<?= Yii::$app->request->baseUrl . "/site/logout" ?>" class="nav__item-link" style="color: black;"><button class="btn-sm btn-block text-white font-weight-bold" style="background-color: #f1a401;">Logout</button></a>
+                  <a href="<?= Yii::$app->request->baseUrl . "/site/logout" ?>" class="nav__item-link" style="color: black;"><button class="btn-sm btn-program btn-block text-white font-weight-bold" style="width:100%">Logout</button></a>
                 </div>
               </div>
               <?php }else{ ?>
                 <div class="col-2">
             </div>
                 <div class="col-4">
-              <a href="<?= Yii::$app->request->baseUrl . "/home/profile" ?>" class="nav__item-link <?= checkCurrentNav('/home/profile', true) ?>" style="color: black;"><button class="btn-sm btn-block text-white font-weight-bold" style="background-color: #f1a401;">Akun Saya</button></a>
+              <a href="<?= Yii::$app->request->baseUrl . "/home/profile" ?>" class="nav__item-link <?= checkCurrentNav('/home/profile', true) ?>" style="color: black;"><button class="btn-sm btn-program btn-block text-white font-weight-bold" style="width:100%">Akun Saya</button></a>
             </div>
             <div class="col-4">
-              <a href="<?= Yii::$app->request->baseUrl . "/site/logout" ?>" class="nav__item-link" style="color: black;"><button class="btn-sm btn-block text-white font-weight-bold" style="background-color: #f1a401;">Logout</button></a>
+              <a href="<?= Yii::$app->request->baseUrl . "/site/logout" ?>" class="nav__item-link" style="color: black;"><button class="btn-sm btn-program btn-block text-white font-weight-bold" style="width:100%">Logout</button></a>
               </div>
               <div class="col-2">
             </div>
