@@ -2493,7 +2493,7 @@ textarea.form-control {
 
 .navbar>.container,
 .navbar>.container-fluid {
-    position: relative;
+    position: fixed !important;
     height: 100px;
 }
 
@@ -3270,8 +3270,8 @@ textarea.form-control {
     }
     .navbar .navbar-nav {
         /* margin: 0 !important; */
-     /* margin-left: 2%; */
-     margin-right: 2%;
+        /* margin-left: 2%; */
+        margin-right: 2%;
     }
     .navbar .nav__item {
         margin-right: 0;
