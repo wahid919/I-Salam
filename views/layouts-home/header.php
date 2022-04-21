@@ -312,14 +312,20 @@ if (function_exists("checkCurrentNav") == false) {
           <?php } else { ?>
             
             <?php if (Yii::$app->user->identity->role_id == 1) { ?>
-              <div class="col-4" style="padding-top: 15px;">
-              <a href="<?= Yii::$app->request->baseUrl . "/home/profile" ?>" class="nav__item-link <?= checkCurrentNav('/home/profile', true) ?>" style="color: black;"><button class="btn-sm btn-block text-white font-weight-bold" style="background-color: #f1a401;">Akun Saya</button></a>
+              <div class="d-flex">
+
+                <!-- <div class="col-sm-4" style="padding-top: 15px;"> -->
+                  <div  style="padding-right: 10px;padding-left: 10px;padding-top: 15px;">
+                    <a href="<?= Yii::$app->request->baseUrl . "/home/profile" ?>" class="nav__item-link <?= checkCurrentNav('/home/profile', true) ?>" style="color: black;"><button class="btn-sm btn-block text-white font-weight-bold" style="background-color: #f1a401;">Akun Saya</button></a>
             </div>
-            <div class="col-5" style="padding-right: 10px;padding-left: 10px;padding-top: 15px;">
-              <a href="<?= Yii::$app->request->baseUrl . "/site/index" ?>" class="nav__item-link" style="color: black;"><button class="btn-sm btn-block text-white font-weight-bold" style="background-color: #f1a401;">Halaman Admin</button></a>
-            </div>
-            <div class="col-3" style="padding-top: 15px;">
-              <a href="<?= Yii::$app->request->baseUrl . "/site/logout" ?>" class="nav__item-link" style="color: black;"><button class="btn-sm btn-block text-white font-weight-bold" style="background-color: #f1a401;">Logout</button></a>
+            <div  style="padding-right: 10px;padding-left: 10px;padding-top: 15px;">
+              <!-- <div class="col-sm-4"> -->
+                <a href="<?= Yii::$app->request->baseUrl . "/site/index" ?>" class="nav__item-link" style="color: black;"><button class="btn-sm btn-block text-white font-weight-bold" style="background-color: #f1a401;">Halaman Admin</button></a>
+              </div>
+              <div  style="padding-right: 10px;padding-left: 10px;padding-top: 15px;">
+                <!-- <div class="col-sm-4" style="padding-top: 15px;"> -->
+                  <a href="<?= Yii::$app->request->baseUrl . "/site/logout" ?>" class="nav__item-link" style="color: black;"><button class="btn-sm btn-block text-white font-weight-bold" style="background-color: #f1a401;">Logout</button></a>
+                </div>
               </div>
               <?php }else{ ?>
                 <div class="col-2">
