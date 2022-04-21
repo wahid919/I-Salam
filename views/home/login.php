@@ -19,7 +19,7 @@ use yii\helpers\Html;
         font-size: .8rem;
         left: 1.2rem;
         padding: .3rem;
-        background: whitesmoke;
+        background: white;
     }
 
     /* Change autocomplete styles in WebKit */

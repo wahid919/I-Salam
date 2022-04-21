@@ -18,7 +18,7 @@ use yii\bootstrap\ActiveForm;
         font-size: .8rem;
         left: 1.2rem;
         padding: .3rem;
-        background: whitesmoke;
+        background: white;
     }
 
     /* Change autocomplete styles in WebKit */
@@ -37,12 +37,16 @@ use yii\bootstrap\ActiveForm;
     .btn-registrasi {
         width: 100%;
         border-radius: 1rem;
-        background-color: #d07400;
-        border-color: #d07400;
+        background-color: #f1a401;
+        border-color: #f1a401;
     }
     label{
         color: #a5a5a5;
     }
+    .btn-primary:hover {
+  background-color: #d07400; /* Green */
+border-color: #d07400;
+}
 </style>
 <div style='text-align:center;width:100%'><h2>Mendaftar</h2> <p style="color: #a5a5a5;">Silahkan mengisi Data Anda untuk mendaftar</p></div>
 
@@ -62,8 +66,8 @@ use yii\bootstrap\ActiveForm;
     <?= $form->field($model, "username", Constant::COLUMN(1))->textInput(['type'=>'email'])->label("Email") ?>
     <?= $form->field($model, "password", Constant::COLUMN(2))->passwordInput() ?>
     <?= $form->field($model, "konfirmasi_password", Constant::COLUMN(2))->passwordInput() ?>
-    <?= $form->field($model, "pin", Constant::COLUMN(2))->passwordInput() ?>
-    <?= $form->field($model, "konfirmasi_pin", Constant::COLUMN(2))->passwordInput() ?>
+    <?= $form->field($model, "pin", Constant::COLUMN(2))->hiddenInput(['value' => "123456"])->label(false) ?>
+    <?= $form->field($model, "konfirmasi_pin", Constant::COLUMN(2))->hiddenInput(['value' => "123456"])->label(false) ?>
     <?= $form->field($model, 'reCaptcha', ["template" => "{input}"])->widget(
         \app\components\ReCaptcha3::className(),
         [
