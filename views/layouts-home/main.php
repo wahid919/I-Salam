@@ -233,28 +233,6 @@ var map2 = L.map("map-canvas2").setView([lat, lng], 13);
                     $("#modal-login").attr("class", "fade modal");
                 })
             });
-            $('#btn-user-login-header').on('click', async () => {
-                let response = await fetch("<?= Url::to(['/login'], false) ?>", {
-                    headers: {
-                        'X-Requested-With': 'XMLHttpRequest'
-                    }
-                });
-                response = await response.text();
-                var parser = new DOMParser();
-                var doc = parser.parseFromString(response, 'text/html');
-                $("#modal-body2").html(response);
-                // $("#modal-login").modal("show")
-                $("#modal-login").attr("style", "padding-right: 17px; display: block;overflow:auto")
-                $("#modal-login").attr("class", "fade modal show");
-                document.querySelector("#modal-login .close").addEventListener("click", () => {
-                    $("#modal-login").removeAttr("style")
-                    $("#modal-login").attr("class", "fade modal");
-                })
-                document.querySelector("#modal-login #btn-forgot").addEventListener("click", async () => {
-                    $("#modal-login").removeAttr("style")
-                    $("#modal-login").attr("class", "fade modal");
-                })
-            });
             $('#btn-user-login2').on('click', async () => {
                 let response = await fetch("<?= Url::to(['/login'], false) ?>", {
                     headers: {
@@ -315,6 +293,48 @@ var map2 = L.map("map-canvas2").setView([lat, lng], 13);
             });
 
             $('#btn-login').on('click', async () => {
+                let response = await fetch("<?= Url::to(['/login'], false) ?>", {
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                });
+                response = await response.text();
+                var parser = new DOMParser();
+                var doc = parser.parseFromString(response, 'text/html');
+                $("#modal-body2").html(response);
+                // $("#modal-login").modal("show")
+                $("#modal-login").attr("style", "padding-right: 17px; display: block;overflow:auto")
+                $("#modal-login").attr("class", "fade modal show");
+                document.querySelector("#modal-login .close").addEventListener("click", () => {
+                    $("#modal-login").removeAttr("style")
+                    $("#modal-login").attr("class", "fade modal");
+                })
+                document.querySelector("#modal-login #btn-forgot").addEventListener("click", async () => {
+                    $("#modal-login").removeAttr("style")
+                    $("#modal-login").attr("class", "fade modal");
+                    let response = await fetch("<?= Url::to(['/site/lupa-password'], false) ?>", {
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                });
+                response = await response.text();
+                var parser = new DOMParser();
+                var doc = parser.parseFromString(response, 'text/html');
+                console.log(response)
+                $("#modal-body3").html(response);
+                $("#modal-forgot").attr("style", "padding-right: 17px; display: block;overflow:auto")
+                $("#modal-forgot").attr("class", "fade modal show");
+                document.querySelector("#modal-forgot .close").addEventListener("click", () => {
+                    $("#modal-forgot").removeAttr("style")
+                    $("#modal-forgot").attr("class", "fade modal");
+                })
+                document.querySelector("#modal-login #btn-forgot").addEventListener("click", () => {
+                    $("#modal-login").attr("class", "fade modal");
+                })
+                    
+                })
+            });
+            $('#btn-user-login-header').on('click', async () => {
                 let response = await fetch("<?= Url::to(['/login'], false) ?>", {
                     headers: {
                         'X-Requested-With': 'XMLHttpRequest'
