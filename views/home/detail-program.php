@@ -254,7 +254,10 @@ use yii\helpers\Url;
                       </tr>
                       </tbody>
                     </table>
-
+                    <?php
+                    
+                    if($pendanaan->kategori_pendanaan_id != 5){
+                    ?>
                     <p class="font-size-08">Amanah Wakaf :</p>
                     <div class="row">
                       <?php $i=0; foreach($amanah_pendanaan as $value){ ?>
@@ -264,6 +267,9 @@ use yii\helpers\Url;
                       </div>
                       <?php $i++;} ?>
                     </div>
+                    <?php }else{ ?>
+                      <input type="hidden" id="amanah" name="amanah" value="undefined">
+                    <?php } ?>
                     <p class="font-size-08">Anda akan berwakaf dengan nominal sebesar :</p>
                     <div class="row">
                       <div class="col-6">
@@ -340,6 +346,10 @@ use yii\helpers\Url;
                       </tr>
                       </tbody>
                     </table>
+                    <?php
+                    
+                    if($pendanaan->kategori_pendanaan_id != 5){
+                    ?>
                     <p class="font-size-08">Amanah Wakaf :</p>
                     <div class="row">
                       <?php $i=0; foreach($amanah_pendanaan as $value){ ?>
@@ -349,6 +359,9 @@ use yii\helpers\Url;
                       </div>
                       <?php $i++;} ?>
                     </div>
+                    <?php }else{ ?>
+                      <input type="hidden" id="amanah2" name="amanah2" value="undefined">
+                    <?php } ?>
                     <p class="font-size-08">Anda akan berwakaf dengan nominal sebesar :<br />*Perlembar <?= \app\components\Angka::toReadableHarga($pendanaan->nominal_lembaran); ?></p>
                     <div class="row">
 
@@ -777,7 +790,10 @@ use yii\helpers\Url;
                       </tr>
                       </tbody>
                     </table>
-
+                    <?php
+                    
+                    if($pendanaan->kategori_pendanaan_id != 5){
+                    ?>
                     <p class="font-size-08">Amanah Wakaf :</p>
                     <div class="row">
                       <?php $i=0; foreach($amanah_pendanaan as $value){ ?>
@@ -787,6 +803,9 @@ use yii\helpers\Url;
                       </div>
                       <?php $i++;} ?>
                     </div>
+                    <?php }else{ ?>
+                      <input type="hidden" id="amanah_header" name="amanah_header" value="undefined">
+                    <?php } ?>
                     <p class="font-size-08">Anda akan berwakaf dengan nominal sebesar :</p>
                     <div class="row">
                       <div class="col-6">
@@ -916,6 +935,10 @@ use yii\helpers\Url;
                       </tr>
                       </tbody>
                     </table>
+                    <?php
+                    
+                    if($pendanaan->kategori_pendanaan_id != 5){
+                    ?>
                     <p class="font-size-08">Amanah Wakaf :</p>
                     <div class="row">
                       <?php $i=0; foreach($amanah_pendanaan as $value){ ?>
@@ -925,6 +948,9 @@ use yii\helpers\Url;
                       </div>
                       <?php $i++;} ?>
                     </div>
+                    <?php }else{ ?>
+                      <input type="hidden" id="amanah2_header" name="amanah2_header" value="undefined">
+                    <?php } ?>
                     <p class="font-size-08">Anda akan berwakaf dengan nominal sebesar :<br />*Perlembar <?= \app\components\Angka::toReadableHarga($pendanaan->nominal_lembaran); ?></p>
                     <div class="row">
 

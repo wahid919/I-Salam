@@ -152,7 +152,7 @@ class HomeController extends Controller
                         'gross_amount' => (int)$nominal, // no decimal allowed for creditcard
                     );
                     // Optional
-                    if($pendanaan->status_lembaran == 1){
+                    if($pendanaan->kategori_pendanaan_id != 5){
                         $item1_details = array(
                             'id' => '1',
                             'price' => (int)$nominal,
