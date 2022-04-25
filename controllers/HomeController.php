@@ -4,6 +4,7 @@ namespace app\controllers;
 
 date_default_timezone_set('Asia/Jakarta');
 
+use app\components\Angka;
 use app\components\Constant;
 use Yii;
 use yii\web\Controller;
@@ -84,7 +85,7 @@ class HomeController extends Controller
                          'ganti-password', 'visi', 'organisasi','lupa','kontak','cetak','latar-belakang',
                          'alamat-kantor','telp','map','pesan','medsos','privacy-policy','cek-data',
                          'aturan-wakaf','fiqih-wakaf','regulasi-wakaf','aplikasi-wakaf','kalkulator-zakat','daftar-wakaf','afiliasi',
-                        'transaksi-wakaf','transaksi-zis','pembayaran-header','bayar-header'],
+                        'transaksi-wakaf','transaksi-zis','pembayaran-header','bayar-header','kirim'],
                         'allow' => true,
                     ],
                     [
@@ -285,7 +286,7 @@ class HomeController extends Controller
                     'billing_address'  => $shipping_address,
                     'shipping_address' => $shipping_address
                 );
-
+                $model->email = $email;
                 $hasil_code = \app\components\ActionMidtrans::toReadableOrder($item1_details, $transaction_details, $customer_details);
                 $model->code = $hasil_code;
                 $hasil = 'https://app.sandbox.midtrans.com/snap/v2/vtweb/' . $hasil_code;
@@ -2432,6 +2433,7 @@ class HomeController extends Controller
                 $model->kode_transaksi = $order_id_midtrans;
 
                 // $model->nama = Yii::$app->user->identity->name;
+                $model->email = $email;
                 $model->nama = $name;
                 if ($ket == "lembar") {
                     $dt ="wakaf";
@@ -2760,6 +2762,129 @@ class HomeController extends Controller
             ]
         ]);
         return $pdf->render(); 
+    }
+    public function actionKirim($id){
+        $pembayaran = Pembayaran::findOne(['id'=>$id]);
+        $data_mid = $this->findMidtransProduction($pembayaran->kode_transaksi);
+        if($data_mid->status_code != 404){
+            if($data_mid->payment_type == "echannel" || $data_mid->payment_type == "bank_transfer" ){
+                $this->findEmail($id);
+            }
+        }
+        else{
+            echo "data tidak ada";
+        }
+        
+        return $this->redirect(["home/index"]);
+        // echo $data_mid->status_code;
+            //  $b = print_r($a);
+            //  $c = $b->payment_type;
+            //  var_dump($b);die;
+        // var_dump($this->findMidtransProduction($id));die;
+    }
+    protected function findEmail($id){
+        $pembayaran = Pembayaran::findOne(['id'=>$id]);
+        $data_mid = $this->findMidtransProduction($pembayaran->kode_transaksi);
+        $kadaluarsa = date('Y-m-d H:i:s', strtotime($data_mid->transaction_time . ' +1 day'));
+        // var_dump($data_mid->va_numbers[0]->bank);die;
+        // var_dump($data_mid->va_numbers[0]);die;
+        if($data_mid->status_code != 404){
+            if($data_mid->payment_type == "echannel"){
+                $text_rincian = "Kode Perusahaan";
+                $bank = "70012";
+                $text_kodes = "Kode Pembayaran";
+                $kodes = $data_mid->bill_key;
+            }elseif($data_mid->payment_type == "bank_transfer"){
+                if($data_mid->permata_va_number != null){
+                    $text_rincian = "Bank";
+                    $bank = "Permata";
+                    $text_kodes = "Virtual Account No";
+                    $kodes = $data_mid->permata_va_number;
+                }elseif($data_mid->va_numbers[0] != null){
+                    $text_rincian = "Bank";
+                    $bank = $data_mid->va_numbers[0]->bank;
+                    $text_kodes = "Virtual Account No";
+                    $kodes = $data_mid->va_numbers[0]->va_number;
+                }
+            }
+            $isi = '
+            <h1 style="text-align: center;">Inisiator Salam Karim</h1>
+                <h3 style="text-align: center;">IDR '.Angka::toReadableAngka($pembayaran->nominal, FALSE).'</h3>
+                <table style="width: 100%; height: 36px;">
+                <tbody>
+                <tr style="height: 18px; background: #e6e6e6;">
+                <td style="width: 50%; height: 18px;">'.\app\components\Tanggal::toReadableDateEmail($data_mid->transaction_time).'</td>
+                <td style="width: 50%; text-align: right; height: 18px;">ORDER ID: '.$pembayaran->kode_transaksi.'</td>
+                </tr>
+                <tr style="height: 18px;">
+                <td style="width: 50%; text-align: center; background: #2296f3; color: #ffffff; height: 18px;" colspan="2">Menunggu Pembayaran</td>
+                <td style="width: 50%; text-align: right; height: 18px;">&nbsp;</td>
+                </tr>
+                </tbody>
+                </table>
+                <p>Dear '.$pembayaran->nama.'</p>
+                <p>Silakan selesaikan pembayaran pesanan Anda:</p>
+                <table style="width: 100%;">
+                <tbody>
+                <tr>
+                <td style="width: 100%;" colspan="2">Rincian Pesanan :</td>
+                <td style="width: 50%;">&nbsp;</td>
+                </tr>
+                <tr>
+                <td style="width: 32%;">'.$text_rincian.'</td>
+                <td style="width: 68%;">'.$bank.'</td>
+                </tr>
+                <tr>
+                <td style="width: 32%;">'.$text_kodes.'</td>
+                <td style="width: 68%;">'.$kodes.'</td>
+                </tr>
+                <tr>
+                <td style="width: 32%;">Batas Pembayaran</td>
+                <td style="width: 68%;">'.\app\components\Tanggal::toReadableDateEmail($kadaluarsa).' Asia/Jakarta</td>
+                </tr>
+                </tbody>
+                </table>
+                <p>&nbsp;</p>
+                <table>
+                <tbody>
+                <tr>
+                <th>Deskripsi</th>
+                <th>Harga</th>
+                </tr>
+                <tr>
+                <td>'.$pembayaran->pendanaan->nama_pendanaan.'&nbsp;</td>
+                <td>&nbsp;IDR '.Angka::toReadableAngka($pembayaran->nominal, FALSE).'</td>
+                </tr>
+                <tr>
+                <td>TOTAL</td>
+                <td>&nbsp;IDR '.Angka::toReadableAngka($pembayaran->nominal, FALSE).'</td>
+                </tr>
+                </tbody>
+                </table>
+                <div>&nbsp;</div>
+                <div>
+                <div style="text-align: left;"><strong>PERHATIAN!</strong></div>
+                <p>Mohon selesaikan pembayaran sebelum '.\app\components\Tanggal::toReadableDateEmail($kadaluarsa).' Asia/Jakarta. Apabila melewati batas waktu, pesanan Anda akan otomatis dibatalkan.</p>
+                <p><strong>*Detail pembayaran dan cara pembayaran mohon cek di Email-&gt;Promosi&nbsp;</strong></p>
+                </div>
+            ';
+           
+            // var_dump($isi);die;
+            try {
+                \Yii::$app->mailer->compose()
+                    ->setTo($pembayaran->email)
+                    ->setFrom($pembayaran->email)
+                    ->setSubject('Proses pembayaran Anda belum selesai ')
+                    ->setHtmlBody($isi)
+                    ->send();
+            } catch (\Exception $e) {
+                \Yii::$app->session->setFlash('error', "Email Tidak Terkirim, Periksa Jaringan Internet!");
+                // return $this->redirect("index");
+                
+            return $this->redirect(["home/index"]);
+            }
+        }
+        
     }
     protected function findMidtrans($id)
     {

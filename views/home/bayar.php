@@ -475,7 +475,8 @@ if (!\Yii::$app->user->isGuest) {
       // Optional
       onPending: function(result) {
         Swal.fire("Peringatan!", "Transaksi Menunggu Pembayaran", "success").then((result) => {
-          window.location = "<?= Yii::$app->request->baseUrl . "/home/profile" ?>";
+          window.location = "<?= Yii::$app->request->baseUrl . "/home/kirim/".$pembayaran->id ?>";
+          // window.location = "<?= Yii::$app->request->baseUrl . "/home/profile" ?>";
         });
         /* You may add your own js here, this is just example */
         // document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);

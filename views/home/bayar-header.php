@@ -403,7 +403,8 @@ use yii\helpers\Html;
       // Optional
       onPending: function(result) {
         Swal.fire("Peringatan!", "Transaksi Menunggu Pembayaran", "success").then((result) => {
-          window.location = "<?= Yii::$app->request->baseUrl . "/home" ?>";
+          window.location = "<?= Yii::$app->request->baseUrl . "/home/kirim/".$pembayaran->id ?>";
+          // window.location = "<?= Yii::$app->request->baseUrl . "/home" ?>";
         });
         /* You may add your own js here, this is just example */
         // document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);

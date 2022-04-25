@@ -42,7 +42,24 @@ class Tanggal {
         $padTime = str_pad($time, 12, "0", STR_PAD_LEFT);
         return ($withHour?date("d ", $time).Tanggal::getBulan(date($time)).date(" Y, H:i", $time):date("d ", $time).Tanggal::getBulan(date($time)).date(" Y", $time));
     }
+    public static function toReadableDateEmail($date, $withSpan=TRUE){
+        if($date == NULL) return "-";
+        $withHour = TRUE;
+        $arr = explode(" ", $date);
+        if(count($arr)==1){
+            $withHour = FALSE;
+        }
+        $time = strtotime($date);
+        $padTime = str_pad($time, 12, "0", STR_PAD_LEFT);
+        return ($withSpan?"<span style='display:none'>{$padTime}</span>":"").($withHour?date("d ", $time).Tanggal::getBulanEmail(date($time)).date(" Y, H:i", $time):date("d ", $time).Tanggal::getBulanEmail(date($time)).date(" Y", $time));
+    }
 
+    public static function getBulanEmail($time, $fullName = false){
+        $arrBulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
+        $arrBulanFull = static::MONTH;
+        $bulan = date("n", $time);
+        return ($fullName) ? $arrBulanFull[1 * $bulan] : $arrBulan[1 * $bulan];
+    }
     public static function getBulan($time, $fullName = false){
         $arrBulan = array("", "Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Ags", "Sep", "Okt", "Nov", "Des");
         $arrBulanFull = static::MONTH;
