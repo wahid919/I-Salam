@@ -234,11 +234,11 @@ use yii\helpers\Url;
             <div class="tab-content" id="myTabContent">
               <div class="tab-pane fade show active" id="pembayaran" role="tabpanel" aria-labelledby="pembayaran-tab">
                 <div class="row">
-                  <div class="col-4">
+                  <div class="col-6">
                     <!-- <img class="border-r10 shadow-br3" src="<?= \Yii::$app->request->BaseUrl ?>/uploads/detail-program.jpeg" width="200px"> -->
                     <img class="border-r10 shadow-br3" src="<?= \Yii::$app->request->baseUrl . "/uploads/" . $pendanaan->poster ?>" width="150px" height="150px">
                   </div>
-                  <div class="col-8">
+                  <div class="col-6">
                     <p class="font-size-08">Anda akan berwakaf untuk project :</p>
                     <p class="font-weight-bold">
                       <?= $pendanaan->nama_pendanaan ?>
@@ -328,11 +328,11 @@ use yii\helpers\Url;
               </div>
               <div class="tab-pane fade" id="lembaran" role="tabpanel" aria-labelledby="lembaran-tab">
                 <div class="row">
-                  <div class="col-4">
+                  <div class="col-6">
                     <!-- <img class="border-r10 shadow-br3" src="<?= \Yii::$app->request->BaseUrl ?>/uploads/detail-program.jpeg" width="200px"> -->
                     <img class="border-r10 shadow-br3" src="<?= \Yii::$app->request->baseUrl . "/uploads/" . $pendanaan->poster ?>" width="150px" height="150px">
                   </div>
-                  <div class="col-8">
+                  <div class="col-6">
                     <p class="font-size-08">Anda akan berwakaf untuk project :</p>
                     <p class="font-weight-bold"><?= $pendanaan->nama_pendanaan ?></p>
                   </div>
@@ -771,10 +771,10 @@ use yii\helpers\Url;
             <div class="tab-content" id="myTabContent">
               <div class="tab-pane fade show active" id="pembayarans" role="tabpanel" aria-labelledby="pembayarans-tab">
                 <div class="row">
-                  <div class="col-4">
+                  <div class="col-6">
                     <img class="border-r10 shadow-br3" src="<?= \Yii::$app->request->baseUrl . "/uploads/" . $pendanaan->poster ?>" width="150px" height="150px">
                   </div>
-                  <div class="col-8">
+                  <div class="col-6">
                     <p class="font-size-08">Anda akan berwakaf untuk program :</p>
                     <p class="font-weight-bold">
                       <?= $pendanaan->nama_pendanaan ?>
@@ -917,11 +917,11 @@ use yii\helpers\Url;
               </div>
               <div class="tab-pane fade" id="lembarans" role="tabpanel" aria-labelledby="lembarans-tab">
                 <div class="row">
-                  <div class="col-4">
+                  <div class="col-6">
                     <!-- <img class="border-r10 shadow-br3" src="<?= \Yii::$app->request->BaseUrl ?>/uploads/detail-program.jpeg" width="200px"> -->
                     <img class="border-r10 shadow-br3" src="<?= \Yii::$app->request->baseUrl . "/uploads/" . $pendanaan->poster ?>" width="150px" height="150px">
                   </div>
-                  <div class="col-8">
+                  <div class="col-6">
                     <p class="font-size-08">Anda akan berwakaf untuk program :</p>
                     <p class="font-weight-bold"><?= $pendanaan->nama_pendanaan ?></p>
                   </div>
