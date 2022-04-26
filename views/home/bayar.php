@@ -5,9 +5,100 @@ use yii\helpers\Url;
 use yii\bootstrap\ActiveForm;
 use yii\helpers\Html;
 ?>
+<style>
+  #page-loader {
+    background: #f8f8f8;
+    bottom: 0;
+    left: 0;
+    position: fixed;
+    right: 0;
+    top: 0;
+    z-index: 99999;
+  }
 
+  .page-loader__spin {
+    width: 35px;
+    height: 35px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    border-top: 6px solid #222;
+    border-right: 6px solid #222;
+    border-bottom: 6px solid #222;
+    border-left: 6px solid #ebcd1e;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+    -webkit-animation: spinner 1000ms infinite linear;
+    -moz-animation: spinner 1000ms infinite linear;
+    -o-animation: spinner 1000ms infinite linear;
+    animation: spinner 1000ms infinite linear;
+    z-index: 100000;
+  }
+
+  @-webkit-keyframes spinner {
+    0% {
+      -webkit-transform: rotate(0deg);
+      transform: rotate(0deg);
+    }
+
+    100% {
+      -webkit-transform: rotate(360deg);
+      transform: rotate(360deg);
+    }
+  }
+
+  @-moz-keyframes spinner {
+    0% {
+      -webkit-transform: rotate(0deg);
+      -moz-transform: rotate(0deg);
+      transform: rotate(0deg);
+    }
+
+    100% {
+      -webkit-transform: rotate(360deg);
+      -moz-transform: rotate(360deg);
+      transform: rotate(360deg);
+    }
+  }
+
+  @-o-keyframes spinner {
+    0% {
+      -webkit-transform: rotate(0deg);
+      -o-transform: rotate(0deg);
+      transform: rotate(0deg);
+    }
+
+    100% {
+      -webkit-transform: rotate(360deg);
+      -o-transform: rotate(360deg);
+      transform: rotate(360deg);
+    }
+  }
+
+  @keyframes spinner {
+    0% {
+      -webkit-transform: rotate(0deg);
+      -moz-transform: rotate(0deg);
+      -o-transform: rotate(0deg);
+      transform: rotate(0deg);
+    }
+
+    100% {
+      -webkit-transform: rotate(360deg);
+      -moz-transform: rotate(360deg);
+      -o-transform: rotate(360deg);
+      transform: rotate(360deg);
+    }
+  }
+</style>
+<div id="page-loader">
+  <div class="page-loader__inner">
+    <div class="page-loader__spin"></div>
+  </div>
+</div>
 <section id="header" class="header-wakaf bg-overlay pt-120 pb-120">
-<div class="bg-img"><img src="<?= Yii::$app->request->baseUrl . '/uploads/slides/' . $slides->gambar ?>" alt="background"></div>
+  <div class="bg-img"><img src="<?= Yii::$app->request->baseUrl . '/uploads/slides/' . $slides->gambar ?>" alt="background"></div>
   <div class="">
     <div class="row">
       <div class="col-sm-12 col-md-12 col-lg-6 offset-lg-6">
@@ -22,80 +113,80 @@ use yii\helpers\Html;
           </ul>
           <div class="tab-content" id="myTabContent">
             <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-              
-                <div class="form-group">
-                  <div class="row">
-                    <div class="col-lg-6 col-md-6 col-sm-12 col-12">
-                      <label for="Wakaf" style="font-size: 1.4rem;color: #f1a502;margin-top: 10px;">Ayo Mulai Wakaf</label>
-                    </div>
-                    <div class="col-lg-6 col-md-6 col-sm-12 col-12">
-                      <select class="form-control select-wakaf border-r5 shadow-r2" id="select-category" style="overflow: scroll;" onchange="myFunction(event)">
-                        <option class="font-weight-bold" disabled selected>Silahkan Pilih Program</option>
-                        <?php
-                        foreach ($list_pendanaans as $pendana) { ?>
-                          <option class="font-weight-bold" value="<?= $pendana->id ?>"><?= $pendana->nama_pendanaan ?></option>
-                        <?php } ?>
-                      </select>
-                    </div>
-                    <div class="col-lg-8 col-md-8 col-sm-12 col-12 pt-4">
-                      <p style="color: #2a2a2a;" class="font-weight-bold pt-4">Silahkan Isi Jumlah Wakafmu, Insyaallah Semua Berkah</p>
-                    </div>
-                    <div class="col-12 pt-4">
-                      <div class="form-group">
-                        <label for="">Isi Nominal Wakaf Anda</label>
-                        <div class="input-group mb-2">
-                          <div class="input-group-prepend mr-2" style="height:calc(1.5em + .75rem + 2px);">
-                            <div class="input-group-text bg-white border-r5 font-weight-bold" style="color: #afafaf;">Rp</div>
-                          </div>
 
-                          <input type="hidden" class="form-control select-wakaf border-r5" id="pendanaan_wakaf" name="pendanaan_wakaf" placeholder="Minimal Wakaf Rp. 10.000">
-                          <input type="number" class="form-control select-wakaf border-r5" id="nominal" name="nominal" placeholder="Minimal Wakaf Rp. 10.000">
+              <div class="form-group">
+                <div class="row">
+                  <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                    <label for="Wakaf" style="font-size: 1.4rem;color: #f1a502;margin-top: 10px;">Ayo Mulai Wakaf</label>
+                  </div>
+                  <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                    <select class="form-control select-wakaf border-r5 shadow-r2" id="select-category" style="overflow: scroll;" onchange="myFunction(event)">
+                      <option class="font-weight-bold" disabled selected>Silahkan Pilih Program</option>
+                      <?php
+                      foreach ($list_pendanaans as $pendana) { ?>
+                        <option class="font-weight-bold" value="<?= $pendana->id ?>"><?= $pendana->nama_pendanaan ?></option>
+                      <?php } ?>
+                    </select>
+                  </div>
+                  <div class="col-lg-8 col-md-8 col-sm-12 col-12 pt-4">
+                    <p style="color: #2a2a2a;" class="font-weight-bold pt-4">Silahkan Isi Jumlah Wakafmu, Insyaallah Semua Berkah</p>
+                  </div>
+                  <div class="col-12 pt-4">
+                    <div class="form-group">
+                      <label for="">Isi Nominal Wakaf Anda</label>
+                      <div class="input-group mb-2">
+                        <div class="input-group-prepend mr-2" style="height:calc(1.5em + .75rem + 2px);">
+                          <div class="input-group-text bg-white border-r5 font-weight-bold" style="color: #afafaf;">Rp</div>
                         </div>
+
+                        <input type="hidden" class="form-control select-wakaf border-r5" id="pendanaan_wakaf" name="pendanaan_wakaf" placeholder="Minimal Wakaf Rp. 10.000">
+                        <input type="number" class="form-control select-wakaf border-r5" id="nominal" name="nominal" placeholder="Minimal Wakaf Rp. 10.000">
                       </div>
                     </div>
-                    <div class="col-12">
-                      <button type="submit" class="btn-sm btn-block text-white font-weight-bold" style="height: 3rem;background-color: #f1a502;" id="bayarkan">Wakaf Sekarang</button>
-                    </div>
+                  </div>
+                  <div class="col-12">
+                    <button type="submit" class="btn-sm btn-block text-white font-weight-bold" style="height: 3rem;background-color: #f1a502;" id="bayarkan">Wakaf Sekarang</button>
                   </div>
                 </div>
-              
+              </div>
+
             </div>
             <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-              
-                <div class="form-group">
-                  <div class="row">
-                    <div class="col-lg-6 col-md-6 col-sm-12 col-12">
-                      <label for="Infak" style="font-size: 1.4rem;color: #f1a502;margin-top: 10px;">Ayo Mulai Infak</label>
-                    </div>
-                    <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+
+              <div class="form-group">
+                <div class="row">
+                  <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                    <label for="Infak" style="font-size: 1.4rem;color: #f1a502;margin-top: 10px;">Ayo Mulai Infak</label>
+                  </div>
+                  <div class="col-lg-6 col-md-6 col-sm-12 col-12">
                     <select class="form-control select-wakaf border-r5 shadow-r2" id="select-category" style="overflow: scroll;" onchange="myFunction2(event)">
-                                <option class="font-weight-bold" disabled selected>Silahkan Pilih Program</option>
-                                <?php foreach($list_pendanaans as $pendana){ ?>
-                                    <option class="font-weight-bold" value="<?= $pendana->id ?>"><?= $pendana->nama_pendanaan ?></option>
-                                <?php } ?>
-                                </select>
-                    </div>
-                    <div class="col-lg-8 col-md-8 col-sm-12 col-12 pt-4">
-                      <p style="color: #2a2a2a;" class="font-weight-bold pt-4">Silahkan Isi Jumlah Infakmu, Insyaallah Semua Berkah</p>
-                    </div>
-                    <div class="col-12 pt-4">
-                      <div class="form-group">
-                        <label for="">Isi Nominal Infak Anda</label>
-                        <div class="input-group mb-2">
-                          <div class="input-group-prepend mr-2" style="height:calc(1.5em + .75rem + 2px);">
-                            <div class="input-group-text bg-white border-r5 font-weight-bold" style="color: #afafaf;">Rp</div>
-                          </div>
-                          <input type="hidden" class="form-control select-wakaf border-r5 shadow-r2" id="pendanaan_infak" name="pendanaan_infak" placeholder="Minimal Wakaf Rp. 10.000">
-                                        <input type="number" class="form-control select-wakaf border-r5 shadow-r2" id="nominal2" name="nominal2" placeholder="Minimal infak Rp. 10.000">
+                      <option class="font-weight-bold" disabled selected>Silahkan Pilih Program</option>
+                      <?php foreach ($list_pendanaans as $pendana) { ?>
+                        <option class="font-weight-bold" value="<?= $pendana->id ?>"><?= $pendana->nama_pendanaan ?></option>
+                      <?php } ?>
+                    </select>
+                  </div>
+                  <div class="col-lg-8 col-md-8 col-sm-12 col-12 pt-4">
+                    <p style="color: #2a2a2a;" class="font-weight-bold pt-4">Silahkan Isi Jumlah Infakmu, Insyaallah Semua Berkah</p>
+                  </div>
+                  <div class="col-12 pt-4">
+                    <div class="form-group">
+                      <label for="">Isi Nominal Infak Anda</label>
+                      <div class="input-group mb-2">
+                        <div class="input-group-prepend mr-2" style="height:calc(1.5em + .75rem + 2px);">
+                          <div class="input-group-text bg-white border-r5 font-weight-bold" style="color: #afafaf;">Rp</div>
                         </div>
+                        <input type="hidden" class="form-control select-wakaf border-r5 shadow-r2" id="pendanaan_infak" name="pendanaan_infak" placeholder="Minimal Wakaf Rp. 10.000">
+                        <input type="number" class="form-control select-wakaf border-r5 shadow-r2" id="nominal2" name="nominal2" placeholder="Minimal infak Rp. 10.000">
                       </div>
                     </div>
-                    <div class="col-12">
-                      <button type="submit" class="btn-sm btn-block text-white font-weight-bold" style="height: 3rem;background-color: #f1a502;" id="bayarkan2">Infak Sekarang</button>
-                    </div>
+                  </div>
+                  <div class="col-12">
+                    <button type="submit" class="btn-sm btn-block text-white font-weight-bold" style="height: 3rem;background-color: #f1a502;" id="bayarkan2">Infak Sekarang</button>
                   </div>
                 </div>
-              
+              </div>
+
             </div>
           </div>
         </div>
@@ -323,76 +414,76 @@ use yii\helpers\Html;
 
 <?php
 if (!\Yii::$app->user->isGuest) {
-        $confirm = Yii::$app->user->identity->confirm;
-        $status = Yii::$app->user->identity->status;
-        if ($confirm != 1 || $status != 1) {
-    ?>
-            <div class="modal fade" id="verifakun" tabindex="-1" role="dialog" aria-labelledby="verifakun" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-scrollable" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="verifakun">Verifikasi Akun Anda!</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="col-12">
-                                <?php
+  $confirm = Yii::$app->user->identity->confirm;
+  $status = Yii::$app->user->identity->status;
+  if ($confirm != 1 || $status != 1) {
+?>
+    <div class="modal fade" id="verifakun" tabindex="-1" role="dialog" aria-labelledby="verifakun" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="verifakun">Verifikasi Akun Anda!</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="col-12">
+              <?php
 
-                                $form = ActiveForm::begin([
-                                    'id' => 'otp',
-                                    'layout' => 'horizontal',
-                                    'enableClientValidation' => true,
-                                    'errorSummaryCssClass' => 'error-summary alert alert-error',
-                                    'enableClientScript' => false,
-                                ]);
-                                ?>
-                                <?php echo $form->errorSummary($model); ?>
+              $form = ActiveForm::begin([
+                'id' => 'otp',
+                'layout' => 'horizontal',
+                'enableClientValidation' => true,
+                'errorSummaryCssClass' => 'error-summary alert alert-error',
+                'enableClientScript' => false,
+              ]);
+              ?>
+              <?php echo $form->errorSummary($model); ?>
 
-                                <div class="row">
-                                    <div class="col-lg-12 col-md-12 col-sm-12 col-12">
-                                        <?= $form->field(
-                                            $model,
-                                            'kode_otp',
-                                            [
-                                                'template' => '
+              <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                  <?= $form->field(
+                    $model,
+                    'kode_otp',
+                    [
+                      'template' => '
                     {label}
                     {input}
                     {error}
                 ',
-                                                'inputOptions' => [
-                                                    'class' => 'form-control'
-                                                ],
-                                                'labelOptions' => [
-                                                    'class' => 'control-label'
-                                                ],
-                                                'options' => ['tag' => false]
-                                            ]
-                                        )->textInput(['maxlength' => true]) ?>
-                                    </div>
-                                </div>
+                      'inputOptions' => [
+                        'class' => 'form-control'
+                      ],
+                      'labelOptions' => [
+                        'class' => 'control-label'
+                      ],
+                      'options' => ['tag' => false]
+                    ]
+                  )->textInput(['maxlength' => true]) ?>
+                </div>
+              </div>
 
-                                <div class="row">
-                                    <div class="col-6">
-                                        <a href="<?= \Yii::$app->request->BaseUrl . "/home/kirim-otp/" ?>" class="btn btn-sm btn-program btn-info btn-block" style="padding:10px!important;">Kirim OTP</a>
-                                    </div>
-                                    <div class="col-6">
-                                        <?= Html::submitButton('Submit', ['class' => 'btn btn-sm btn-program btn-block', 'style' => 'padding:10px!important;width:100%']); ?>
-                                    </div>
-                                </div>
-                                <?php ActiveForm::end(); ?>
-                            </div>
-                        </div>
-                        <!-- <div class="modal-footer">
+              <div class="row">
+                <div class="col-6">
+                  <a href="<?= \Yii::$app->request->BaseUrl . "/home/kirim-otp/" ?>" class="btn btn-sm btn-program btn-info btn-block" style="padding:10px!important;">Kirim OTP</a>
+                </div>
+                <div class="col-6">
+                  <?= Html::submitButton('Submit', ['class' => 'btn btn-sm btn-program btn-block', 'style' => 'padding:10px!important;width:100%']); ?>
+                </div>
+              </div>
+              <?php ActiveForm::end(); ?>
+            </div>
+          </div>
+          <!-- <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                             <button type="button" class="btn btn-primary">Save changes</button>
                         </div> -->
-                    </div>
-                </div>
-            </div>
-    <?php }
-    } ?>
+        </div>
+      </div>
+    </div>
+<?php }
+} ?>
 </div>
 
 <script>
@@ -468,16 +559,21 @@ if (!\Yii::$app->user->isGuest) {
         /* You may add your own js here, this is just example */
         // document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
         Swal.fire("Peringatan!", "Pembayaran Berhasil", "success").then((result) => {
+          $("#page-loader").fadeOut("slow");
           window.location = "<?= Yii::$app->request->baseUrl . "/home/profile" ?>";
         });
         // alert("payment success!"); console.log(result);
       },
       // Optional
       onPending: function(result) {
-        Swal.fire("Peringatan!", "Transaksi Menunggu Pembayaran", "success").then((result) => {
-          window.location = "<?= Yii::$app->request->baseUrl . "/home/kirim/".$pembayaran->id ?>";
-          // window.location = "<?= Yii::$app->request->baseUrl . "/home/profile" ?>";
+        // $("#page-loader").fadeOut("slow");
+        jQuery(document).ready(function() {
+          jQuery('#page-loader').fadeOut(3000);
         });
+          window.location = "<?= Yii::$app->request->baseUrl . "/home/kirim/" . $pembayaran->id ?>";
+        // Swal.fire("Peringatan!", "Transaksi Menunggu Pembayaran", "success").then((result) => {
+        // window.location = "<?= Yii::$app->request->baseUrl . "/home/profile" ?>";
+        // });
         /* You may add your own js here, this is just example */
         // document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
       },

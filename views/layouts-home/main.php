@@ -26,9 +26,8 @@ use yii\bootstrap\ActiveForm;
     <?= Html::csrfMetaTags() ?>
     <title><?= Html::encode($setting->judul_web) ?></title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <script src=
-"https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.0/sweetalert.min.js">
-  </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.0/sweetalert.min.js">
+    </script>
     <?php \app\assets\HomeAsset::register($this); ?>
     <script>
         var baseUrl = "<?= Yii::$app->urlManager->baseUrl ?>";
@@ -128,12 +127,103 @@ use yii\bootstrap\ActiveForm;
         #modal-forgot .close {
             color: white;
         }
+
+        #page-loader {
+            background: #f8f8f8;
+            bottom: 0;
+            left: 0;
+            position: fixed;
+            right: 0;
+            top: 0;
+            z-index: 99999;
+        }
+
+        .page-loader__spin {
+            width: 35px;
+            height: 35px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            border-top: 6px solid #222;
+            border-right: 6px solid #222;
+            border-bottom: 6px solid #222;
+            border-left: 6px solid #ebcd1e;
+            -webkit-border-radius: 50%;
+            -moz-border-radius: 50%;
+            border-radius: 50%;
+            -webkit-animation: spinner 1000ms infinite linear;
+            -moz-animation: spinner 1000ms infinite linear;
+            -o-animation: spinner 1000ms infinite linear;
+            animation: spinner 1000ms infinite linear;
+            z-index: 100000;
+        }
+
+        @-webkit-keyframes spinner {
+            0% {
+                -webkit-transform: rotate(0deg);
+                transform: rotate(0deg);
+            }
+
+            100% {
+                -webkit-transform: rotate(360deg);
+                transform: rotate(360deg);
+            }
+        }
+
+        @-moz-keyframes spinner {
+            0% {
+                -webkit-transform: rotate(0deg);
+                -moz-transform: rotate(0deg);
+                transform: rotate(0deg);
+            }
+
+            100% {
+                -webkit-transform: rotate(360deg);
+                -moz-transform: rotate(360deg);
+                transform: rotate(360deg);
+            }
+        }
+
+        @-o-keyframes spinner {
+            0% {
+                -webkit-transform: rotate(0deg);
+                -o-transform: rotate(0deg);
+                transform: rotate(0deg);
+            }
+
+            100% {
+                -webkit-transform: rotate(360deg);
+                -o-transform: rotate(360deg);
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes spinner {
+            0% {
+                -webkit-transform: rotate(0deg);
+                -moz-transform: rotate(0deg);
+                -o-transform: rotate(0deg);
+                transform: rotate(0deg);
+            }
+
+            100% {
+                -webkit-transform: rotate(360deg);
+                -moz-transform: rotate(360deg);
+                -o-transform: rotate(360deg);
+                transform: rotate(360deg);
+            }
+        }
     </style>
 
 </head>
 
 <body>
     <?php $this->beginBody() ?>
+    <div id="page-loader">
+        <div class="page-loader__inner">
+            <div class="page-loader__spin"></div>
+        </div>
+    </div>
     <div class="wrapper">
         <?= $this->render('header') ?>
         <?= $this->render(
@@ -181,31 +271,31 @@ use yii\bootstrap\ActiveForm;
     var marker;
 
     <?php
-        $lat = $setting->latitude;
-        $lon = $setting->longitude;
-        ?>
+    $lat = $setting->latitude;
+    $lon = $setting->longitude;
+    ?>
     var lat = <?php echo $lat ?>;
     var lng = <?php echo $lon ?>;
     var map = L.map("map-canvas").setView([lat, lng], 13);
     marker = L.marker([lat, lng]).addTo(map);
     L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
-    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-    maxZoom: 18,
-    id: 'mapbox/streets-v11',
-    tileSize: 512,
-    zoomOffset: -1,
-    accessToken: 'pk.eyJ1IjoiZGVmcmluZHIiLCJhIjoiY2s4ZTN5ZjM0MDFrNzNsdG1tNXk2M2dlMSJ9.YXJM0PTu8PSsCCtYVjJNmw'
-}).addTo(map);
-var map2 = L.map("map-canvas2").setView([lat, lng], 13);
+        attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+        maxZoom: 18,
+        id: 'mapbox/streets-v11',
+        tileSize: 512,
+        zoomOffset: -1,
+        accessToken: 'pk.eyJ1IjoiZGVmcmluZHIiLCJhIjoiY2s4ZTN5ZjM0MDFrNzNsdG1tNXk2M2dlMSJ9.YXJM0PTu8PSsCCtYVjJNmw'
+    }).addTo(map);
+    var map2 = L.map("map-canvas2").setView([lat, lng], 13);
     marker2 = L.marker([lat, lng]).addTo(map2);
     L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
-    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-    maxZoom: 18,
-    id: 'mapbox/streets-v11',
-    tileSize: 512,
-    zoomOffset: -1,
-    accessToken: 'pk.eyJ1IjoiZGVmcmluZHIiLCJhIjoiY2s4ZTN5ZjM0MDFrNzNsdG1tNXk2M2dlMSJ9.YXJM0PTu8PSsCCtYVjJNmw'
-}).addTo(map2);
+        attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+        maxZoom: 18,
+        id: 'mapbox/streets-v11',
+        tileSize: 512,
+        zoomOffset: -1,
+        accessToken: 'pk.eyJ1IjoiZGVmcmluZHIiLCJhIjoiY2s4ZTN5ZjM0MDFrNzNsdG1tNXk2M2dlMSJ9.YXJM0PTu8PSsCCtYVjJNmw'
+    }).addTo(map2);
 </script>
 <script>
     $(window).ready(() => {
@@ -313,25 +403,25 @@ var map2 = L.map("map-canvas2").setView([lat, lng], 13);
                     $("#modal-login").removeAttr("style")
                     $("#modal-login").attr("class", "fade modal");
                     let response = await fetch("<?= Url::to(['/site/lupa-password'], false) ?>", {
-                    headers: {
-                        'X-Requested-With': 'XMLHttpRequest'
-                    }
-                });
-                response = await response.text();
-                var parser = new DOMParser();
-                var doc = parser.parseFromString(response, 'text/html');
-                console.log(response)
-                $("#modal-body3").html(response);
-                $("#modal-forgot").attr("style", "padding-right: 17px; display: block;overflow:auto")
-                $("#modal-forgot").attr("class", "fade modal show");
-                document.querySelector("#modal-forgot .close").addEventListener("click", () => {
-                    $("#modal-forgot").removeAttr("style")
-                    $("#modal-forgot").attr("class", "fade modal");
-                })
-                document.querySelector("#modal-login #btn-forgot").addEventListener("click", () => {
-                    $("#modal-login").attr("class", "fade modal");
-                })
-                    
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest'
+                        }
+                    });
+                    response = await response.text();
+                    var parser = new DOMParser();
+                    var doc = parser.parseFromString(response, 'text/html');
+                    console.log(response)
+                    $("#modal-body3").html(response);
+                    $("#modal-forgot").attr("style", "padding-right: 17px; display: block;overflow:auto")
+                    $("#modal-forgot").attr("class", "fade modal show");
+                    document.querySelector("#modal-forgot .close").addEventListener("click", () => {
+                        $("#modal-forgot").removeAttr("style")
+                        $("#modal-forgot").attr("class", "fade modal");
+                    })
+                    document.querySelector("#modal-login #btn-forgot").addEventListener("click", () => {
+                        $("#modal-login").attr("class", "fade modal");
+                    })
+
                 })
             });
             $('#btn-user-login-header').on('click', async () => {
@@ -355,25 +445,25 @@ var map2 = L.map("map-canvas2").setView([lat, lng], 13);
                     $("#modal-login").removeAttr("style")
                     $("#modal-login").attr("class", "fade modal");
                     let response = await fetch("<?= Url::to(['/site/lupa-password'], false) ?>", {
-                    headers: {
-                        'X-Requested-With': 'XMLHttpRequest'
-                    }
-                });
-                response = await response.text();
-                var parser = new DOMParser();
-                var doc = parser.parseFromString(response, 'text/html');
-                console.log(response)
-                $("#modal-body3").html(response);
-                $("#modal-forgot").attr("style", "padding-right: 17px; display: block;overflow:auto")
-                $("#modal-forgot").attr("class", "fade modal show");
-                document.querySelector("#modal-forgot .close").addEventListener("click", () => {
-                    $("#modal-forgot").removeAttr("style")
-                    $("#modal-forgot").attr("class", "fade modal");
-                })
-                document.querySelector("#modal-login #btn-forgot").addEventListener("click", () => {
-                    $("#modal-login").attr("class", "fade modal");
-                })
-                    
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest'
+                        }
+                    });
+                    response = await response.text();
+                    var parser = new DOMParser();
+                    var doc = parser.parseFromString(response, 'text/html');
+                    console.log(response)
+                    $("#modal-body3").html(response);
+                    $("#modal-forgot").attr("style", "padding-right: 17px; display: block;overflow:auto")
+                    $("#modal-forgot").attr("class", "fade modal show");
+                    document.querySelector("#modal-forgot .close").addEventListener("click", () => {
+                        $("#modal-forgot").removeAttr("style")
+                        $("#modal-forgot").attr("class", "fade modal");
+                    })
+                    document.querySelector("#modal-login #btn-forgot").addEventListener("click", () => {
+                        $("#modal-login").attr("class", "fade modal");
+                    })
+
                 })
             });
 
@@ -383,13 +473,17 @@ var map2 = L.map("map-canvas2").setView([lat, lng], 13);
     })
 </script>
 <script type="text/javascript">
-$(document).ready(function(){
-  $('.dropdown-submenu a.test').on("click", function(e){
-    $(this).next('ul').toggle();
-    e.stopPropagation();
-    e.preventDefault();
-  });
-});
+    $(document).ready(function() {
+        $('.dropdown-submenu a.test').on("click", function(e) {
+            $(this).next('ul').toggle();
+            e.stopPropagation();
+            e.preventDefault();
+        });
+    });
+    $(window).on("load", function() {
+        $("#page-loader").fadeOut("slow");
+    });
 </script>
+
 </html>
 <?php $this->endPage() ?>
