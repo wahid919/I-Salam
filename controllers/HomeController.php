@@ -153,7 +153,7 @@ class HomeController extends Controller
                         'gross_amount' => (int)$nominal, // no decimal allowed for creditcard
                     );
                     // Optional
-                    if($pendanaan->kategori_pendanaan_id != 5){
+                    if($pendanaan->kategori_pendanaan_id == 5){
                         $item1_details = array(
                             'id' => '1',
                             'price' => (int)$nominal,
@@ -2460,12 +2460,21 @@ class HomeController extends Controller
                         'gross_amount' => (int)$nominal, // no decimal allowed for creditcard
                     );
                     // Optional
-                    $item1_details = array(
-                        'id' => '1',
-                        'price' => (int)$nominal,
-                        'quantity' => 1,
-                        'name' => $pendanaan->nama_pendanaan . "(Non Lembaran)"
-                    );
+                    if($pendanaan->kategori_pendanaan_id == 5){
+                        $item1_details = array(
+                            'id' => '1',
+                            'price' => (int)$nominal,
+                            'quantity' => 1,
+                            'name' => $pendanaan->nama_pendanaan . "(Non Lembaran)"
+                        );
+                    }else{
+                        $item1_details = array(
+                            'id' => '1',
+                            'price' => (int)$nominal,
+                            'quantity' => 1,
+                            'name' => $pendanaan->nama_pendanaan
+                        );
+                    }
                 } elseif($ket == "lembar-zakat") {
                     $dt = "zakat";
                     $model->jumlah_lembaran = 0;
@@ -2823,7 +2832,7 @@ class HomeController extends Controller
                 </tbody>
                 </table>
                 <p>Dear '.$pembayaran->nama.'</p>
-                <p>Silakan selesaikan pembayaran pesanan Anda:</p>
+                <p>Silakan selesaikan pembayaran wakaf/zis Anda:</p>
                 <table style="width: 100%;">
                 <tbody>
                 <tr>
@@ -2848,8 +2857,8 @@ class HomeController extends Controller
                 <table>
                 <tbody>
                 <tr>
-                <th>Deskripsi</th>
-                <th>Harga</th>
+                <th>Program Wakaf/ZIS</th>
+                <th>Nominal Wakaf/ZIS</th>
                 </tr>
                 <tr>
                 <td>'.$pembayaran->pendanaan->nama_pendanaan.'&nbsp;</td>
@@ -2864,7 +2873,7 @@ class HomeController extends Controller
                 <div>&nbsp;</div>
                 <div>
                 <div style="text-align: left;"><strong>PERHATIAN!</strong></div>
-                <p>Mohon selesaikan pembayaran sebelum '.\app\components\Tanggal::toReadableDateEmail($kadaluarsa).' Asia/Jakarta. Apabila melewati batas waktu, pesanan Anda akan otomatis dibatalkan.</p>
+                <p>Selangkah lagi Anda telah berpartisipasi dalam wakaf kebaikan ini, silahkan segera melakukan pembayaran sebelum  '.\app\components\Tanggal::toReadableDateEmail($kadaluarsa).' Asia/Jakarta.Jika melewati batas waktu, pembayaran wakaf Anda akan otomatis dibatalkan.</p>
                 <p><strong>*Detail pembayaran dan cara pembayaran mohon cek di Email-&gt;Promosi&nbsp;</strong></p>
                 </div>
             ';

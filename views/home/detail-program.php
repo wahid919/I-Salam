@@ -256,7 +256,7 @@ use yii\helpers\Url;
                     </table>
                     <?php
                     
-                    if($pendanaan->kategori_pendanaan_id != 5){
+                    if($pendanaan->kategori_pendanaan_id == 5){
                     ?>
                     <p class="font-size-08">Amanah Wakaf :</p>
                     <div class="row">
@@ -348,7 +348,7 @@ use yii\helpers\Url;
                     </table>
                     <?php
                     
-                    if($pendanaan->kategori_pendanaan_id != 5){
+                    if($pendanaan->kategori_pendanaan_id == 5){
                     ?>
                     <p class="font-size-08">Amanah Wakaf :</p>
                     <div class="row">
@@ -792,7 +792,7 @@ use yii\helpers\Url;
                     </table>
                     <?php
                     
-                    if($pendanaan->kategori_pendanaan_id != 5){
+                    if($pendanaan->kategori_pendanaan_id == 5){
                     ?>
                     <p class="font-size-08">Amanah Wakaf :</p>
                     <div class="row">
@@ -937,7 +937,7 @@ use yii\helpers\Url;
                     </table>
                     <?php
                     
-                    if($pendanaan->kategori_pendanaan_id != 5){
+                    if($pendanaan->kategori_pendanaan_id == 5){
                     ?>
                     <p class="font-size-08">Amanah Wakaf :</p>
                     <div class="row">
