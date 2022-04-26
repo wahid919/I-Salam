@@ -5,7 +5,98 @@ use yii\helpers\Url;
 use yii\bootstrap\ActiveForm;
 use yii\helpers\Html;
 ?>
+<style>
+  #page-loader {
+    background: #f8f8f8;
+    bottom: 0;
+    left: 0;
+    position: fixed;
+    right: 0;
+    top: 0;
+    z-index: 99999;
+  }
 
+  .page-loader__spin {
+    width: 35px;
+    height: 35px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    border-top: 6px solid #222;
+    border-right: 6px solid #222;
+    border-bottom: 6px solid #222;
+    border-left: 6px solid #f1a401;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+    -webkit-animation: spinner 1000ms infinite linear;
+    -moz-animation: spinner 1000ms infinite linear;
+    -o-animation: spinner 1000ms infinite linear;
+    animation: spinner 1000ms infinite linear;
+    z-index: 100000;
+  }
+
+  @-webkit-keyframes spinner {
+    0% {
+      -webkit-transform: rotate(0deg);
+      transform: rotate(0deg);
+    }
+
+    100% {
+      -webkit-transform: rotate(360deg);
+      transform: rotate(360deg);
+    }
+  }
+
+  @-moz-keyframes spinner {
+    0% {
+      -webkit-transform: rotate(0deg);
+      -moz-transform: rotate(0deg);
+      transform: rotate(0deg);
+    }
+
+    100% {
+      -webkit-transform: rotate(360deg);
+      -moz-transform: rotate(360deg);
+      transform: rotate(360deg);
+    }
+  }
+
+  @-o-keyframes spinner {
+    0% {
+      -webkit-transform: rotate(0deg);
+      -o-transform: rotate(0deg);
+      transform: rotate(0deg);
+    }
+
+    100% {
+      -webkit-transform: rotate(360deg);
+      -o-transform: rotate(360deg);
+      transform: rotate(360deg);
+    }
+  }
+
+  @keyframes spinner {
+    0% {
+      -webkit-transform: rotate(0deg);
+      -moz-transform: rotate(0deg);
+      -o-transform: rotate(0deg);
+      transform: rotate(0deg);
+    }
+
+    100% {
+      -webkit-transform: rotate(360deg);
+      -moz-transform: rotate(360deg);
+      -o-transform: rotate(360deg);
+      transform: rotate(360deg);
+    }
+  }
+</style>
+<div id="page-loader">
+  <div class="page-loader__inner">
+    <div class="page-loader__spin"></div>
+  </div>
+</div>
 <section id="header" class="header-wakaf bg-overlay pt-120 pb-120">
 <div class="bg-img"><img src="<?= Yii::$app->request->baseUrl . '/uploads/slides/' . $slides->gambar ?>" alt="background"></div>
   <div class="">
@@ -396,16 +487,21 @@ use yii\helpers\Html;
         /* You may add your own js here, this is just example */
         // document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
         Swal.fire("Peringatan!", "Pembayaran Berhasil", "success").then((result) => {
+          $("#page-loader").fadeOut("slow");
           window.location = "<?= Yii::$app->request->baseUrl . "/home" ?>";
         });
         // alert("payment success!"); console.log(result);
       },
       // Optional
       onPending: function(result) {
-        Swal.fire("Peringatan!", "Transaksi Menunggu Pembayaran", "success").then((result) => {
-          window.location = "<?= Yii::$app->request->baseUrl . "/home/kirim/".$pembayaran->id ?>";
-          // window.location = "<?= Yii::$app->request->baseUrl . "/home" ?>";
+        // $("#page-loader").fadeOut("slow");
+        jQuery(document).ready(function() {
+          jQuery('#page-loader').fadeOut(3000);
         });
+          window.location = "<?= Yii::$app->request->baseUrl . "/home/kirim/" . $pembayaran->id ?>";
+        // Swal.fire("Peringatan!", "Transaksi Menunggu Pembayaran", "success").then((result) => {
+        // window.location = "<?= Yii::$app->request->baseUrl . "/home" ?>";
+        // });
         /* You may add your own js here, this is just example */
         // document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
       },

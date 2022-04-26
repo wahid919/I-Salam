@@ -147,7 +147,7 @@ use yii\bootstrap\ActiveForm;
             border-top: 6px solid #222;
             border-right: 6px solid #222;
             border-bottom: 6px solid #222;
-            border-left: 6px solid #ebcd1e;
+            border-left: 6px solid #f1a401;
             -webkit-border-radius: 50%;
             -moz-border-radius: 50%;
             border-radius: 50%;
