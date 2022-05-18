@@ -85,7 +85,7 @@ class HomeController extends Controller
                          'ganti-password', 'visi', 'organisasi','lupa','kontak','cetak','latar-belakang',
                          'alamat-kantor','telp','map','pesan','medsos','privacy-policy','cek-data',
                          'aturan-wakaf','fiqih-wakaf','regulasi-wakaf','aplikasi-wakaf','kalkulator-zakat','daftar-wakaf','afiliasi',
-                        'transaksi-wakaf','transaksi-zis','pembayaran-header','bayar-header','kirim'],
+                        'transaksi-wakaf','transaksi-zis','pembayaran-header','bayar-header','kirim','tes','cek-pembayaran'],
                         'allow' => true,
                     ],
                     [
@@ -104,7 +104,30 @@ class HomeController extends Controller
         return $this->render('privacy', [
         ]);
     }
+    public function actionTes(){
+        return $this->render('tes',[]);
+    }
+    public function actionCekPembayaran($id,$nominal){
+        if($id != null && $nominal !=null){
+            $pendanaan = Pendanaan::findOne(['id'=>$id]);
+            if($pendanaan != NULL){
+                $amanah_pendanaan = AmanahPendanaan::find()->where(['pendanaan_id' => $id])->all();
+    
+                return $this->render('cek-pembayaran',[
+                'pendanaan'=>$pendanaan,
+                'amanah_pendanaan' => $amanah_pendanaan,
+                'id_pendanaan' => $id,
+                'nominal_wakaf' => $nominal
+                ]);
+            }else{
 
+                Yii::$app->session->setFlash("error", "Data Tidak Ditemukan");
+                return $this->redirect(['index']);
+            }
+        }else{
+            return $this->redirect(['index']);
+        }
+    }
     public function actionPembayaran($id, $nominal,$amanah_pendanaan ,$ket)
     {
         $confirm = Yii::$app->user->identity->confirm;
@@ -632,6 +655,7 @@ class HomeController extends Controller
         $testimonials = Testimonials::find()->all();
         $pendanaans = Pendanaan::find()->where(['status_tampil' => 1])->limit(6)->all();
         $slides = Slides::find()->where(['status' => 1])->orderBy(new Expression('rand()'))->one();
+        // $slides = Slides::find()->where(['status' => 1])->all();
 
         $list_pendanaans = Pendanaan::find()->where(['status_tampil' => 1])->all();
         $news = Berita::find()->limit(6)->all();

@@ -31,4 +31,10 @@ class Pendanaan extends BasePendanaan
             ]
         );
     }
+    public function getShowDescription()
+    {
+        if (strlen($this->deskripsi) <= 150) $text = strip_tags($this->deskripsi);
+        else $text = strip_tags(substr($this->deskripsi, 0, 150) . "...");
+        return $text;
+    }
 }
