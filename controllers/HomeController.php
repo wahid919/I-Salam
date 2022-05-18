@@ -2832,11 +2832,11 @@ class HomeController extends Controller
                 </tbody>
                 </table>
                 <p>Dear '.$pembayaran->nama.'</p>
-                <p>Silakan selesaikan pembayaran wakaf/zis Anda:</p>
+                <p>Silakan selesaikan pembayaran '.$pembayaran->jenis.' Anda:</p>
                 <table style="width: 100%;">
                 <tbody>
                 <tr>
-                <td style="width: 100%;" colspan="2">Rincian Pesanan :</td>
+                <td style="width: 100%;" colspan="2">Rincian Pembayaran :</td>
                 <td style="width: 50%;">&nbsp;</td>
                 </tr>
                 <tr>
@@ -2857,8 +2857,8 @@ class HomeController extends Controller
                 <table>
                 <tbody>
                 <tr>
-                <th>Program Wakaf/ZIS</th>
-                <th>Nominal Wakaf/ZIS</th>
+                <th>Program '.$pembayaran->jenis.'</th>
+                <th>Nominal '.$pembayaran->jenis.'</th>
                 </tr>
                 <tr>
                 <td>'.$pembayaran->pendanaan->nama_pendanaan.'&nbsp;</td>

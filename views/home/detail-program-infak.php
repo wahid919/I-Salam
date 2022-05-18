@@ -1055,7 +1055,7 @@ use yii\helpers\Url;
               alert("Minimal Rp 10.000");
 
             }else{
-              window.location.href = `<?= Url::to(['/home/pembayaran-header', 'id' => $pendanaan->id]) ?>?nominal=${nominal}&amanah_pendanaan=${amanah_pendanaan}&nama=${nama}&email=${email}&phone=${phone}&ket=nominal`;
+              window.location.href = `<?= Url::to(['/home/pembayaran-header', 'id' => $pendanaan->id]) ?>?nominal=${nominal}&amanah_pendanaan=${amanah_pendanaan}&nama=${nama}&email=${email}&phone=${phone}&ket=nominal-infak`;
             }
           }
         }
@@ -1087,7 +1087,7 @@ use yii\helpers\Url;
           if(pendanaan == null){
           alert("Pendanaan Tidak Diketahui");
           }else{
-            window.location.href = `<?= Url::to(['/home/pembayaran-header', 'id' => $pendanaan->id]) ?>?nominal=${nominal2}&amanah_pendanaan=${amanah_pendanaan2}&nama=${nama2}&email=${email2}&phone=${phone2}ket=lembar`;
+            window.location.href = `<?= Url::to(['/home/pembayaran-header', 'id' => $pendanaan->id]) ?>?nominal=${nominal2}&amanah_pendanaan=${amanah_pendanaan2}&nama=${nama2}&email=${email2}&phone=${phone2}ket=lembar-infak`;
           }
         }
       });

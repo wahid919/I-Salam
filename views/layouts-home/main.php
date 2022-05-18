@@ -219,11 +219,11 @@ use yii\bootstrap\ActiveForm;
 
 <body>
     <?php $this->beginBody() ?>
-    <div id="page-loader">
+    <!-- <div id="page-loader">
         <div class="page-loader__inner">
             <div class="page-loader__spin"></div>
         </div>
-    </div>
+    </div> -->
     <div class="wrapper">
         <?= $this->render('header') ?>
         <?= $this->render(
@@ -480,9 +480,9 @@ use yii\bootstrap\ActiveForm;
             e.preventDefault();
         });
     });
-    $(window).on("load", function() {
-        $("#page-loader").fadeOut("slow");
-    });
+    // $(window).on("load", function() {
+    //     $("#page-loader").fadeOut("slow");
+    // });
 </script>
 
 </html>

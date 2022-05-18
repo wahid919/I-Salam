@@ -33,7 +33,11 @@ use yii\helpers\Html;
               <?= Yii::$app->session->getFlash('error') ?>
             </div> -->
           <?php endif; ?>
-
+          <!-- <div id="page-loader">
+        <div class="page-loader__inner">
+            <div class="page-loader__spin"></div>
+        </div>
+    </div> -->
 <section id="header" class="header-wakaf bg-overlay pt-120 pb-50">
   <div class="bg-img"><img src="<?= Yii::$app->request->baseUrl . '/uploads/slides/' . $slides->gambar ?>" alt="background"></div>
   <div class="">
