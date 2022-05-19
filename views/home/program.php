@@ -55,11 +55,11 @@
                 </div>
               </div>
               <div class="row">
-                <div class="col-lg-8 col-md-8 col-8 text-left font-weight-bold" style="color: #ffa500;font-size: 1.3rem;">
+                <div class="col-lg-8 col-md-8 col-8 text-left font-weight-bold" style="color: #ffa500;font-size: 18px;">
                   <?= \app\components\Angka::toReadableHarga($nominal, false)  ?><br>
                 </div>
-                <div class="col-lg-4 col-md-4 col-4 text-right font-weight-bold" style="color: #ffa500;font-size: 1.3rem;">
-                  <?= $interval; ?> Hari
+                <div class="col-lg-4 col-md-4 col-4 text-right font-weight-bold" style="color: #ffa500;font-size: 14px;">
+                  <?= $interval; ?> Hari Lagi
                 </div>
               </div>
               <hr>
