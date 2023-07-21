@@ -84,7 +84,7 @@ class SlidesController extends Controller
         try {
             if ($model->load($_POST)) {
                 $gambar = UploadedFile::getInstance($model, 'gambar');
-                $response = $this->uploadFile($gambar,'slides');
+                $response = $this->uploadImage($gambar, 'slides');
                 if ($response->success == false) {
                     Yii::$app->session->setFlash('danger', 'Gagal Upload Foto');
                     // goto end;
@@ -128,21 +128,21 @@ class SlidesController extends Controller
                 $model->gambar = Yii::$app->security->generateRandomString() . ".{$extension}";
 
                 # the path to save file
-                if (file_exists(Yii::getAlias("@app/web/uploads/testimonials/")) == false) {
-                    mkdir(Yii::getAlias("@app/web/uploads/testimonials/"), 0777, true);
+                if (file_exists(Yii::getAlias("@app/web/uploads/slides/")) == false) {
+                    mkdir(Yii::getAlias("@app/web/uploads/slides/"), 0777, true);
                 }
-                $path = Yii::getAlias("@app/web/uploads/testimonials/") . $model->gambar;
+                $path = Yii::getAlias("@app/web/uploads/slides/") . $model->gambar;
                 if ($oldgambar != NULL) {
 
                     $gambar->saveAs($path);
-                    unlink(Yii::$app->basePath . '/web/uploads/testimonials/' . $oldgambar);
+                    unlink(Yii::$app->basePath . '/web/uploads/slides/' . $oldgambar);
                 } else {
                     $gambar->saveAs($path);
                 }
             } else {
                 $model->gambar = $oldgambar;
             }
-            
+
             $model->save();
             return $this->redirect(Url::previous());
         } else {

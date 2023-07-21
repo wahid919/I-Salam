@@ -39,7 +39,8 @@ abstract class PartnerPendanaan extends \yii\db\ActiveRecord
             [['nama_partner', 'pendanaan_id'], 'required'],
             [['pendanaan_id'], 'integer'],
             [['nama_partner', 'foto_ktp_partner'], 'string', 'max' => 255],
-            [['pendanaan_id'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\Pendanaan::className(), 'targetAttribute' => ['pendanaan_id' => 'id']]
+            [['pendanaan_id'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\Pendanaan::className(), 'targetAttribute' => ['pendanaan_id' => 'id']],
+            [['no_hp'], 'string', 'max' => 20]
         ];
     }
 
@@ -53,6 +54,7 @@ abstract class PartnerPendanaan extends \yii\db\ActiveRecord
             'nama_partner' => 'Nama Partner',
             'pendanaan_id' => 'Pendanaan',
             'foto_ktp_partner' => 'Foto Ktp Partner',
+            'no_hp' => 'Nomor Telepon',
         ];
     }
 
@@ -63,8 +65,4 @@ abstract class PartnerPendanaan extends \yii\db\ActiveRecord
     {
         return $this->hasOne(\app\models\Pendanaan::className(), ['id' => 'pendanaan_id']);
     }
-
-
-
-
 }

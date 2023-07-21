@@ -78,14 +78,16 @@ class HomeController extends Controller
                 // 'only' => ['logout', 'design-bangunan'],
                 'rules' => [
                     [
-                        'actions' => ['login', 'registrasi', 'error', 'index', 'news', 'detail-berita',
-                        'about', 'report', 'ziswaf', 'program', 'detail-program','program-zakat', 
-                        'detail-program-zakat','program-infak', 'detail-program-infak','program-sedekah',
-                         'detail-program-sedekah', 'unduh-file-uraian', 'unduh-file-wakaf', 'lupa-password', 
-                         'ganti-password', 'visi', 'organisasi','lupa','kontak','cetak','latar-belakang',
-                         'alamat-kantor','telp','map','pesan','medsos','privacy-policy','cek-data',
-                         'aturan-wakaf','fiqih-wakaf','regulasi-wakaf','aplikasi-wakaf','kalkulator-zakat','daftar-wakaf','afiliasi',
-                        'transaksi-wakaf','transaksi-zis','pembayaran-header','bayar-header','kirim','tes','cek-pembayaran'],
+                        'actions' => [
+                            'login', 'registrasi', 'error', 'index', 'news', 'detail-berita',
+                            'about', 'report', 'ziswaf', 'program', 'detail-program', 'program-zakat',
+                            'detail-program-zakat', 'program-infak', 'detail-program-infak', 'program-sedekah',
+                            'detail-program-sedekah', 'unduh-file-uraian', 'unduh-file-wakaf', 'lupa-password',
+                            'ganti-password', 'visi', 'organisasi', 'lupa', 'kontak', 'cetak', 'latar-belakang',
+                            'alamat-kantor', 'telp', 'map', 'pesan', 'medsos', 'privacy-policy', 'cek-data',
+                            'aturan-wakaf', 'fiqih-wakaf', 'regulasi-wakaf', 'aplikasi-wakaf', 'kalkulator-zakat', 'daftar-wakaf', 'afiliasi',
+                            'transaksi-wakaf', 'transaksi-zis', 'pembayaran-header', 'bayar-header', 'kirim', 'tes', 'cek-pembayaran'
+                        ],
                         'allow' => true,
                     ],
                     [
@@ -100,35 +102,37 @@ class HomeController extends Controller
 
         ];
     }
-    public function actionPrivacyPolicy(){
-        return $this->render('privacy', [
-        ]);
+    public function actionPrivacyPolicy()
+    {
+        return $this->render('privacy', []);
     }
-    public function actionTes(){
-        return $this->render('tes',[]);
+    public function actionTes()
+    {
+        return $this->render('tes', []);
     }
-    public function actionCekPembayaran($id,$nominal){
-        if($id != null && $nominal !=null){
-            $pendanaan = Pendanaan::findOne(['id'=>$id]);
-            if($pendanaan != NULL){
+    public function actionCekPembayaran($id, $nominal)
+    {
+        if ($id != null && $nominal != null) {
+            $pendanaan = Pendanaan::findOne(['id' => $id]);
+            if ($pendanaan != NULL) {
                 $amanah_pendanaan = AmanahPendanaan::find()->where(['pendanaan_id' => $id])->all();
-    
-                return $this->render('cek-pembayaran',[
-                'pendanaan'=>$pendanaan,
-                'amanah_pendanaan' => $amanah_pendanaan,
-                'id_pendanaan' => $id,
-                'nominal_wakaf' => $nominal
+
+                return $this->render('cek-pembayaran', [
+                    'pendanaan' => $pendanaan,
+                    'amanah_pendanaan' => $amanah_pendanaan,
+                    'id_pendanaan' => $id,
+                    'nominal_wakaf' => $nominal
                 ]);
-            }else{
+            } else {
 
                 Yii::$app->session->setFlash("error", "Data Tidak Ditemukan");
                 return $this->redirect(['index']);
             }
-        }else{
+        } else {
             return $this->redirect(['index']);
         }
     }
-    public function actionPembayaran($id, $nominal,$amanah_pendanaan ,$ket)
+    public function actionPembayaran($id, $nominal, $amanah_pendanaan, $ket)
     {
         $confirm = Yii::$app->user->identity->confirm;
         $status = Yii::$app->user->identity->status;
@@ -152,7 +156,7 @@ class HomeController extends Controller
                 // $model->nama = Yii::$app->user->identity->name;
                 $model->nama = $name;
                 if ($ket == "lembar") {
-                    $dt ="wakaf";
+                    $dt = "wakaf";
                     $model->jumlah_lembaran = (int)$nominal;
                     $total = (int)$nominal * $pendanaan->nominal_lembaran;
                     $model->nominal = (int)$total;
@@ -167,7 +171,7 @@ class HomeController extends Controller
                         'quantity' => 1,
                         'name' => $pendanaan->nama_pendanaan . "(Lembaran)"
                     );
-                } elseif($ket == "nominal") {
+                } elseif ($ket == "nominal") {
                     $dt = "wakaf";
                     $model->jumlah_lembaran = 0;
                     $model->nominal = (int)$nominal;
@@ -176,14 +180,14 @@ class HomeController extends Controller
                         'gross_amount' => (int)$nominal, // no decimal allowed for creditcard
                     );
                     // Optional
-                    if($pendanaan->kategori_pendanaan_id == 5){
+                    if ($pendanaan->kategori_pendanaan_id == 5) {
                         $item1_details = array(
                             'id' => '1',
                             'price' => (int)$nominal,
                             'quantity' => 1,
                             'name' => $pendanaan->nama_pendanaan . "(Non Lembaran)"
                         );
-                    }else{
+                    } else {
                         $item1_details = array(
                             'id' => '1',
                             'price' => (int)$nominal,
@@ -191,7 +195,7 @@ class HomeController extends Controller
                             'name' => $pendanaan->nama_pendanaan
                         );
                     }
-                } elseif($ket == "lembar-zakat") {
+                } elseif ($ket == "lembar-zakat") {
                     $dt = "zakat";
                     $model->jumlah_lembaran = 0;
                     $model->nominal = (int)$nominal;
@@ -206,7 +210,7 @@ class HomeController extends Controller
                         'quantity' => 1,
                         'name' => $pendanaan->nama_pendanaan . "(Lembaran Zakat)"
                     );
-                } elseif($ket == "nominal-zakat") {
+                } elseif ($ket == "nominal-zakat") {
                     $dt = "zakat";
                     $model->jumlah_lembaran = 0;
                     $model->nominal = (int)$nominal;
@@ -221,8 +225,8 @@ class HomeController extends Controller
                         'quantity' => 1,
                         'name' => $pendanaan->nama_pendanaan . "(Non Lembaran Zakat)"
                     );
-                }elseif($ket == "lembar-infak") {
-                   $dt = "infak";
+                } elseif ($ket == "lembar-infak") {
+                    $dt = "infak";
                     $model->jumlah_lembaran = 0;
                     $model->nominal = (int)$nominal;
                     $transaction_details = array(
@@ -236,7 +240,7 @@ class HomeController extends Controller
                         'quantity' => 1,
                         'name' => $pendanaan->nama_pendanaan . "(Lembaran Infak)"
                     );
-                } elseif($ket == "nominal-infak") {
+                } elseif ($ket == "nominal-infak") {
                     $dt = "infak";
                     $model->jumlah_lembaran = 0;
                     $model->nominal = (int)$nominal;
@@ -251,8 +255,8 @@ class HomeController extends Controller
                         'quantity' => 1,
                         'name' => $pendanaan->nama_pendanaan . "(Non Lembaran Infak)"
                     );
-                }elseif($ket == "lembar-sedekah") {
-                   $dt = "sedekah";
+                } elseif ($ket == "lembar-sedekah") {
+                    $dt = "sedekah";
                     $model->jumlah_lembaran = 0;
                     $model->nominal = (int)$nominal;
                     $transaction_details = array(
@@ -266,7 +270,7 @@ class HomeController extends Controller
                         'quantity' => 1,
                         'name' => $pendanaan->nama_pendanaan . "(Lembaran Sedekah)"
                     );
-                } elseif($ket == "nominal-sedekah") {
+                } elseif ($ket == "nominal-sedekah") {
                     $dt = "sedekah";
                     $model->jumlah_lembaran = 0;
                     $model->nominal = (int)$nominal;
@@ -287,7 +291,7 @@ class HomeController extends Controller
                 // $model->user_id = \Yii::$app->user->identity->id;
                 $model->user_id = \Yii::$app->user->identity->id;;
                 $model->status_id = 5;
-                
+
                 $model->jenis = $dt;
                 $model->amanah_pendanaan = $amanah_pendanaan;
                 $shipping_address = array(
@@ -423,8 +427,6 @@ class HomeController extends Controller
                 $model->code = $hasil_code;
                 $hasil = 'https://app.midtrans.com/snap/v2/vtweb/' . $hasil_code;
 
-                // var_dump($model);
-                // die;
                 if ($model->validate()) {
                     $model->save();
                     Yii::$app->session->setFlash('success', "Data berhasil disimpan.");
@@ -549,7 +551,7 @@ class HomeController extends Controller
                 Yii::$app->session->setFlash("success", "Login berhasil");
                 return $this->redirect(Yii::$app->request->referrer);
             }
-            
+
             Yii::$app->session->setFlash("error", "Login gagal. Validasi data tidak valid");
             // Yii::$app->session->setFlash("error", "Login gagal. Validasi data tidak valid : " . Constant::flattenError($model->getErrors()));
             return $this->redirect(Yii::$app->request->referrer);
@@ -602,9 +604,8 @@ class HomeController extends Controller
                     //     ''
                     // );
                     Yii::$app->session->setFlash("success", "Link untuk mereset Password Anda telah dikirim ke email Anda. Mohon <b>Cek Spam</b> jika tidak ada di kotak masuk!");
-                return $this->redirect(Yii::$app->request->referrer);
+                    return $this->redirect(Yii::$app->request->referrer);
                 }
-                
             } else {
                 // \Yii::$app->getSession()->setFlash(
                 //     'error',
@@ -615,18 +616,15 @@ class HomeController extends Controller
             }
         }
         // Yii::$app->session->setFlash("false", "Email Tidak Terdaftar");
-                return $this->redirect(Yii::$app->request->referrer);
+        return $this->redirect(Yii::$app->request->referrer);
     }
     public function actionCekData()
-    {        
+    {
         $model = Pembayaran::find()->where(['qr_code' => $_GET['code']])->one();
 
-        if($model != null)
-        {
+        if ($model != null) {
             $this->view->title = 'Lihat Data Pembayaran';
-        }
-        else 
-        {
+        } else {
             $this->view->title = 'Data Tidak Ditemukan';
         }
         return $this->render('cek-data', [
@@ -676,15 +674,15 @@ class HomeController extends Controller
         if (!\Yii::$app->user->isGuest) {
             if ($user->status != 1 && $user->confirm != 1) {
                 $model = Otp::findOne(['id_user' => \Yii::$app->user->identity->id, 'is_used' => 0]);
-    
+
                 if ($model == null) {
                     $model = new Otp();
-    
+
                     $model->id_user = \Yii::$app->user->identity->id;
                     $model->kode_otp = (string) random_int(1000, 9999);
                     $model->created_at = date('Y-m-d H:i:s');
                     $model->is_used = 0;
-    
+
                     $model->save();
                     $text = "
                         hai,\nini adalah kode OTP untuk Login anda.\n
@@ -702,7 +700,7 @@ class HomeController extends Controller
                 }
                 $kode = $model->kode_otp;
                 $tanggal_otp = $model->created_at;
-    
+
                 if ($model->load($_POST)) {
                     if ($kode == $model->kode_otp) {
                         $now = time();
@@ -710,12 +708,12 @@ class HomeController extends Controller
                         if ($now < $validasi) {
                             $model->is_used = 1;
                             $model->save();
-    
+
                             $user = User::findOne(['id' => $model->id_user]);
                             $user->confirm = 1;
                             $user->status = 1;
                             $user->save();
-    
+
                             Yii::$app->session->setFlash("success", "Akun Berhasil Diverifikasi");
                             return $this->redirect(["home/index"]);
                         } else {
@@ -925,7 +923,7 @@ class HomeController extends Controller
                     break;
                 case 3:
                     // $query->andWhere(['kategori_berita_id' => $kategori->id]);
-                    
+
                     $query->orderBy(['view_count' => SORT_DESC]);
                     break;
                 case 4:
@@ -1701,14 +1699,14 @@ class HomeController extends Controller
         $count = $query->count();
         $pagination = new Pagination(['totalCount' => $count, 'pageSize' => 6]);
         $pembayarans = $query->offset($pagination->offset)
-        ->where(['user_id' => Yii::$app->user->identity->id])
+            ->where(['user_id' => Yii::$app->user->identity->id])
             ->limit($pagination->limit)
             ->orderBy(['id' => SORT_DESC])
             ->all();
         foreach ($data_all as $data) {
             $wf = Pembayaran::find()->where(['id' => $data->id])->one();
             // $a = $this->findMidtrans($wf->kode_transaksi);
-            $a = $this->findMidtransProduction($wf->kode_transaksi);
+            $a = $this->findMidtrans($wf->kode_transaksi);
 
             if ($a->status_code == "404") {
                 $wf->status_id = $wf->status_id;
@@ -1765,13 +1763,13 @@ class HomeController extends Controller
         }
         $setting = Setting::find()->one();
         $icon = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->logo;
-        $data_all = Pembayaran::find()->where(['user_id' => Yii::$app->user->identity->id])->andWhere(['<>','jenis','wakaf'])->all();
+        $data_all = Pembayaran::find()->where(['user_id' => Yii::$app->user->identity->id])->andWhere(['<>', 'jenis', 'wakaf'])->all();
 
-        $query = Pembayaran::find()->where(['user_id' => Yii::$app->user->identity->id])->andWhere(['<>','jenis','wakaf']);
+        $query = Pembayaran::find()->where(['user_id' => Yii::$app->user->identity->id])->andWhere(['<>', 'jenis', 'wakaf']);
         $count = $query->count();
         $pagination = new Pagination(['totalCount' => $count, 'pageSize' => 6]);
         $pembayarans = $query->offset($pagination->offset)
-            ->where(['<>','jenis','wakaf'])
+            ->where(['<>', 'jenis', 'wakaf'])
             ->andWhere(['user_id' => Yii::$app->user->identity->id])
             ->limit($pagination->limit)
             ->orderBy(['id' => SORT_DESC])
@@ -1779,7 +1777,7 @@ class HomeController extends Controller
         foreach ($data_all as $data) {
             $wf = Pembayaran::find()->where(['id' => $data->id])->one();
             // $a = $this->findMidtrans($wf->kode_transaksi);
-            $a = $this->findMidtransProduction($wf->kode_transaksi);
+            $a = $this->findMidtrans($wf->kode_transaksi);
 
             if ($a->status_code == "404") {
                 $wf->status_id = $wf->status_id;
@@ -1836,25 +1834,25 @@ class HomeController extends Controller
         }
         $setting = Setting::find()->one();
         $icon = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->logo;
-        $data_all = Pembayaran::find()->where(['user_id' => Yii::$app->user->identity->id,'jenis'=>'wakaf'])->all();
+        $data_all = Pembayaran::find()->where(['user_id' => Yii::$app->user->identity->id, 'jenis' => 'wakaf'])->all();
 
-        $query = Pembayaran::find()->where(['user_id' => Yii::$app->user->identity->id,'jenis'=>'wakaf']);
+        $query = Pembayaran::find()->where(['user_id' => Yii::$app->user->identity->id, 'jenis' => 'wakaf']);
         $count = $query->count();
         $pagination = new Pagination(['totalCount' => $count, 'pageSize' => 6]);
         $pembayarans = $query->offset($pagination->offset)
-            ->where(['jenis'=>'wakaf'])
+            ->where(['jenis' => 'wakaf'])
             ->andWhere(['user_id' => Yii::$app->user->identity->id])
             ->limit($pagination->limit)
             ->orderBy(['id' => SORT_DESC])
             ->all();
-            // $a= $pembayarans->createCommand()->getRawSql();
-            // var_dump($a);die;
+        // $a= $pembayarans->createCommand()->getRawSql();
+        // var_dump($a);die;
 
 
         foreach ($data_all as $data) {
             $wf = Pembayaran::find()->where(['id' => $data->id])->one();
             // $a = $this->findMidtrans($wf->kode_transaksi);
-            $a = $this->findMidtransProduction($wf->kode_transaksi);
+            $a = $this->findMidtrans($wf->kode_transaksi);
 
             if ($a->status_code == "404") {
                 $wf->status_id = $wf->status_id;
@@ -1903,49 +1901,48 @@ class HomeController extends Controller
         ]);
     }
 
-    public function actionCancelTransaksi($id){
+    public function actionCancelTransaksi($id)
+    {
         $confirm = Yii::$app->user->identity->confirm;
         $status = Yii::$app->user->identity->status;
         $usr = Yii::$app->user->identity->id;
         if ($confirm != 1 || $status != 1 || $usr == null) {
             return $this->redirect(["home/index"]);
         }
-        $wf = Pembayaran::findOne(['id'=>$id]);
+        $wf = Pembayaran::findOne(['id' => $id]);
         $a = $this->findMidtransProductionCancel($wf->kode_transaksi);
-            $wf->status_id = 12;
-            $wf->tanggal_konfirmasi = date('Y-m-d H:i:s');
-            // if ($a->status_code == "404") {
-            //     $wf->status_id = 5;
-            // } else {
-            //     if ($a->transaction_status == "pending") {
-            //         $wf->status_id = 5;
-            //     } elseif ($a->transaction_status == "capture" || $a->transaction_status == "settlement") {
-            //         $wf->status_id = 6;
-            //         $wf->tanggal_konfirmasi = date('Y-m-d H:i:s');
-            //     } elseif ($a->transaction_status == "deny" || $a->transaction_status == "cancel" || $a->transaction_status == "expire") {
-            //         $wf->status_id = 8;
-            //         $wf->tanggal_konfirmasi = date('Y-m-d H:i:s');
-            //     }
-            // }
+        $wf->status_id = 12;
+        $wf->tanggal_konfirmasi = date('Y-m-d H:i:s');
+        // if ($a->status_code == "404") {
+        //     $wf->status_id = 5;
+        // } else {
+        //     if ($a->transaction_status == "pending") {
+        //         $wf->status_id = 5;
+        //     } elseif ($a->transaction_status == "capture" || $a->transaction_status == "settlement") {
+        //         $wf->status_id = 6;
+        //         $wf->tanggal_konfirmasi = date('Y-m-d H:i:s');
+        //     } elseif ($a->transaction_status == "deny" || $a->transaction_status == "cancel" || $a->transaction_status == "expire") {
+        //         $wf->status_id = 8;
+        //         $wf->tanggal_konfirmasi = date('Y-m-d H:i:s');
+        //     }
+        // }
 
-            if ($a->status_code == "404") {
-                $wf->jenis_pembayaran_id = "Tidak Ditemukan";
+        if ($a->status_code == "404") {
+            $wf->jenis_pembayaran_id = "Tidak Ditemukan";
+        } else {
+            if ($a->payment_type == "cstore") {
+                $wf->jenis_pembayaran_id = $a->store;
             } else {
-                if ($a->payment_type == "cstore") {
-                    $wf->jenis_pembayaran_id = $a->store;
-                } else {
-                    $wf->jenis_pembayaran_id = $a->payment_type;
-                }
+                $wf->jenis_pembayaran_id = $a->payment_type;
             }
-            if($wf->save()){
-                
-                Yii::$app->session->setFlash("success", "Berhasil Cancel Transaksi");
-            return $this->redirect(["home/profile"]);
-            }
-            
-            return $this->redirect(["home/profile"]);
+        }
+        if ($wf->save()) {
 
+            Yii::$app->session->setFlash("success", "Berhasil Cancel Transaksi");
+            return $this->redirect(["home/profile"]);
+        }
 
+        return $this->redirect(["home/profile"]);
     }
 
     public function actionEditProfile()
@@ -1965,19 +1962,19 @@ class HomeController extends Controller
 
         if ($model->load($_POST)) {
             //password
-            if($model->nomor_handphone != ""){
+            if ($model->nomor_handphone != "") {
                 if (strlen($model->nomor_handphone) < 10) {
                     Yii::$app->session->setFlash("error", "Gagal Update Profile ,Nomor Handphone minimal 10 angka");
-                    
+
                     return $this->redirect(['profile']);
                 }
-                
-            $model->nomor_handphone = Constant::purifyPhone($model->nomor_handphone);
+
+                $model->nomor_handphone = Constant::purifyPhone($model->nomor_handphone);
             }
             if ($model->password != "") {
                 if (strlen($model->password) < 4) {
                     Yii::$app->session->setFlash("error", "Gagal Update Profile ,Password minimal 4 karakter");
-                    
+
                     return $this->redirect(['profile']);
                 }
                 $model->password = \Yii::$app->security->generatePasswordHash($model->password);
@@ -2263,14 +2260,14 @@ class HomeController extends Controller
         if (isset($_GET['kategori'])) {
             $kategori = $_GET['kategori'];
             $get_id = KategoriPendanaan::find()->where(['name' => $kategori])->one();
-            $query = Pendanaan::find()->where(['status_tampil' => 1, 'kategori_pendanaan_id' => $get_id,'is_wakaf'=>1]);
+            $query = Pendanaan::find()->where(['status_tampil' => 1, 'kategori_pendanaan_id' => $get_id, 'is_wakaf' => 1]);
             $count = $query->count();
             $pagination = new Pagination(['totalCount' => $count, 'pageSize' => 9]);
             $pendanaans = $query->offset($pagination->offset)
                 ->limit($pagination->limit)
                 ->all();
         } else {
-            $query = Pendanaan::find()->where(['status_tampil' => 1,'is_wakaf'=>1]);
+            $query = Pendanaan::find()->where(['status_tampil' => 1, 'is_wakaf' => 1]);
             $count = $query->count();
             $pagination = new Pagination(['totalCount' => $count, 'pageSize' => 9]);
             $pendanaans = $query->offset($pagination->offset)
@@ -2281,7 +2278,7 @@ class HomeController extends Controller
 
         $organisasis = Organisasi::find()->where(['flag' => 1])->all();
         $kategori_pendanaans = KategoriPendanaan::find()->all();
-        $count_program = Pendanaan::find()->where(['is_wakaf'=>1])->count();
+        $count_program = Pendanaan::find()->where(['is_wakaf' => 1])->count();
         $count_wakif = User::find()->where(['role_id' => 5])->count();
 
         return $this->render('program', [
@@ -2309,14 +2306,14 @@ class HomeController extends Controller
         if (isset($_GET['kategori'])) {
             $kategori = $_GET['kategori'];
             $get_id = KategoriPendanaan::find()->where(['name' => $kategori])->one();
-            $query = Pendanaan::find()->where(['status_tampil' => 1, 'kategori_pendanaan_id' => $get_id,'is_zakat'=>1]);
+            $query = Pendanaan::find()->where(['status_tampil' => 1, 'kategori_pendanaan_id' => $get_id, 'is_zakat' => 1]);
             $count = $query->count();
             $pagination = new Pagination(['totalCount' => $count, 'pageSize' => 9]);
             $pendanaans = $query->offset($pagination->offset)
                 ->limit($pagination->limit)
                 ->all();
         } else {
-            $query = Pendanaan::find()->where(['status_tampil' => 1,'is_zakat'=>1]);
+            $query = Pendanaan::find()->where(['status_tampil' => 1, 'is_zakat' => 1]);
             $count = $query->count();
             $pagination = new Pagination(['totalCount' => $count, 'pageSize' => 9]);
             $pendanaans = $query->offset($pagination->offset)
@@ -2328,7 +2325,7 @@ class HomeController extends Controller
 
         $organisasis = Organisasi::find()->where(['flag' => 1])->all();
         $kategori_pendanaans = KategoriPendanaan::find()->all();
-        $count_program = Pendanaan::find()->where(['is_zakat'=>1])->count();
+        $count_program = Pendanaan::find()->where(['is_zakat' => 1])->count();
         $count_wakif = User::find()->where(['role_id' => 5])->count();
 
         return $this->render('program-zakat', [
@@ -2356,14 +2353,14 @@ class HomeController extends Controller
         if (isset($_GET['kategori'])) {
             $kategori = $_GET['kategori'];
             $get_id = KategoriPendanaan::find()->where(['name' => $kategori])->one();
-            $query = Pendanaan::find()->where(['status_tampil' => 1, 'kategori_pendanaan_id' => $get_id,'is_infak'=>1]);
+            $query = Pendanaan::find()->where(['status_tampil' => 1, 'kategori_pendanaan_id' => $get_id, 'is_infak' => 1]);
             $count = $query->count();
             $pagination = new Pagination(['totalCount' => $count, 'pageSize' => 9]);
             $pendanaans = $query->offset($pagination->offset)
                 ->limit($pagination->limit)
                 ->all();
         } else {
-            $query = Pendanaan::find()->where(['status_tampil' => 1,'is_infak'=>1]);
+            $query = Pendanaan::find()->where(['status_tampil' => 1, 'is_infak' => 1]);
             $count = $query->count();
             $pagination = new Pagination(['totalCount' => $count, 'pageSize' => 9]);
             $pendanaans = $query->offset($pagination->offset)
@@ -2375,7 +2372,7 @@ class HomeController extends Controller
 
         $organisasis = Organisasi::find()->where(['flag' => 1])->all();
         $kategori_pendanaans = KategoriPendanaan::find()->all();
-        $count_program = Pendanaan::find()->where(['is_infak'=>1])->count();
+        $count_program = Pendanaan::find()->where(['is_infak' => 1])->count();
         $count_wakif = User::find()->where(['role_id' => 5])->count();
 
         return $this->render('program-infak', [
@@ -2403,14 +2400,14 @@ class HomeController extends Controller
         if (isset($_GET['kategori'])) {
             $kategori = $_GET['kategori'];
             $get_id = KategoriPendanaan::find()->where(['name' => $kategori])->one();
-            $query = Pendanaan::find()->where(['status_tampil' => 1, 'kategori_pendanaan_id' => $get_id,'is_sedekah'=>1]);
+            $query = Pendanaan::find()->where(['status_tampil' => 1, 'kategori_pendanaan_id' => $get_id, 'is_sedekah' => 1]);
             $count = $query->count();
             $pagination = new Pagination(['totalCount' => $count, 'pageSize' => 9]);
             $pendanaans = $query->offset($pagination->offset)
                 ->limit($pagination->limit)
                 ->all();
         } else {
-            $query = Pendanaan::find()->where(['status_tampil' => 1,'is_sedekah'=>1]);
+            $query = Pendanaan::find()->where(['status_tampil' => 1, 'is_sedekah' => 1]);
             $count = $query->count();
             $pagination = new Pagination(['totalCount' => $count, 'pageSize' => 9]);
             $pendanaans = $query->offset($pagination->offset)
@@ -2422,7 +2419,7 @@ class HomeController extends Controller
 
         $organisasis = Organisasi::find()->where(['flag' => 1])->all();
         $kategori_pendanaans = KategoriPendanaan::find()->all();
-        $count_program = Pendanaan::find()->where(['is_sedekah'=>1])->count();
+        $count_program = Pendanaan::find()->where(['is_sedekah' => 1])->count();
         $count_wakif = User::find()->where(['role_id' => 5])->count();
 
         return $this->render('program-sedekah', [
@@ -2439,9 +2436,9 @@ class HomeController extends Controller
             'summary' => $summary,
         ]);
     }
-    public function actionPembayaranHeader($id, $nominal,$amanah_pendanaan,$nama,$email,$phone ,$ket)
+    public function actionPembayaranHeader($id, $nominal, $amanah_pendanaan, $nama, $email, $phone, $ket)
     {
-        
+
         $pendanaan = \app\models\Pendanaan::find()
             ->where(['id' => $id])->one();
         // Required
@@ -2460,7 +2457,7 @@ class HomeController extends Controller
                 $model->email = $email;
                 $model->nama = $name;
                 if ($ket == "lembar") {
-                    $dt ="wakaf";
+                    $dt = "wakaf";
                     $model->jumlah_lembaran = (int)$nominal;
                     $total = (int)$nominal * $pendanaan->nominal_lembaran;
                     $model->nominal = (int)$total;
@@ -2475,7 +2472,7 @@ class HomeController extends Controller
                         'quantity' => 1,
                         'name' => $pendanaan->nama_pendanaan . "(Lembaran)"
                     );
-                } elseif($ket == "nominal") {
+                } elseif ($ket == "nominal") {
                     $dt = "wakaf";
                     $model->jumlah_lembaran = 0;
                     $model->nominal = (int)$nominal;
@@ -2484,14 +2481,14 @@ class HomeController extends Controller
                         'gross_amount' => (int)$nominal, // no decimal allowed for creditcard
                     );
                     // Optional
-                    if($pendanaan->kategori_pendanaan_id == 5){
+                    if ($pendanaan->kategori_pendanaan_id == 5) {
                         $item1_details = array(
                             'id' => '1',
                             'price' => (int)$nominal,
                             'quantity' => 1,
                             'name' => $pendanaan->nama_pendanaan . "(Non Lembaran)"
                         );
-                    }else{
+                    } else {
                         $item1_details = array(
                             'id' => '1',
                             'price' => (int)$nominal,
@@ -2499,7 +2496,7 @@ class HomeController extends Controller
                             'name' => $pendanaan->nama_pendanaan
                         );
                     }
-                } elseif($ket == "lembar-zakat") {
+                } elseif ($ket == "lembar-zakat") {
                     $dt = "zakat";
                     $model->jumlah_lembaran = 0;
                     $model->nominal = (int)$nominal;
@@ -2514,7 +2511,7 @@ class HomeController extends Controller
                         'quantity' => 1,
                         'name' => $pendanaan->nama_pendanaan . "(Lembaran Zakat)"
                     );
-                } elseif($ket == "nominal-zakat") {
+                } elseif ($ket == "nominal-zakat") {
                     $dt = "zakat";
                     $model->jumlah_lembaran = 0;
                     $model->nominal = (int)$nominal;
@@ -2529,8 +2526,8 @@ class HomeController extends Controller
                         'quantity' => 1,
                         'name' => $pendanaan->nama_pendanaan . "(Non Lembaran Zakat)"
                     );
-                }elseif($ket == "lembar-infak") {
-                   $dt = "infak";
+                } elseif ($ket == "lembar-infak") {
+                    $dt = "infak";
                     $model->jumlah_lembaran = 0;
                     $model->nominal = (int)$nominal;
                     $transaction_details = array(
@@ -2544,7 +2541,7 @@ class HomeController extends Controller
                         'quantity' => 1,
                         'name' => $pendanaan->nama_pendanaan . "(Lembaran Infak)"
                     );
-                } elseif($ket == "nominal-infak") {
+                } elseif ($ket == "nominal-infak") {
                     $dt = "infak";
                     $model->jumlah_lembaran = 0;
                     $model->nominal = (int)$nominal;
@@ -2559,8 +2556,8 @@ class HomeController extends Controller
                         'quantity' => 1,
                         'name' => $pendanaan->nama_pendanaan . "(Non Lembaran Infak)"
                     );
-                }elseif($ket == "lembar-sedekah") {
-                   $dt = "sedekah";
+                } elseif ($ket == "lembar-sedekah") {
+                    $dt = "sedekah";
                     $model->jumlah_lembaran = 0;
                     $model->nominal = (int)$nominal;
                     $transaction_details = array(
@@ -2574,7 +2571,7 @@ class HomeController extends Controller
                         'quantity' => 1,
                         'name' => $pendanaan->nama_pendanaan . "(Lembaran Sedekah)"
                     );
-                } elseif($ket == "nominal-sedekah") {
+                } elseif ($ket == "nominal-sedekah") {
                     $dt = "sedekah";
                     $model->jumlah_lembaran = 0;
                     $model->nominal = (int)$nominal;
@@ -2595,7 +2592,7 @@ class HomeController extends Controller
                 // $model->user_id = \Yii::$app->user->identity->id;
                 $model->user_id = 92;
                 $model->status_id = 5;
-                
+
                 $model->jenis = $dt;
                 $model->amanah_pendanaan = $amanah_pendanaan;
                 $shipping_address = array(
@@ -2744,27 +2741,28 @@ class HomeController extends Controller
             throw new \yii\web\NotFoundHttpException("{$path} is not found!");
         }
     }
-    public function actionCetak($id) {
+    public function actionCetak($id)
+    {
         $formatter = \Yii::$app->formatter;
         $model = Pembayaran::findOne(['kode_transaksi' => $id]);
-        $content = $this->renderPartial('view-print',[
+        $content = $this->renderPartial('view-print', [
             'model' => $model,
-    ]);
-        
+        ]);
+
         // setup kartik\mpdf\Pdf component
         $pdf = new Pdf([
             // set to use core fonts only
-            'mode' => Pdf::MODE_CORE, 
+            'mode' => Pdf::MODE_CORE,
             //Name file
-            'filename' => 'Akad Wakaf'."pdf",
+            'filename' => 'Akad Wakaf' . "pdf",
             // LEGAL paper format
-            'format' => Pdf::FORMAT_LEGAL, 
+            'format' => Pdf::FORMAT_LEGAL,
             // portrait orientation
-            'orientation' => Pdf::ORIENT_PORTRAIT, 
+            'orientation' => Pdf::ORIENT_PORTRAIT,
             // stream to browser inline
-            'destination' => Pdf::DEST_BROWSER, 
+            'destination' => Pdf::DEST_BROWSER,
             // your html content input
-            'content' => $content,  
+            'content' => $content,
             'marginHeader' => 0,
             'marginFooter' => 1,
             'marginTop' => 1,
@@ -2780,60 +2778,61 @@ class HomeController extends Controller
             .kv-heading-1{font-size:17px}table{width: 100%;line-height: inherit;text-align: left; border-collapse: collapse;}table, td, th {margin-left:50px;margin-right:50px;},fa { font-family: fontawesome;} @media print{
                 .page-break{display: block;page-break-before: always;}
             }',
-             // set mPDF properties on the fly
-             'options' => [               
+            // set mPDF properties on the fly
+            'options' => [
                 'defaultheaderline' => 0,  //for header
-                 'defaultfooterline' => 0,  //for footer
+                'defaultfooterline' => 0,  //for footer
             ],
-             // call mPDF methods on the fly
+            // call mPDF methods on the fly
             'methods' => [
-                'SetTitle'=>'Print', 
+                'SetTitle' => 'Print',
                 'SetHeader' => $this->renderPartial('header_gambar'),
-              //   // 'SetHeader'=>['AMONG TANI FOUNDATION'],
-              //   'SetFooter'=>$this->renderPartial('footer_gambar'),
-                
+                //   // 'SetHeader'=>['AMONG TANI FOUNDATION'],
+                //   'SetFooter'=>$this->renderPartial('footer_gambar'),
+
             ]
         ]);
-        return $pdf->render(); 
+        return $pdf->render();
     }
-    public function actionKirim($id){
-        $pembayaran = Pembayaran::findOne(['id'=>$id]);
-        $data_mid = $this->findMidtransProduction($pembayaran->kode_transaksi);
-        if($data_mid->status_code != 404){
-            if($data_mid->payment_type == "echannel" || $data_mid->payment_type == "bank_transfer" ){
+    public function actionKirim($id)
+    {
+        $pembayaran = Pembayaran::findOne(['id' => $id]);
+        $data_mid = $this->findMidtrans($pembayaran->kode_transaksi);
+        if ($data_mid->status_code != 404) {
+            if ($data_mid->payment_type == "echannel" || $data_mid->payment_type == "bank_transfer") {
                 $this->findEmail($id);
             }
-        }
-        else{
+        } else {
             echo "data tidak ada";
         }
-        
+
         return $this->redirect(["home/index"]);
         // echo $data_mid->status_code;
-            //  $b = print_r($a);
-            //  $c = $b->payment_type;
-            //  var_dump($b);die;
+        //  $b = print_r($a);
+        //  $c = $b->payment_type;
+        //  var_dump($b);die;
         // var_dump($this->findMidtransProduction($id));die;
     }
-    protected function findEmail($id){
-        $pembayaran = Pembayaran::findOne(['id'=>$id]);
-        $data_mid = $this->findMidtransProduction($pembayaran->kode_transaksi);
+    protected function findEmail($id)
+    {
+        $pembayaran = Pembayaran::findOne(['id' => $id]);
+        $data_mid = $this->findMidtrans($pembayaran->kode_transaksi);
         $kadaluarsa = date('Y-m-d H:i:s', strtotime($data_mid->transaction_time . ' +1 day'));
         // var_dump($data_mid->va_numbers[0]->bank);die;
         // var_dump($data_mid->va_numbers[0]);die;
-        if($data_mid->status_code != 404){
-            if($data_mid->payment_type == "echannel"){
+        if ($data_mid->status_code != 404) {
+            if ($data_mid->payment_type == "echannel") {
                 $text_rincian = "Kode Perusahaan";
                 $bank = "70012";
                 $text_kodes = "Kode Pembayaran";
                 $kodes = $data_mid->bill_key;
-            }elseif($data_mid->payment_type == "bank_transfer"){
-                if($data_mid->permata_va_number != null){
+            } elseif ($data_mid->payment_type == "bank_transfer") {
+                if ($data_mid->permata_va_number != null) {
                     $text_rincian = "Bank";
                     $bank = "Permata";
                     $text_kodes = "Virtual Account No";
                     $kodes = $data_mid->permata_va_number;
-                }elseif($data_mid->va_numbers[0] != null){
+                } elseif ($data_mid->va_numbers[0] != null) {
                     $text_rincian = "Bank";
                     $bank = $data_mid->va_numbers[0]->bank;
                     $text_kodes = "Virtual Account No";
@@ -2842,12 +2841,12 @@ class HomeController extends Controller
             }
             $isi = '
             <h1 style="text-align: center;">Inisiator Salam Karim</h1>
-                <h3 style="text-align: center;">IDR '.Angka::toReadableAngka($pembayaran->nominal, FALSE).'</h3>
+                <h3 style="text-align: center;">IDR ' . Angka::toReadableAngka($pembayaran->nominal, FALSE) . '</h3>
                 <table style="width: 100%; height: 36px;">
                 <tbody>
                 <tr style="height: 18px; background: #e6e6e6;">
-                <td style="width: 50%; height: 18px;">'.\app\components\Tanggal::toReadableDateEmail($data_mid->transaction_time).'</td>
-                <td style="width: 50%; text-align: right; height: 18px;">ORDER ID: '.$pembayaran->kode_transaksi.'</td>
+                <td style="width: 50%; height: 18px;">' . \app\components\Tanggal::toReadableDateEmail($data_mid->transaction_time) . '</td>
+                <td style="width: 50%; text-align: right; height: 18px;">ORDER ID: ' . $pembayaran->kode_transaksi . '</td>
                 </tr>
                 <tr style="height: 18px;">
                 <td style="width: 50%; text-align: center; background: #2296f3; color: #ffffff; height: 18px;" colspan="2">Menunggu Pembayaran</td>
@@ -2855,8 +2854,8 @@ class HomeController extends Controller
                 </tr>
                 </tbody>
                 </table>
-                <p>Dear '.$pembayaran->nama.'</p>
-                <p>Silakan selesaikan pembayaran '.$pembayaran->jenis.' Anda:</p>
+                <p>Dear ' . $pembayaran->nama . '</p>
+                <p>Silakan selesaikan pembayaran ' . $pembayaran->jenis . ' Anda:</p>
                 <table style="width: 100%;">
                 <tbody>
                 <tr>
@@ -2864,16 +2863,16 @@ class HomeController extends Controller
                 <td style="width: 50%;">&nbsp;</td>
                 </tr>
                 <tr>
-                <td style="width: 32%;">'.$text_rincian.'</td>
-                <td style="width: 68%;">'.$bank.'</td>
+                <td style="width: 32%;">' . $text_rincian . '</td>
+                <td style="width: 68%;">' . $bank . '</td>
                 </tr>
                 <tr>
-                <td style="width: 32%;">'.$text_kodes.'</td>
-                <td style="width: 68%;">'.$kodes.'</td>
+                <td style="width: 32%;">' . $text_kodes . '</td>
+                <td style="width: 68%;">' . $kodes . '</td>
                 </tr>
                 <tr>
                 <td style="width: 32%;">Batas Pembayaran</td>
-                <td style="width: 68%;">'.\app\components\Tanggal::toReadableDateEmail($kadaluarsa).' Asia/Jakarta</td>
+                <td style="width: 68%;">' . \app\components\Tanggal::toReadableDateEmail($kadaluarsa) . ' Asia/Jakarta</td>
                 </tr>
                 </tbody>
                 </table>
@@ -2881,27 +2880,27 @@ class HomeController extends Controller
                 <table>
                 <tbody>
                 <tr>
-                <th>Program '.$pembayaran->jenis.'</th>
-                <th>Nominal '.$pembayaran->jenis.'</th>
+                <th>Program ' . $pembayaran->jenis . '</th>
+                <th>Nominal ' . $pembayaran->jenis . '</th>
                 </tr>
                 <tr>
-                <td>'.$pembayaran->pendanaan->nama_pendanaan.'&nbsp;</td>
-                <td>&nbsp;IDR '.Angka::toReadableAngka($pembayaran->nominal, FALSE).'</td>
+                <td>' . $pembayaran->pendanaan->nama_pendanaan . '&nbsp;</td>
+                <td>&nbsp;IDR ' . Angka::toReadableAngka($pembayaran->nominal, FALSE) . '</td>
                 </tr>
                 <tr>
                 <td>TOTAL</td>
-                <td>&nbsp;IDR '.Angka::toReadableAngka($pembayaran->nominal, FALSE).'</td>
+                <td>&nbsp;IDR ' . Angka::toReadableAngka($pembayaran->nominal, FALSE) . '</td>
                 </tr>
                 </tbody>
                 </table>
                 <div>&nbsp;</div>
                 <div>
                 <div style="text-align: left;"><strong>PERHATIAN!</strong></div>
-                <p>Selangkah lagi Anda telah berpartisipasi dalam wakaf kebaikan ini, silahkan segera melakukan pembayaran sebelum  '.\app\components\Tanggal::toReadableDateEmail($kadaluarsa).' Asia/Jakarta.Jika melewati batas waktu, pembayaran wakaf Anda akan otomatis dibatalkan.</p>
+                <p>Selangkah lagi Anda telah berpartisipasi dalam wakaf kebaikan ini, silahkan segera melakukan pembayaran sebelum  ' . \app\components\Tanggal::toReadableDateEmail($kadaluarsa) . ' Asia/Jakarta.Jika melewati batas waktu, pembayaran wakaf Anda akan otomatis dibatalkan.</p>
                 <p><strong>*Detail pembayaran dan cara pembayaran mohon cek di Email-&gt;Promosi&nbsp;</strong></p>
                 </div>
             ';
-           
+
             // var_dump($isi);die;
             try {
                 \Yii::$app->mailer->compose()
@@ -2913,11 +2912,10 @@ class HomeController extends Controller
             } catch (\Exception $e) {
                 \Yii::$app->session->setFlash('error', "Email Tidak Terkirim, Periksa Jaringan Internet!");
                 // return $this->redirect("index");
-                
-            return $this->redirect(["home/index"]);
+
+                return $this->redirect(["home/index"]);
             }
         }
-        
     }
     protected function findMidtrans($id)
     {
@@ -2936,7 +2934,7 @@ class HomeController extends Controller
             CURLOPT_HTTPHEADER => array(
                 "Accept: application/json",
                 "Content-Type: application/json",
-                "Authorization: Basic U0ItTWlkLXNlcnZlci1MV1RfNVJHdkhsUk9sSWJtYUU4SzBudGI6"
+                "Authorization: Basic U0ItTWlkLXNlcnZlci1ReFc2V2RLNVNVSWpRLUpKck1zdWk4X0E="
             ),
         ));
 

@@ -24,7 +24,7 @@ use yii\helpers\Url;
  * @property integer $status_id
  * @property string $created_at
  * @property string $updated_at
- *
+ * @property string $tanggal_konfirmasi
  * @property \app\models\Status $status
  * @property \app\models\User $user
  * @property \app\models\Pendanaan $pendanaan
@@ -37,14 +37,14 @@ abstract class Pembayaran extends \yii\db\ActiveRecord
     {
         $parent = parent::fields();
 
-        
 
 
-       
+
+
 
         if (isset($parent['pendanaan_id'])) {
             unset($parent['pendanaan_id']);
-            
+
             $parent['pendanaan'] = function ($model) {
                 return $model->pendanaan;
             };
@@ -52,21 +52,21 @@ abstract class Pembayaran extends \yii\db\ActiveRecord
 
         if (isset($parent['code'])) {
             unset($parent['code']);
-            
+
             $parent['code'] = function ($model) {
                 return $model->code;
             };
         }
         if (!isset($parent['url'])) {
             unset($parent['url']);
-            
+
             $parent['url'] = function ($model) {
-                return 'https://app.midtrans.com/snap/v2/vtweb/'.$model->code;
+                return 'https://app.midtrans.com/snap/v2/vtweb/' . $model->code;
             };
         }
         if (isset($parent['jenis'])) {
             unset($parent['jenis']);
-            
+
             $parent['jenis_pembayaran_pendanaan'] = function ($model) {
                 return $model->jenis;
             };
@@ -77,19 +77,18 @@ abstract class Pembayaran extends \yii\db\ActiveRecord
             //     return $model->link_ikrar;
             // };
             $parent['link_ikrar'] = function ($model) {
-                $pembayar =  \app\models\Pembayaran::find()->where(['id'=>$model->id])->one();
-                if($pembayar->status_id == 6){
+                $pembayar =  \app\models\Pembayaran::find()->where(['id' => $model->id])->one();
+                if ($pembayar->status_id == 6) {
                     $byr = Url::to(['home/cetak', 'id' => $pembayar->kode_transaksi]);
-                }else{
+                } else {
                     $byr = "-";
                 }
                 return $byr;
             };
-            
         }
         if (isset($parent['status_id'])) {
             unset($parent['status_id']);
-            
+
             $parent['status'] = function ($model) {
                 $curl = curl_init();
 
@@ -109,19 +108,19 @@ abstract class Pembayaran extends \yii\db\ActiveRecord
                         "Authorization: Basic TWlkLXNlcnZlci1oV3hSekx0a3NmX0s4SUNhY3RjZ0Fwdl86"
                     ),
                 ));
-        
+
                 $response = curl_exec($curl);
-        
+
                 curl_close($curl);
                 $a = json_decode($response);
-                if($a->status_code == "404"){
+                if ($a->status_code == "404") {
                     return "Pending";
-                }else{
-                    if($a->transaction_status == "pending"){
+                } else {
+                    if ($a->transaction_status == "pending") {
                         return "Pending";
-                    }elseif($a->transaction_status == "capture" || $a->transaction_status == "settlement" ){
+                    } elseif ($a->transaction_status == "capture" || $a->transaction_status == "settlement") {
                         return "Pembayaran Berhasil";
-                    }elseif($a->transaction_status == "deny" || $a->transaction_status == "cancel" || $a->transaction_status == "expire" ){
+                    } elseif ($a->transaction_status == "deny" || $a->transaction_status == "cancel" || $a->transaction_status == "expire") {
                         return "Pembayaran Gagal";
                     }
                 }
@@ -129,7 +128,7 @@ abstract class Pembayaran extends \yii\db\ActiveRecord
         }
         if (isset($parent['jenis_pembayaran_id'])) {
             unset($parent['jenis_pembayaran_id']);
-            
+
             $parent['jenis_pembayaran'] = function ($model) {
                 $curl = curl_init();
 
@@ -149,17 +148,17 @@ abstract class Pembayaran extends \yii\db\ActiveRecord
                         "Authorization: Basic TWlkLXNlcnZlci1oV3hSekx0a3NmX0s4SUNhY3RjZ0Fwdl86"
                     ),
                 ));
-        
+
                 $response = curl_exec($curl);
-        
+
                 curl_close($curl);
                 $a = json_decode($response);
-                if($a->status_code == "404"){
+                if ($a->status_code == "404") {
                     return "Tidak Ditemukan";
-                }else{
-                    if($a->payment_type == "cstore"){
+                } else {
+                    if ($a->payment_type == "cstore") {
                         return $a->store;
-                    }else{
+                    } else {
                         return $a->payment_type;
                     }
                 }
@@ -171,14 +170,15 @@ abstract class Pembayaran extends \yii\db\ActiveRecord
             //     return $model->status_transaksi;
             // };
             $parent['status_transaksi'] = function ($model) {
-                $pembayar =  \app\models\Status::find()->where(['id'=>$model->status_id])->one();
+                $pembayar =  \app\models\Status::find()->where(['id' => $model->status_id])->one();
                 return $pembayar;
             };
-            
         }
-        unset($parent['updated_at']);
-        unset($parent['created_at']);
-        
+        // isset($parent['tanggal_konfirmasi']);
+        isset($parent['updated_at']);
+        isset($parent['created_at']);
+
+
         return $parent;
     }
 
@@ -213,10 +213,10 @@ abstract class Pembayaran extends \yii\db\ActiveRecord
     {
         return [
             [['nama', 'nominal', 'kode_transaksi', 'user_id', 'pendanaan_id', 'status_id'], 'required'],
-            [['nominal', 'user_id', 'pendanaan_id', 'status_id','jumlah_lembaran'], 'integer'],
+            [['nominal', 'user_id', 'pendanaan_id', 'status_id', 'jumlah_lembaran'], 'integer'],
             [['tanggal_upload_bukti', 'tanggal_konfirmasi'], 'safe'],
-            [['keterangan','amanah_pendanaan'], 'string'],
-            [['nama', 'bukti_transaksi','jenis_pembayaran_id','code','jenis','qr_code','link_qr'], 'string', 'max' => 255],
+            [['keterangan', 'amanah_pendanaan'], 'string'],
+            [['nama', 'bukti_transaksi', 'jenis_pembayaran_id', 'code', 'jenis', 'qr_code', 'link_qr'], 'string', 'max' => 255],
             [['status_id'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\Status::className(), 'targetAttribute' => ['status_id' => 'id']],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\User::className(), 'targetAttribute' => ['user_id' => 'id']],
             [['pendanaan_id'], 'exist', 'skipOnError' => true, 'targetClass' => \app\models\Pendanaan::className(), 'targetAttribute' => ['pendanaan_id' => 'id']]
@@ -243,7 +243,7 @@ abstract class Pembayaran extends \yii\db\ActiveRecord
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
             'status_id' => 'Status',
-            'jenis' => 'Jenis', 
+            'jenis' => 'Jenis',
             'keterangan' => 'Keterangan',
             'amanah_pendanaan' => 'Amanah Pendanaan',
             'qr_code' => 'Qr Code',
@@ -267,7 +267,7 @@ abstract class Pembayaran extends \yii\db\ActiveRecord
         return $this->hasOne(\app\models\User::className(), ['id' => 'user_id']);
     }
 
-    
+
 
     /**
      * @return \yii\db\ActiveQuery
@@ -276,9 +276,4 @@ abstract class Pembayaran extends \yii\db\ActiveRecord
     {
         return $this->hasOne(\app\models\Pendanaan::className(), ['id' => 'pendanaan_id']);
     }
-
-
-
-
-
 }

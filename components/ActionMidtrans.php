@@ -5,6 +5,8 @@ namespace app\components;
 use Midtrans;
 use app\components\ActionMidtransConfig;
 use app\components\ActionMidtransSnap;
+use Yii;
+
 // $yii =dirname(__FILE__,6) .'/htdocs/isalam/vendor/midtrans/midtrans-php/Midtrans.php';
 // require_once($yii);
 
@@ -14,8 +16,11 @@ use app\components\ActionMidtransSnap;
 
 
 //production
-ActionMidtransConfig::$serverKey = 'Mid-server-hWxRzLtksf_K8ICactcgApv_';
-ActionMidtransConfig::$clientKey = 'Mid-client-IzRsb2KnAzGzaaBr';
+// ActionMidtransConfig::$serverKey = 'Mid-server-hWxRzLtksf_K8ICactcgApv_';
+// ActionMidtransConfig::$clientKey = 'Mid-client-IzRsb2KnAzGzaaBr';
+
+ActionMidtransConfig::$serverKey = Yii::$app->params['midtrans']['serverKey'];
+ActionMidtransConfig::$clientKey = Yii::$app->params['midtrans']['clientKey'];
 
 //sandobox
 // ActionMidtransConfig::$serverKey = 'SB-Mid-server-LWT_5RGvHlROlIbmaE8K0ntb';
@@ -24,13 +29,13 @@ ActionMidtransConfig::$clientKey = 'Mid-client-IzRsb2KnAzGzaaBr';
 // non-relevant function only used for demo/example purpose
 
 // Uncomment for production environment
-ActionMidtransConfig::$isProduction = true;
+ActionMidtransConfig::$isProduction = Yii::$app->params['midtrans']['isProduction'];
 
 // Enable sanitization
-ActionMidtransConfig::$isSanitized = true;
+ActionMidtransConfig::$isSanitized = false;
 
 // Enable 3D-Secure
-ActionMidtransConfig::$is3ds = true;
+ActionMidtransConfig::$is3ds = false;
 
 // Uncomment for append and override notification URL
 // Config::$appendNotifUrl = "https://example.com";
@@ -62,7 +67,7 @@ ActionMidtransConfig::$is3ds = true;
 class ActionMidtrans
 {
 
-    public static function toReadableOrder($item1_details, $transaction_details,$customer_details)
+    public static function toReadableOrder($item1_details, $transaction_details, $customer_details)
     {
         $item_details = array($item1_details);
 
@@ -112,7 +117,7 @@ class ActionMidtrans
         $snap_token = '';
         try {
             $snap_token = ActionMidtransSnap::getSnapToken($transaction);
-             return $snap_token;
+            return $snap_token;
         } catch (\Exception $e) {
             return $e->getMessage();
         }

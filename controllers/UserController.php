@@ -14,6 +14,7 @@ use Endroid\QrCode\ErrorCorrectionLevel;
 use Endroid\QrCode\LabelAlignment;
 use Endroid\QrCode\QrCode;
 use Endroid\QrCode\Response\QrCodeResponse;
+
 /**
  * UserController implements the CRUD actions for User model.
  */
@@ -79,7 +80,7 @@ class UserController extends Controller
         $model->confirm = 1;
         $model->status = 1;
         try {
-            if ($model->load($_POST) ) {
+            if ($model->load($_POST)) {
                 $model->password = Yii::$app->security->generatePasswordHash($model->password);
 
                 $image = UploadedFile::getInstance($model, 'photo_url');
@@ -94,23 +95,24 @@ class UserController extends Controller
                     # the path to save file
                     $path = Yii::getAlias("@app/web/uploads/user_image/") . $model->photo_url;
                     $image->saveAs($path);
-                }else{
-                    $model->photo_url = "default.png";
+                } else {
+                    $path = Yii::getAlias("@app/web/uploads/default.png") . $model->photo_url;
+                    $image->saveAs($path);
                 }
 
-                
-                
-                if($model->save()){
-                    
-                 return $this->redirect(["index"]);
-                    }
+
+
+                if ($model->save()) {
+
+                    return $this->redirect(["index"]);
+                }
 
                 // return $this->redirect(Url::previous());
             } elseif (!\Yii::$app->request->isPost) {
                 $model->load($_GET);
             }
         } catch (\Exception $e) {
-            $msg = (isset($e->errorInfo[2]))?$e->errorInfo[2]:$e->getMessage();
+            $msg = (isset($e->errorInfo[2])) ? $e->errorInfo[2] : $e->getMessage();
             $model->addError('_exception', $msg);
         }
         return $this->render('create', ['model' => $model]);
@@ -131,11 +133,11 @@ class UserController extends Controller
 
         $model->password = "";
 
-        if ($model->load($_POST)){
+        if ($model->load($_POST)) {
             //password
-            if($model->password != ""){
+            if ($model->password != "") {
                 $model->password = Yii::$app->security->generatePasswordHash($model->password);
-            }else{
+            } else {
                 $model->password = $oldMd5Password;
             }
 
@@ -153,13 +155,13 @@ class UserController extends Controller
                 # the path to save file
                 $path = Yii::getAlias("@app/web/uploads/user_image/") . $model->photo_url;
                 $image->saveAs($path);
-            }else{
-                $model->photo_url = $oldPhotoUrl;
+            } else {
+                // $model->photo_url = $oldPhotoUrl;
             }
 
-            if($model->save()){
+            if ($model->save()) {
                 Yii::$app->session->addFlash("success", "Profile successfully updated.");
-            }else{
+            } else {
                 Yii::$app->session->addFlash("danger", "Profile cannot updated.");
             }
             return $this->redirect(["index"]);
@@ -180,13 +182,13 @@ class UserController extends Controller
         try {
             $this->findModel($id)->delete();
         } catch (\Exception $e) {
-            $msg = (isset($e->errorInfo[2]))?$e->errorInfo[2]:$e->getMessage();
+            $msg = (isset($e->errorInfo[2])) ? $e->errorInfo[2] : $e->getMessage();
             \Yii::$app->getSession()->setFlash('error', $msg);
             return $this->redirect(Url::previous());
         }
 
         // TODO: improve detection
-        $isPivot = strstr('$id',',');
+        $isPivot = strstr('$id', ',');
         if ($isPivot == true) {
             return $this->redirect(Url::previous());
         } elseif (isset(\Yii::$app->session['__crudReturnUrl']) && \Yii::$app->session['__crudReturnUrl'] != '/') {

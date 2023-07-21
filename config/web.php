@@ -18,9 +18,16 @@ $config = [
             'siteKeyV3' => Yii::$app->params['recaptcha3.clientKey'],
             'secretV3' => Yii::$app->params['recaptcha3.secretKey'],
         ],
+        // 'request' => [
+        //     // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
+        //     'cookieValidationKey' => 'secret',
+        // ],
         'request' => [
-            // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'secret',
+            'parsers' => [
+                'multipart/form-data' => 'yii\web\MultipartFormDataParser',
+                'application/json' => 'yii\web\JsonParser', // enable json parser
+            ],
         ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
@@ -127,7 +134,7 @@ $config = [
                 'registrasi' => 'home/registrasi',
                 'login' => 'home/login',
                 'lupa-password' => 'site/lupa-password',
-                
+
                 //pembayaran
                 'pembayaran/all' => '/pembayaran/all',
                 'pembayaran/bayar' => 'pembayaran/bayar',

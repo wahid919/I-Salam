@@ -13,12 +13,41 @@ use Yii;
  * @property integer $pendanaan_id
  * @property string $kegiatan
  * @property string $foto
+ * 
+ * @property \app\models\Pendanaan $pendanaan
  * @property string $aliasModel
  */
 abstract class KegiatanPendanaan extends \yii\db\ActiveRecord
 {
 
+    public function fields()
+    {
+        $parent = parent::fields();
+        if (isset($parent['pendanaan_id'])) {
+            unset($parent['pendanaan_id']);
+            // $parent['_user_id'] = function ($model) {
+            //     return $model->user_id;
+            // };
+            $parent['pendanaan'] = function ($model) {
+                return $model->pendanaan;
+            };
+        }
+        // if (isset($parent['foto'])) {
+        //     unset($parent['foto']);
+        //     $parent['foto'] = function ($model) {
+        //         return Yii::getAlias("@file/kegiatan/$model->foto");
+        //     };
+        // }
+        // if (isset($parent['created_at'])) {
+        //     unset($parent['created_at']);
 
+        //     $parent['created_at'] = function ($model) {
+        //         return \app\components\Tanggal::toReadableDate($model->created_at, false);
+        //     };
+        // }
+
+        return $parent;
+    }
 
     /**
      * @inheritdoc
@@ -51,16 +80,15 @@ abstract class KegiatanPendanaan extends \yii\db\ActiveRecord
             'pendanaan_id' => 'Pendanaan',
             'kegiatan' => 'Kegiatan',
             'foto' => 'Foto',
+            'created_at' => 'Created At',
+            'updated_at' => 'Updated At',
         ];
     }
-/**
+    /**
      * @return \yii\db\ActiveQuery
      */
     public function getPendanaan()
     {
         return $this->hasOne(\app\models\Pendanaan::className(), ['id' => 'pendanaan_id']);
     }
-
-
-
 }

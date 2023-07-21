@@ -57,8 +57,4 @@ abstract class KategoriBerita extends \yii\db\ActiveRecord
     {
         return $this->hasMany(\app\models\Berita::className(), ['kategori_berita_id' => 'id']);
     }
-
-
-
-
 }

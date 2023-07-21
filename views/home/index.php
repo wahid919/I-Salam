@@ -6,43 +6,43 @@ use yii\helpers\Url;
 use yii\bootstrap\ActiveForm;
 use yii\helpers\Html;
 ?>
-          <!-- display success message -->
-          <?php if (Yii::$app->session->hasFlash('success')) : ?>
-            <script>
-            swal("Sukses", "<?= Yii::$app->session->getFlash('success') ?>", "success",{
-              buttons:false
-            })
+<!-- display success message -->
+<?php if (Yii::$app->session->hasFlash('success')) : ?>
+  <script>
+    swal("Sukses", "<?= Yii::$app->session->getFlash('success') ?>", "success", {
+      buttons: false
+    })
   </script>
-            <!-- <div class="alert alert-success alert-dismissable">
+  <!-- <div class="alert alert-success alert-dismissable">
               <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
               <p><i class="icon fa fa-check"></i>Saved!</p>
               <?= Yii::$app->session->getFlash('success') ?>
             </div> -->
-          <?php endif; ?>
+<?php endif; ?>
 
-          <!-- display error message -->
-          <?php if (Yii::$app->session->hasFlash('error')) : ?>
-            <script>
-            swal("Gagal", "<?= Yii::$app->session->getFlash('error') ?>", "error",{
-              buttons:false
-            })
+<!-- display error message -->
+<?php if (Yii::$app->session->hasFlash('error')) : ?>
+  <script>
+    swal("Gagal", "<?= Yii::$app->session->getFlash('error') ?>", "error", {
+      buttons: false
+    })
   </script>
-            <!-- <div class="alert alert-danger alert-dismissable">
+  <!-- <div class="alert alert-danger alert-dismissable">
               <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
               <h4><i class="icon fa fa-check"></i>Saved!</h4>
               <?= Yii::$app->session->getFlash('error') ?>
             </div> -->
-          <?php endif; ?>
-          <!-- <div id="page-loader">
+<?php endif; ?>
+<!-- <div id="page-loader">
         <div class="page-loader__inner">
             <div class="page-loader__spin"></div>
         </div>
     </div> -->
 <section id="header" class="header-wakaf bg-overlay pt-120 pb-50">
-<!-- <div class="owl-carousel thumbs-carousel carousel-arrows" data-slider-id="slider1" data-dots="false" data-autoplay="true" data-nav="true" data-transition="fade" data-animate-out="fadeOut" data-animate-in="fadeIn">
+  <!-- <div class="owl-carousel thumbs-carousel carousel-arrows" data-slider-id="slider1" data-dots="false" data-autoplay="true" data-nav="true" data-transition="fade" data-animate-out="fadeOut" data-animate-in="fadeIn">
     
       <div class="slide-item align-v-h bg-overlay"> -->
-      
+
   <div class="bg-img"><img src="<?= Yii::$app->request->baseUrl . '/uploads/slides/' . $slides->gambar ?>" alt="background"></div>
   <!-- </div>
 </div> -->
@@ -56,19 +56,18 @@ use yii\helpers\Html;
         <div class="header-panel-wrap margin-wakaf">
           <ul class="nav nav-tabs pb-4" id="isalam" role="tablist">
             <li class="nav-item text-center" style="width: 100%;">
-              <a class="nav-link font-weight-bold active" id="Wakaf-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true"><i class="fas fa-hand-holding-usd"></i> Wakaf</a>
+              <a class="nav-link font-weight-bold active" id="Wakaf-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true"><i class="fas fa-hand-holding-usd"></i> Donasi</a>
             </li>
             <!-- <li class="nav-item text-center" style="width: 50%;">
-              <a class="nav-link font-weight-bold" id="wakaf-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false"><i class="fas fa-money-bill-alt"></i> Infak</a>
+              <a class="nav-link font-weight-bold" id="wakaf-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false"><i class="fas fa-money-bill-alt"></i> Donasi</a>
             </li> -->
           </ul>
           <div class="tab-content" id="myTabContent">
             <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-
               <div class="form-group">
                 <div class="row">
                   <div class="col-lg-6 col-md-6 col-sm-12 col-12">
-                    <label for="Wakaf" style="font-size: 1.4rem;color: #f1a401;margin-top: 10px;">Ayo Mulai Wakaf</label>
+                    <label for="Wakaf" style="font-size: 1.4rem;color: #f1a401;margin-top: 10px;">Program Pendanaan</label>
                   </div>
                   <div class="col-lg-6 col-md-6 col-sm-12 col-12">
                     <select class="form-control select-wakaf border-r5 shadow-r2" id="select-category" style="overflow: scroll;" onchange="myFunction(event)">
@@ -84,27 +83,27 @@ use yii\helpers\Html;
                   </div>
                   <div class="col-12 pt-4">
                     <div class="form-group">
-                      <label for="">Isi Nominal Wakaf Anda</label>
+                      <label for="">Nominal Donasi</label>
                       <div class="input-group mb-2">
                         <div class="input-group-prepend mr-2" style="height:calc(1.5em + .75rem + 2px);">
                           <div class="input-group-text bg-white border-r5 font-weight-bold" style="color: #afafaf;">Rp</div>
                         </div>
 
-                        <input type="hidden" class="form-control select-wakaf border-r5" id="pendanaan_wakaf" name="pendanaan_wakaf" placeholder="Minimal Wakaf Rp. 10.000">
-                        <input type="number" class="form-control select-wakaf border-r5" id="nominal" name="nominal" placeholder="Minimal Wakaf Rp. 10.000">
+                        <input type="hidden" class="form-control select-wakaf border-r5" id="pendanaan_wakaf" name="pendanaan_wakaf" placeholder=" ">
+                        <input type="number" class="form-control select-wakaf border-r5" id="nominal" name="nominal" placeholder=" ">
                       </div>
                     </div>
                   </div>
-                  <div class="col-12">      
+                  <div class="col-12">
                     <!-- <a href="#" class="btn btn-sm btn-program btn-block text-white font-weight-bold" data-toggle="modal" data-target="#mulaiwakaf" style="height: 3rem;width:100%" id="bayarkan">Wakaf Sekarang</a> -->
-                  <button type="submit" class="btn-sm btn-program btn-block text-white font-weight-bold" style="height: 3rem;width:100%" id="bayarkan">Wakaf Sekarang</button>
-                  <!-- <a href="#" class="btn btn-sm btn-program btn-block" data-toggle="modal" data-target="#mulaiwakaf" style="padding: 10px !important;">Mulai Wakaf</a> -->
+                    <button type="submit" class="btn-sm btn-program btn-block text-white font-weight-bold" style="height: 3rem;width:100%" id="bayarkan">Donasi Sekarang</button>
+                    <!-- <a href="#" class="btn btn-sm btn-program btn-block" data-toggle="modal" data-target="#mulaiwakaf" style="padding: 10px !important;">Donasi Sekarang</a> -->
                     <!-- <?php if (!\Yii::$app->user->isGuest) { ?>
-                      <button type="submit" class="btn-sm btn-program btn-block text-white font-weight-bold" style="height: 3rem;width:100%" id="bayarkan">Wakaf Sekarang</button>
+                      <button type="submit" class="btn-sm btn-program btn-block text-white font-weight-bold" style="height: 3rem;width:100%" id="bayarkan">Donasi Sekarang</button>
                     <?php } else { ?>
-                      <button type="button" class="btn-sm btn-program btn-block text-white font-weight-bold" style="height: 3rem;width:100%" id="btn-user-login">Wakaf Sekarang</button>
+                      <button type="button" class="btn-sm btn-program btn-block text-white font-weight-bold" style="height: 3rem;width:100%" id="btn-user-login">Donasi Sekarang</button>
                     <?php
-                    } ?> -->
+                          } ?> -->
                   </div>
                 </div>
               </div>
@@ -130,7 +129,7 @@ use yii\helpers\Html;
                   </div>
                   <div class="col-12 pt-4">
                     <div class="form-group">
-                      <label for="">Isi Nominal Infak Anda</label>
+                      <label for="">Nominal Infak Anda</label>
                       <div class="input-group mb-2">
                         <div class="input-group-prepend mr-2" style="height:calc(1.5em + .75rem + 2px);">
                           <div class="input-group-text bg-white border-r5 font-weight-bold" style="color: #afafaf;">Rp</div>
@@ -141,7 +140,7 @@ use yii\helpers\Html;
                     </div>
                   </div>
                   <div class="col-12">
-                     <?php if (!\Yii::$app->user->isGuest) { ?>
+                    <?php if (!\Yii::$app->user->isGuest) { ?>
                       <button type="submit" class="btn-sm btn-program btn-block text-white font-weight-bold" style="height: 3rem;width:100%;" id="bayarkan2">Infak Sekarang</button>
                     <?php } else { ?>
                       <button type="button" class="btn-sm btn-program btn-block text-white font-weight-bold" style="height: 3rem;width:100%;" id="btn-user-login2">Infak Sekarang</button>
@@ -192,7 +191,7 @@ use yii\helpers\Html;
             </g>
           </svg>
           <p class="pt-3 font-weight-bold" style="font-size: 2rem;">4</p>
-          <p class="font-weight-bold" style="font-size: 1rem;color: #e2681d;">Jumlah Penerima Wakaf
+          <p class="font-weight-bold" style="font-size: 1rem;color: #e2681d;">Jumlah Penerima Donasi
           <p>
         </div>
         <div class="col-4 text-center text-dark">
@@ -206,7 +205,7 @@ use yii\helpers\Html;
             </g>
           </svg>
           <p class="pt-3 font-weight-bold" style="font-size: 2rem;"><?= $count_wakif ?></p>
-          <p class="font-weight-bold" style="font-size: 1rem;color: #e2681d;">Jumlah Wakaf
+          <p class="font-weight-bold" style="font-size: 1rem;color: #e2681d;">Jumlah Donatur
           <p>
         </div>
       </div>
@@ -220,7 +219,7 @@ use yii\helpers\Html;
               <div class="row">
                 <div class="col-4"></div>
                 <div class="col-8 col-8 mt-5 mb-5 pr-1">
-                  <p class="text-white text-banner">Mari Semarakkan Gerakan Wakaf Nasional Untuk Indonesia Lebih Baik </p>
+                  // <p class="text-white text-banner">Mari Semarakkan Gerakan Wakaf Nasional Untuk Indonesia Lebih Baik </p>
                 </div>
               </div>
             </div>
@@ -236,8 +235,8 @@ use yii\helpers\Html;
 
   <section id="services" class="services pt-50 pb-50">
     <div class="">
-      <h2 class="text-center" style="color:orange">Ayo Mulai Berwakaf</h2>
-      <p class="text-center font-weight-bold">Pilih program wakaf terbaik kami, Insyaallah memberi manfaat untuk kita semua.</p>
+      <h2 class="text-center" style="color:orange">Ayo Mulai Donasi</h2>
+      <p class="text-center font-weight-bold">Pilih program Pendanaan terbaik kami, Insyaallah memberi manfaat untuk kita semua.</p>
       <div class="row">
         <?php foreach ($pendanaans as $pendanaan) {
           $nominal = \app\models\Pembayaran::find()->where(['pendanaan_id' => $pendanaan->id, 'status_id' => 6])->sum('nominal');
@@ -252,15 +251,15 @@ use yii\helpers\Html;
             <!-- <a href="<?= \Yii::$app->request->baseUrl . "/home/detail-berita?id=" . $berita->slug ?>"> -->
             <div class="card shadow-br2" style="border-radius: 15px;">
               <!-- <img src="" class="card-img-top" alt="..."> -->
-              
+
               <a href="<?= \Yii::$app->request->BaseUrl . "/home/detail-program/" . $pendanaan->id ?>">
-              <div class="team-img" style="background-image: url(<?= \Yii::$app->request->baseUrl . "/uploads/" . $pendanaan->poster ?>);border-radius: 15px;width:200px;margin-left:auto;margin-right:auto;margin-top:1%;">
-              </div>
+                <div class="team-img" style="background-image: url(<?= \Yii::$app->request->baseUrl . "/uploads/" . $pendanaan->poster ?>);border-radius: 15px;width:200px;margin-left:auto;margin-right:auto;margin-top:1%;">
+                </div>
               </a>
               <div class="card-body">
-              <a href="<?= \Yii::$app->request->BaseUrl . "/home/detail-program/" . $pendanaan->id ?>">
-                <h6 class="card-title"><?= $pendanaan->nama_pendanaan ?></h6>
-              </a>
+                <a href="<?= \Yii::$app->request->BaseUrl . "/home/detail-program/" . $pendanaan->id ?>">
+                  <h6 class="card-title"><?= $pendanaan->nama_pendanaan ?></h6>
+                </a>
                 <div class="row">
                   <div class="col-12">
                     <div class="progress">
@@ -286,7 +285,7 @@ use yii\helpers\Html;
                 <div class="row">
 
                   <div class="col-lg-12 col-md-12 col-12 text-left font-weight-bold font-size-08">
-                    <i class="fa fa-users" aria-hidden="true"></i> Jumlah Pewakaf(<?= $pewakaf ?>)
+                    <i class="fa fa-users" aria-hidden="true"></i> Jumlah Donatur(<?= $pewakaf ?>)
                   </div>
                 </div>
                 <div class="row">
@@ -311,7 +310,7 @@ use yii\helpers\Html;
   <section id="services" class="services pt-50 pb-50">
     <div class="">
       <h2 class="text-center" style="color:orange">Informasi & Berita</h2>
-      <p class="text-center font-weight-bold">Update Informasi seputar wakaf dan kegiatan yayasan Inisiator Isalam</p>
+      <p class="text-center font-weight-bold">Update Informasi seputar pendanaan dan kegiatan yayasan Inisiator Isalam</p>
       <div class="row">
         <?php foreach ($news as $berita) { ?>
           <div class="col-lg-4 col-md-4 mt-3">
@@ -373,7 +372,7 @@ use yii\helpers\Html;
     <div class="carousel owl-carousel" data-slide="6" data-slide-md="4" data-slide-sm="2" data-autoplay="true" data-nav="false" data-dots="false" data-space="20" data-loop="true" data-speed="700">
       <?php foreach ($lembagas as $lembaga) { ?>
         <div class="client img-mitra">
-          <a href="#"><img class="mx-auto" src="<?= \Yii::$app->request->baseUrl . "/uploads/lembaga_penerima/" . $lembaga->foto; ?>"style="height:100px;" alt="client"></a>
+          <a href="#"><img class="mx-auto" src="<?= \Yii::$app->request->baseUrl . "/uploads/lembaga_penerima/" . $lembaga->foto; ?>" style="height:100px;" alt="client"></a>
         </div><!-- /.client -->
       <?php } ?>
     </div><!-- /.carousel -->
@@ -471,70 +470,70 @@ if (!\Yii::$app->user->isGuest) {
   }
 }
 ?>
-  <script>
-    function myFunction(e) {
-      document.getElementById("pendanaan_wakaf").value = e.target.value
-    }
+<script>
+  function myFunction(e) {
+    document.getElementById("pendanaan_wakaf").value = e.target.value
+  }
 
-    function myFunction2(e) {
-      document.getElementById("pendanaan_infak").value = e.target.value
-    }
-    var duit = document.getElementById("nominal");
-    duit.addEventListener('keyup', function(e) {
-      console.log(this.value);
-      duit.setAttribute("value", this.value);
-    });
+  function myFunction2(e) {
+    document.getElementById("pendanaan_infak").value = e.target.value
+  }
+  var duit = document.getElementById("nominal");
+  duit.addEventListener('keyup', function(e) {
+    console.log(this.value);
+    duit.setAttribute("value", this.value);
+  });
 
-    var duit2 = document.getElementById("nominal2");
-    duit2.addEventListener('keyup', function(e) {
-      // console.log(this.value);
-      duit2.setAttribute("value", this.value);
-    });
+  var duit2 = document.getElementById("nominal2");
+  duit2.addEventListener('keyup', function(e) {
+    // console.log(this.value);
+    duit2.setAttribute("value", this.value);
+  });
 
-    document.querySelector("#bayarkan").addEventListener("click", () => {
-      let dana = document.querySelector("#pendanaan_wakaf").getAttribute("value");
-      if (dana == null) {
-        alert("Anda Belum Memilih Program Wakaf");
+  document.querySelector("#bayarkan").addEventListener("click", () => {
+    let dana = document.querySelector("#pendanaan_wakaf").getAttribute("value");
+    if (dana == null) {
+      alert("Anda Belum Memilih Program Wakaf");
+    } else {
+      let nominal = document.querySelector("#nominal").getAttribute("value");
+      if (nominal == null) {
+        alert("Anda Belum Mengisi Nominal Wakaf");
       } else {
-        let nominal = document.querySelector("#nominal").getAttribute("value");
-        if (nominal == null) {
-          alert("Anda Belum Mengisi Nominal Wakaf");
-        } else {
-          let ket = "wakaf";
-          var base_url = window.origin + "/home/cek-pembayaran/" + dana + "?nominal=" + nominal;
-          window.location.href = base_url; 
-          // let pembayaran = <?php echo $pembayar ?>;
-          // if(pembayaran == 0){
-          // let ket = "wakaf";
-          // var base_url = window.origin + "/web/home/pembayarans/" + dana + "?nominal=" + nominal + "&keterangan=" + ket;
-          // window.location.href = base_url;
-          // }else{
-          //   alert("Mohon Selesaikan Pembayaran Anda Terlebih Dahulu");
-          // }
-        }
+        let ket = "wakaf";
+        var base_url = window.origin + "/home/cek-pembayaran/" + dana + "?nominal=" + nominal;
+        window.location.href = base_url;
+        // let pembayaran = <?php echo $pembayar ?>;
+        // if(pembayaran == 0){
+        // let ket = "wakaf";
+        // var base_url = window.origin + "/web/home/pembayarans/" + dana + "?nominal=" + nominal + "&keterangan=" + ket;
+        // window.location.href = base_url;
+        // }else{
+        //   alert("Mohon Selesaikan Pembayaran Anda Terlebih Dahulu");
+        // }
       }
+    }
 
-    });
-    // document.querySelector("#bayarkan2").addEventListener("click", () => {
-    //   let dana2 = document.querySelector("#pendanaan_infak").getAttribute("value");
-    //   if (dana2 == null) {
+  });
+  // document.querySelector("#bayarkan2").addEventListener("click", () => {
+  //   let dana2 = document.querySelector("#pendanaan_infak").getAttribute("value");
+  //   if (dana2 == null) {
 
-    //     alert("Anda Belum Memilih Program Infak");
-    //   } else {
-    //     let nominal2 = document.querySelector("#nominal2").getAttribute("value");
-    //     if (nominal2 == null) {
+  //     alert("Anda Belum Memilih Program Infak");
+  //   } else {
+  //     let nominal2 = document.querySelector("#nominal2").getAttribute("value");
+  //     if (nominal2 == null) {
 
-    //       alert("Anda Belum Mengisi Nominal Infak");
-    //     } else {
-    //       let pembayaran2 = <?php echo $pembayar ?>;
-    //       if(pembayaran2 == 0){
-    //       let ket2 = "infak";
-    //       var base_url2 = window.origin + "/web/home/pembayarans/" + dana2 + "?nominal=" + nominal2 + "&keterangan=" + ket2;
-    //       window.location.href = base_url2;
-    //       }else{
-    //         alert("Mohon Selesaikan Pembayaran Anda Terlebih Dahulu");
-    //       }
-    //     }
-    //   }
-    // });
-  </script>
+  //       alert("Anda Belum Mengisi Nominal Infak");
+  //     } else {
+  //       let pembayaran2 = <?php echo $pembayar ?>;
+  //       if(pembayaran2 == 0){
+  //       let ket2 = "infak";
+  //       var base_url2 = window.origin + "/web/home/pembayarans/" + dana2 + "?nominal=" + nominal2 + "&keterangan=" + ket2;
+  //       window.location.href = base_url2;
+  //       }else{
+  //         alert("Mohon Selesaikan Pembayaran Anda Terlebih Dahulu");
+  //       }
+  //     }
+  //   }
+  // });
+</script>

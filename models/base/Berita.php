@@ -31,7 +31,7 @@ abstract class Berita extends \yii\db\ActiveRecord
     {
         $parent = parent::fields();
 
-        
+
 
         if (isset($parent['user_id'])) {
             unset($parent['user_id']);
@@ -58,11 +58,12 @@ abstract class Berita extends \yii\db\ActiveRecord
             //     return $model->gambar;
             // };
             $parent['gambar'] = function ($model) {
-                $file = $model->gambar;
-                // $model->tanggal_received=date('Y-m-d H:i:s');
-                return $path = "http://i-salam.id/web/uploads/berita/" . $file;
+                // $file = $model->gambar;
+                // // $model->tanggal_received=date('Y-m-d H:i:s');
+                // return $path = "http://192.168.228.215/isalam/web/uploads/berita/" . $file;
+                // return $path = $file;
+                return Yii::getAlias("@file/berita/$model->gambar");
             };
-            
         }
         if (!isset($parent['full_link'])) {
             unset($parent['full_link']);
@@ -74,7 +75,6 @@ abstract class Berita extends \yii\db\ActiveRecord
                 $pembayar = Url::to(['home/detail-berita', 'id' => $model->slug]);
                 return $pembayar;
             };
-            
         }
         // if (isset($parent['isi'])) {
         //     unset($parent['isi']);
@@ -86,21 +86,21 @@ abstract class Berita extends \yii\db\ActiveRecord
         //         // $model->tanggal_received=date('Y-m-d H:i:s');
         //         return $text;
         //     };
-            
+
         // }
-        if(isset($parent['view_count'])){
+        if (isset($parent['view_count'])) {
             unset($parent['view_count']);
 
-            $parent['dilihat'] = function ($model){
-            $interval = $model->view_count;
-            return $interval." kali";
+            $parent['dilihat'] = function ($model) {
+                $interval = $model->view_count;
+                return $interval . " kali";
             };
         }
-        if(isset($parent['created_at'])){
+        if (isset($parent['created_at'])) {
             unset($parent['created_at']);
 
-            $parent['created_at'] = function ($model){
-               return \app\components\Tanggal::toReadableDate($model->created_at,false);
+            $parent['created_at'] = function ($model) {
+                return \app\components\Tanggal::toReadableDate($model->created_at, false);
             };
         }
         return $parent;
@@ -176,8 +176,4 @@ abstract class Berita extends \yii\db\ActiveRecord
     {
         return $this->hasOne(\app\models\User::className(), ['id' => 'user_id']);
     }
-
-
-
-
 }

@@ -544,7 +544,7 @@ if (!\Yii::$app->user->isGuest) {
   });
 </script>
 <!-- Production -->
-<script src="https://app.midtrans.com/snap/snap.js" data-client-key="Mid-client-IzRsb2KnAzGzaaBr"></script>
+<script src="<?= (Yii::$app->params['midtrans']['isProduction']) ? 'https://app.midtrans.com/snap/snap.js' : 'https://app.sandbox.midtrans.com/snap/snap.js' ?>" data-client-key="<?= Yii::$app->params['midtrans']['clientKey'] ?>"></script>
 <!-- //sandbox -->
 <!-- <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="SB-Mid-client-lrPe45BCGoT9yG2O"></script> -->
 
@@ -570,7 +570,7 @@ if (!\Yii::$app->user->isGuest) {
         jQuery(document).ready(function() {
           jQuery('#page-loader').fadeOut(3000);
         });
-          window.location = "<?= Yii::$app->request->baseUrl . "/home/kirim/" . $pembayaran->id ?>";
+        window.location = "<?= Yii::$app->request->baseUrl . "/home/kirim/" . $pembayaran->id ?>";
         // Swal.fire("Peringatan!", "Transaksi Menunggu Pembayaran", "success").then((result) => {
         // window.location = "<?= Yii::$app->request->baseUrl . "/home/profile" ?>";
         // });

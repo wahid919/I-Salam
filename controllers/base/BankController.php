@@ -3,9 +3,10 @@
 // You should not change it manually as it will be overwritten on next build
 
 namespace app\controllers\base;
+
 use Yii;
 use app\models\Bank;
-    use app\models\search\BankSearch;
+use app\models\search\BankSearch;
 use yii\web\Controller;
 use yii\web\HttpException;
 use yii\helpers\Url;
@@ -15,74 +16,74 @@ use app\models\Action;
 use yii\web\UploadedFile;
 
 /**
-* BankController implements the CRUD actions for Bank model.
-*/
+ * BankController implements the CRUD actions for Bank model.
+ */
 class BankController extends Controller
 {
 
 
-/**
-* @var boolean whether to enable CSRF validation for the actions in this controller.
-* CSRF validation is enabled only when both this property and [[Request::enableCsrfValidation]] are true.
-*/
-public $enableCsrfValidation = false;
-public function behaviors()
-{
-//NodeLogger::sendLog(Action::getAccess($this->id));
-//apply role_action table for privilege (doesn't apply to super admin)
-return Action::getAccess($this->id);
-}
+    /**
+     * @var boolean whether to enable CSRF validation for the actions in this controller.
+     * CSRF validation is enabled only when both this property and [[Request::enableCsrfValidation]] are true.
+     */
+    public $enableCsrfValidation = false;
+    public function behaviors()
+    {
+        //NodeLogger::sendLog(Action::getAccess($this->id));
+        //apply role_action table for privilege (doesn't apply to super admin)
+        return Action::getAccess($this->id);
+    }
 
-/**
-* Lists all Bank models.
-* @return mixed
-*/
-public function actionIndex()
-{
-    $searchModel  = new BankSearch;
-    $dataProvider = $searchModel->search($_GET);
+    /**
+     * Lists all Bank models.
+     * @return mixed
+     */
+    public function actionIndex()
+    {
+        $searchModel  = new BankSearch;
+        $dataProvider = $searchModel->search($_GET);
 
-Tabs::clearLocalStorage();
+        Tabs::clearLocalStorage();
 
-Url::remember();
-\Yii::$app->session['__crudReturnUrl'] = null;
+        Url::remember();
+        \Yii::$app->session['__crudReturnUrl'] = null;
 
-return $this->render('index', [
-'dataProvider' => $dataProvider,
-    'searchModel' => $searchModel,
-]);
-}
+        return $this->render('index', [
+            'dataProvider' => $dataProvider,
+            'searchModel' => $searchModel,
+        ]);
+    }
 
-/**
-* Displays a single Bank model.
-* @param integer $id
-*
-* @return mixed
-*/
-public function actionView($id)
-{
-\Yii::$app->session['__crudReturnUrl'] = Url::previous();
-Url::remember();
-Tabs::rememberActiveState();
+    /**
+     * Displays a single Bank model.
+     * @param integer $id
+     *
+     * @return mixed
+     */
+    public function actionView($id)
+    {
+        \Yii::$app->session['__crudReturnUrl'] = Url::previous();
+        Url::remember();
+        Tabs::rememberActiveState();
 
-return $this->render('view', [
-'model' => $this->findModel($id),
-]);
-}
+        return $this->render('view', [
+            'model' => $this->findModel($id),
+        ]);
+    }
 
-/**
-* Creates a new Bank model.
-* If creation is successful, the browser will be redirected to the 'view' page.
-* @return mixed
-*/
-public function actionCreate()
-{
-$model = new Bank;
+    /**
+     * Creates a new Bank model.
+     * If creation is successful, the browser will be redirected to the 'view' page.
+     * @return mixed
+     */
+    public function actionCreate()
+    {
+        $model = new Bank;
 
-try {
-if ($model->load($_POST)) {
-    $logos = UploadedFile::getInstance($model, 'logo');
-        if($logos !=NULL){
+        try {
+            if ($model->load($_POST)) {
+                $logos = UploadedFile::getInstance($model, 'logo');
+                if ($logos != NULL) {
                     # store the source logos name
                     $model->logo = $logos->name;
                     $arr = explode(".", $logos->name);
@@ -93,38 +94,38 @@ if ($model->load($_POST)) {
 
                     # the path to save logos
                     // unlink(Yii::getAlias("@app/web/uploads/pengajuan/") . $oldFile);
-                    if(file_exists(Yii::getAlias("@app/web/uploads/bank/logo/")) == false){
+                    if (file_exists(Yii::getAlias("@app/web/uploads/bank/logo/")) == false) {
                         mkdir(Yii::getAlias("@app/web/uploads/bank/logo/"), 0777, true);
                     }
                     $path = Yii::getAlias("@app/web/uploads/bank/logo/") . $model->logo;
-        $logos->saveAs($path);
+                    $logos->saveAs($path);
                 }
-if($model->save()){
-    return $this->redirect(['view', 'id' => $model->id]);
-}
-} elseif (!\Yii::$app->request->isPost) {
-$model->load($_GET);
-}
-} catch (\Exception $e) {
-$msg = (isset($e->errorInfo[2]))?$e->errorInfo[2]:$e->getMessage();
-$model->addError('_exception', $msg);
-}
-return $this->render('create', ['model' => $model]);
-}
+                if ($model->save()) {
+                    return $this->redirect(['view', 'id' => $model->id]);
+                }
+            } elseif (!\Yii::$app->request->isPost) {
+                $model->load($_GET);
+            }
+        } catch (\Exception $e) {
+            $msg = (isset($e->errorInfo[2])) ? $e->errorInfo[2] : $e->getMessage();
+            $model->addError('_exception', $msg);
+        }
+        return $this->render('create', ['model' => $model]);
+    }
 
 
-/**
-* Updates an existing Bank model.
-* If update is successful, the browser will be redirected to the 'view' page.
-* @param integer $id
-* @return mixed
-*/
-public function actionUpdate($id)
-{
-$model = $this->findModel($id);
-$oldFoto=$model->logo;
-if ($model->load($_POST)) {
-    $logos = UploadedFile::getInstance($model, 'logo');
+    /**
+     * Updates an existing Bank model.
+     * If update is successful, the browser will be redirected to the 'view' page.
+     * @param integer $id
+     * @return mixed
+     */
+    public function actionUpdate($id)
+    {
+        $model = $this->findModel($id);
+        $oldFoto = $model->logo;
+        if ($model->load($_POST)) {
+            $logos = UploadedFile::getInstance($model, 'logo');
             if ($logos != NULL) {
                 # store the source file name
                 $model->logo = $logos->name;
@@ -135,75 +136,75 @@ if ($model->load($_POST)) {
                 $model->logo = Yii::$app->security->generateRandomString() . ".{$extension}";
 
                 # the path to save file
-                if(file_exists(Yii::getAlias("@app/web/uploads/bank/logo/")) == false){
+                if (file_exists(Yii::getAlias("@app/web/uploads/bank/logo/")) == false) {
                     mkdir(Yii::getAlias("@app/web/uploads/bank/logo/"), 0777, true);
                 }
                 $path = Yii::getAlias("@app/web/uploads/bank/logo/") . $model->logo;
-                if($oldFoto != NULL){
+                if ($oldFoto != NULL) {
 
                     $logos->saveAs($path);
                     unlink(Yii::$app->basePath . '/web/uploads/bank/logo/' . $oldFoto);
-                }else{
+                } else {
                     $logos->saveAs($path);
                 }
-            }else{
+            } else {
                 $model->logo = $oldFoto;
             }
-            
-if($model->save()){
-    return $this->redirect(['view', 'id' => $model->id]);
-}
-} else {
-return $this->render('update', [
-'model' => $model,
-]);
-}
-}
 
-/**
-* Deletes an existing Bank model.
-* If deletion is successful, the browser will be redirected to the 'index' page.
-* @param integer $id
-* @return mixed
-*/
-public function actionDelete($id)
-{
-try {
-$this->findModel($id)->delete();
-} catch (\Exception $e) {
-$msg = (isset($e->errorInfo[2]))?$e->errorInfo[2]:$e->getMessage();
-\Yii::$app->getSession()->addFlash('error', $msg);
-return $this->redirect(Url::previous());
-}
+            if ($model->save()) {
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
+        } else {
+            return $this->render('update', [
+                'model' => $model,
+            ]);
+        }
+    }
 
-// TODO: improve detection
-$isPivot = strstr('$id',',');
-if ($isPivot == true) {
-return $this->redirect(Url::previous());
-} elseif (isset(\Yii::$app->session['__crudReturnUrl']) && \Yii::$app->session['__crudReturnUrl'] != '/') {
-Url::remember(null);
-$url = \Yii::$app->session['__crudReturnUrl'];
-\Yii::$app->session['__crudReturnUrl'] = null;
+    /**
+     * Deletes an existing Bank model.
+     * If deletion is successful, the browser will be redirected to the 'index' page.
+     * @param integer $id
+     * @return mixed
+     */
+    public function actionDelete($id)
+    {
+        try {
+            $this->findModel($id)->delete();
+        } catch (\Exception $e) {
+            $msg = (isset($e->errorInfo[2])) ? $e->errorInfo[2] : $e->getMessage();
+            \Yii::$app->getSession()->addFlash('error', $msg);
+            return $this->redirect(Url::previous());
+        }
 
-return $this->redirect($url);
-} else {
-return $this->redirect(['index']);
-}
-}
+        // TODO: improve detection
+        $isPivot = strstr('$id', ',');
+        if ($isPivot == true) {
+            return $this->redirect(Url::previous());
+        } elseif (isset(\Yii::$app->session['__crudReturnUrl']) && \Yii::$app->session['__crudReturnUrl'] != '/') {
+            Url::remember(null);
+            $url = \Yii::$app->session['__crudReturnUrl'];
+            \Yii::$app->session['__crudReturnUrl'] = null;
 
-/**
-* Finds the Bank model based on its primary key value.
-* If the model is not found, a 404 HTTP exception will be thrown.
-* @param integer $id
-* @return Bank the loaded model
-* @throws HttpException if the model cannot be found
-*/
-protected function findModel($id)
-{
-if (($model = Bank::findOne($id)) !== null) {
-return $model;
-} else {
-throw new HttpException(404, 'The requested page does not exist.');
-}
-}
+            return $this->redirect($url);
+        } else {
+            return $this->redirect(['index']);
+        }
+    }
+
+    /**
+     * Finds the Bank model based on its primary key value.
+     * If the model is not found, a 404 HTTP exception will be thrown.
+     * @param integer $id
+     * @return Bank the loaded model
+     * @throws HttpException if the model cannot be found
+     */
+    protected function findModel($id)
+    {
+        if (($model = Bank::findOne($id)) !== null) {
+            return $model;
+        } else {
+            throw new HttpException(404, 'The requested page does not exist.');
+        }
+    }
 }

@@ -309,7 +309,7 @@ class SettingController extends Controller
                 if ($oldlogin != NULL) {
 
                     $bg_login->saveAs($path);
-                    unlink(Yii::$app->basePath . '/web/uploads/setting/' . $oldlogin);
+                    // unlink(Yii::$app->basePath . '/web/uploads/setting/' . $oldlogin);
                 } else {
                     $bg_login->saveAs($path);
                 }

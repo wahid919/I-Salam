@@ -33,8 +33,8 @@ use yii\web\UploadedFile;
  */
 class PendanaanController extends Controller
 {
-   
-use UploadFile;
+
+   use UploadFile;
 
    /**
     * @var boolean whether to enable CSRF validation for the actions in this controller.
@@ -100,19 +100,19 @@ use UploadFile;
          if ($model->load($_POST)) {
             $model->status_id = 1;
             $model->user_id = \Yii::$app->user->identity->id;
-         
-         $nom = str_replace(",","",$model->nominal);
-         // var_dump($nom);die;
-         $model->nominal = $nom;
-         if($model->status_lembaran != 0){
-            $nom_lembaran = str_replace(",","",$model->nominal_lembaran);
-            $model->nominal_lembaran = $nom_lembaran;
-            $jml = (int)$nom / (int)$nom_lembaran;
-            $model->jumlah_lembaran = round($jml);
-         }else{
-            $model->nominal_lembaran = "0";
-            $model->jumlah_lembaran = 0;
-         }
+
+            $nom = str_replace(",", "", $model->nominal);
+            // var_dump($nom);die;
+            $model->nominal = $nom;
+            if ($model->status_lembaran != 0) {
+               $nom_lembaran = str_replace(",", "", $model->nominal_lembaran);
+               $model->nominal_lembaran = $nom_lembaran;
+               $jml = (int)$nom / (int)$nom_lembaran;
+               $model->jumlah_lembaran = round($jml);
+            } else {
+               $model->nominal_lembaran = "0";
+               $model->jumlah_lembaran = 0;
+            }
             $fotos = UploadedFile::getInstance($model, 'foto');
             if ($fotos != NULL) {
                # store the source fotos name
@@ -121,7 +121,7 @@ use UploadFile;
                $extension = end($arr);
 
                # generate a unique fotos name
-               $model->foto = "pendanaan/".Yii::$app->security->generateRandomString() . ".{$extension}";
+               $model->foto = "pendanaan/" . Yii::$app->security->generateRandomString() . ".{$extension}";
 
                # the path to save fotos
                // unlink(Yii::getAlias("@app/web/uploads/pengajuan/") . $oldFile);
@@ -139,7 +139,7 @@ use UploadFile;
                $extension = end($arr);
 
                # generate a unique fotos_ktp name
-               $model->foto_ktp = "pendanaan/foto_ktp/".Yii::$app->security->generateRandomString() . ".{$extension}";
+               $model->foto_ktp = "pendanaan/foto_ktp/" . Yii::$app->security->generateRandomString() . ".{$extension}";
 
                # the path to save fotos_ktp
                // unlink(Yii::getAlias("@app/web/uploads/pengajuan/") . $oldFile);
@@ -157,7 +157,7 @@ use UploadFile;
                $extension = end($arr);
 
                # generate a unique fotos_kk name
-               $model->foto_kk = "pendanaan/foto_kk/".Yii::$app->security->generateRandomString() . ".{$extension}";
+               $model->foto_kk = "pendanaan/foto_kk/" . Yii::$app->security->generateRandomString() . ".{$extension}";
 
                # the path to save fotos_kk
                // unlink(Yii::getAlias("@app/web/uploads/pengajuan/") . $oldFile);
@@ -193,7 +193,7 @@ use UploadFile;
                $extension = end($arr);
 
                # generate a unique uraians name
-               $model->file_uraian = "uraian/".Yii::$app->security->generateRandomString() . ".{$extension}";
+               $model->file_uraian = "uraian/" . Yii::$app->security->generateRandomString() . ".{$extension}";
 
                # the path to save uraians
                // unlink(Yii::getAlias("@app/web/uploads/pengajuan/") . $oldFile);
@@ -207,12 +207,12 @@ use UploadFile;
             $posters = UploadedFile::getInstance($model, 'poster');
             if ($posters != NULL) {
                $response = $this->uploadPoster($posters);
-                if ($response->success == false) {
-                    Yii::$app->session->setFlash('danger', 'Gagal Upload Foto');
-                    // goto end;
-                    return $this->render('create', ['model' => $model]);
-                }
-                $model->poster = $response->filename;
+               if ($response->success == false) {
+                  Yii::$app->session->setFlash('danger', 'Gagal Upload Foto');
+                  // goto end;
+                  return $this->render('create', ['model' => $model]);
+               }
+               $model->poster = $response->filename;
                # store the source posters name
                // $model->poster = $posters->name;
                // $arr = explode(".", $posters->name);
@@ -267,20 +267,20 @@ use UploadFile;
          $model->status_id = 2;
          if ($model->save()) {
             $notifikasi = new Notifikasi;
-            $notifikasi->message = "Pendanaan ".$model->nama_pendanaan." Telah di Setujui";
+            $notifikasi->message = "Pendanaan " . $model->nama_pendanaan . " Telah di Setujui";
             $notifikasi->user_id = $model->user_id;
             $notifikasi->flag = 1;
-            $notifikasi->date=date('Y-m-d H:i:s');
+            $notifikasi->date = date('Y-m-d H:i:s');
             $notifikasi->save();
             \Yii::$app->getSession()->setFlash(
                'success',
                'Pendanaan Telah Disetujui!'
             );
-            $usrs = User::find()->where(['<>','fcm_token',""])->all();
-                    foreach ($usrs as $value) {
-                        $user = User::findOne(['id'=>$value->id]);
-                        ActionSendFcm::getMessage($value->fcm_token,"program",$model->id,"Program Baru",$model->nama_pendanaan);
-                    }
+            $usrs = User::find()->where(['<>', 'fcm_token', ""])->all();
+            foreach ($usrs as $value) {
+               $user = User::findOne(['id' => $value->id]);
+               ActionSendFcm::getMessage($value->fcm_token, "program", $model->id, "Program Baru", $model->nama_pendanaan);
+            }
          } else {
             \Yii::$app->getSession()->setFlash(
                'danger',
@@ -296,13 +296,13 @@ use UploadFile;
       //return print_r($model);
       if ($model) {
          $oldStatus = $model->status_tampil;
-         if($oldStatus == 0){
+         if ($oldStatus == 0) {
             $newStatus = 1;
             $text =  \Yii::$app->getSession()->setFlash(
                'success',
                'Pendanaan Telah Ditampilkan!'
             );
-         }else{
+         } else {
             $newStatus = 0;
             $text =  \Yii::$app->getSession()->setFlash(
                'success',
@@ -311,8 +311,7 @@ use UploadFile;
          }
          $model->status_tampil = $newStatus;
          if ($model->save()) {
-           echo $text;
-           
+            echo $text;
          } else {
             \Yii::$app->getSession()->setFlash(
                'danger',
@@ -325,23 +324,23 @@ use UploadFile;
    public function actionBack($id)
    {
       $model = $this->findModel($_GET['id']);
-      
+
       //return print_r($model);
       if ($model) {
          $oldStatus = $model->status_id;
-         if($oldStatus == 2){
+         if ($oldStatus == 2) {
             $newStatus = 1;
-         }elseif($oldStatus == 4){
+         } elseif ($oldStatus == 4) {
             $newStatus = 2;
-         }elseif($oldStatus == 3){
+         } elseif ($oldStatus == 3) {
             $newStatus = 4;
-            $oldCair = Pencairan::findOne(['pendanaan_id'=>$model->id]);
+            $oldCair = Pencairan::findOne(['pendanaan_id' => $model->id]);
             $oldCair->delete();
-         }elseif($oldStatus == 11){
+         } elseif ($oldStatus == 11) {
             $newStatus = 3;
-            $oldPenyaluran = Penyaluran::findOne(['id_pendanaan'=>$model->id]);
+            $oldPenyaluran = Penyaluran::findOne(['id_pendanaan' => $model->id]);
             $oldPenyaluran->delete();
-         }elseif($oldStatus == 7){
+         } elseif ($oldStatus == 7) {
             $newStatus = 1;
          }
          $model->status_id = $newStatus;
@@ -350,7 +349,6 @@ use UploadFile;
                'success',
                'Status Pendanaan Telah Dikembalikan!'
             );
-           
          } else {
             \Yii::$app->getSession()->setFlash(
                'danger',
@@ -374,7 +372,7 @@ use UploadFile;
                'danger',
                'Nominal Pencairan Melebihi Nominal Pendanaan !'
             );
-            
+
             return $this->render('pendanaan-cair', [
                'model' => $model,
                'cair' => $cair,
@@ -384,29 +382,29 @@ use UploadFile;
             $cair->tanggal = date('Y-m-d');
             $cair->save();
             if ($model->save()) {
-               $pembayar = Pembayaran::find()->where(['pendanaan_id'=>$model->id,'status_id'=>6])->all();
-            foreach($pembayar as $value){
-               $user = User::findOne(['id'=>$value->user_id]);
-               $msg = "Pendanaan ".$model->nama_pendanaan." Telah di cairkan";
-               $notifikasi = new Notifikasi;
-               $notifikasi->message = "Pendanaan ".$model->nama_pendanaan." Telah di cairkan";
-               $notifikasi->user_id = $value->user_id;
-               $notifikasi->flag = 1;
-               $notifikasi->date=date('Y-m-d H:i:s');
-               $notifikasi->save();
+               $pembayar = Pembayaran::find()->where(['pendanaan_id' => $model->id, 'status_id' => 6])->all();
+               foreach ($pembayar as $value) {
+                  $user = User::findOne(['id' => $value->user_id]);
+                  $msg = "Pendanaan " . $model->nama_pendanaan . " Telah di cairkan";
+                  $notifikasi = new Notifikasi;
+                  $notifikasi->message = "Pendanaan " . $model->nama_pendanaan . " Telah di cairkan";
+                  $notifikasi->user_id = $value->user_id;
+                  $notifikasi->flag = 1;
+                  $notifikasi->date = date('Y-m-d H:i:s');
+                  $notifikasi->save();
 
-               $phone_s = substr_replace($user->nomor_handphone, '62', 0, 1);
-               SendWa::send($phone_s,$msg);
-               if($user->fcm_token != ""){
-                  ActionSendFcm::getMessage($user->fcm_token,"program",$model->id,"Program Telah Dicairkan",$msg);
+                  $phone_s = substr_replace($user->nomor_handphone, '62', 0, 1);
+                  SendWa::send($phone_s, $msg);
+                  if ($user->fcm_token != "") {
+                     ActionSendFcm::getMessage($user->fcm_token, "program", $model->id, "Program Telah Dicairkan", $msg);
+                  }
                }
-            }
                $notifikasi2 = new Notifikasi;
-            $notifikasi2->message = "Pendanaan ".$model->nama_pendanaan." Telah Anda Cairkan";
-            $notifikasi2->user_id = $model->user_id;
-            $notifikasi2->flag = 1;
-            $notifikasi2->date=date('Y-m-d H:i:s');
-            $notifikasi2->save();
+               $notifikasi2->message = "Pendanaan " . $model->nama_pendanaan . " Telah Anda Cairkan";
+               $notifikasi2->user_id = $model->user_id;
+               $notifikasi2->flag = 1;
+               $notifikasi2->date = date('Y-m-d H:i:s');
+               $notifikasi2->save();
                \Yii::$app->getSession()->setFlash(
                   'success',
                   'Pendanaan Telah Dicairkan!'
@@ -431,52 +429,51 @@ use UploadFile;
       $cair = new Penyaluran;
       // $model->tanggal_received=date('Y-m-d H:i:s');
       $model->status_id = 11;
-         
-         if ($model->save()) {
-            $pencair = Pencairan::findOne(['pendanaan_id'=>$model->id]);
-               $cair->id_pendanaan = $model->id;
-               $cair->nominal = $pencair->nominal;
-               $cair->tanggal_penyaluran = date('Y-m-d H:i:s');
-               $cair->save();
-               $pembayar = Pembayaran::find()->where(['pendanaan_id'=>$model->id,'status_id'=>6])->all();
-               foreach($pembayar as $value){
-                  $user = User::findOne(['id'=>$value->user_id]);
-               $msg = "Uang Pendanaan ".$model->nama_pendanaan." Telah di Disalurkan";
-               $notifikasi = new Notifikasi;
-               $notifikasi->message = "Uang Pendanaan ".$model->nama_pendanaan." Telah di Disalurkan";
-               $notifikasi->user_id = $value->user_id;
-               $notifikasi->flag = 1;
-               $notifikasi->date=date('Y-m-d H:i:s');
-               $notifikasi->save();
-               $phone_s = substr_replace($user->nomor_handphone, '62', 0, 1);
-               SendWa::send($phone_s,$msg);
-               if($user->fcm_token != null){
-                  ActionSendFcm::getMessage($user->fcm_token,"program",$model->id,"Uang Program Telah Disalurkan",$msg);
-               }
+
+      if ($model->save()) {
+         $pencair = Pencairan::findOne(['pendanaan_id' => $model->id]);
+         $cair->id_pendanaan = $model->id;
+         $cair->nominal = $pencair->nominal;
+         $cair->tanggal_penyaluran = date('Y-m-d H:i:s');
+         $cair->save();
+         $pembayar = Pembayaran::find()->where(['pendanaan_id' => $model->id, 'status_id' => 6])->all();
+         foreach ($pembayar as $value) {
+            $user = User::findOne(['id' => $value->user_id]);
+            $msg = "Uang Pendanaan " . $model->nama_pendanaan . " Telah di Disalurkan";
+            $notifikasi = new Notifikasi;
+            $notifikasi->message = "Uang Pendanaan " . $model->nama_pendanaan . " Telah di Disalurkan";
+            $notifikasi->user_id = $value->user_id;
+            $notifikasi->flag = 1;
+            $notifikasi->date = date('Y-m-d H:i:s');
+            $notifikasi->save();
+            $phone_s = substr_replace($user->nomor_handphone, '62', 0, 1);
+            SendWa::send($phone_s, $msg);
+            if ($user->fcm_token != null) {
+               ActionSendFcm::getMessage($user->fcm_token, "program", $model->id, "Uang Program Telah Disalurkan", $msg);
             }
-               $notifikasi2 = new Notifikasi;
-            $notifikasi2->message = "Uang Pendanaan ".$model->nama_pendanaan." Telah Anda Salurkan";
-            $notifikasi2->user_id = $model->user_id;
-            $notifikasi2->flag = 1;
-            $notifikasi2->date=date('Y-m-d H:i:s');
-            $notifikasi2->save();
-               \Yii::$app->getSession()->setFlash(
-                  'success',
-                  'Pendanaan Telah Disalurkan!'
-               );
-
-               return $this->redirect(['index']);
-            
-         }else {
-            \Yii::$app->getSession()->setFlash(
-               'danger',
-               'Pendanaan gagal Disalurkan!'
-            );
-            return $this->redirect(['index']);
          }
+         $notifikasi2 = new Notifikasi;
+         $notifikasi2->message = "Uang Pendanaan " . $model->nama_pendanaan . " Telah Anda Salurkan";
+         $notifikasi2->user_id = $model->user_id;
+         $notifikasi2->flag = 1;
+         $notifikasi2->date = date('Y-m-d H:i:s');
+         $notifikasi2->save();
+         \Yii::$app->getSession()->setFlash(
+            'success',
+            'Pendanaan Telah Disalurkan!'
+         );
 
-         // return $this->redirect(Url::previous());
-      
+         return $this->redirect(['index']);
+      } else {
+         \Yii::$app->getSession()->setFlash(
+            'danger',
+            'Pendanaan gagal Disalurkan!'
+         );
+         return $this->redirect(['index']);
+      }
+
+      // return $this->redirect(Url::previous());
+
    }
 
    public function actionPendanaanSelesai($id)
@@ -485,33 +482,32 @@ use UploadFile;
       //return print_r($model);
       if ($model) {
          $model->status_id = 4;
-         $pembayar = Pembayaran::find()->where(['pendanaan_id'=>$model->id,'status_id'=>6])->all();
-         foreach($pembayar as $value){
-            $user = User::find()->where(['id'=>$value->user_id])->one();
-            $msg = "Pendanaan ".$model->nama_pendanaan." Telah selesai";
+         $pembayar = Pembayaran::find()->where(['pendanaan_id' => $model->id, 'status_id' => 6])->all();
+         foreach ($pembayar as $value) {
+            $user = User::find()->where(['id' => $value->user_id])->one();
+            $msg = "Pendanaan " . $model->nama_pendanaan . " Telah selesai";
             $notifikasi = new Notifikasi;
-            $notifikasi->message = "Pendanaan ".$model->nama_pendanaan." Telah selesai";
+            $notifikasi->message = "Pendanaan " . $model->nama_pendanaan . " Telah selesai";
             $notifikasi->user_id = $value->user_id;
             $notifikasi->flag = 1;
-            $notifikasi->date=date('Y-m-d H:i:s');
+            $notifikasi->date = date('Y-m-d H:i:s');
             $notifikasi->save();
             $phone_s = substr_replace($user->nomor_handphone, '62', 0, 1);
             // var_dump($phone_s);die;
-            SendWa::send($phone_s,$msg);
-            if($user->fcm_token != ""){
-               ActionSendFcm::getMessage($user->fcm_token,"program",$model->id,"Progress Program",$msg);
+            SendWa::send($phone_s, $msg);
+            if ($user->fcm_token != "") {
+               ActionSendFcm::getMessage($user->fcm_token, "program", $model->id, "Progress Program", $msg);
             }
-
          }
-         
+
          if ($model->save()) {
             $notifikasi2 = new Notifikasi;
-            $notifikasi2->message = "Pendanaan ".$model->nama_pendanaan." Telah selesai";
+            $notifikasi2->message = "Pendanaan " . $model->nama_pendanaan . " Telah selesai";
             $notifikasi2->user_id = $model->user_id;
             $notifikasi2->flag = 1;
-            $notifikasi2->date=date('Y-m-d H:i:s');
-            $notifikasi2->save(); 
-            
+            $notifikasi2->date = date('Y-m-d H:i:s');
+            $notifikasi2->save();
+
             \Yii::$app->getSession()->setFlash(
                'success',
                'Pendanaan Telah Selesai!'
@@ -534,10 +530,10 @@ use UploadFile;
          $model->status_id = 7;
          if ($model->save()) {
             $notifikasi = new Notifikasi;
-            $notifikasi->message = "Pendanaan ".$model->nama_pendanaan." Telah Ditolak Oleh pihak Admin";
+            $notifikasi->message = "Pendanaan " . $model->nama_pendanaan . " Telah Ditolak Oleh pihak Admin";
             $notifikasi->user_id = $model->user_id;
             $notifikasi->flag = 1;
-            $notifikasi->date=date('Y-m-d H:i:s');
+            $notifikasi->date = date('Y-m-d H:i:s');
             $notifikasi->save();
             \Yii::$app->getSession()->setFlash(
                'success',
@@ -568,15 +564,15 @@ use UploadFile;
       $oldPoster = $model->poster;
       $oldBuktiKk = $model->foto_kk;
       if ($model->load($_POST)) {
-         $nom = str_replace(",","",$model->nominal);
+         $nom = str_replace(",", "", $model->nominal);
          // var_dump($nom);die;
          $model->nominal = $nom;
-         if($model->status_lembaran != 0){
-            $nom_lembaran = str_replace(",","",$model->nominal_lembaran);
+         if ($model->status_lembaran != 0) {
+            $nom_lembaran = str_replace(",", "", $model->nominal_lembaran);
             $model->nominal_lembaran = $nom_lembaran;
             $jml = (int)$nom / (int)$nom_lembaran;
             $model->jumlah_lembaran = round($jml);
-         }else{
+         } else {
             $model->nominal_lembaran = "0";
             $model->jumlah_lembaran = "0";
          }
@@ -588,7 +584,7 @@ use UploadFile;
             $extension = end($arr);
 
             # generate a unique file name
-            $model->foto = "pendanaan/".Yii::$app->security->generateRandomString() . ".{$extension}";
+            $model->foto = "pendanaan/" . Yii::$app->security->generateRandomString() . ".{$extension}";
 
             # the path to save file
             if (file_exists(Yii::getAlias("@app/web/uploads/")) == false) {
@@ -614,7 +610,7 @@ use UploadFile;
             $extension = end($arr);
 
             # generate a unique file name
-            $model->foto_ktp = "pendanaan/foto_ktp/".Yii::$app->security->generateRandomString() . ".{$extension}";
+            $model->foto_ktp = "pendanaan/foto_ktp/" . Yii::$app->security->generateRandomString() . ".{$extension}";
 
             # the path to save file
             if (file_exists(Yii::getAlias("@app/web/uploads/")) == false) {
@@ -640,7 +636,7 @@ use UploadFile;
             $extension = end($arr);
 
             # generate a unique file name
-            $model->foto_kk = "pendanaan/foto_kk/".Yii::$app->security->generateRandomString() . ".{$extension}";
+            $model->foto_kk = "pendanaan/foto_kk/" . Yii::$app->security->generateRandomString() . ".{$extension}";
 
             # the path to save file
             if (file_exists(Yii::getAlias("@app/web/uploads/")) == false) {
@@ -666,7 +662,7 @@ use UploadFile;
             $extension = end($arr);
 
             # generate a unique file name
-            $model->file_uraian = "uraian/".Yii::$app->security->generateRandomString() . ".{$extension}";
+            $model->file_uraian = "uraian/" . Yii::$app->security->generateRandomString() . ".{$extension}";
 
             # the path to save file
             if (file_exists(Yii::getAlias("@app/web/uploads/")) == false) {
@@ -693,7 +689,7 @@ use UploadFile;
             $extension = end($arr);
 
             # generate a unique file name
-            $model->poster = "poster/".Yii::$app->security->generateRandomString() . ".{$extension}";
+            $model->poster = "poster/" . Yii::$app->security->generateRandomString() . ".{$extension}";
 
             # the path to save file
             if (file_exists(Yii::getAlias("@app/web/uploads/")) == false) {
@@ -703,7 +699,7 @@ use UploadFile;
             if ($oldPoster != NULL) {
 
                $posters->saveAs($path);
-               unlink(Yii::$app->basePath . '/web/uploads/' . $oldPoster);
+               // unlink(Yii::$app->basePath . '/web/uploads/' . $oldPoster);
             } else {
                $posters->saveAs($path);
             }
@@ -725,74 +721,73 @@ use UploadFile;
 
    public function actionUnduhFileUraian($id)
    {
-   $model = $this->findModel($id);
-   $file = $model->file_uraian;
-   // $model->tanggal_received=date('Y-m-d H:i:s');
-   $path = Yii::getAlias("@app/web/uploads/") . $file;
-   $arr = explode(".", $file);
-   $extension = end($arr);
-   $nama_file= "File Uraian  ".$model->nama_pendanaan.".".$extension;
-   
-       if (file_exists($path)) {
-           return Yii::$app->response->sendFile($path, $nama_file);
-       } else {
-           throw new \yii\web\NotFoundHttpException("{$path} is not found!");
-       }
+      $model = $this->findModel($id);
+      $file = $model->file_uraian;
+      // $model->tanggal_received=date('Y-m-d H:i:s');
+      $path = Yii::getAlias("@app/web/uploads/") . $file;
+      $arr = explode(".", $file);
+      $extension = end($arr);
+      $nama_file = "File Uraian  " . $model->nama_pendanaan . "." . $extension;
+
+      if (file_exists($path)) {
+         return Yii::$app->response->sendFile($path, $nama_file);
+      } else {
+         throw new \yii\web\NotFoundHttpException("{$path} is not found!");
+      }
    }
 
-   public function actionCetak() {
+   public function actionCetak()
+   {
       $formatter = \Yii::$app->formatter;
-      
-      $content = $this->renderPartial('view-print',[
-          
-  ]);
-      
+
+      $content = $this->renderPartial('view-print', []);
+
       // setup kartik\mpdf\Pdf component
       $pdf = new Pdf([
-          // set to use core fonts only
-          'mode' => Pdf::MODE_CORE, 
-          //Name file
-          'filename' => 'Akad Wakaf'."pdf",
-          // LEGAL paper format
-          'format' => Pdf::FORMAT_LEGAL, 
-          // portrait orientation
-          'orientation' => Pdf::ORIENT_PORTRAIT, 
-          // stream to browser inline
-          'destination' => Pdf::DEST_BROWSER, 
-          // your html content input
-          'content' => $content,  
-          'marginHeader' => 0,
-          'marginFooter' => 1,
-          'marginTop' => 1,
-          'marginBottom' => 5,
-          'marginLeft' => 0,
-          'marginRight' => 0,
-          // format content from your own css file if needed or use the
-          // enhanced bootstrap css built by Krajee for mPDF formatting 
-          'cssFile' => '@vendor/kartik-v/yii2-mpdf/src/assets/kv-mpdf-bootstrap.min.css',
-          // any css to be embedded if required
-          // 'cssInline' => '.kv-heading-1{font-size:25px}', 
-          'cssInline' => 'body { font-family: irannastaliq; font-size: 17px; }.page-break {display: none;};
+         // set to use core fonts only
+         'mode' => Pdf::MODE_CORE,
+         //Name file
+         'filename' => 'Akad Wakaf' . "pdf",
+         // LEGAL paper format
+         'format' => Pdf::FORMAT_LEGAL,
+         // portrait orientation
+         'orientation' => Pdf::ORIENT_PORTRAIT,
+         // stream to browser inline
+         'destination' => Pdf::DEST_BROWSER,
+         // your html content input
+         'content' => $content,
+         'marginHeader' => 0,
+         'marginFooter' => 1,
+         'marginTop' => 1,
+         'marginBottom' => 5,
+         'marginLeft' => 0,
+         'marginRight' => 0,
+         // format content from your own css file if needed or use the
+         // enhanced bootstrap css built by Krajee for mPDF formatting 
+         'cssFile' => '@vendor/kartik-v/yii2-mpdf/src/assets/kv-mpdf-bootstrap.min.css',
+         // any css to be embedded if required
+         // 'cssInline' => '.kv-heading-1{font-size:25px}', 
+         'cssInline' => 'body { font-family: irannastaliq; font-size: 17px; }.page-break {display: none;};
           .kv-heading-1{font-size:17px}table{width: 100%;line-height: inherit;text-align: left; border-collapse: collapse;}table, td, th {margin-left:50px;margin-right:50px;},fa { font-family: fontawesome;} @media print{
               .page-break{display: block;page-break-before: always;}
           }',
-           // set mPDF properties on the fly
-           'options' => [               
-              'defaultheaderline' => 0,  //for header
-               'defaultfooterline' => 0,  //for footer
-          ],
-           // call mPDF methods on the fly
-          'methods' => [
-              'SetTitle'=>'Print', 
-              'SetHeader' => $this->renderPartial('header_gambar'),
+         // set mPDF properties on the fly
+         'options' => [
+            'defaultheaderline' => 0,  //for header
+            'defaultfooterline' => 0,  //for footer
+         ],
+         // call mPDF methods on the fly
+         'methods' => [
+            'SetTitle' => 'Print',
+            'SetHeader' => $this->renderPartial('header_gambar'),
             //   // 'SetHeader'=>['AMONG TANI FOUNDATION'],
             //   'SetFooter'=>$this->renderPartial('footer_gambar'),
-              
-          ]
+
+         ]
       ]);
-      return $pdf->render(); 
-  }
-   
+      return $pdf->render();
+   }
+
 
 
    /**
@@ -834,30 +829,32 @@ use UploadFile;
          return $this->redirect(['index']);
       }
    }
-   public function actionExport(){
+   public function actionExport()
+   {
       extract($_GET);
       $tt = date_create($t1);
-      $tt1 = date_format($tt,"Y-m-d");
-      
+      $tt1 = date_format($tt, "Y-m-d");
+
       $ttt = date_create($t2);
-      $tt2 = date_format($ttt,"Y-m-d");
-      
-      $tgl1 = $tt1.' 00:00:01';
-      $tgl2 = $tt2.' 23:59:59';
+      $tt2 = date_format($ttt, "Y-m-d");
+
+      $tgl1 = $tt1 . ' 00:00:01';
+      $tgl2 = $tt2 . ' 23:59:59';
       // $tgl2 = date('Y-m-d', strtotime($t1.'+ 1 days')).' 02:00:00';
       $query = new Query();
-      $query->select(['pendanaan.id as id_pendanaan','pendanaan.nama_pendanaan as nm_pendanaan','pendanaan.nominal as nominal','pendanaan.created_at as tgl_buat','pendanaan.pendanaan_berakhir as tgl_berakhir','status.name as status_name'])
-                          ->from('pendanaan')
-                          ->join('LEFT JOIN',
-                              'pembayaran',
-                              'pembayaran.pendanaan_id = pendanaan.id'
-                          )
-                          ->join('LEFT JOIN',
-                              'status',
-                              'status.id = pendanaan.status_id'
-                          )->where(['between', 'pendanaan.created_at', "$tgl1", "$tgl2"])
-                          ->groupBy(['pendanaan.id'])
-                        ;
+      $query->select(['pendanaan.id as id_pendanaan', 'pendanaan.nama_pendanaan as nm_pendanaan', 'pendanaan.nominal as nominal', 'pendanaan.created_at as tgl_buat', 'pendanaan.pendanaan_berakhir as tgl_berakhir', 'status.name as status_name'])
+         ->from('pendanaan')
+         ->join(
+            'LEFT JOIN',
+            'pembayaran',
+            'pembayaran.pendanaan_id = pendanaan.id'
+         )
+         ->join(
+            'LEFT JOIN',
+            'status',
+            'status.id = pendanaan.status_id'
+         )->where(['between', 'pendanaan.created_at', "$tgl1", "$tgl2"])
+         ->groupBy(['pendanaan.id']);
       $command = $query->createCommand();
       $mdl = $command->queryAll();
 
@@ -876,36 +873,36 @@ use UploadFile;
       $objPHPExcel->getActiveSheet()->getColumnDimension('G')->setWidth(30);
 
       $objPHPExcel->getActiveSheet()->setTitle('Laporan Pendanaan')
-          ->setCellValue('A1', 'NO')
-          ->setCellValue('B1', 'Nama Pendanaan')
-          ->setCellValue('C1', 'Nominal')
-          ->setCellValue('D1', 'Jumlah Terkumpul')
-          ->setCellValue('E1', 'Tanggal Buat')
-          ->setCellValue('F1', 'Tanggal Selesai')
-          ->setCellValue('G1', 'Status');
-      $count=1;
+         ->setCellValue('A1', 'NO')
+         ->setCellValue('B1', 'Nama Pendanaan')
+         ->setCellValue('C1', 'Nominal')
+         ->setCellValue('D1', 'Jumlah Terkumpul')
+         ->setCellValue('E1', 'Tanggal Buat')
+         ->setCellValue('F1', 'Tanggal Selesai')
+         ->setCellValue('G1', 'Status');
+      $count = 1;
       $row = 2;
       $itm = $mdlitm;
       foreach ($mdl as $m) {
-         
+
          $bayar = \app\models\Pembayaran::find()
-         ->where(['pendanaan_id'=>$m['id_pendanaan']])->andWhere(['status_id'=>6])->sum('nominal');
-          $objPHPExcel->getActiveSheet()->setCellValue('A' . $row, $count);
-          $objPHPExcel->getActiveSheet()->setCellValue('B' . $row, $m['nm_pendanaan']);
-          $objPHPExcel->getActiveSheet()->setCellValue('C' . $row, 'Rp '.Angka::toReadableAngka($m['nominal'],FALSE));
-          $objPHPExcel->getActiveSheet()->setCellValue('D' . $row, 'Rp '.Angka::toReadableAngka($bayar,FALSE));
-          $objPHPExcel->getActiveSheet()->setCellValue('E' . $row, Tanggal::toReadableDate($m['tgl_buat'],FALSE));
-          $objPHPExcel->getActiveSheet()->setCellValue('F' . $row, Tanggal::toReadableDate($m['tgl_berakhir'],FALSE));
-          $objPHPExcel->getActiveSheet()->setCellValue('G' . $row, $m['status_name']);
-          $row++;
-          $count++;
-          // if ($m === end($mdl)) {
-          //   $objPHPExcel->getActiveSheet()->setCellValue('E' . $row++, 'Total Omset');
-          //   $objPHPExcel->getActiveSheet()->setCellValue('F' . --$row, 'Rp '.Angka::toReadableAngka($htg,FALSE));
-          // }
+            ->where(['pendanaan_id' => $m['id_pendanaan']])->andWhere(['status_id' => 6])->sum('nominal');
+         $objPHPExcel->getActiveSheet()->setCellValue('A' . $row, $count);
+         $objPHPExcel->getActiveSheet()->setCellValue('B' . $row, $m['nm_pendanaan']);
+         $objPHPExcel->getActiveSheet()->setCellValue('C' . $row, 'Rp ' . Angka::toReadableAngka($m['nominal'], FALSE));
+         $objPHPExcel->getActiveSheet()->setCellValue('D' . $row, 'Rp ' . Angka::toReadableAngka($bayar, FALSE));
+         $objPHPExcel->getActiveSheet()->setCellValue('E' . $row, Tanggal::toReadableDate($m['tgl_buat'], FALSE));
+         $objPHPExcel->getActiveSheet()->setCellValue('F' . $row, Tanggal::toReadableDate($m['tgl_berakhir'], FALSE));
+         $objPHPExcel->getActiveSheet()->setCellValue('G' . $row, $m['status_name']);
+         $row++;
+         $count++;
+         // if ($m === end($mdl)) {
+         //   $objPHPExcel->getActiveSheet()->setCellValue('E' . $row++, 'Total Omset');
+         //   $objPHPExcel->getActiveSheet()->setCellValue('F' . --$row, 'Rp '.Angka::toReadableAngka($htg,FALSE));
+         // }
       }
 
-      $filename = "LaporanPendanaan" . $tgl1."-". $tgl2 .".xls";
+      $filename = "LaporanPendanaan" . $tgl1 . "-" . $tgl2 . ".xls";
       ob_end_clean();
       header('Content-Type: application/vnd.ms-excel');
       header('Content-Disposition: attachment;filename=' . $filename . ' ');
@@ -914,184 +911,185 @@ use UploadFile;
       $objWriter = \PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
       $objWriter->save('php://output');
       ob_end_clean();
-  }
-  public function actionExportPdf() {
-   extract($_GET);
-   $tt = date_create($t1);
-      $tt1 = date_format($tt,"Y-m-d");
-      
+   }
+   public function actionExportPdf()
+   {
+      extract($_GET);
+      $tt = date_create($t1);
+      $tt1 = date_format($tt, "Y-m-d");
+
       $ttt = date_create($t2);
-      $tt2 = date_format($ttt,"Y-m-d");
-      
-      $tgl1 = $tt1.' 00:00:01';
-      $tgl2 = $tt2.' 23:59:59';
+      $tt2 = date_format($ttt, "Y-m-d");
+
+      $tgl1 = $tt1 . ' 00:00:01';
+      $tgl2 = $tt2 . ' 23:59:59';
       // $tgl2 = date('Y-m-d', strtotime($t1.'+ 1 days')).' 02:00:00';
       $query = new Query();
-      $query->select(['pendanaan.id as id_pendanaan','pendanaan.nama_pendanaan as nm_pendanaan','pendanaan.nominal as nominal','pendanaan.created_at as tgl_buat','pendanaan.pendanaan_berakhir as tgl_berakhir','status.name as status_name'])
-                          ->from('pendanaan')
-                          ->join('LEFT JOIN',
-                              'pembayaran',
-                              'pembayaran.pendanaan_id = pendanaan.id'
-                          )
-                          ->join('LEFT JOIN',
-                              'status',
-                              'status.id = pendanaan.status_id'
-                          )->where(['between', 'pendanaan.created_at', "$tgl1", "$tgl2"])
-                          ->groupBy(['pendanaan.id'])
-                        ;
+      $query->select(['pendanaan.id as id_pendanaan', 'pendanaan.nama_pendanaan as nm_pendanaan', 'pendanaan.nominal as nominal', 'pendanaan.created_at as tgl_buat', 'pendanaan.pendanaan_berakhir as tgl_berakhir', 'status.name as status_name'])
+         ->from('pendanaan')
+         ->join(
+            'LEFT JOIN',
+            'pembayaran',
+            'pembayaran.pendanaan_id = pendanaan.id'
+         )
+         ->join(
+            'LEFT JOIN',
+            'status',
+            'status.id = pendanaan.status_id'
+         )->where(['between', 'pendanaan.created_at', "$tgl1", "$tgl2"])
+         ->groupBy(['pendanaan.id']);
       $command = $query->createCommand();
       $mdl = $command->queryAll();
-   $content = $this->renderPartial('view-print-export',[
-       'mdl' => $mdl,
-       'tgl1' => $tgl1,
-       'tgl2' => $tgl2,
-]);
-   
-$filename = "Download LaporanPendanaan" . $tgl1."-". $tgl2 .".pdf";
-   // setup kartik\mpdf\Pdf component
-   $pdf = new Pdf([
-       // set to use core fonts only
-       'mode' => Pdf::MODE_CORE, 
-       //Name file
-       'filename' => $filename,
-       // LEGAL paper format
-       'format' => Pdf::FORMAT_LETTER, 
-       // portrait orientation
-       'orientation' => Pdf::ORIENT_PORTRAIT, 
-       // stream to browser inline
-       'destination' => Pdf::DEST_BROWSER, 
-       // your html content input
-       'content' => $content,  
-       'marginHeader' => 0,
-       'marginFooter' => 1,
-       'marginTop' => 5,
-       'marginBottom' => 5,
-       'marginLeft' => 0,
-       'marginRight' => 0,
-       // format content from your own css file if needed or use the
-       // enhanced bootstrap css built by Krajee for mPDF formatting 
-       'cssFile' => '@vendor/kartik-v/yii2-mpdf/src/assets/kv-mpdf-bootstrap.min.css',
-       // any css to be embedded if required
-       // 'cssInline' => '.kv-heading-1{font-size:25px}', 
-       'cssInline' => 'body { font-family: irannastaliq; font-size: 17px; }.page-break {display: none;};
+      $content = $this->renderPartial('view-print-export', [
+         'mdl' => $mdl,
+         'tgl1' => $tgl1,
+         'tgl2' => $tgl2,
+      ]);
+
+      $filename = "Download LaporanPendanaan" . $tgl1 . "-" . $tgl2 . ".pdf";
+      // setup kartik\mpdf\Pdf component
+      $pdf = new Pdf([
+         // set to use core fonts only
+         'mode' => Pdf::MODE_CORE,
+         //Name file
+         'filename' => $filename,
+         // LEGAL paper format
+         'format' => Pdf::FORMAT_LETTER,
+         // portrait orientation
+         'orientation' => Pdf::ORIENT_PORTRAIT,
+         // stream to browser inline
+         'destination' => Pdf::DEST_BROWSER,
+         // your html content input
+         'content' => $content,
+         'marginHeader' => 0,
+         'marginFooter' => 1,
+         'marginTop' => 5,
+         'marginBottom' => 5,
+         'marginLeft' => 0,
+         'marginRight' => 0,
+         // format content from your own css file if needed or use the
+         // enhanced bootstrap css built by Krajee for mPDF formatting 
+         'cssFile' => '@vendor/kartik-v/yii2-mpdf/src/assets/kv-mpdf-bootstrap.min.css',
+         // any css to be embedded if required
+         // 'cssInline' => '.kv-heading-1{font-size:25px}', 
+         'cssInline' => 'body { font-family: irannastaliq; font-size: 17px; }.page-break {display: none;};
        .kv-heading-1{font-size:17px}table{width: 100%;line-height: inherit;text-align: left; border-collapse: collapse;}table, td, th {margin-left:50px;margin-right:50px;},fa { font-family: fontawesome;} @media print{
            .page-break{display: block;page-break-before: always;}
        }',
-        // set mPDF properties on the fly
-        'options' => [               
-           'defaultheaderline' => 0,  //for header
+         // set mPDF properties on the fly
+         'options' => [
+            'defaultheaderline' => 0,  //for header
             'defaultfooterline' => 0,  //for footer
-       ],
-        // call mPDF methods on the fly
-       'methods' => [
-           'SetTitle'=>'Print', 
-       ]
-   ]);
-   return $pdf->render(); 
-}
+         ],
+         // call mPDF methods on the fly
+         'methods' => [
+            'SetTitle' => 'Print',
+         ]
+      ]);
+      return $pdf->render();
+   }
    public function actionExports($id)
-    {
-       
-       
-        
-            $mdl = \app\models\Pendanaan::find()
-                ->where(['id'=>$id])
-                ->one();
-            $mdl1 = \app\models\AgendaPendanaan::find()
-                ->where(['pendanaan_id'=>$mdl->id])
-                ->all();
-            $mdl2 = \app\models\Pembayaran::find()
-               ->where(['pendanaan_id'=>$mdl->id])->andWhere(['status_id'=>6])->all();
-            
+   {
 
-            $bayar = \app\models\Pembayaran::find()
-            ->where(['pendanaan_id'=>$mdl->id])->andWhere(['status_id'=>6])->sum('nominal');
 
-            $cair = \app\models\Pencairan::find()
-                   ->where(['pendanaan_id' => $mdl->id])
-                   ->sum('nominal');
-        $objPHPExcel = new \PHPExcel();
 
-        $sheet = 0;
+      $mdl = \app\models\Pendanaan::find()
+         ->where(['id' => $id])
+         ->one();
+      $mdl1 = \app\models\AgendaPendanaan::find()
+         ->where(['pendanaan_id' => $mdl->id])
+         ->all();
+      $mdl2 = \app\models\Pembayaran::find()
+         ->where(['pendanaan_id' => $mdl->id])->andWhere(['status_id' => 6])->all();
 
-        $objPHPExcel->setActiveSheetIndex($sheet);
 
-        $objPHPExcel->getActiveSheet()->getColumnDimension('A')->setWidth(5);
-        $objPHPExcel->getActiveSheet()->getColumnDimension('B')->setWidth(30);
-        $objPHPExcel->getActiveSheet()->getColumnDimension('C')->setWidth(30);
-        $objPHPExcel->getActiveSheet()->getColumnDimension('D')->setWidth(50);
-        $objPHPExcel->getActiveSheet()->getColumnDimension('E')->setWidth(5);
-        $objPHPExcel->getActiveSheet()->getColumnDimension('F')->setWidth(30);
-        $objPHPExcel->getActiveSheet()->getColumnDimension('G')->setWidth(30);
-        $objPHPExcel->getActiveSheet()->getColumnDimension('H')->setWidth(30);
+      $bayar = \app\models\Pembayaran::find()
+         ->where(['pendanaan_id' => $mdl->id])->andWhere(['status_id' => 6])->sum('nominal');
 
-        $objPHPExcel->getActiveSheet()->setTitle('Laporan Wakaf '.$mdl->id)
-            ->setCellValue('A1', 'NO')
-            ->setCellValue('B1', 'Kode Transaksi')
-            ->setCellValue('C1', 'Wakif')
-            ->setCellValue('D1', 'Jumlah Masuk')
-            ->setCellValue('E1', '')
-            ->setCellValue('F1', 'NO')
-            ->setCellValue('G1', 'Agenda')
-            ->setCellValue('H1', 'Tanggal Agenda');
-        $count = 1;
-        $row = 2;
-        
-        // var_dump($mdl1);die;
-        foreach ($mdl2 as $m) {
-            // $detail = \app\models\DetailTransaksi::find()
-            //     ->where(['id_transaksi' => $m->id])
-            //     ->sum('total_harga_item');
-            // $cek = Outlet::find()->where(['id' => $m->id_outlet])->one();
-            // $usr = User::find()->where(['id' => $m->id_user])->one();
-            $objPHPExcel->getActiveSheet()->setCellValue('A' . $row, $count);
-            $objPHPExcel->getActiveSheet()->setCellValue('B' . $row, $m->kode_transaksi);
-            $objPHPExcel->getActiveSheet()->setCellValue('C' . $row, $m->nama);
-            $objPHPExcel->getActiveSheet()->setCellValue('D' . $row, 'Rp ' . Angka::toReadableAngka($m->nominal, FALSE));
-            // $objPHPExcel->getActiveSheet()->setCellValue('E' . $row, Tanggal::toReadableDate($m->tgl_transaksi, FALSE));
-            foreach ($mdl1 as $m) {
-               $objPHPExcel->getActiveSheet()->setCellValue('F' . $row, $count);
-               $objPHPExcel->getActiveSheet()->setCellValue('G' . $row, $m->nama_agenda);
-               $objPHPExcel->getActiveSheet()->setCellValue('H' . $row, Tanggal::toReadableDate($m->tanggal, FALSE));
-           }
-            // $objPHPExcel->getActiveSheet()->setCellValue('F' . $row, 'Rp ' . Angka::toReadableAngka($subtotal, FALSE));
-            // $objPHPExcel->getActiveSheet()->setCellValue('G' . $row,  Angka::toReadableAngka($m->tax, FALSE).'%');
-            // $objPHPExcel->getActiveSheet()->setCellValue('H' . $row, 'Rp ' . Angka::toReadableAngka($m->total_harga, FALSE));
-            $row++;
-            $count++;
-            
-            if ($m === end($mdl)) {
-               
-                
-               //  foreach ($mdl1 as $key => $bayar) {
+      $cair = \app\models\Pencairan::find()
+         ->where(['pendanaan_id' => $mdl->id])
+         ->sum('nominal');
+      $objPHPExcel = new \PHPExcel();
+
+      $sheet = 0;
+
+      $objPHPExcel->setActiveSheetIndex($sheet);
+
+      $objPHPExcel->getActiveSheet()->getColumnDimension('A')->setWidth(5);
+      $objPHPExcel->getActiveSheet()->getColumnDimension('B')->setWidth(30);
+      $objPHPExcel->getActiveSheet()->getColumnDimension('C')->setWidth(30);
+      $objPHPExcel->getActiveSheet()->getColumnDimension('D')->setWidth(50);
+      $objPHPExcel->getActiveSheet()->getColumnDimension('E')->setWidth(5);
+      $objPHPExcel->getActiveSheet()->getColumnDimension('F')->setWidth(30);
+      $objPHPExcel->getActiveSheet()->getColumnDimension('G')->setWidth(30);
+      $objPHPExcel->getActiveSheet()->getColumnDimension('H')->setWidth(30);
+
+      $objPHPExcel->getActiveSheet()->setTitle('Laporan Wakaf ' . $mdl->id)
+         ->setCellValue('A1', 'NO')
+         ->setCellValue('B1', 'Kode Transaksi')
+         ->setCellValue('C1', 'Wakif')
+         ->setCellValue('D1', 'Jumlah Masuk')
+         ->setCellValue('E1', '')
+         ->setCellValue('F1', 'NO')
+         ->setCellValue('G1', 'Agenda')
+         ->setCellValue('H1', 'Tanggal Agenda');
+      $count = 1;
+      $row = 2;
+
+      // var_dump($mdl1);die;
+      foreach ($mdl2 as $m) {
+         // $detail = \app\models\DetailTransaksi::find()
+         //     ->where(['id_transaksi' => $m->id])
+         //     ->sum('total_harga_item');
+         // $cek = Outlet::find()->where(['id' => $m->id_outlet])->one();
+         // $usr = User::find()->where(['id' => $m->id_user])->one();
+         $objPHPExcel->getActiveSheet()->setCellValue('A' . $row, $count);
+         $objPHPExcel->getActiveSheet()->setCellValue('B' . $row, $m->kode_transaksi);
+         $objPHPExcel->getActiveSheet()->setCellValue('C' . $row, $m->nama);
+         $objPHPExcel->getActiveSheet()->setCellValue('D' . $row, 'Rp ' . Angka::toReadableAngka($m->nominal, FALSE));
+         // $objPHPExcel->getActiveSheet()->setCellValue('E' . $row, Tanggal::toReadableDate($m->tgl_transaksi, FALSE));
+         foreach ($mdl1 as $m) {
+            $objPHPExcel->getActiveSheet()->setCellValue('F' . $row, $count);
+            $objPHPExcel->getActiveSheet()->setCellValue('G' . $row, $m->nama_agenda);
+            $objPHPExcel->getActiveSheet()->setCellValue('H' . $row, Tanggal::toReadableDate($m->tanggal, FALSE));
+         }
+         // $objPHPExcel->getActiveSheet()->setCellValue('F' . $row, 'Rp ' . Angka::toReadableAngka($subtotal, FALSE));
+         // $objPHPExcel->getActiveSheet()->setCellValue('G' . $row,  Angka::toReadableAngka($m->tax, FALSE).'%');
+         // $objPHPExcel->getActiveSheet()->setCellValue('H' . $row, 'Rp ' . Angka::toReadableAngka($m->total_harga, FALSE));
+         $row++;
+         $count++;
+
+         if ($m === end($mdl)) {
+
+
+            //  foreach ($mdl1 as $key => $bayar) {
             # code...
 
             $objPHPExcel->getActiveSheet()->setCellValue('C' . $row, "Total Masuk");
             $objPHPExcel->getActiveSheet()->setCellValue('D' . $row, 'Rp ' . Angka::toReadableAngka($bayar, FALSE));
             $row++;
-      //   }
+            //   }
             $objPHPExcel->getActiveSheet()->setCellValue('C' . $row++, 'Total Pencairan');
             $objPHPExcel->getActiveSheet()->setCellValue('D' . --$row, 'Rp ' . Angka::toReadableAngka($cair, FALSE));
-                
-                // $leftStr = $bayar['nama_pembayaran'];
-                //     $value = Angka::toReadableAngka($bayar['ttl_harga'], false);
-                //     $jumlahcharharga = "Rp. " . tampilanHarga($value) . $value;
-            }
-            
-        }
 
-        
+            // $leftStr = $bayar['nama_pembayaran'];
+            //     $value = Angka::toReadableAngka($bayar['ttl_harga'], false);
+            //     $jumlahcharharga = "Rp. " . tampilanHarga($value) . $value;
+         }
+      }
 
-        $filename = "Laporan Wakaf " . $mdl->id . ".xls";
-        ob_end_clean();
-        header('Content-Type: application/vnd.ms-excel');
-        header('Content-Disposition: attachment;filename=' . $filename . ' ');
-        header("Pragma: no-cache");
-        header("Expires: 0");
-        $objWriter = \PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
-        $objWriter->save('php://output');
-        ob_end_clean();
-    }
+
+
+      $filename = "Laporan Wakaf " . $mdl->id . ".xls";
+      ob_end_clean();
+      header('Content-Type: application/vnd.ms-excel');
+      header('Content-Disposition: attachment;filename=' . $filename . ' ');
+      header("Pragma: no-cache");
+      header("Expires: 0");
+      $objWriter = \PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+      $objWriter->save('php://output');
+      ob_end_clean();
+   }
 
    /**
     * Finds the Pendanaan model based on its primary key value.

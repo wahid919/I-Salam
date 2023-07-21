@@ -82,6 +82,12 @@ class User extends \app\models\base\User implements \yii\web\IdentityInterface
         return Yii::$app->security->validatePassword($password, $this->password);
     }
 
+    public function validateUsernmae($username)
+    {
+        // return $this->username === md5($username);
+        return Yii::$app->security->validateUsername($username, $this->username);
+    }
+
     public function getPelatihanPesertas()
     {
         return $this->hasMany(\app\models\PelatihanPeserta::class, ['user_id' => 'id']);

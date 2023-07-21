@@ -42,7 +42,7 @@ $this->params['breadcrumbs'][] = 'View';
     <div class="panel panel-default">
         <div class="panel-heading">
             <h2>
-                <?= $model->name ?>            </h2>
+                <?= $model->name ?> </h2>
         </div>
 
         <div class="panel-body">
@@ -59,9 +59,16 @@ $this->params['breadcrumbs'][] = 'View';
                     [
                         'format' => 'html',
                         'attribute' => 'role_id',
-                        'value' => function($model){
+                        'value' => function ($model) {
                             return $model->role->name;
                         }
+                    ],
+                    [
+                        'attribute' => 'photo_url',
+                        'format' => 'html',
+                        'value' => function ($model) {
+                            return Html::img(\Yii::$app->request->BaseUrl . '/uploads/user_image/' . $model->photo_url, ['width' => 100]);
+                        },
                     ],
                     // 'photo_url:url',
                     // 'tanda_tangan:url',
@@ -70,14 +77,17 @@ $this->params['breadcrumbs'][] = 'View';
                 ],
             ]); ?>
 
-            <hr/>
+            <hr />
 
-            <?= Html::a('<span class="glyphicon glyphicon-trash"></span> ' . 'Delete', ['delete', 'id' => $model->id],
+            <?= Html::a(
+                '<span class="glyphicon glyphicon-trash"></span> ' . 'Delete',
+                ['delete', 'id' => $model->id],
                 [
                     'class' => 'btn btn-danger',
                     'data-confirm' => '' . 'Are you sure to delete this item?' . '',
                     'data-method' => 'post',
-                ]); ?>
+                ]
+            ); ?>
             <?php $this->endBlock(); ?>
 
 

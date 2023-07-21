@@ -40,15 +40,21 @@ use yii\bootstrap\ActiveForm;
         background-color: #f1a401;
         border-color: #f1a401;
     }
-    label{
+
+    label {
         color: #a5a5a5;
     }
+
     .btn-primary:hover {
-  background-color: #d07400; /* Green */
-border-color: #d07400;
-}
+        background-color: #d07400;
+        /* Green */
+        border-color: #d07400;
+    }
 </style>
-<div style='text-align:center;width:100%'><h2>Mendaftar</h2> <p style="color: #a5a5a5;">Silahkan mengisi Data Anda untuk mendaftar</p></div>
+<div style='text-align:center;width:100%'>
+    <h2>Mendaftar</h2>
+    <p style="color: #a5a5a5;">Silahkan mengisi Data Anda untuk mendaftar</p>
+</div>
 
 <?php $form = ActiveForm::begin([
     'id' => 'FormRegister',
@@ -63,7 +69,7 @@ border-color: #d07400;
         "onkeydown" => "this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');",
         "onkeyup" => "this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');",
     ])->label("No HP") ?>
-    <?= $form->field($model, "username", Constant::COLUMN(1))->textInput(['type'=>'email'])->label("Email") ?>
+    <?= $form->field($model, "username", Constant::COLUMN(1))->textInput(['type' => 'email'])->label("Email") ?>
     <?= $form->field($model, "password", Constant::COLUMN(2))->passwordInput() ?>
     <?= $form->field($model, "konfirmasi_password", Constant::COLUMN(2))->passwordInput() ?>
     <?= $form->field($model, "pin", Constant::COLUMN(2))->hiddenInput(['value' => "123456"])->label(false) ?>

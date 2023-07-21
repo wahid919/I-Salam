@@ -26,39 +26,39 @@ use kartik\file\FileInput;
 <script>
     tinymce.init({
         selector: 'textarea#setting-tentang_kami',
-        height : '400',
+        height: '400',
     });
     tinymce.init({
         selector: 'textarea#setting-visi',
-        height : '400',
+        height: '400',
     });
     tinymce.init({
         selector: 'textarea#setting-misi',
-        height : '400',
+        height: '400',
     });
     tinymce.init({
         selector: 'textarea#setting-deskripsi_video',
-        height : '400',
+        height: '400',
     });
     tinymce.init({
         selector: 'textarea#setting-pesan',
-        height : '400',
+        height: '400',
     });
     tinymce.init({
         selector: 'textarea#setting-latar_belakang',
-        height : '400',
+        height: '400',
     });
     tinymce.init({
         selector: 'textarea#setting-aturan_wakaf',
-        height : '400',
+        height: '400',
     });
     tinymce.init({
         selector: 'textarea#setting-fiqih_wakaf',
-        height : '400',
+        height: '400',
     });
     tinymce.init({
         selector: 'textarea#setting-regulasi_wakaf',
-        height : '400',
+        height: '400',
     });
 </script>
 
@@ -92,6 +92,38 @@ use kartik\file\FileInput;
             </div>
             <div class="col-sm-12 col-md-6 col-lg-4">
                 <?= $form->field($model, 'judul_web', [
+                    'template' => '
+                        {label}
+                        {input}
+                        {error}
+                    ',
+                    'inputOptions' => [
+                        'class' => 'form-control'
+                    ],
+                    'labelOptions' => [
+                        'class' => 'control-label'
+                    ],
+                    'options' => ['tag' => false]
+                ])->textInput(['maxlength' => true]) ?>
+            </div>
+            <div class="col-sm-12 col-md-6 col-lg-4">
+                <?= $form->field($model, 'phone', [
+                    'template' => '
+                        {label}
+                        {input}
+                        {error}
+                    ',
+                    'inputOptions' => [
+                        'class' => 'form-control'
+                    ],
+                    'labelOptions' => [
+                        'class' => 'control-label'
+                    ],
+                    'options' => ['tag' => false]
+                ])->textInput(['maxlength' => true]) ?>
+            </div>
+            <div class="col-sm-12 col-md-6 col-lg-4">
+                <?= $form->field($model, 'email', [
                     'template' => '
                         {label}
                         {input}

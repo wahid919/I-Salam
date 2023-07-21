@@ -17,7 +17,10 @@ use yii\helpers\ArrayHelper;
 use yii\web\UploadedFile;
 use app\components\Constant;
 use app\components\SSOToken;
+use app\models\KegiatanPendanaan;
 use app\models\MarketingDataUser;
+use DateTime;
+use yii\data\ActiveDataProvider;
 use yii\helpers\Json;
 use yii\web\HttpException;
 
@@ -32,7 +35,7 @@ class PendanaanController extends \yii\rest\ActiveController
         $parent = parent::behaviors();
         $parent['authentication'] = [
             "class" => "\app\components\CustomAuth",
-            "only" => ["add-pendanaan", "draf-pendanaan", "all","pendanaan-diterima",],
+            "only" => ["add-pendanaan", "draf-pendanaan", "all", "pendanaan-diterima",],
         ];
 
         return $parent;
@@ -65,23 +68,118 @@ class PendanaanController extends \yii\rest\ActiveController
         return $actions;
     }
 
+    public function actionTest1()
+    {
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $pendanaans = Pendanaan::find()->all();
+
+        $list_pendanaan = [];
+        foreach ($pendanaans as $pendanaan) {
+            $list_pendanaan[] = $pendanaan;
+        }
+
+        $jumlah_pendanaan = [];
+        foreach ($pendanaans as $pendanaan) {
+            $nominal = \app\models\Pembayaran::find()->where(['pendanaan_id' => $pendanaan->id, 'status_id' => 6])->sum('nominal');
+
+            // $pewakaf = \app\models\Pembayaran::find()->where(['pendanaan_id' => $pendanaan->id, 'status_id' => 6])->count();
+            // $datetime1 =  new DateTime($pendanaan->pendanaan_berakhir);
+            // $datetime2 =  new Datetime(date("Y-m-d H:i:s"));
+            // $interval = $datetime1->diff($datetime2)->days;
+            $target = $pendanaan->nominal;
+            $jumlah_pendanaan = ($nominal / $target) * 100;
+        }
+        return [
+            "success" => true,
+            "message" => "List Program Pendanaan",
+            "data" => $list_pendanaan,
+            // "jum" => $jumlah_pendanaan,
+        ];
+    }
+
+    public function actionPDiterima($id)
+    {
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $pendanaans = Pendanaan::find()->where(['status_id' => $id])->all();
+
+        $list_pendanaan = [];
+        foreach ($pendanaans as $pendanaan) {
+            $list_pendanaan[] = $pendanaan;
+        }
+
+        return [
+            "success" => true,
+            "message" => "List Program Pendanaan",
+            "data" => $list_pendanaan,
+
+        ];
+    }
+
+    public function actionNewPendanaan()
+    {
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+
+        // Menggunakan ActiveDataProvider untuk mengambil data pendanaan terbaru
+        $dataProvider = new ActiveDataProvider([
+            'query' => Pendanaan::find()->orderBy(['id' => SORT_DESC])->limit(3), // Mengambil 3 terbaru
+            'pagination' => false, // Menonaktifkan paginasi
+        ]);
+
+        // Mengembalikan data pendanaan terbaru dalam respons
+        return [
+            "success" => true,
+            "message" => "Pendanaan Terbaru",
+            "data" => $dataProvider->getModels(),
+        ];
+    }
+    public function actionOldPendanaan()
+    {
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => Pendanaan::find()->orderBy(['id' => SORT_ASC])->limit(3),
+            'pagination' => false, // Menonaktifkan paginasi
+        ]);
+
+        return [
+            "success" => true,
+            "message" => "Pendanaan Lama",
+            "data" => $dataProvider->getModels(),
+        ];
+    }
+    public function actionDPendanaan($id)
+    {
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $kegiatanpendanaan = KegiatanPendanaan::find()->where(['pendanaan_id' => $id])->all();
+        $patnerpendanaan = PartnerPendanaan::find()->where(['pendanaan_id' => $id])->all();
+        $waqif = Pembayaran::find()->where(['pendanaan_id' => $id, 'status_id' => 6])->all();
+
+        return [
+            "success" => true,
+            "kegiatanpendanaan" => $kegiatanpendanaan,
+            "patnerpendanaan" => $patnerpendanaan,
+            "waqif" => $waqif,
+
+        ];
+    }
+
     public function actionAll()
     {
         Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-        if(\Yii::$app->user->identity->role_id ==2 ){
+        if (\Yii::$app->user->identity->role_id == 2) {
             $pendanaans = Pendanaan::find()->where(['user_id' => \Yii::$app->user->identity->id])->all();
-            
-        //     $not = Pendanaaan::find()
-        //    ->where(['movie_id'=>$id])
-        //    ->andWhere(['location_id'=>$loc_id])
-        //    ->andWhere(['<>','cancel_date', $date])
-        //    ->all();
+
+            //     $not = Pendanaaan::find()
+            //    ->where(['movie_id'=>$id])
+            //    ->andWhere(['location_id'=>$loc_id])
+            //    ->andWhere(['<>','cancel_date', $date])
+            //    ->all();
             return [
                 "success" => true,
                 "message" => "List Pendanaan",
                 "data" => $pendanaans,
             ];
-        }else{
+        } else {
             $pendanaans = Pendanaan::find()->where(['status_tampil' => 1])->all();
             return [
                 "success" => true,
@@ -89,16 +187,12 @@ class PendanaanController extends \yii\rest\ActiveController
                 "data" => $pendanaans,
             ];
         }
-        
+
         return [
             "success" => true,
             "message" => "Data Tidak ditemukan",
-            
+
         ];
-
-       
-
-       
     }
 
     public function actionShowPendanaan($id)
@@ -116,7 +210,7 @@ class PendanaanController extends \yii\rest\ActiveController
     public function actionPendanaanDiterima()
     {
         Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-        $pendanaans = Pendanaan::find(['status_id' => 1])->all();
+        $pendanaans = Pendanaan::find(['status_id' => 2])->all();
 
 
         return [
@@ -230,62 +324,62 @@ class PendanaanController extends \yii\rest\ActiveController
                 $model->foto_kk = $response_kk->filename;
                 $model->status_id = 1;
 
-            
-            if ($model->validate()) {
-                $model->save();
-            // gunakan ini jika ada gambar yang gagal di upload
-                $images_success_uploaded = [];
 
-                $date = date("Y-m-d");
-                $images_title = $_POST['nama_partner'];
+                if ($model->validate()) {
+                    $model->save();
+                    // gunakan ini jika ada gambar yang gagal di upload
+                    $images_success_uploaded = [];
 
-                foreach ($images_title as $index => $title) {
-                    $file = UploadedFile::getInstanceByName("foto_ktp_partner[$index]");
-                    $response = $this->uploadImage($file, "partner-pendanaan/$date");
-                    
-                    if ($response->success == false) {
-                        foreach ($images_success_uploaded as $img) {
-                            $this->deleteOne($img);
+                    $date = date("Y-m-d");
+                    $images_title = $_POST['nama_partner'];
+
+                    foreach ($images_title as $index => $title) {
+                        $file = UploadedFile::getInstanceByName("foto_ktp_partner[$index]");
+                        $response = $this->uploadImage($file, "partner-pendanaan/$date");
+
+                        if ($response->success == false) {
+                            foreach ($images_success_uploaded as $img) {
+                                $this->deleteOne($img);
+                            }
+
+                            return [
+                                "success" => false,
+                                "message" => "Gagal menambahkan gambar",
+                            ];
                         }
 
-                        return [
-                            "success" => false,
-                            "message" => "Gagal menambahkan gambar",
-                        ];
-                    }
+                        array_push($images_success_uploaded, $response->filename);
 
-                    array_push($images_success_uploaded, $response->filename);
+                        $new_image = new PartnerPendanaan();
+                        $new_image->nama_partner = $title;
+                        $new_image->pendanaan_id = $model->id; // set default
 
-                    $new_image = new PartnerPendanaan();
-                    $new_image->nama_partner = $title;
-                    $new_image->pendanaan_id = $model->id; // set default
+                        $new_image->foto_ktp_partner = $response->filename;
 
-                    $new_image->foto_ktp_partner = $response->filename;
+                        if ($new_image->validate() == false) {
 
-                    if ($new_image->validate() == false) {
+                            foreach ($images_success_uploaded as $img) {
+                                $this->deleteOne($img);
+                            }
 
-                        foreach ($images_success_uploaded as $img) {
-                            $this->deleteOne($img);
+                            return [
+                                "success" => false,
+                                "message" => "Validasi gagal",
+                            ];
                         }
 
-                        return [
-                            "success" => false,
-                            "message" => "Validasi gagal",
-                        ];
+                        $new_image->save();
                     }
 
-                    $new_image->save();
-                }
 
 
-
-            foreach ($_POST['nama_agenda'] as $index=>$value) {
-                $agendas = new AgendaPendanaan(); // creating new instance of agendas 
-                $agendas->nama_agenda = $value;
-                $agendas->tanggal = $_POST['tanggal_agenda'][$index];
-                $agendas->pendanaan_id = $model->id;
-                $agendas->save();
-              }
+                    foreach ($_POST['nama_agenda'] as $index => $value) {
+                        $agendas = new AgendaPendanaan(); // creating new instance of agendas 
+                        $agendas->nama_agenda = $value;
+                        $agendas->tanggal = $_POST['tanggal_agenda'][$index];
+                        $agendas->pendanaan_id = $model->id;
+                        $agendas->save();
+                    }
 
                     // unset($model->password);
                     return ['success' => true, 'message' => 'success', 'data' => $model];
@@ -296,175 +390,175 @@ class PendanaanController extends \yii\rest\ActiveController
         } else {
             return ['success' => false, 'message' => 'Data Pendanaan Tidak ditemukan'];
         }
-    
-}
+    }
 
-public function actionApprovePendanaan(){
-    \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-    $val = \yii::$app->request->post();
-    $model = Pendanaan::findOne(['id'=>$val['id_pendanaan'],'status_id' => 1]);
-      //return print_r($model);
-      if ($model) {
-         $model->status_id = 2;
-         if ($model->save()){
-            
-            return ['success' => true, 'message' => 'success', 'data' => $model];
-         } else {
-            
-            return ['success' => false, 'message' => 'gagal', 'data' => $model->getErrors()];
-         }
-      }
-}
-
-public function actionPendanaanCair()
-{
-    \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+    public function actionApprovePendanaan()
+    {
+        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         $val = \yii::$app->request->post();
-$model = Pendanaan::findOne(['id'=>$val["id_pendanaan"],'status_id' => 4]);
-$bayar = Pembayaran::find()->where(['pendanaan_id'=>$val["id_pendanaan"]])->sum('nominal');
-$cair= new Pencairan;
-// $model->tanggal_received=date('Y-m-d H:i:s');
-if ($model != null) {
-   $model->status_id = 3;
-   $cair->pendanaan_id = $val['id_pendanaan'];
-   if($bayar < $val['nominal']){
-    return ['success' => false, 'message' => 'Nominal Melebihi Jumlah yang didapat'];
-   }else{
-       if($val['nominal'] == null){
-           $cair->nominal = $bayar;
-       }else{
-           $cair->nominal = $val['nominal'];
-       }
-      $cair->tanggal = date('Y-m-d');
-   $cair->save();
-        if($model->save()){
-            return ['success' => true, 'message' => 'success', 'data' => $model];
+        $model = Pendanaan::findOne(['id' => $val['id_pendanaan'], 'status_id' => 1]);
+        //return print_r($model);
+        if ($model) {
+            $model->status_id = 2;
+            if ($model->save()) {
+
+                return ['success' => true, 'message' => 'success', 'data' => $model];
+            } else {
+
+                return ['success' => false, 'message' => 'gagal', 'data' => $model->getErrors()];
+            }
         }
-   }
-   
-// return $this->redirect(Url::previous());
-}else{
-    return ['success' => false, 'message' => 'Data Tidak Ditemukan'];
-  }
-}
+    }
 
-public function actionPendanaanSelesai(){
-    \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-    $val = \yii::$app->request->post();
-    $model = Pendanaan::findOne(['id'=>$val['id_pendanaan'],'status_id' => 2]);
-      //return print_r($model);
-      if ($model) {
-         $model->status_id = 4;
-         if ($model->save()){
-            
-            return ['success' => true, 'message' => 'success', 'data' => $model];
-         } else {
-            return ['success' => false, 'message' => 'gagal', 'data' => $model->getErrors()];
-         }
-      }else{
-        return ['success' => false, 'message' => 'Data Tidak Ditemukan'];
-      }
-}
+    public function actionPendanaanCair()
+    {
+        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $val = \yii::$app->request->post();
+        $model = Pendanaan::findOne(['id' => $val["id_pendanaan"], 'status_id' => 4]);
+        $bayar = Pembayaran::find()->where(['pendanaan_id' => $val["id_pendanaan"]])->sum('nominal');
+        $cair = new Pencairan;
+        // $model->tanggal_received=date('Y-m-d H:i:s');
+        if ($model != null) {
+            $model->status_id = 3;
+            $cair->pendanaan_id = $val['id_pendanaan'];
+            if ($bayar < $val['nominal']) {
+                return ['success' => false, 'message' => 'Nominal Melebihi Jumlah yang didapat'];
+            } else {
+                if ($val['nominal'] == null) {
+                    $cair->nominal = $bayar;
+                } else {
+                    $cair->nominal = $val['nominal'];
+                }
+                $cair->tanggal = date('Y-m-d');
+                $cair->save();
+                if ($model->save()) {
+                    return ['success' => true, 'message' => 'success', 'data' => $model];
+                }
+            }
 
-public function actionPendanaanTolak(){
-    \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-    $val = \yii::$app->request->post();
-    $model = Pendanaan::findOne(['id'=>$val['id_pendanaan'],'status_id' => 1]);
-      //return print_r($model);
-      if ($model) {
-         $model->status_id = 7;
-         if ($model->save()){
-            
-            return ['success' => true, 'message' => 'success', 'data' => $model];
-         } else {
-            return ['success' => false, 'message' => 'gagal', 'data' => $model->getErrors()];
-         }
-      }else{
-        return ['success' => false, 'message' => 'Data Tidak Ditemukan'];
-      }
-}
-public function actionPendanaanBatal(){
-    \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-    $val = \yii::$app->request->post();
-    $model = Pendanaan::findOne(['id'=>$val['id_pendanaan'],'status_id' => 1]);
-      //return print_r($model);
-      if ($model) {
-         if ($model->delete()){
-            
-            return ['success' => true, 'message' => 'success membatalkan pendanaan', 'data' => $model];
-         } else {
-            return ['success' => false, 'message' => 'gagal', 'data' => $model->getErrors()];
-         }
-      }else{
-        return ['success' => false, 'message' => 'Data Tidak Ditemukan'];
-      }
+            // return $this->redirect(Url::previous());
+        } else {
+            return ['success' => false, 'message' => 'Data Tidak Ditemukan'];
+        }
+    }
+
+    public function actionPendanaanSelesai()
+    {
+        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $val = \yii::$app->request->post();
+        $model = Pendanaan::findOne(['id' => $val['id_pendanaan'], 'status_id' => 2]);
+        //return print_r($model);
+        if ($model) {
+            $model->status_id = 4;
+            if ($model->save()) {
+
+                return ['success' => true, 'message' => 'success', 'data' => $model];
+            } else {
+                return ['success' => false, 'message' => 'gagal', 'data' => $model->getErrors()];
+            }
+        } else {
+            return ['success' => false, 'message' => 'Data Tidak Ditemukan'];
+        }
+    }
+
+    public function actionPendanaanTolak()
+    {
+        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $val = \yii::$app->request->post();
+        $model = Pendanaan::findOne(['id' => $val['id_pendanaan'], 'status_id' => 1]);
+        //return print_r($model);
+        if ($model) {
+            $model->status_id = 7;
+            if ($model->save()) {
+
+                return ['success' => true, 'message' => 'success', 'data' => $model];
+            } else {
+                return ['success' => false, 'message' => 'gagal', 'data' => $model->getErrors()];
+            }
+        } else {
+            return ['success' => false, 'message' => 'Data Tidak Ditemukan'];
+        }
+    }
+    public function actionPendanaanBatal()
+    {
+        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $val = \yii::$app->request->post();
+        $model = Pendanaan::findOne(['id' => $val['id_pendanaan'], 'status_id' => 1]);
+        //return print_r($model);
+        if ($model) {
+            if ($model->delete()) {
+
+                return ['success' => true, 'message' => 'success membatalkan pendanaan', 'data' => $model];
+            } else {
+                return ['success' => false, 'message' => 'gagal', 'data' => $model->getErrors()];
+            }
+        } else {
+            return ['success' => false, 'message' => 'Data Tidak Ditemukan'];
+        }
     }
     public function actionPendanaanWakaf($id)
     {
         Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-        $wf = Pendanaan::find()->where(['id'=>$id])->one();
-       if($wf != null){
-           $wa = Pembayaran::find()->where(['pendanaan_id'=>$wf->id,'status_id'=>6])->all();
-           
-           if($wa != null){
+        $wf = Pendanaan::find()->where(['id' => $id])->one();
+        if ($wf != null) {
+            $wa = Pembayaran::find()->where(['pendanaan_id' => $wf->id, 'status_id' => 6])->all();
 
-            return [
-                "success" => true,
-                "message" => "Data Wakaf All ",
-                "data" =>$wa,
-            ];
-           }else{
+            if ($wa != null) {
 
+                return [
+                    "success" => true,
+                    "message" => "Data Wakaf All ",
+                    "data" => $wa,
+                ];
+            } else {
+
+                return [
+                    "success" => false,
+                    "message" => "Belum Ada yang Wakaf ",
+                    "data" => null,
+                ];
+            }
+        } else {
             return [
                 "success" => false,
-                "message" => "Belum Ada yang Wakaf ",
-                "data" =>null,
+                "message" => "Data Pendanaan Tidak Ditemukan",
+                "data" => null,
             ];
-           }
-       }else{
-        return [
-            "success" => false,
-            "message" => "Data Pendanaan Tidak Ditemukan",
-            "data" =>null,
-        ];
-       }
-
+        }
     }
     public function actionPrespekture($pendanaan_id)
     {
-    $models = $this->findModels($pendanaan_id);
-    $model = $this->findModel($models->pendanaan_id);
-    $file = $model->file_uraian;
-    // $model->tanggal_received=date('Y-m-d H:i:s');
-    $path = Yii::getAlias("@app/web/uploads/uraian/") . $file;
-    $arr = explode(".", $file);
-    $extension = end($arr);
-    $nama_file= "File Uraian ".$model->nama_pendanaan.".".$extension;
-    
+        $models = $this->findModels($pendanaan_id);
+        $model = $this->findModel($models->pendanaan_id);
+        $file = $model->file_uraian;
+        // $model->tanggal_received=date('Y-m-d H:i:s');
+        $path = Yii::getAlias("@app/web/uploads/uraian/") . $file;
+        $arr = explode(".", $file);
+        $extension = end($arr);
+        $nama_file = "File Uraian " . $model->nama_pendanaan . "." . $extension;
+
         if (file_exists($path)) {
             return Yii::$app->response->sendFile($path, $nama_file);
         } else {
             throw new \yii\web\NotFoundHttpException("{$path} is not found!");
         }
     }
-    
+
     protected function findModel($id)
     {
-       if (($model = Pendanaan::findOne($id)) !== null) {
-          return $model;
-       } else {
-          throw new HttpException(404, 'The requested page does not exist.');
-       }
+        if (($model = Pendanaan::findOne($id)) !== null) {
+            return $model;
+        } else {
+            throw new HttpException(404, 'The requested page does not exist.');
+        }
     }
 
     protected function findModels($pendanaan_id)
     {
-       if (($model = Pencairan::findOne(['pendanaan_id'=>$pendanaan_id])) !== null) {
-          return $model;
-       } else {
-          throw new HttpException(404, 'The requested page does not exist.');
-       }
+        if (($model = Pencairan::findOne(['pendanaan_id' => $pendanaan_id])) !== null) {
+            return $model;
+        } else {
+            throw new HttpException(404, 'The requested page does not exist.');
+        }
     }
-
-
 }

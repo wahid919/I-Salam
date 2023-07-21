@@ -3,8 +3,9 @@
 namespace app\controllers\api;
 
 /**
-* This is the class for REST controller "AgendaPendanaanController".
-*/
+ * This is the class for REST controller "AgendaPendanaanController".
+ */
+
 use Yii;
 use app\models\AgendaPendanaan;
 use yii\filters\AccessControl;
@@ -12,17 +13,17 @@ use yii\helpers\ArrayHelper;
 
 class AgendaPendanaanController extends \yii\rest\ActiveController
 {
-public $modelClass = 'app\models\AgendaPendanaan';
+    public $modelClass = 'app\models\AgendaPendanaan';
 
 
-protected function verbs()
+    protected function verbs()
     {
-       return [
-           'all' => ['GET'],
-           'by-pendanaan' => ['GET'],
-           'add-agenda' => ['POST'],
-           'deleted' => ['DELETE'],
-       ];
+        return [
+            'all' => ['GET'],
+            'by-pendanaan' => ['GET'],
+            'add-agenda' => ['POST'],
+            'deleted' => ['DELETE'],
+        ];
     }
     public function actions()
     {
@@ -69,42 +70,42 @@ protected function verbs()
         \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         $val = \yii::$app->request->post();
         $model = new AgendaPendanaan;
-            $model->nama_agenda = $val['nama_agenda'];
-            // $model->foto =$fotos;
-            $model->pendanaan_id = $val['pendanaan_id'] ?? '';
-            $model->tanggal = $val['tanggal'] ?? '';
-            
-            
-    
-            if ($model->validate()) {
-                $model->save();
-                
-                // unset($model->password);
-                return ['success' => true, 'message' => 'success', 'data' => $model];
-            } else {
-                return ['success' => false, 'message' => 'gagal', 'data' => $model->getErrors()];
-            }
-            }
+        $model->nama_agenda = $val['nama_agenda'];
+        // $model->foto =$fotos;
+        $model->pendanaan_id = $val['pendanaan_id'] ?? '';
+        $model->tanggal = $val['tanggal'] ?? '';
 
-            public function actionDeleted($id)
+
+
+        if ($model->validate()) {
+            $model->save();
+
+            // unset($model->password);
+            return ['success' => true, 'message' => 'success', 'data' => $model];
+        } else {
+            return ['success' => false, 'message' => 'gagal', 'data' => $model->getErrors()];
+        }
+    }
+
+    public function actionDeleted($id)
     {
         \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         $val = \yii::$app->request->post();
-        $agendas = AgendaPendanaan::findOne(['id'=>$id]);
-        
-        if($agendas->delete()){
-         
-        return [
-            "success" => true,
-            "message" => "Data Berhasil di hapus",
-            "data" => $agendas
-        ];     
-        }  else{
-            
-        return [
-            "success" => false,
-            "message" => "Data gagal terhapus",
-        ];  
+        $agendas = AgendaPendanaan::findOne(['id' => $id]);
+
+        if ($agendas->delete()) {
+
+            return [
+                "success" => true,
+                "message" => "Data Berhasil di hapus",
+                "data" => $agendas
+            ];
+        } else {
+
+            return [
+                "success" => false,
+                "message" => "Data gagal terhapus",
+            ];
         }
     }
 }

@@ -26,6 +26,7 @@ use Endroid\QrCode\ErrorCorrectionLevel;
 use Endroid\QrCode\LabelAlignment;
 use Endroid\QrCode\QrCode;
 use Endroid\QrCode\Response\QrCodeResponse;
+
 /**
  * PembayaranController implements the CRUD actions for Pembayaran model.
  */
@@ -78,8 +79,8 @@ class PembayaranController extends Controller
         Tabs::rememberActiveState();
 
         $data = Pembayaran::findOne(['id' => $id]);
-        if($data->status_id == 6){
-            if($data->qr_code == null || $data->link_qr == null){
+        if ($data->status_id == 6) {
+            if ($data->qr_code == null || $data->link_qr == null) {
                 $this->findQrcode($data->id);
             }
         }
@@ -135,13 +136,14 @@ class PembayaranController extends Controller
         $pin = User::find()->where(['id' => $user])->one();
         $bg = $setting->bg_pin;
 
-        if (yii::$app->request->post('display') == $pin->pin) {
-            return $this->render('create', ['model' => $model]);
-        } else {
-            Yii::$app->session->setFlash('Pin Salah');
-        }
-        $this->layout = 'front';
-        return $this->render('security', ['bg' => $bg,]);
+        // if (yii::$app->request->post('display') == $pin->pin) {
+        //     return $this->render('create', ['model' => $model]);
+        // } else {
+        //     Yii::$app->session->setFlash('Pin Salah');
+        // }
+        // $this->layout = 'front';
+        return $this->render('create', ['model' => $model]);
+        // return $this->render('security', ['bg' => $bg,]);
     }
     public function actionApprovePembayaran($id)
     {
@@ -151,12 +153,12 @@ class PembayaranController extends Controller
             $model->status_id = 6;
             $model->tanggal_konfirmasi = date('Y-m-d H:i:s');
             if ($model->save()) {
-            $notifikasi = new Notifikasi;
-            $notifikasi->message = "Pembayaran dana untuk Pendanaan ".$model->pendanaan->nama_pendanaan." Telah disetujui";
-            $notifikasi->user_id = $model->user_id;
-            $notifikasi->flag = 1;
-            $notifikasi->date=date('Y-m-d H:i:s');
-            $notifikasi->save();
+                $notifikasi = new Notifikasi;
+                $notifikasi->message = "Pembayaran dana untuk Pendanaan " . $model->pendanaan->nama_pendanaan . " Telah disetujui";
+                $notifikasi->user_id = $model->user_id;
+                $notifikasi->flag = 1;
+                $notifikasi->date = date('Y-m-d H:i:s');
+                $notifikasi->save();
 
                 \Yii::$app->getSession()->setFlash(
                     'success',
@@ -181,10 +183,10 @@ class PembayaranController extends Controller
 
                 $model->tanggal_konfirmasi = date('Y-m-d H:i:s');
                 $notifikasi = new Notifikasi;
-                $notifikasi->message = "Pembayaran dana untuk Pendanaan ".$model->pendanaan->nama_pendanaan." Telah ditolak";
+                $notifikasi->message = "Pembayaran dana untuk Pendanaan " . $model->pendanaan->nama_pendanaan . " Telah ditolak";
                 $notifikasi->user_id = $model->user_id;
                 $notifikasi->flag = 1;
-                $notifikasi->date=date('Y-m-d H:i:s');
+                $notifikasi->date = date('Y-m-d H:i:s');
                 $notifikasi->save();
                 \Yii::$app->getSession()->setFlash(
                     'success',
@@ -219,17 +221,17 @@ class PembayaranController extends Controller
                     $model->bukti_transaksi = $bukti_transaksis->name;
                     $arr = explode(".", $bukti_transaksis->name);
                     $extension = end($arr);
-    
+
                     # generate a unique file name
                     $model->bukti_transaksi = Yii::$app->security->generateRandomString() . ".{$extension}";
-    
+
                     # the path to save file
                     if (file_exists(Yii::getAlias("@app/web/uploads/pembayaran/bukti_transaksi/")) == false) {
                         mkdir(Yii::getAlias("@app/web/uploads/pembayaran/bukti_transaksi/"), 0777, true);
                     }
                     $path = Yii::getAlias("@app/web/uploads/pembayaran/bukti_transaksi/") . $model->bukti_transaksi;
                     if ($oldBukti != NULL) {
-    
+
                         $bukti_transaksis->saveAs($path);
                         unlink(Yii::$app->basePath . '/web/uploads/pembayaran/bukti_transaksi/' . $oldBukti);
                     } else {
@@ -238,7 +240,7 @@ class PembayaranController extends Controller
                 } else {
                     $model->bukti_transaksi = $oldBukti;
                 }
-    
+
                 if ($model->save()) {
                     return $this->redirect(['view', 'id' => $model->id]);
                 }
@@ -248,7 +250,7 @@ class PembayaranController extends Controller
             \Yii::$app->getSession()->addFlash('error', $msg);
             return $this->redirect(Url::previous());
         }
-        
+
         return $this->render('update', [
             'model' => $model,
         ]);
@@ -287,32 +289,33 @@ class PembayaranController extends Controller
             return $this->redirect(['index']);
         }
     }
-    public function actionCetak($id) {
-        
-                $this->layout= false;
-                $this->view->title = 'Cetak Sertifikat';
+    public function actionCetak($id)
+    {
+
+        $this->layout = false;
+        $this->view->title = 'Cetak Sertifikat';
         $model = Pembayaran::findOne(['id' => $id]);
         return $this->render('view-print', [
-        'model' => $model,
+            'model' => $model,
         ]);
-
-        }
-        protected function findQrcode($id) {
+    }
+    protected function findQrcode($id)
+    {
 
         $model = Pembayaran::findOne(['id' => $id]);
 
 
         $string = Yii::$app->security->generateRandomString(20);
         if (file_exists(Yii::getAlias("@app/web/uploads/qr-code")) == false) {
-        mkdir(Yii::getAlias("@app/web/uploads/qr-code"), 0777, true);
+            mkdir(Yii::getAlias("@app/web/uploads/qr-code"), 0777, true);
         }
         $url = //current domain name
-        Url::base('http') . '/home/cek-data?code=';
+            Url::base('http') . '/home/cek-data?code=';
         $valueQr = $url . $string;
 
         $isi_teks = $valueQr;
-        $namafile = $string.".png";
-        $tempdir = "uploads/qr-code/"; 
+        $namafile = $string . ".png";
+        $tempdir = "uploads/qr-code/";
         $qrCode = new QrCode();
         // Set Text
         $qrCode->setText($isi_teks);
@@ -331,40 +334,42 @@ class PembayaranController extends Controller
         // $qrCode->setWriterOptions(['exclude_xml_declaration' => true]);
 
         // Save it to a file
-        $qrCode->writeFile($tempdir.$namafile);
+        $qrCode->writeFile($tempdir . $namafile);
 
         $model->qr_code = $string;
         $model->link_qr = $valueQr;
         $model->save();
+    }
 
-        }
-
-    public function actionExport(){
+    public function actionExport()
+    {
         extract($_GET);
         $tt = date_create($t1);
-      $tt1 = date_format($tt,"Y-m-d");
-      
-      $ttt = date_create($t2);
-      $tt2 = date_format($ttt,"Y-m-d");
-      
-      $tgl1 = $tt1.' 00:00:01';
-      $tgl2 = $tt2.' 23:59:59';
+        $tt1 = date_format($tt, "Y-m-d");
+
+        $ttt = date_create($t2);
+        $tt2 = date_format($ttt, "Y-m-d");
+
+        $tgl1 = $tt1 . ' 00:00:01';
+        $tgl2 = $tt2 . ' 23:59:59';
         // $tgl2 = date('Y-m-d', strtotime($t1.'+ 1 days')).' 02:00:00';
         $query = new Query();
-        $query->select(['user.name as nama_bayar','pembayaran.nominal as nominal','pembayaran.nama as pewakaf','pendanaan.nama_pendanaan as nm_pendanaan','pembayaran.created_at as tgl_buat','status.name as status_name'])
-                            ->from('pembayaran')
-                            ->join('LEFT JOIN',
-                                'user',
-                                'user.id = pembayaran.user_id'
-                            )->join('LEFT JOIN',
-                                'pendanaan',
-                                'pendanaan.id = pembayaran.pendanaan_id'
-                            )
-                            ->join('LEFT JOIN',
-                                'status',
-                                'status.id = pembayaran.status_id'
-                            )->where(['between', 'pembayaran.created_at', "$tgl1", "$tgl2"])
-                          ;
+        $query->select(['user.name as nama_bayar', 'pembayaran.nominal as nominal', 'pembayaran.nama as pewakaf', 'pendanaan.nama_pendanaan as nm_pendanaan', 'pembayaran.created_at as tgl_buat', 'status.name as status_name'])
+            ->from('pembayaran')
+            ->join(
+                'LEFT JOIN',
+                'user',
+                'user.id = pembayaran.user_id'
+            )->join(
+                'LEFT JOIN',
+                'pendanaan',
+                'pendanaan.id = pembayaran.pendanaan_id'
+            )
+            ->join(
+                'LEFT JOIN',
+                'status',
+                'status.id = pembayaran.status_id'
+            )->where(['between', 'pembayaran.created_at', "$tgl1", "$tgl2"]);
         $command = $query->createCommand();
         $mdl = $command->queryAll();
 
@@ -390,16 +395,16 @@ class PembayaranController extends Controller
             ->setCellValue('E1', 'Pendanaan')
             ->setCellValue('F1', 'Tanggal Buat')
             ->setCellValue('G1', 'Status');
-        $count=1;
+        $count = 1;
         $row = 2;
         $itm = $mdlitm;
         foreach ($mdl as $m) {
             $objPHPExcel->getActiveSheet()->setCellValue('A' . $row, $count);
             $objPHPExcel->getActiveSheet()->setCellValue('B' . $row, $m['nama_bayar']);
-            $objPHPExcel->getActiveSheet()->setCellValue('C' . $row, 'Rp '.Angka::toReadableAngka($m['nominal'],FALSE));
+            $objPHPExcel->getActiveSheet()->setCellValue('C' . $row, 'Rp ' . Angka::toReadableAngka($m['nominal'], FALSE));
             $objPHPExcel->getActiveSheet()->setCellValue('D' . $row, $m['pewakaf']);
             $objPHPExcel->getActiveSheet()->setCellValue('E' . $row, $m['nm_pendanaan']);
-            $objPHPExcel->getActiveSheet()->setCellValue('F' . $row, Tanggal::toReadableDate($m['tgl_buat'],FALSE));
+            $objPHPExcel->getActiveSheet()->setCellValue('F' . $row, Tanggal::toReadableDate($m['tgl_buat'], FALSE));
             $objPHPExcel->getActiveSheet()->setCellValue('G' . $row, $m['status_name']);
             $row++;
             $count++;
@@ -409,7 +414,7 @@ class PembayaranController extends Controller
             // }
         }
 
-        $filename = "LaporanPembayaran" . $tgl1."-". $tgl2 .".xls";
+        $filename = "LaporanPembayaran" . $tgl1 . "-" . $tgl2 . ".xls";
         ob_end_clean();
         header('Content-Type: application/vnd.ms-excel');
         header('Content-Disposition: attachment;filename=' . $filename . ' ');
@@ -420,55 +425,58 @@ class PembayaranController extends Controller
         ob_end_clean();
     }
 
-    public function actionExportPdf() {
+    public function actionExportPdf()
+    {
         extract($_GET);
         $tt = date_create($t1);
-      $tt1 = date_format($tt,"Y-m-d");
-      
-      $ttt = date_create($t2);
-      $tt2 = date_format($ttt,"Y-m-d");
-      
-      $tgl1 = $tt1.' 00:00:01';
-      $tgl2 = $tt2.' 23:59:59';
+        $tt1 = date_format($tt, "Y-m-d");
+
+        $ttt = date_create($t2);
+        $tt2 = date_format($ttt, "Y-m-d");
+
+        $tgl1 = $tt1 . ' 00:00:01';
+        $tgl2 = $tt2 . ' 23:59:59';
         // $tgl2 = date('Y-m-d', strtotime($t1.'+ 1 days')).' 02:00:00';
         $query = new Query();
-        $query->select(['user.name as nama_bayar','pembayaran.nominal as nominal','pembayaran.nama as pewakaf','pendanaan.nama_pendanaan as nm_pendanaan','pembayaran.created_at as tgl_buat','status.name as status_name'])
-                            ->from('pembayaran')
-                            ->join('LEFT JOIN',
-                                'user',
-                                'user.id = pembayaran.user_id'
-                            )->join('LEFT JOIN',
-                                'pendanaan',
-                                'pendanaan.id = pembayaran.pendanaan_id'
-                            )
-                            ->join('LEFT JOIN',
-                                'status',
-                                'status.id = pembayaran.status_id'
-                            )->where(['between', 'pembayaran.created_at', "$tgl1", "$tgl2"])
-                          ;
+        $query->select(['user.name as nama_bayar', 'pembayaran.nominal as nominal', 'pembayaran.nama as pewakaf', 'pendanaan.nama_pendanaan as nm_pendanaan', 'pembayaran.created_at as tgl_buat', 'status.name as status_name'])
+            ->from('pembayaran')
+            ->join(
+                'LEFT JOIN',
+                'user',
+                'user.id = pembayaran.user_id'
+            )->join(
+                'LEFT JOIN',
+                'pendanaan',
+                'pendanaan.id = pembayaran.pendanaan_id'
+            )
+            ->join(
+                'LEFT JOIN',
+                'status',
+                'status.id = pembayaran.status_id'
+            )->where(['between', 'pembayaran.created_at', "$tgl1", "$tgl2"]);
         $command = $query->createCommand();
         $mdl = $command->queryAll();
-        $content = $this->renderPartial('view-print-export',[
+        $content = $this->renderPartial('view-print-export', [
             'mdl' => $mdl,
             'tgl1' => $tgl1,
             'tgl2' => $tgl2,
-    ]);
-        
-    $filename = "Download LaporanPembayaran" . $tgl1."-". $tgl2 .".pdf";
+        ]);
+
+        $filename = "Download LaporanPembayaran" . $tgl1 . "-" . $tgl2 . ".pdf";
         // setup kartik\mpdf\Pdf component
         $pdf = new Pdf([
             // set to use core fonts only
-            'mode' => Pdf::MODE_CORE, 
+            'mode' => Pdf::MODE_CORE,
             //Name file
             'filename' => $filename,
             // LEGAL paper format
-            'format' => Pdf::FORMAT_LETTER, 
+            'format' => Pdf::FORMAT_LETTER,
             // portrait orientation
-            'orientation' => Pdf::ORIENT_PORTRAIT, 
+            'orientation' => Pdf::ORIENT_PORTRAIT,
             // stream to browser inline
-            'destination' => Pdf::DEST_BROWSER, 
+            'destination' => Pdf::DEST_BROWSER,
             // your html content input
-            'content' => $content,  
+            'content' => $content,
             'marginHeader' => 0,
             'marginFooter' => 1,
             'marginTop' => 5,
@@ -484,17 +492,17 @@ class PembayaranController extends Controller
             .kv-heading-1{font-size:17px}table{width: 100%;line-height: inherit;text-align: left; border-collapse: collapse;}table, td, th {margin-left:50px;margin-right:50px;},fa { font-family: fontawesome;} @media print{
                 .page-break{display: block;page-break-before: always;}
             }',
-             // set mPDF properties on the fly
-             'options' => [               
+            // set mPDF properties on the fly
+            'options' => [
                 'defaultheaderline' => 0,  //for header
-                 'defaultfooterline' => 0,  //for footer
+                'defaultfooterline' => 0,  //for footer
             ],
-             // call mPDF methods on the fly
+            // call mPDF methods on the fly
             'methods' => [
-                'SetTitle'=>'Print', 
+                'SetTitle' => 'Print',
             ]
         ]);
-        return $pdf->render(); 
+        return $pdf->render();
     }
     /**
      * Finds the Pembayaran model based on its primary key value.

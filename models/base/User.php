@@ -24,7 +24,7 @@ class User extends \yii\db\ActiveRecord
     {
         $parent = parent::fields();
 
-        
+
 
 
         if (isset($parent['role_id'])) {
@@ -40,23 +40,23 @@ class User extends \yii\db\ActiveRecord
         if (isset($parent['photo_url'])) {
             unset($parent['photo_url']);
             $parent['photo_user'] = function ($model) {
-                return Yii::getAlias("@file/$model->photo_url");
+                return Yii::getAlias("@file/user_image/$model->photo_url");
             };
         }
-        if(!isset($parent['aktif'])){
+        if (!isset($parent['aktif'])) {
             unset($parent['aktif']);
-            $parent['aktif'] = function($model){
-                if($model->confirm == 0 && $model->status == 0){
+            $parent['aktif'] = function ($model) {
+                if ($model->confirm == 0 && $model->status == 0) {
                     return false;
-                }else{
+                } else {
                     return true;
                 }
             };
         }
-        if(!isset($parent['total_wakaf'])){
+        if (!isset($parent['total_wakaf'])) {
             unset($parent['total_wakaf']);
-            $parent['total_wakaf'] = function($model){
-                $pembayar =  \app\models\Pembayaran::find()->where(['user_id'=>$model->id,'status_id'=>6])->sum('nominal');
+            $parent['total_wakaf'] = function ($model) {
+                $pembayar =  \app\models\Pembayaran::find()->where(['user_id' => $model->id, 'status_id' => 6])->sum('nominal');
                 return $pembayar;
             };
         }
@@ -66,10 +66,9 @@ class User extends \yii\db\ActiveRecord
             //     return $model->jumlah_wakaf;
             // };
             $parent['jumlah_wakaf'] = function ($model) {
-                $pembayar =  \app\models\Pembayaran::find()->where(['user_id'=>$model->id,'status_id'=>6])->count();
+                $pembayar =  \app\models\Pembayaran::find()->where(['user_id' => $model->id, 'status_id' => 6])->count();
                 return $pembayar;
             };
-            
         }
 
 
@@ -104,17 +103,17 @@ class User extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['username', 'password', 'name','role_id'], 'required'],
-            [['role_id','confirm'], 'integer'],
+            [['username', 'password', 'name', 'role_id'], 'required'],
+            [['role_id', 'confirm'], 'integer'],
             [['last_login', 'last_logout'], 'safe'],
             [['konfirmasi_pin', 'konfirmasi_password'], 'safe'],
-            [[ 'name'], 'string', 'max' => 50],
-            [[ 'pin'], 'string', 'max' => 8],
+            [['name'], 'string', 'max' => 50],
+            [['pin'], 'string', 'max' => 8],
             ['username', 'email'],
             [['nomor_handphone'], 'string', 'max' => 15],
             // [[], 'string', 'max' => 32],
-            [['password','photo_url'], 'string', 'max' => 255],
-            [['username' ], 'unique']
+            [['password', 'photo_url'], 'string', 'max' => 255],
+            [['username'], 'unique']
         ];
     }
 
@@ -129,7 +128,7 @@ class User extends \yii\db\ActiveRecord
             'username' => 'Email',
             'password' => 'Password',
             'role_id' => 'Role',
-            'photo_url' => 'Photo Url',
+            'photo_url' => 'Foto',
             'pin' => 'Pin',
             'secret_token' => 'Secret Token',
             'nomor_handphone' => 'Nomor Handphone',
@@ -145,5 +144,4 @@ class User extends \yii\db\ActiveRecord
     {
         return $this->hasOne(\app\models\Role::className(), ['id' => 'role_id']);
     }
-
 }

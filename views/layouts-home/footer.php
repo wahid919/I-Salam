@@ -4,15 +4,16 @@ $icons = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->logo;
 ?>
 <style>
   @media screen and (min-width: 769px) {
-  .ikuti{
-    padding-top: 3rem!important;
+    .ikuti {
+      padding-top: 3rem !important;
+    }
   }
-}
-@media screen and (max-width: 768px) {
-.copyy{
-  text-align: center;
-}
-}
+
+  @media screen and (max-width: 768px) {
+    .copyy {
+      text-align: center;
+    }
+  }
 </style>
 <footer id="footer" class="footer mt-4">
   <div class="footer-newsletter">

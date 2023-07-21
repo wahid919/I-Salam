@@ -20,14 +20,13 @@ use Yii;
 abstract class AgendaPendanaan extends \yii\db\ActiveRecord
 {
 
-
     public function fields()
     {
         $parent = parent::fields();
 
-        
 
-        
+
+
         if (isset($parent['pendanaan_id'])) {
             unset($parent['pendanaan_id']);
             // $parent['_user_id'] = function ($model) {
@@ -38,7 +37,7 @@ abstract class AgendaPendanaan extends \yii\db\ActiveRecord
             };
         }
 
-        
+
 
         return $parent;
     }
@@ -85,8 +84,4 @@ abstract class AgendaPendanaan extends \yii\db\ActiveRecord
     {
         return $this->hasOne(\app\models\Pendanaan::className(), ['id' => 'pendanaan_id']);
     }
-
-
-
-
 }

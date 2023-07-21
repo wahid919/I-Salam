@@ -41,7 +41,7 @@ trait UploadFile
 
             // buat gambar baru
 
-            try{
+            try {
                 if (preg_match('/png|jpeg|jpg|gif/', $mime)) {
                     $image_p = imagecreatetruecolor($new_width, $new_height);
                     imagealphablending($image_p, false);
@@ -58,9 +58,8 @@ trait UploadFile
                     if (preg_match('/gif/', $mime)) {
                         $image = imagecreatefromgif($filename);
                     }
-    
                 }
-    
+
                 if (!@imagecopyresampled($image_p, $image, 0, 0, 0, 0, $new_width, $new_height, $width, $height)) {
                     $image_p = imagecreate(200, 100);
                     $bg = imagecolorallocate($image_p, 255, 255, 255);
@@ -72,10 +71,10 @@ trait UploadFile
                         "message" => "Gambar Korup",
                     ];
                 }
-    
+
                 // Output
                 imagepng($image_p, $file_dipermanenkan, 9);
-            }catch(Throwable $th){
+            } catch (Throwable $th) {
                 return (object) [
                     "success" => false,
                     "message" => $th->getMessage(),
@@ -131,7 +130,7 @@ trait UploadFile
 
             // buat gambar baru
 
-            try{
+            try {
                 if (preg_match('/png|jpeg|jpg|gif/', $mime)) {
                     $image_p = imagecreatetruecolor($new_width, $new_height);
                     imagealphablending($image_p, false);
@@ -148,9 +147,8 @@ trait UploadFile
                     if (preg_match('/gif/', $mime)) {
                         $image = imagecreatefromgif($filename);
                     }
-    
                 }
-    
+
                 if (!@imagecopyresampled($image_p, $image, 0, 0, 0, 0, $new_width, $new_height, $width, $height)) {
                     $image_p = imagecreate(200, 100);
                     $bg = imagecolorallocate($image_p, 255, 255, 255);
@@ -162,10 +160,10 @@ trait UploadFile
                         "message" => "Gambar Korup",
                     ];
                 }
-    
+
                 // Output
                 imagepng($image_p, $file_dipermanenkan, 9);
-            }catch(Throwable $th){
+            } catch (Throwable $th) {
                 return (object) [
                     "success" => false,
                     "message" => $th->getMessage(),
@@ -195,8 +193,10 @@ trait UploadFile
 
         $ext = end(explode(".", $file->name));
         $namaFile = sha1(rand(0, 9999)) . ".{$ext}";
-
-        $file->saveAs("{$realpath_dir}/{$namaFile}");
+        $tes = "{$realpath_dir}{$namaFile}";
+        // var_dump($tes);
+        // die;
+        $file->saveAs("{$realpath_dir}{$namaFile}");
         return (object) [
             "success" => true,
             "filename" => "{$namaFile}",

@@ -27,20 +27,32 @@ abstract class Setting extends \yii\db\ActiveRecord
     {
         $parent = parent::fields();
 
-        
+        if (isset($parent['logo'])) {
+            unset($parent['logo']);
+            // $parent['_gambar'] = function ($model) {
+            //     return $model->gambar;
+            // };
+            $parent['logo'] = function ($model) {
+                // $file = $model->gambar;
+                // // $model->tanggal_received=date('Y-m-d H:i:s');
+                // return $path = "http://192.168.228.215/isalam/web/uploads/berita/" . $file;
+                // return $path = $file;
+                return Yii::getAlias("@file/setting/$model->logo");
+            };
+        }
+
         if (!isset($parent['website'])) {
             unset($parent['website']);
             // $parent['_website'] = function ($model) {
             //     return $model->website;
             // };
             $parent['website'] = function ($model) {
-                
+
                 // $model->tanggal_received=date('Y-m-d H:i:s');
                 return $path = "http://i-salam.id/web/";
             };
-            
         }
-        
+
         return $parent;
     }
 
@@ -59,9 +71,9 @@ abstract class Setting extends \yii\db\ActiveRecord
     {
         return [
             [['pin'], 'integer'],
-            [['nama_web','judul_web', 'alamat', 'slogan_web'], 'required'],
-            [['alamat', 'slogan_web','banner','tentang_kami','visi','misi','ikut_wakaf', 'youtube_link','judul_video','deskripsi_video','latar_belakang','fiqih_wakaf','regulasi_wakaf','aturan_wakaf','pesan','text_apk'], 'string'],
-            [['logo', 'bg_login', 'bg_pin', 'link_download_apk', 'link_download_apk_marketing', 'nama_web','latitude','longitude','facebook','twitter','instagram','telegram','daftar_wakaf'], 'string', 'max' => 255]
+            [['nama_web', 'judul_web', 'alamat', 'slogan_web'], 'required'],
+            [['alamat', 'slogan_web', 'banner', 'tentang_kami', 'visi', 'misi', 'ikut_wakaf', 'youtube_link', 'judul_video', 'deskripsi_video', 'latar_belakang', 'fiqih_wakaf', 'regulasi_wakaf', 'aturan_wakaf', 'pesan', 'text_apk'], 'string'],
+            [['logo', 'bg_login', 'bg_pin', 'link_download_apk', 'link_download_apk_marketing', 'nama_web', 'phone', 'email', 'latitude', 'longitude', 'facebook', 'twitter', 'instagram', 'telegram', 'daftar_wakaf'], 'string', 'max' => 255]
         ];
     }
 
@@ -80,6 +92,8 @@ abstract class Setting extends \yii\db\ActiveRecord
             'link_download_apk' => 'Link Download Apk',
             'link_download_apk_marketing' => 'Link Download Marketing',
             'nama_web' => 'Nama Web',
+            'phone' => 'Telephone',
+            'email' => 'Email',
             'judul_web' => 'Judul Web',
             'alamat' => 'Alamat',
             'facebook' => 'Facebook',
@@ -97,8 +111,4 @@ abstract class Setting extends \yii\db\ActiveRecord
             'text_apk' => 'Text Aplikasi Wakaf',
         ];
     }
-
-
-
-
 }

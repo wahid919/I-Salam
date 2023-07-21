@@ -23,7 +23,7 @@ use yii\web\UploadedFile;
  */
 class BeritaController extends Controller
 {
-use UploadFile;
+    use UploadFile;
 
     /**
      * @var boolean whether to enable CSRF validation for the actions in this controller.
@@ -88,9 +88,9 @@ use UploadFile;
             $model->user_id = Yii::$app->user->id;
             if ($model->load($_POST)) {
                 $slug = str_replace(' ', '-', $model->judul);
-                $model->slug = $slug.date('Y-m-d');
+                $model->slug = $slug . date('Y-m-d');
                 $gambar = UploadedFile::getInstance($model, 'gambar');
-                $response = $this->uploadFile($gambar,'berita');
+                $response = $this->uploadFile($gambar, 'berita');
                 if ($response->success == false) {
                     Yii::$app->session->setFlash('danger', 'Gagal Upload Foto');
                     // goto end;
@@ -115,10 +115,10 @@ use UploadFile;
                 //     $gambar->saveAs($path);
                 // }
                 if ($model->save()) {
-                    $usrs = User::find()->where(['<>','fcm_token',""])->all();
+                    $usrs = User::find()->where(['!=', 'fcm_token', ""])->all();
                     foreach ($usrs as $value) {
-                        $user = User::findOne(['id'=>$value->id]);
-                        ActionSendFcm::getMessage($value->fcm_token,"berita",$model->id,"Berita Baru",$model->judul);
+                        $user = User::findOne(['id' => $value->id]);
+                        ActionSendFcm::getMessage($value->fcm_token, "berita", $model->id, "Berita Baru", $model->judul);
                         // var_dump(ActionSendFcm::getMessage($value->fcm_token,$model->id,"Berita Baru",$model->judul));die;
                     }
                     return $this->redirect(['view', 'id' => $model->id]);
@@ -170,7 +170,7 @@ use UploadFile;
             } else {
                 $model->gambar = $oldgambar;
             }
-            
+
             $model->save();
             return $this->redirect(Url::previous());
         } else {
