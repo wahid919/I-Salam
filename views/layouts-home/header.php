@@ -171,7 +171,6 @@ if (function_exists("checkCurrentNav") == false) {
       <div class="collapse navbar-collapse" id="mainNavigation">
         <ul class="navbar-nav ml-auto">
           <!-- <div class="dalam">
-          
           </div> -->
           <li class="nav__item">
             <a href="<?= Yii::$app->request->baseUrl . "/home" ?>" class="nav__item-link <?= checkCurrentNav(["/home"]) ?>">Beranda</a>
@@ -199,7 +198,6 @@ if (function_exists("checkCurrentNav") == false) {
                 <a class="test" tabindex="-1" href="#">Lainnya <span class="caret"></span></a>
                 <ul class="dropdown-menu">
                   <li class="nav__item"><a tabindex="-1" href="<?= \Yii::$app->request->baseUrl . "/home/program-zakat" ?>" class="nav__item-link text-dark">Zakat</a></li>
-
                   <li class="nav__item"><a tabindex="-1" href="<?= \Yii::$app->request->baseUrl . "/home/program-infak" ?>" class="nav__item-link text-dark">Infak</a></li>
 
                   <li class="nav__item"><a tabindex="-1" href="<?= \Yii::$app->request->baseUrl . "/home/program-sedekah" ?>" class="nav__item-link text-dark">Sedekah</a></li>

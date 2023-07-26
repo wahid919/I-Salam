@@ -67,7 +67,6 @@ class PembayaranController extends \yii\rest\ActiveController
             ->all();
         if ($wfs != null) {
             // if (\Yii::$app->user->identity->role_id == 2) {
-
             // $wfs = Pembayaran::find()->all();
             foreach ($wfs as $wf) {
                 $a = $this->findMidtrans($wf->kode_transaksi);

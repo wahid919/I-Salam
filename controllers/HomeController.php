@@ -2296,6 +2296,7 @@ class HomeController extends Controller
         ]);
     }
     public function actionProgramZakat()
+
     {
         $setting = Setting::find()->one();
         $icon = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->logo;

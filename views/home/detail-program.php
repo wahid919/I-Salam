@@ -689,6 +689,7 @@ use yii\helpers\Url;
                     <p class="update-program">
                       Belum Ada Donatur untuk Program Wakaf Ini.
                     </p>
+
                     <!-- <img class="border-r10 shadow-br3" src="<?= \Yii::$app->request->BaseUrl ?>/uploads/azhar.jpg"> -->
                   <?php } else { ?>
                     <table class="table table-hover">
