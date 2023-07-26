@@ -42,7 +42,7 @@
           $code = $pembayaran->code; ?>
           <div class="col-lg-6 col-md-6 col-sm-8 col-8 text-left border-bottom-3">
             <p class="font-weight-bold"><?= $pembayaran->pendanaan->nama_pendanaan ?></p>
-            <p class="font-size-08"><?= \app\components\Tanggal::toReadableDate($pembayaran->created_at); ?> | <span class="text-isalam-1"><?= \app\components\Angka::toReadableHarga($pembayaran->nominal); ?></span></p>
+            <p class="font-size-08"><?= \app\components\Tanggal::toReadableDate($pembayaran->tanggal_konfirmasi ?? $pembayaran->created_at); ?> | <span class="text-isalam-1"><?= \app\components\Angka::toReadableHarga($pembayaran->nominal); ?></span></p>
           </div>
           <div class="col-lg-6 col-md-6 col-sm-4 col-4 text-right border-bottom-3">
             <p>Status Pembayaran</p>

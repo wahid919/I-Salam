@@ -80,7 +80,7 @@ class HomeController extends Controller
                     [
                         'actions' => [
                             'login', 'registrasi', 'error', 'index', 'news', 'detail-berita',
-                            'about', 'report', 'ziswaf', 'program', 'detail-program', 'program-zakat',
+                            'about', 'report', 'ziswaf', 'program', 'detail-program', 'program-zakat', 'program-wakaf-produktif',
                             'detail-program-zakat', 'program-infak', 'detail-program-infak', 'program-sedekah',
                             'detail-program-sedekah', 'unduh-file-uraian', 'unduh-file-wakaf', 'lupa-password',
                             'ganti-password', 'visi', 'organisasi', 'lupa', 'kontak', 'cetak', 'latar-belakang',
@@ -1711,7 +1711,7 @@ class HomeController extends Controller
             if ($a->status_code == "404") {
                 $wf->status_id = $wf->status_id;
                 $sts = "Tidak Ada";
-            } else {
+            } else if ($wf->status_id !== 6) {
                 if ($a->transaction_status == "pending") {
                     $wf->status_id = 5;
                     $sts = "Ada";
@@ -2296,7 +2296,6 @@ class HomeController extends Controller
         ]);
     }
     public function actionProgramZakat()
-
     {
         $setting = Setting::find()->one();
         $icon = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->logo;
@@ -2343,6 +2342,55 @@ class HomeController extends Controller
             'summary' => $summary,
         ]);
     }
+
+    public function actionProgramWakafProduktif()
+    {
+        $setting = Setting::find()->one();
+        $icon = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->logo;
+        $bg_login = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->bg_login;
+        $bg = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->bg_pin;
+
+
+        if (isset($_GET['kategori'])) {
+            $kategori = $_GET['kategori'];
+            $get_id = KategoriPendanaan::find()->where(['name' => $kategori])->one();
+            $query = Pendanaan::find()->where(['status_tampil' => 1, 'kategori_pendanaan_id' => $get_id, 'status_lembaran' => 1]);
+            $count = $query->count();
+            $pagination = new Pagination(['totalCount' => $count, 'pageSize' => 9]);
+            $pendanaans = $query->offset($pagination->offset)
+                ->limit($pagination->limit)
+                ->all();
+        } else {
+            $query = Pendanaan::find()->where(['status_tampil' => 1, 'status_lembaran' => 1]);
+            $count = $query->count();
+            $pagination = new Pagination(['totalCount' => $count, 'pageSize' => 9]);
+            $pendanaans = $query->offset($pagination->offset)
+                ->limit($pagination->limit)
+                ->all();
+        }
+
+        $summary = Constant::getPaginationSummary($pagination, $count);
+
+        $organisasis = Organisasi::find()->where(['flag' => 1])->all();
+        $kategori_pendanaans = KategoriPendanaan::find()->all();
+        $count_program = Pendanaan::find()->where(['status_lembaran' => 1])->count();
+        $count_wakif = User::find()->where(['role_id' => 5])->count();
+
+        return $this->render('program-wakaf-produktif', [
+            'setting' => $setting,
+            'count_program' => $count_program,
+            'count_wakif' => $count_wakif,
+            'organisasis' => $organisasis,
+            'pendanaans' => $pendanaans,
+            'kategori_pendanaans' => $kategori_pendanaans,
+            'icon' => $icon,
+            'bg_login' => $bg_login,
+            'bg' => $bg,
+            'pagination' => $pagination,
+            'summary' => $summary,
+        ]);
+    }
+
     public function actionProgramInfak()
     {
         $setting = Setting::find()->one();

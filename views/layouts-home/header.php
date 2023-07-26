@@ -193,7 +193,7 @@ if (function_exists("checkCurrentNav") == false) {
 
               <li class="nav__item"><a href="<?= Yii::$app->request->baseUrl . "/home/program" ?> " class="nav__item-link text-dark">Semua Program Wakaf</a></li>
               <li class="nav__item"><a href="<?= \Yii::$app->request->baseUrl . "/home/program?kategori=Wakaf%20Sosial" ?> " class="nav__item-link text-dark">Wakaf Sosial</a></li>
-              <li class="nav__item"><a href="<?= \Yii::$app->request->baseUrl . "/home/program?kategori=Wakaf%20Produktif" ?> " class="nav__item-link text-dark">Wakaf Produktif</a></li>
+              <li class="nav__item"><a href="<?= \Yii::$app->request->baseUrl . "/home/program-wakaf-produktif" ?> " class="nav__item-link text-dark">Wakaf Produktif</a></li>
               <li class="nav__item dropdown-submenu right-submenu">
                 <a class="test" tabindex="-1" href="#">Lainnya <span class="caret"></span></a>
                 <ul class="dropdown-menu">
