@@ -710,6 +710,7 @@ use yii\helpers\Url;
                             <td class="border-top-0"><?= \app\components\Tanggal::toReadableDate($done->tanggal_konfirmasi); ?></td>
                           </tr>
                           <tr>
+                            <td class="border-bottom-3 border-top-0 pt-0 text-isalam-1 font-weight-bold donatur-uang"> Lembar :<?= \app\components\Angka::toReadableAngka($done->jumlah_lembaran); ?></td>
                             <td class="border-bottom-3 border-top-0 pt-0 text-isalam-1 font-weight-bold donatur-uang"> <?= \app\components\Angka::toReadableHarga($done->nominal); ?></td>
                             <td class="border-bottom-3 border-top-0"></td>
                           </tr>
