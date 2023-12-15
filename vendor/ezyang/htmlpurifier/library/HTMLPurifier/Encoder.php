@@ -144,7 +144,7 @@ class HTMLPurifier_Encoder
         }
 
         $mState = 0; // cached expected number of octets after the current octet
-        // until the beginning of the next UTF8 character sequence
+                     // until the beginning of the next UTF8 character sequence
         $mUcs4  = 0; // cached Unicode character
         $mBytes = 1; // cached expected number of octets in the current sequence
 
@@ -159,7 +159,7 @@ class HTMLPurifier_Encoder
 
         $len = strlen($str);
         for ($i = 0; $i < $len; $i++) {
-            $in = ord($str($i));
+            $in = ord($str[$i]);
             $char .= $str[$i]; // append byte to char
             if (0 == $mState) {
                 // When mState is zero we expect either a US-ASCII character
@@ -249,10 +249,11 @@ class HTMLPurifier_Encoder
                             // Codepoints outside the Unicode range are illegal
                             ($mUcs4 > 0x10FFFF)
                         ) {
-                        } elseif (
-                            0xFEFF != $mUcs4 && // omit BOM
+
+                        } elseif (0xFEFF != $mUcs4 && // omit BOM
                             // check for valid Char unicode codepoints
-                            (0x9 == $mUcs4 ||
+                            (
+                                0x9 == $mUcs4 ||
                                 0xA == $mUcs4 ||
                                 0xD == $mUcs4 ||
                                 (0x20 <= $mUcs4 && 0x7E >= $mUcs4) ||
@@ -278,7 +279,7 @@ class HTMLPurifier_Encoder
                     $mState = 0;
                     $mUcs4  = 0;
                     $mBytes = 1;
-                    $char = '';
+                    $char ='';
                 }
             }
         }
@@ -313,10 +314,8 @@ class HTMLPurifier_Encoder
 
     public static function unichr($code)
     {
-        if (
-            $code > 1114111 or $code < 0 or
-            ($code >= 55296 and $code <= 57343)
-        ) {
+        if ($code > 1114111 or $code < 0 or
+          ($code >= 55296 and $code <= 57343) ) {
             // bits are set outside the "valid" range as defined
             // by UNICODE 4.1.0
             return '';
@@ -399,8 +398,8 @@ class HTMLPurifier_Encoder
             // characters to their true byte-wise ASCII/UTF-8 equivalents.
             $str = strtr($str, self::testEncodingSupportsASCII($encoding));
             return $str;
-        } elseif ($encoding === 'iso-8859-1') {
-            $str = utf8_encode($str);
+        } elseif ($encoding === 'iso-8859-1' && function_exists('mb_convert_encoding')) {
+            $str = mb_convert_encoding($str, 'UTF-8', 'ISO-8859-1');
             return $str;
         }
         $bug = HTMLPurifier_Encoder::testIconvTruncateBug();
@@ -409,7 +408,7 @@ class HTMLPurifier_Encoder
         } else {
             trigger_error(
                 'You have a buggy version of iconv, see https://bugs.php.net/bug.php?id=48147 ' .
-                    'and http://sourceware.org/bugzilla/show_bug.cgi?id=13541',
+                'and http://sourceware.org/bugzilla/show_bug.cgi?id=13541',
                 E_USER_ERROR
             );
         }
@@ -451,8 +450,8 @@ class HTMLPurifier_Encoder
             // Normal stuff
             $str = self::iconv('utf-8', $encoding . '//IGNORE', $str);
             return $str;
-        } elseif ($encoding === 'iso-8859-1') {
-            $str = utf8_decode($str);
+        } elseif ($encoding === 'iso-8859-1' && function_exists('mb_convert_encoding')) {
+            $str = mb_convert_encoding($str, 'ISO-8859-1', 'UTF-8');
             return $str;
         }
         trigger_error('Encoding not supported', E_USER_ERROR);
@@ -548,7 +547,7 @@ class HTMLPurifier_Encoder
             } elseif ($c > 9000) {
                 trigger_error(
                     'Your copy of iconv is extremely buggy. Please notify HTML Purifier maintainers: ' .
-                        'include your iconv version as per phpversion()',
+                    'include your iconv version as per phpversion()',
                     E_USER_ERROR
                 );
             } else {
@@ -599,8 +598,7 @@ class HTMLPurifier_Encoder
         for ($i = 0x20; $i <= 0x7E; $i++) { // all printable ASCII chars
             $c = chr($i); // UTF-8 char
             $r = self::unsafeIconv('UTF-8', "$encoding//IGNORE", $c); // initial conversion
-            if (
-                $r === '' ||
+            if ($r === '' ||
                 // This line is needed for iconv implementations that do not
                 // omit characters that do not exist in the target character set
                 ($r === $c && self::unsafeIconv($encoding, 'UTF-8//IGNORE', $r) !== $c)

@@ -99,7 +99,7 @@ class Generator extends \yii\gii\generators\crud\Generator
     public $baseTraits;
 
     /**
-     * @var sting controller base namespace
+     * @var string controller base namespace
      */
     public $controllerNs;
 
@@ -148,6 +148,13 @@ class Generator extends \yii\gii\generators\crud\Generator
     public $migrationClass;
 
     public $indexGridClass = 'yii\\grid\\GridView';
+
+    /**
+     * @var string position of action column in gridview 'left' or 'right'
+     */
+    public $actionButtonColumnPosition = 'left';
+
+    public $giiInfoPath = '.gii';
 
     private $_p = [];
 
@@ -390,10 +397,9 @@ class Generator extends \yii\gii\generators\crud\Generator
         $suffix = str_replace(' ', '', $this->getName());
         $controllerFileinfo = pathinfo($controllerFile);
         $formDataFile = StringHelper::dirname(StringHelper::dirname($controllerFile))
-                .'/gii/'
+                .'/'.$this->giiInfoPath.'/'
                 .str_replace('Controller', $suffix, $controllerFileinfo['filename']).'.json';
-        //$formData = json_encode($this->getFormAttributesValues());
-        $formData = json_encode(SaveForm::getFormAttributesValues($this, $this->formAttributes()));
+        $formData = json_encode(SaveForm::getFormAttributesValues($this, $this->formAttributes()), JSON_PRETTY_PRINT);
         $files[] = new CodeFile($formDataFile, $formData);
 
         return $files;

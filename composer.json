@@ -48,7 +48,8 @@
         "phpoffice/phpspreadsheet": "^1.8",
         "midtrans/midtrans-php": "^2.5",
         "richardfan1126/yii2-js-register": "*",
-        "himiklab/yii2-recaptcha-widget": "*"
+        "himiklab/yii2-recaptcha-widget": "*",
+        "kreait/firebase-php": "^4.44"
     },
     "require-dev": {
         "yiisoft/yii2-codeception": "*",

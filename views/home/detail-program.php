@@ -306,7 +306,7 @@ use yii\helpers\Url;
                             <div class="input-group-prepend mr-2" style="height:calc(1.5em + .75rem + 2px);">
                               <div class="input-group-text bg-white border-r5 font-weight-bold" style="color: #afafaf;border-color: #787878;">Rp</div>
                             </div>
-                            <input type="number" class="form-control select-wakaf" id="nominal" name="nominal" onkeyup="myFunction()" onkeydown="myFunction()" style="border-color: #787878;" placeholder="Minimal Wakaf Rp. 10.000" required>
+                            <input type="number" class="form-control select-wakaf" id="nominal" name="nominal" onkeyup="myFunction()" onkeydown="myFunction()" style="border-color: #787878;" placeholder="Wakaf Tidak Boleh 0" required>
                             <button id="clear" class="btn btn-danger btn-sm" type="button" style="height: calc(1.5em + 0.75rem + 2px);
                           line-height: 34px;
                           width: 60px;background-color:firebrick;color:white;border-radius:0px;">
@@ -890,7 +890,7 @@ use yii\helpers\Url;
                       <div class="input-group-prepend mr-2" style="height:calc(1.5em + .75rem + 2px);">
                         <div class="input-group-text bg-white border-r5 font-weight-bold" style="color: #afafaf;border-color: #787878;">Rp</div>
                       </div>
-                      <input type="number" class="form-control select-wakaf" id="nominal_header" name="nominal_header" onkeyup="myFunction_header()" onkeydown="myFunction_header()" style="border-color: #787878;border-radius:5px;margin-right:1%;" placeholder="Minimal Wakaf Rp. 10.000" required>
+                      <input type="number" class="form-control select-wakaf" id="nominal_header" name="nominal_header" onkeyup="myFunction_header()" onkeydown="myFunction_header()" style="border-color: #787878;border-radius:5px;margin-right:1%;" placeholder="Wakaf Tidak Boleh 0" required>
                       <button id="clear_header" class="btn btn-danger btn-sm" type="button" style="height: calc(1.5em + 0.75rem + 4px);
                           line-height: 34px;
                           width: 60px;background-color:firebrick;color:white;border-radius:5px;">

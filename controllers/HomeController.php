@@ -4,51 +4,54 @@ namespace app\controllers;
 
 date_default_timezone_set('Asia/Jakarta');
 
-use app\components\Angka;
-use app\components\Constant;
 use Yii;
-use yii\web\Controller;
-use yii\web\HttpException;
-use yii\helpers\Url;
-use yii\filters\AccessControl;
-use dmstr\bootstrap\Tabs;
-use app\models\Action;
-use app\models\AgendaPendanaan;
-use app\models\Berita;
-use app\models\HubungiKami;
-use app\models\KategoriBerita;
-use yii\helpers\ArrayHelper;
-use app\models\Setting;
-use app\models\Organisasi;
-use app\models\LembagaPenerima;
-use app\models\Pendanaan;
-use app\models\User;
-use app\models\KategoriPendanaan;
-use app\models\Pembayaran;
-use app\models\Penyaluran;
-use app\models\Rekening;
-use app\models\search\RekeningSearchHome;
-use app\models\Testimonials;
 use DateTime;
-use yii\data\ActiveDataProvider;
-use yii\data\Pagination;
+use yii\db\Query;
 use Midtrans\Snap;
-use Midtrans\Config;
-use yii\filters\VerbFilter;
-use yii\web\Response;
-use app\components\UploadFile;
-use app\models\Afliasi;
-use app\models\AmanahPendanaan;
-use app\models\home\Registrasi as HomeRegistrasi;
-use app\models\KegiatanPendanaan;
-use app\models\Kontak;
-use app\models\LoginForm;
-use app\models\Notifikasi;
 use app\models\Otp;
-use app\models\Slides;
+use app\models\User;
 use kartik\mpdf\Pdf;
+use Midtrans\Config;
+use yii\helpers\Url;
+use yii\web\Response;
+use app\models\Action;
+use app\models\Berita;
+use app\models\Kontak;
+use app\models\Slides;
 use yii\db\Expression;
+use app\models\Afliasi;
+use app\models\Setting;
+use yii\web\Controller;
+use app\models\Rekening;
+use yii\data\Pagination;
+use app\components\Angka;
+use app\models\LoginForm;
+use app\models\Pendanaan;
+use dmstr\bootstrap\Tabs;
 use yii\web\UploadedFile;
+use app\models\Notifikasi;
+use app\models\Organisasi;
+use app\models\Pembayaran;
+use app\models\Pendapatan;
+use app\models\Penyaluran;
+use yii\web\HttpException;
+use app\models\HubungiKami;
+use yii\filters\VerbFilter;
+use app\components\Constant;
+use app\models\Testimonials;
+use yii\helpers\ArrayHelper;
+use app\components\UploadFile;
+use app\models\KategoriBerita;
+use yii\filters\AccessControl;
+use app\models\AgendaPendanaan;
+use app\models\AmanahPendanaan;
+use app\models\LembagaPenerima;
+use yii\data\ActiveDataProvider;
+use app\components\ActionSendFcm;
+use app\models\KategoriPendanaan;
+use app\models\KegiatanPendanaan;
+use app\models\search\RekeningSearchHome;
+use app\models\home\Registrasi as HomeRegistrasi;
 
 /**
  * This is the class for controller "BeritaController".
@@ -91,7 +94,7 @@ class HomeController extends Controller
                         'allow' => true,
                     ],
                     [
-                        'actions' => ['logout', 'index', 'verifikasi-akun', 'kirim-otp', 'profile', 'edit-profile', 'bayar', 'pembayaran', 'pembayarans', 'chechkout', 'laporan-wakaf', 'notifikasi', 'cancel-transaksi'], // add all actions to take guest to login page
+                        'actions' => ['logout', 'index', 'verifikasi-akun', 'kirim-otp', 'profile', 'edit-profile', 'bayar', 'pembayaran', 'pembayarans', 'chechkout', 'laporan-wakaf', 'notifikasi', 'cancel-transaksi', 'sertifikat'], // add all actions to take guest to login page
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -101,6 +104,94 @@ class HomeController extends Controller
             ],
 
         ];
+    }
+    public function actionSertifikat()
+    {
+
+        extract($_GET);
+        // var_dump($total_donasi);
+        // die;
+        $total = $total_donasi;
+        $kegiatanpd = $kegiatan;
+        $tt = date_create($t1);
+        $tt1 = date_format($tt, "Y-m-d");
+
+        $ttt = date_create($t2);
+        $tt2 = date_format($ttt, "Y-m-d");
+
+        $tgl1 = $tt1 . ' 00:00:01';
+        $tgl2 = $tt2 . ' 23:59:59';
+        // $tgl2 = date('Y-m-d', strtotime($t1.'+ 1 days')).' 02:00:00';
+        $query = new Query();
+        $query->select(['user.name as nama_bayar', 'pembayaran.nominal as nominal', 'pembayaran.nama as pewakaf', 'pendanaan.nama_pendanaan as nm_pendanaan', 'pembayaran.created_at as tgl_buat', 'status.name as status_name'])
+            ->from('pembayaran')
+            ->join(
+                'LEFT JOIN',
+                'user',
+                'user.id = pembayaran.user_id'
+            )->join(
+                'LEFT JOIN',
+                'pendanaan',
+                'pendanaan.id = pembayaran.pendanaan_id'
+            )
+            ->join(
+                'LEFT JOIN',
+                'status',
+                'status.id = pembayaran.status_id'
+            )->where(['between', 'pembayaran.created_at', "$tgl1", "$tgl2"]);
+        $command = $query->createCommand();
+        $mdl = $command->queryAll();
+        $content = $this->renderPartial('sertifikat/sertifikatuang', [
+            'mdl' => $mdl,
+            'tgl1' => $tgl1,
+            'tgl2' => $tgl2,
+            'total_donasi' => $total_donasi,
+            'kegiatan' => $kegiatan,
+        ]);
+
+        $filename = "Download LaporanPembayaran" . $tgl1 . "-" . $tgl2 . ".pdf";
+        // setup kartik\mpdf\Pdf component
+        $pdf = new Pdf([
+            // set to use core fonts only
+            'mode' => Pdf::MODE_CORE,
+            //Name file
+            'filename' => $filename,
+            // LEGAL paper format
+            'format' => Pdf::FORMAT_LETTER,
+            // portrait orientation
+            'orientation' => Pdf::ORIENT_PORTRAIT,
+            // stream to browser inline
+            'destination' => Pdf::DEST_BROWSER,
+            // your html content input
+            'content' => $content,
+            'marginHeader' => 0,
+            'marginFooter' => 1,
+            'marginTop' => 5,
+            'marginBottom' => 5,
+            'marginLeft' => 0,
+            'marginRight' => 0,
+            // format content from your own css file if needed or use the
+            // enhanced bootstrap css built by Krajee for mPDF formatting 
+            'cssFile' => '@vendor/kartik-v/yii2-mpdf/src/assets/kv-mpdf-bootstrap.min.css',
+            // any css to be embedded if required
+            // 'cssInline' => '.kv-heading-1{font-size:25px}', 
+            'cssInline' => 'body { font-family: irannastaliq; font-size: 17px; }.page-break {display: none;};
+            .kv-heading-1{font-size:17px}table{width: 100%;line-height: inherit;text-align: left; border-collapse: collapse;}table, td, th {margin-left:50px;margin-right:50px;},fa { font-family: fontawesome;} @media print{
+                .page-break{display: block;page-break-before: always;}
+            }',
+            // set mPDF properties on the fly
+            'options' => [
+                'defaultheaderline' => 0,  //for header
+                'defaultfooterline' => 0,  //for footer
+            ],
+            // call mPDF methods on the fly
+            'methods' => [
+                'SetTitle' => 'Print',
+            ]
+        ]);
+        return $pdf->render();
+
+        // return $this->render('sertifikat/sertifikatuang.php', []);
     }
     public function actionPrivacyPolicy()
     {
@@ -476,6 +567,15 @@ class HomeController extends Controller
             $model->status = 0;
 
             if ($model->save()) {
+                $user = User::find()->where(['id' => Yii::$app->user->identity->status])->one();
+                $pendanaan = Pendanaan::find()->where(['id' => Yii::$app->user->identity->id])->one();
+                ActionSendFcm::getMessages($user->fcm_token, [
+                    'body' => 'pembayaran pada program ' . $pendanaan->nama_pendanaan . ' ' . $model->status_id->name,
+                    'title' => 'ISALAM PAYMENT',
+                    'image' => '<?=$icons?>',
+                ], function ($data) {
+                    return $data;
+                });
                 Yii::$app->session->setFlash('success', "Data berhasil disimpan.");
                 return $this->redirect(['home/index']);
             } else {
@@ -1641,9 +1741,10 @@ class HomeController extends Controller
     {
         $setting = Setting::find()->one();
         $icon = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->logo;
-        $jumlah_pembayaran = Pembayaran::find()->where(['user_id' => Yii::$app->user->identity->id])->andWhere(['status_id' => 6])->sum('nominal');
-        $pembayaran_sukses = Pembayaran::find()->where(['user_id' => Yii::$app->user->identity->id])->andWhere(['status_id' => 6])->count('status_id');
-        $proyek_didanai = Pembayaran::find()->select('pendanaan_id')->where(['user_id' => Yii::$app->user->identity->id])->andWhere(['status_id' => 6])->groupBy('pendanaan_id')->all();
+        $jumlah_pembayaran = Pembayaran::find()->where(['user_id' => Yii::$app->user->identity->id])->andWhere(['status_id' => 6])->andWhere(['=', 'jumlah_lembaran', 0])->sum('nominal');
+        $pembayaran_sukses = Pembayaran::find()->where(['user_id' => Yii::$app->user->identity->id])->andWhere(['status_id' => 6])->andWhere(['=', 'jumlah_lembaran', 0])->count('status_id');
+        $proyek_didanai = Pembayaran::find()->where(['user_id' => Yii::$app->user->identity->id])->andWhere(['status_id' => 6])->groupBy('pendanaan_id')->all();
+
 
         $query = Pembayaran::find()->where(['user_id' => Yii::$app->user->identity->id]);
         $count = $query->count();
@@ -1651,6 +1752,29 @@ class HomeController extends Controller
         $pembayarans = $query->offset($pagination->offset)
             ->limit($pagination->limit)
             ->all();
+
+        // 
+
+        $pendapatan = Pendapatan::find()->all();
+        $total_pendapatan_user = 0;
+        $total_jumlah_lembaran_user = 0;
+        foreach ($pendapatan as $pendapatan_user) {
+            $total_jumlah_lembaran_all = Pembayaran::find()->where(['pendanaan_id' => $pendapatan_user->id_pendanaan])->andWhere(['status_id' => 6])->andWhere(['!=', 'jumlah_lembaran', 0])->sum('jumlah_lembaran');
+            $total_pendapatan_all = $pendapatan_user->nominal / $total_jumlah_lembaran_all;
+            $total_jumlah_lembaran = Pembayaran::find()->where(['user_id' => Yii::$app->user->identity->id, 'pendanaan_id' => $pendapatan_user->id_pendanaan])->andWhere(['status_id' => 6])->andWhere(['>', 'jumlah_lembaran', 0])->sum('jumlah_lembaran');
+            $total_pendapatan = $total_pendapatan_all * $total_jumlah_lembaran;
+            $total_pendapatan_user += $total_pendapatan;
+            $total_jumlah_lembaran_user += $total_jumlah_lembaran;
+
+            // echo '<pre>';
+            // var_dump($pendant);
+            // die;
+        }
+
+        $jumlah_lembar = Pembayaran::find()->where(['user_id' => Yii::$app->user->identity->id])->andWhere(['status_id' => 6])->andWhere(['>', 'jumlah_lembaran', 0])->sum('jumlah_lembaran');
+
+
+
         return $this->render('laporan-wakaf', [
             'setting' => $setting,
             'icon' => $icon,
@@ -1658,7 +1782,11 @@ class HomeController extends Controller
             'pembayaran_sukses' => $pembayaran_sukses,
             'pagination' => $pagination,
             'pembayarans' => $pembayarans,
-            'proyek_didanai' => $proyek_didanai
+            'proyek_didanai' => $proyek_didanai,
+            'pendapatan' => $pendapatan,
+            'total_pendapatan_user' => $total_pendapatan_user,
+            'total_jumlah_lembaran_user' => $total_jumlah_lembaran_user
+
         ]);
     }
 

@@ -119,17 +119,24 @@ class BeritaController extends \yii\rest\ActiveController
     public function actionTest()
     {
 
-        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-        $user = User::findOne(['id' => 30]);
-        $beritas = Berita::findOne(['id' => 12]);
-        $model = new Notifikasi();
-        $model->message = " Berita Baru ";
-        $model->date = date('Y-m-d H:i:s');
-        $model->flag = 1;
-        $model->user_id = 30;
-        $pembayaran = Pembayaran::find()->where(['id' => 98])->one();
-        if ($model->save()) {
-            return ActionSendFcm::getMessage($user->fcm_token, "pembayaran", $pembayaran->id, "Pembayaran", $pembayaran->nama);
-        }
+        // Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        // $user = User::findOne(['id' => 30]);
+        // $beritas = Berita::findOne(['id' => 12]);
+        // $model = new Notifikasi();
+        // $model->message = " Berita Baru ";
+        // $model->date = date('Y-m-d H:i:s');
+        // $model->flag = 1;
+        // $model->user_id = 30;
+        // $pembayaran = Pembayaran::find()->where(['id' => 98])->one();
+        // if ($model->save()) {
+        ActionSendFcm::getMessages(" cUciitPIRgeI7iRxZZfTEw:APA91bERDLoMvrbb1HGHcfIXlcwr4CEP8Xu2IPh2jK0YFBg0v1Oo4Z2DDygj_RYjq3wjYk5XU0jb2mGinTC8xQTv9iC1cCNrLkLuGgKrf0hF-aOLF9HLChT7oxWeGRUh1mNPqrBlCPzC", [
+            'body' => 'ini adalah konten',
+            'title' => 'ISALAM BERITA',
+            'image' => 'https://img.okezone.com/content/2021/02/14/33/2361702/cerita-maria-ozawa-batal-syuting-menculik-miyabi-di-indonesia-karena-didemo-BUMCIELSk0.jpg'
+        ], function ($data) {
+            return $data;
+        });
+        //     return ActionSendFcm::getMessage($user->fcm_token, "pembayaran", $pembayaran->id, "Pembayaran", $pembayaran->nama);
+        // }
     }
 }

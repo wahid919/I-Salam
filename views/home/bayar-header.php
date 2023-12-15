@@ -139,8 +139,8 @@ use yii\helpers\Html;
                           <div class="input-group-text bg-white border-r5 font-weight-bold" style="color: #afafaf;">Rp</div>
                         </div>
 
-                        <input type="hidden" class="form-control select-wakaf border-r5" id="pendanaan_wakaf" name="pendanaan_wakaf" placeholder="Minimal Wakaf Rp. 10.000">
-                        <input type="number" class="form-control select-wakaf border-r5" id="nominal" name="nominal" placeholder="Minimal Wakaf Rp. 10.000">
+                        <input type="hidden" class="form-control select-wakaf border-r5" id="pendanaan_wakaf" name="pendanaan_wakaf" placeholder="Wakaf Tidak Boleh 0">
+                        <input type="number" class="form-control select-wakaf border-r5" id="nominal" name="nominal" placeholder="Wakaf Tidak Boleh 0">
                       </div>
                     </div>
                   </div>
@@ -176,7 +176,7 @@ use yii\helpers\Html;
                         <div class="input-group-prepend mr-2" style="height:calc(1.5em + .75rem + 2px);">
                           <div class="input-group-text bg-white border-r5 font-weight-bold" style="color: #afafaf;">Rp</div>
                         </div>
-                        <input type="hidden" class="form-control select-wakaf border-r5 shadow-r2" id="pendanaan_infak" name="pendanaan_infak" placeholder="Minimal Wakaf Rp. 10.000">
+                        <input type="hidden" class="form-control select-wakaf border-r5 shadow-r2" id="pendanaan_infak" name="pendanaan_infak" placeholder="Wakaf Tidak Boleh 0">
                         <input type="number" class="form-control select-wakaf border-r5 shadow-r2" id="nominal2" name="nominal2" placeholder="Minimal infak Rp. 10.000">
                       </div>
                     </div>

@@ -6,6 +6,7 @@ namespace app\models\base;
 
 use Yii;
 use app\models\JenisPembayaran;
+use app\models\Pendanaan;
 use yii\behaviors\TimestampBehavior;
 use yii\db\Expression;
 use yii\helpers\Url;
@@ -36,12 +37,6 @@ abstract class Pembayaran extends \yii\db\ActiveRecord
     public function fields()
     {
         $parent = parent::fields();
-
-
-
-
-
-
         if (isset($parent['pendanaan_id'])) {
             unset($parent['pendanaan_id']);
 
@@ -49,6 +44,14 @@ abstract class Pembayaran extends \yii\db\ActiveRecord
                 return $model->pendanaan;
             };
         }
+        // if (!isset($parent['nama_pendanaan'])) {
+        //     unset($parent['nama_pendanaan']);
+
+        //     $parent['nama_pendanaan'] = function ($model) {
+        //         $nama_pendanaan = Pendanaan::find()->where(['id' => $model->pendanaan_id])->one();
+        //         return $nama_pendanaan;
+        //     };
+        // }
 
         if (isset($parent['code'])) {
             unset($parent['code']);
@@ -126,6 +129,7 @@ abstract class Pembayaran extends \yii\db\ActiveRecord
                 }
             };
         }
+
         if (isset($parent['jenis_pembayaran_id'])) {
             unset($parent['jenis_pembayaran_id']);
 

@@ -7,6 +7,7 @@ namespace app\controllers\api;
  */
 
 use app\components\UploadFile;
+
 use yii\base\Security;
 use app\models\User;
 use app\models\Otp;
@@ -60,11 +61,14 @@ class UserController extends \yii\rest\ActiveController
     public function actionLogin()
     {
         Yii::$app->response->format = Response::FORMAT_JSON;
+        // $val = yii::$app->request->post();
         $username = Yii::$app->request->post('username');
         $password = Yii::$app->request->post('password');
-        // $fcm_token = Yii::$app->request->post('fcm_token');
+        $fcm_token = Yii::$app->request->post('fcm_token');
+        // var_dump($fcm_token);
+        // die;
 
-        // $fcm_token = !empty($_POST['fcm_token']) ? $_POST['fcm_token'] : '';
+        // $fcm_token = !empty($_POST['fcmToken']) ? $_POST['fcmToken'] : '';
         $result = [];
         // validasi jika kosong
         if (empty($username) || empty($password)) {
@@ -89,17 +93,16 @@ class UserController extends \yii\rest\ActiveController
                             $result["data"] = $user;
                         } else if (($user->confirm == 1 && $user->status == 1)) {
                             $generate_random_string = SSOToken::generateToken();
+                            $user->fcm_token = $fcm_token;
                             $user->secret_token = $generate_random_string;
-                            $user->fcm_token = $generate_random_string;
-                            // if (isset($fcm_token)) {
-                            //     $user->fcm_token = $fcm_token;
-                            // }
-                            // $user->save();
-
-                            $result['success'] = true;
-                            $result['message'] = "Berhasil login";
-                            unset($user->password); // remove password from response
-                            $result["data"] = $user;
+                            // $user->fcm_token = $generate_random_string;
+                            $user->save();
+                            if ($fcm_token !== null) {
+                                $result['success'] = true;
+                                $result['message'] = "Berhasil login";
+                                unset($user->password); // remove password from response
+                                $result["data"] = $user;
+                            }
                         } else {
                             $result['success'] = false;
                             $result['message'] = "error";

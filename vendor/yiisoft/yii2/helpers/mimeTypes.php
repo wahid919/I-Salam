@@ -5,10 +5,11 @@
  * This file contains most commonly used MIME types
  * according to file extension names.
  * Its content is generated from the apache http mime.types file.
- * http://svn.apache.org/viewvc/httpd/httpd/trunk/docs/conf/mime.types?view=markup
+ * https://svn.apache.org/viewvc/httpd/httpd/trunk/docs/conf/mime.types?view=markup
  * This file has been placed in the public domain for unlimited redistribution.
  */
-return [
+$mimeTypes = [
+    123 => 'application/vnd.lotus-1-2-3',
     '3dml' => 'text/vnd.in3d.3dml',
     '3ds' => 'image/x-3ds',
     '3g2' => 'video/3gpp2',
@@ -37,6 +38,7 @@ return [
     'ait' => 'application/vnd.dvb.ait',
     'ami' => 'application/vnd.amiga.ami',
     'apk' => 'application/vnd.android.package-archive',
+    'apng' => 'image/apng',
     'appcache' => 'text/cache-manifest',
     'application' => 'application/x-ms-application',
     'apr' => 'application/vnd.lotus-approach',
@@ -53,6 +55,7 @@ return [
     'atx' => 'application/vnd.antix.game-component',
     'au' => 'audio/basic',
     'avi' => 'video/x-msvideo',
+    'avif' => 'image/avif',
     'aw' => 'application/applixware',
     'azf' => 'application/vnd.airzip.filesecure.azf',
     'azs' => 'application/vnd.airzip.filesecure.azs',
@@ -355,6 +358,7 @@ return [
     'jam' => 'application/vnd.jam',
     'jar' => 'application/java-archive',
     'java' => 'text/x-java-source',
+    'jfif' => 'image/jpeg',
     'jisp' => 'application/vnd.jisp',
     'jlt' => 'application/vnd.hp-jlyt',
     'jnlp' => 'application/x-java-jnlp-file',
@@ -365,7 +369,7 @@ return [
     'jpgm' => 'video/jpm',
     'jpgv' => 'video/jpeg',
     'jpm' => 'video/jpm',
-    'js' => 'application/javascript',
+    'js' => 'text/javascript',
     'json' => 'application/json',
     'jsonml' => 'application/jsonml+json',
     'kar' => 'audio/midi',
@@ -448,6 +452,7 @@ return [
     'mime' => 'message/rfc822',
     'mj2' => 'video/mj2',
     'mjp2' => 'video/mj2',
+    'mjs' => 'text/javascript',
     'mk3d' => 'video/x-matroska',
     'mka' => 'audio/x-matroska',
     'mks' => 'video/x-matroska',
@@ -551,6 +556,7 @@ return [
     'opf' => 'application/oebps-package+xml',
     'opml' => 'text/x-opml',
     'oprc' => 'application/vnd.palm',
+    'opus' => 'audio/ogg',
     'org' => 'application/vnd.lotus-organizer',
     'osf' => 'application/vnd.yamaha.openscoreformat',
     'osfpvg' => 'application/vnd.yamaha.openscoreformat.osfpvg+xml',
@@ -595,6 +601,8 @@ return [
     'pgn' => 'application/x-chess-pgn',
     'pgp' => 'application/pgp-encrypted',
     'pic' => 'image/x-pict',
+    'pjp' => 'image/jpeg',
+    'pjpeg' => 'image/jpeg',
     'pkg' => 'application/octet-stream',
     'pki' => 'application/pkixcmp',
     'pkipath' => 'application/pkix-pkipath',
@@ -991,5 +999,10 @@ return [
     'zir' => 'application/vnd.zul',
     'zirz' => 'application/vnd.zul',
     'zmm' => 'application/vnd.handheld-entertainment+xml',
-    123 => 'application/vnd.lotus-1-2-3',
 ];
+
+if (PHP_VERSION_ID >= 80100) {
+    $mimeTypes = array_replace($mimeTypes, array('xz' => 'application/octet-stream'));
+}
+
+return $mimeTypes;

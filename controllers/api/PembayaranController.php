@@ -7,6 +7,8 @@ namespace app\controllers\api;
  */
 
 use app\components\ActionMidtransConfig;
+use app\models\Setting;
+
 use app\components\ActionSendFcm;
 use app\models\base\User as BaseUser;
 use app\models\Pembayaran;
@@ -24,6 +26,9 @@ use yii\web\UploadedFile;
 
 use function igorw\retry;
 
+
+$setting = Setting::find()->one();
+$icons = \Yii::$app->request->baseUrl . "/uploads/setting/" . $setting->logo;
 class PembayaranController extends \yii\rest\ActiveController
 {
     use \app\components\UploadFile;
@@ -63,7 +68,7 @@ class PembayaranController extends \yii\rest\ActiveController
 
         $wfs = Pembayaran::find()
             ->where(['user_id' => $id])
-            ->orderBy(['tanggal_konfirmasi' => SORT_DESC])
+            ->orderBy(['id' => SORT_DESC])
             ->all();
         if ($wfs != null) {
             // if (\Yii::$app->user->identity->role_id == 2) {
@@ -525,6 +530,14 @@ class PembayaranController extends \yii\rest\ActiveController
 
         Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         $val = \yii::$app->request->post();
+        if ($val['nominal'] == 0) {
+            $nominal1 = $val['lembaran'] * $val['nominal_lembaran'];
+            $jumlahlembar = $val['lembaran'];
+        } else {
+            $jumlahlembar = 0;
+            $nominal1 = $val['nominal'];
+        }
+        $nominal = $nominal1;
         // $id = User :: 
         $data = Pembayaran::find()->where(['status_id' => 5, 'user_id' => $val['user_id']])->count();
         if ($data) {
@@ -541,7 +554,7 @@ class PembayaranController extends \yii\rest\ActiveController
 
         $transaction_details = array(
             'order_id' => $order_id_midtrans,
-            'gross_amount' => $val['nominal'], // no decimal allowed for creditcard
+            'gross_amount' => $nominal, // no decimal allowed for creditcard
         );
 
 
@@ -579,17 +592,17 @@ class PembayaranController extends \yii\rest\ActiveController
         //         'name' => $pendanaan->nama_pendanaan . "(Lembaran)"
         //     );
         // } else {
-        if ($val['nominal'] == NULL) {
+        if ($nominal == NULL) {
             return ['success' => false, 'message' => 'Silahkan isi nominal yang akan anda masukkan, nominal anda masih 0'];
         } else {
 
-            $model->jumlah_lembaran = 0;
-            $model->nominal = $val['nominal'];
+            $model->jumlah_lembaran = $jumlahlembar;
+            $model->nominal = $nominal;
 
             // Optional
             $item1_details = array(
                 'id' => '1',
-                'price' => $val['nominal'],
+                'price' => $nominal,
                 'quantity' => 1,
                 'name' => $pendanaan->nama_pendanaan . "(Non Lembaran)"
             );
@@ -637,16 +650,17 @@ class PembayaranController extends \yii\rest\ActiveController
         // $hasil = 'https://app.midtrans.com/snap/v2/vtweb/' . $hasil_code;
         $hasil = 'https://app.sandbox.midtrans.com/snap/v2/vtweb/' . $snapToken;
         // "https://api.sandbox.midtrans.com/v2/"
+        $user = User::find()->where(['id' => $val['user_id']])->one();
+        // var_dump(
+        //     $user->fcm_token
+        // );
+        // die;
         if ($model->validate()) {
             $model->save();
-
             return ['success' => true, 'message' => 'Data wakaf berhasil disimpan', 'data' => $model, 'code' => $snapToken, 'url' => $hasil];
         } else {
             return ['success' => false, 'message' => 'gagal', 'data' => $model->getErrors()];
         }
-
-
-
 
         // unset($model->password);
         // var_dump($bukti_transaksis);

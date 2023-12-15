@@ -121,6 +121,13 @@ class BeritaController extends Controller
                         ActionSendFcm::getMessage($value->fcm_token, "berita", $model->id, "Berita Baru", $model->judul);
                         // var_dump(ActionSendFcm::getMessage($value->fcm_token,$model->id,"Berita Baru",$model->judul));die;
                     }
+                    ActionSendFcm::getMessages(" cUciitPIRgeI7iRxZZfTEw:APA91bERDLoMvrbb1HGHcfIXlcwr4CEP8Xu2IPh2jK0YFBg0v1Oo4Z2DDygj_RYjq3wjYk5XU0jb2mGinTC8xQTv9iC1cCNrLkLuGgKrf0hF-aOLF9HLChT7oxWeGRUh1mNPqrBlCPzC", [
+                        'body' => 'ini adalah konten',
+                        'title' => 'ISALAM BERITA',
+                        'image' => 'https://img.okezone.com/content/2021/02/14/33/2361702/cerita-maria-ozawa-batal-syuting-menculik-miyabi-di-indonesia-karena-didemo-BUMCIELSk0.jpg'
+                    ], function ($data) {
+                        return $data;
+                    });
                     return $this->redirect(['view', 'id' => $model->id]);
                 }
             } elseif (!\Yii::$app->request->isPost) {
@@ -172,6 +179,13 @@ class BeritaController extends Controller
             }
 
             $model->save();
+            ActionSendFcm::getMessages(" cUciitPIRgeI7iRxZZfTEw:APA91bERDLoMvrbb1HGHcfIXlcwr4CEP8Xu2IPh2jK0YFBg0v1Oo4Z2DDygj_RYjq3wjYk5XU0jb2mGinTC8xQTv9iC1cCNrLkLuGgKrf0hF-aOLF9HLChT7oxWeGRUh1mNPqrBlCPzC", [
+                'body' => 'ini adalah konten',
+                'title' => 'ISALAM BERITA',
+                'image' => 'https://img.okezone.com/content/2021/02/14/33/2361702/cerita-maria-ozawa-batal-syuting-menculik-miyabi-di-indonesia-karena-didemo-BUMCIELSk0.jpg'
+            ], function ($data) {
+                return $data;
+            });
             return $this->redirect(Url::previous());
         } else {
             return $this->render('update', [
